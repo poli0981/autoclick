@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
+
+  <data name="AppTitle" xml:space="preserve"><value>AutoClick</value></data>
+  <data name="Main" xml:space="preserve"><value>メイン</value></data>
+  <data name="Settings" xml:space="preserve"><value>設定</value></data>
+  <data name="About" xml:space="preserve"><value>情報</value></data>
+  <data name="Start" xml:space="preserve"><value>開始</value></data>
+  <data name="Pause" xml:space="preserve"><value>一時停止</value></data>
+  <data name="Resume" xml:space="preserve"><value>再開</value></data>
+  <data name="Stop" xml:space="preserve"><value>停止</value></data>
+  <data name="AddGame" xml:space="preserve"><value>ゲーム追加</value></data>
+  <data name="RemoveGame" xml:space="preserve"><value>削除</value></data>
+  <data name="SelectCoordinate" xml:space="preserve"><value>座標を選択</value></data>
+  <data name="GamesRunning" xml:space="preserve"><value>実行中のゲーム</value></data>
+  <data name="ClickMode" xml:space="preserve"><value>クリックモード</value></data>
+  <data name="Random" xml:space="preserve"><value>ランダム</value></data>
+  <data name="Fixed" xml:space="preserve"><value>固定</value></data>
+  <data name="Interval" xml:space="preserve"><value>間隔 (秒)</value></data>
+  <data name="ClickCount" xml:space="preserve"><value>クリック数</value></data>
+  <data name="Status" xml:space="preserve"><value>状態</value></data>
+  <data name="Path" xml:space="preserve"><value>パス</value></data>
+  <data name="Coordinate" xml:space="preserve"><value>座標</value></data>
+  <data name="CurrentInterval" xml:space="preserve"><value>現在の間隔</value></data>
+  <data name="Basic" xml:space="preserve"><value>基本</value></data>
+  <data name="Advanced" xml:space="preserve"><value>詳細</value></data>
+  <data name="MaxGames" xml:space="preserve"><value>キュー内の最大ゲーム数</value></data>
+  <data name="ShowLogs" xml:space="preserve"><value>リアルタイムログを表示</value></data>
+  <data name="ExportLog" xml:space="preserve"><value>ログをエクスポート</value></data>
+  <data name="ExportSettings" xml:space="preserve"><value>設定をエクスポート</value></data>
+  <data name="ImportSettings" xml:space="preserve"><value>設定をインポート</value></data>
+  <data name="ResetAll" xml:space="preserve"><value>すべてリセット</value></data>
+  <data name="RemoveAll" xml:space="preserve"><value>すべて削除</value></data>
+  <data name="RandomMin" xml:space="preserve"><value>ランダム最小 (秒)</value></data>
+  <data name="RandomMax" xml:space="preserve"><value>ランダム最大 (秒)</value></data>
+  <data name="ResetStats" xml:space="preserve"><value>リセット</value></data>
+  <data name="AddPoint" xml:space="preserve"><value>ポイント追加</value></data>
+  <data name="ClearPoints" xml:space="preserve"><value>ポイント消去</value></data>
+  <data name="Points" xml:space="preserve"><value>ポイント</value></data>
+  <data name="SequenceDelay" xml:space="preserve"><value>ポイント間の遅延</value></data>
+  <data name="Language" xml:space="preserve"><value>言語</value></data>
+  <data name="Theme" xml:space="preserve"><value>テーマ</value></data>
+  <data name="Dark" xml:space="preserve"><value>ダーク</value></data>
+  <data name="Light" xml:space="preserve"><value>ライト</value></data>
+  <data name="Auto" xml:space="preserve"><value>自動</value></data>
+  <data name="Hotkeys" xml:space="preserve"><value>ホットキー</value></data>
+  <data name="Idle" xml:space="preserve"><value>待機中</value></data>
+  <data name="Running" xml:space="preserve"><value>実行中</value></data>
+  <data name="Paused" xml:space="preserve"><value>一時停止中</value></data>
+  <data name="Stopped" xml:space="preserve"><value>停止済み</value></data>
+  <data name="Logs" xml:space="preserve"><value>ログ</value></data>
+  <data name="NoGames" xml:space="preserve"><value>ゲームがまだありません。「ゲーム追加」をクリックして開始してください。</value></data>
+  <data name="ConfirmReset" xml:space="preserve"><value>すべてのゲームを停止し、アプリをリセットしますか？</value></data>
+  <data name="StartAll" xml:space="preserve"><value>すべて開始</value></data>
+  <data name="StopAll" xml:space="preserve"><value>すべて停止</value></data>
+  <data name="PauseResume" xml:space="preserve"><value>一時停止/再開</value></data>
+  <data name="ExitBehavior" xml:space="preserve"><value>終了時の動作</value></data>
+  <data name="MinimizeToTray" xml:space="preserve"><value>トレイに最小化</value></data>
+  <data name="StopAndExit" xml:space="preserve"><value>すべて停止して終了</value></data>
+  <data name="ForceExit" xml:space="preserve"><value>強制終了</value></data>
+  <data name="ConfirmExitTitle" xml:space="preserve"><value>終了の確認</value></data>
+  <data name="ConfirmExitMsg" xml:space="preserve"><value>実行中のタスクがあります。すべて停止して終了しますか？</value></data>
+  <data name="LanguageChangeTitle" xml:space="preserve"><value>言語が変更されました</value></data>
+  <data name="LanguageChangeMsg" xml:space="preserve"><value>新しい言語を適用するにはアプリの再起動が必要です。今すぐ再起動しますか？</value></data>
+  <data name="CoordinateErrorTitle" xml:space="preserve"><value>座標エラー</value></data>
+  <data name="CoordinateErrorMsg" xml:space="preserve"><value>座標が無効か、既に使用されています。もう一度お試しください。</value></data>
+  <data name="RandomCoordinateErrorTitle" xml:space="preserve"><value>ランダム座標</value></data>
+  <data name="RandomCoordinateErrorMsg" xml:space="preserve"><value>有効なランダム座標を生成できませんでした。ゲームウィンドウが小さすぎるか、すべての座標が使用中です。</value></data>
+  <data name="ConfirmResetApp" xml:space="preserve"><value>アプリを初期設定に戻しますか？すべての設定が初期値に復元されます。</value></data>
+  <data name="OpenSettingsFile" xml:space="preserve"><value>設定ファイルを開く</value></data>
+  <data name="SaveSettings" xml:space="preserve"><value>設定を保存</value></data>
+  <data name="Documents" xml:space="preserve"><value>ドキュメント</value></data>
+  <data name="PrivacyPolicy" xml:space="preserve"><value>プライバシーポリシー</value></data>
+  <data name="Disclaimer" xml:space="preserve"><value>免責事項</value></data>
+  <data name="Acknowledgements" xml:space="preserve"><value>謝辞・サードパーティ</value></data>
+  <data name="TermsOfService" xml:space="preserve"><value>利用規約</value></data>
+  <data name="EULA" xml:space="preserve"><value>エンドユーザーライセンス契約</value></data>
+  <data name="SecurityPolicy" xml:space="preserve"><value>セキュリティポリシー</value></data>
+  <data name="ViewOnGitHub" xml:space="preserve"><value>GitHubで表示</value></data>
+  <data name="AntiCheatWarning" xml:space="preserve"><value>アンチチート搭載ゲームでの使用にご注意ください。カーネルレベルのアンチチートはアカウント停止の原因になる場合があります。開発者は責任を負いません。</value></data>
+  <data name="AIDisclosure" xml:space="preserve"><value>本ソフトウェアはAIの支援を受けて開発されました。アプリ内の翻訳はAI生成のため、正確でない場合があります。</value></data>
+  <data name="Update" xml:space="preserve"><value>アップデート</value></data>
+  <data name="AutoUpdate" xml:space="preserve"><value>起動時に自動更新</value></data>
+  <data name="CheckForUpdate" xml:space="preserve"><value>更新を確認</value></data>
+  <data name="DownloadUpdate" xml:space="preserve"><value>更新をダウンロード</value></data>
+  <data name="ApplyAndRestart" xml:space="preserve"><value>適用して再起動</value></data>
+  <data name="UpdateReady" xml:space="preserve"><value>「更新を確認」をクリックして開始してください。</value></data>
+  <data name="UpdateDevMode" xml:space="preserve"><value>開発モードで実行中。更新は利用できません。</value></data>
+  <data name="UpdateChecking" xml:space="preserve"><value>更新を確認中...</value></data>
+  <data name="UpdateUpToDate" xml:space="preserve"><value>最新バージョンを実行中です。</value></data>
+  <data name="UpdateFoundMsg" xml:space="preserve"><value>更新あり: {0} → {1}</value></data>
+  <data name="UpdateDownloading" xml:space="preserve"><value>更新をダウンロード中...</value></data>
+  <data name="UpdateDownloadComplete" xml:space="preserve"><value>ダウンロード完了。「適用して再起動」をクリックしてください。</value></data>
+  <data name="UpdateApplying" xml:space="preserve"><value>更新を適用して再起動中...</value></data>
+  <data name="UpdateAvailableTitle" xml:space="preserve"><value>更新があります</value></data>
+  <data name="UpdateAutoDownloadedMsg" xml:space="preserve"><value>バージョン {0} がダウンロードされました。今すぐ再起動しますか？</value></data>
+  <data name="UpdateNoRelease" xml:space="preserve"><value>GitHubにリリースが見つかりません。</value></data>
+  <data name="UpdateRateLimited" xml:space="preserve"><value>GitHub APIのレート制限を超えました。数分後に再試行してください。</value></data>
+  <data name="UpdateForbidden" xml:space="preserve"><value>アクセスが拒否されました。リポジトリの権限を確認してください。</value></data>
+  <data name="UpdateServerError" xml:space="preserve"><value>GitHubサーバーエラー。後でもう一度お試しください。</value></data>
+  <data name="UpdateNetworkError" xml:space="preserve"><value>ネットワークエラー。インターネット接続を確認してください。</value></data>
+  <data name="UpdateChecksumFailed" xml:space="preserve"><value>ダウンロードの検証に失敗しました。もう一度お試しください。</value></data>
+  <data name="UpdateUnknownError" xml:space="preserve"><value>更新中に不明なエラーが発生しました。</value></data>
+</root>
