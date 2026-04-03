@@ -68,6 +68,11 @@
   <data name="ClearPoints" xml:space="preserve"><value>清除所有点</value></data>
   <data name="Points" xml:space="preserve"><value>个点</value></data>
   <data name="SequenceDelay" xml:space="preserve"><value>点击间延迟</value></data>
+  <data name="SessionStats" xml:space="preserve"><value>会话统计</value></data>
+  <data name="TotalClicks" xml:space="preserve"><value>总点击数</value></data>
+  <data name="Uptime" xml:space="preserve"><value>运行时间</value></data>
+  <data name="ClicksPerMin" xml:space="preserve"><value>点击/分钟</value></data>
+  <data name="PeakCPM" xml:space="preserve"><value>峰值</value></data>
   <data name="Language" xml:space="preserve"><value>语言</value></data>
   <data name="Theme" xml:space="preserve"><value>主题</value></data>
   <data name="Dark" xml:space="preserve"><value>深色</value></data>

@@ -68,6 +68,11 @@
   <data name="ClearPoints" xml:space="preserve"><value>ポイント消去</value></data>
   <data name="Points" xml:space="preserve"><value>ポイント</value></data>
   <data name="SequenceDelay" xml:space="preserve"><value>ポイント間の遅延</value></data>
+  <data name="SessionStats" xml:space="preserve"><value>セッション統計</value></data>
+  <data name="TotalClicks" xml:space="preserve"><value>総クリック数</value></data>
+  <data name="Uptime" xml:space="preserve"><value>稼働時間</value></data>
+  <data name="ClicksPerMin" xml:space="preserve"><value>クリック/分</value></data>
+  <data name="PeakCPM" xml:space="preserve"><value>ピーク</value></data>
   <data name="Language" xml:space="preserve"><value>言語</value></data>
   <data name="Theme" xml:space="preserve"><value>テーマ</value></data>
   <data name="Dark" xml:space="preserve"><value>ダーク</value></data>

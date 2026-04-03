@@ -39,6 +39,11 @@ public static class Strings
     public static string ClearPoints => GetString("ClearPoints", "Clear Points");
     public static string Points => GetString("Points", "points");
     public static string SequenceDelay => GetString("SequenceDelay", "Delay between points");
+    public static string SessionStats => GetString("SessionStats", "Session Statistics");
+    public static string TotalClicks => GetString("TotalClicks", "Total Clicks");
+    public static string Uptime => GetString("Uptime", "Uptime");
+    public static string ClicksPerMin => GetString("ClicksPerMin", "Clicks/min");
+    public static string PeakCPM => GetString("PeakCPM", "Peak");
     public static string Language => GetString("Language", "Language");
     public static string Theme => GetString("Theme", "Theme");
     public static string Dark => GetString("Dark", "Dark");

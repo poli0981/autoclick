@@ -41,6 +41,23 @@ public class MainViewModel : ViewModelBase
     private bool _showLogs = true;
     public bool ShowLogs { get => _showLogs; set => SetProperty(ref _showLogs, value); }
 
+    // ── Session Statistics ──
+    private DateTime? _sessionStartedAt;
+
+    private long _totalClicks;
+    public long TotalClicks { get => _totalClicks; set => SetProperty(ref _totalClicks, value); }
+
+    private string _sessionUptime = "00:00:00";
+    public string SessionUptime { get => _sessionUptime; set => SetProperty(ref _sessionUptime, value); }
+
+    private double _clicksPerMinute;
+    public double ClicksPerMinute { get => _clicksPerMinute; set => SetProperty(ref _clicksPerMinute, value); }
+
+    private long _peakClicksPerMinute;
+    public long PeakClicksPerMinute { get => _peakClicksPerMinute; set => SetProperty(ref _peakClicksPerMinute, value); }
+
+    public bool HasStats => _sessionStartedAt != null;
+
     public bool HasAnyRunning => GameSessions.Any(g =>
         g.Session.State == SessionState.Running || g.Session.State == SessionState.Paused);
 
@@ -109,6 +126,7 @@ public class MainViewModel : ViewModelBase
             OnPropertyChanged(nameof(HasAnyRunning));
             OnPropertyChanged(nameof(HasNoRunning));
             OnPropertyChanged(nameof(CanStartAll));
+            RefreshSessionStats();
             CheckForExitedProcesses();
         };
         timer.Start();
@@ -317,6 +335,9 @@ public class MainViewModel : ViewModelBase
 
     private void OnStartAll()
     {
+        if (_sessionStartedAt == null)
+            _sessionStartedAt = DateTime.Now;
+
         foreach (var g in GameSessions.Where(g => g.IsIdle && g.HasCoordinate).ToList())
             g.Start();
     }
@@ -325,6 +346,40 @@ public class MainViewModel : ViewModelBase
     {
         foreach (var g in GameSessions.Where(g => g.IsRunning || g.IsPaused).ToList())
             g.Stop();
+    }
+
+    private long _lastTotalClicks;
+
+    private void RefreshSessionStats()
+    {
+        // Sum clicks across all sessions
+        long total = GameSessions.Sum(g => g.Session.ClickCount);
+        TotalClicks = total;
+
+        // Track session start when first game starts
+        if (_sessionStartedAt == null && ActiveGameCount > 0)
+            _sessionStartedAt = DateTime.Now;
+
+        // Uptime
+        if (_sessionStartedAt != null)
+        {
+            var elapsed = DateTime.Now - _sessionStartedAt.Value;
+            SessionUptime = elapsed.ToString(@"hh\:mm\:ss");
+
+            // Clicks per minute
+            var minutes = elapsed.TotalMinutes;
+            if (minutes > 0)
+            {
+                var cpm = total / minutes;
+                ClicksPerMinute = Math.Round(cpm, 1);
+                var cpmLong = (long)Math.Round(cpm);
+                if (cpmLong > PeakClicksPerMinute)
+                    PeakClicksPerMinute = cpmLong;
+            }
+        }
+
+        OnPropertyChanged(nameof(HasStats));
+        _lastTotalClicks = total;
     }
 
     private void OnResetAll()
@@ -371,6 +426,15 @@ public class MainViewModel : ViewModelBase
 
         // Notify settings VM to refresh all its bindings
         SettingsReloaded?.Invoke();
+
+        // Reset session stats
+        _sessionStartedAt = null;
+        TotalClicks = 0;
+        SessionUptime = "00:00:00";
+        ClicksPerMinute = 0;
+        PeakClicksPerMinute = 0;
+        _lastTotalClicks = 0;
+        OnPropertyChanged(nameof(HasStats));
 
         _memoryManager.ForceCleanup();
         _logService.Info("Application reset to factory defaults");

@@ -68,6 +68,11 @@
   <data name="ClearPoints" xml:space="preserve"><value>Xóa tất cả điểm</value></data>
   <data name="Points" xml:space="preserve"><value>điểm</value></data>
   <data name="SequenceDelay" xml:space="preserve"><value>Độ trễ giữa các điểm</value></data>
+  <data name="SessionStats" xml:space="preserve"><value>Thống kê phiên</value></data>
+  <data name="TotalClicks" xml:space="preserve"><value>Tổng click</value></data>
+  <data name="Uptime" xml:space="preserve"><value>Thời gian chạy</value></data>
+  <data name="ClicksPerMin" xml:space="preserve"><value>Click/phút</value></data>
+  <data name="PeakCPM" xml:space="preserve"><value>Cao nhất</value></data>
   <data name="Language" xml:space="preserve"><value>Ngôn ngữ</value></data>
   <data name="Theme" xml:space="preserve"><value>Giao diện</value></data>
   <data name="Dark" xml:space="preserve"><value>Tối</value></data>
