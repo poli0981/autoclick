@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [1.0.2] - 2026-04-03
+
+### Fixed
+- **Critical:** Update manager pointed to wrong GitHub repository for users who installed v1.0.0 or v1.0.1. Existing `settings.json` files retained the old `autoclick/autoclick` URL even after the code default was corrected. Added automatic migration in `SettingsService.Load()` to detect and fix stale values on startup.
+
+### Important
+> **Users on v1.0.0 or v1.0.1 should upgrade to v1.0.2 or later.** Earlier versions may fail to check for updates due to the incorrect repository URL stored in local settings. v1.0.2 includes an auto-migration that fixes this permanently on first launch.
+
+---
+
 ## [1.0.1] - 2026-04-03
 
 ### Fixed

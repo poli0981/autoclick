@@ -15,6 +15,8 @@
 
 ---
 
+> **Upgrade Notice:** Users on v1.0.0 or v1.0.1 should upgrade to **v1.0.2+**. Earlier versions contain an incorrect update URL that prevents auto-update from working. v1.0.2 fixes this automatically on first launch.
+
 ## About
 
 AutoClick is a Windows desktop application that automates repetitive mouse clicking in games using Win32 `PostMessage` API. It runs as a separate process and sends click events to game windows in the background -- no game modification required.
