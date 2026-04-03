@@ -53,13 +53,24 @@ public class ClickEngineService : IClickEngine
                         break;
                     }
 
-                    foreach (var point in session.ClickPoints)
+                    // Execute click sequence: each point in order with optional per-point delay
+                    var points = session.ClickPoints;
+                    for (int i = 0; i < points.Count; i++)
                     {
                         if (cts.Token.IsCancellationRequested) break;
+
+                        var point = points[i];
                         InputSimulator.SendClick(session.WindowHandle, point.X, point.Y, point.ClickType);
+                        session.ClickCount++;
+
+                        // Per-point delay (between points in a sequence)
+                        if (point.DelayAfterMs > 0 && i < points.Count - 1)
+                        {
+                            await Task.Delay(point.DelayAfterMs, cts.Token);
+                        }
                     }
 
-                    session.ClickCount++;
+                    // Main interval (between full sequence cycles)
                     double interval = session.Profile.GetInterval();
                     session.LastIntervalSeconds = interval;
 

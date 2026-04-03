@@ -60,6 +60,7 @@ public static class NativeMethods
     public static extern IntPtr GetCurrentProcess();
 
     // Window messages
+    public const uint WM_MOUSEMOVE = 0x0200;
     public const uint WM_LBUTTONDOWN = 0x0201;
     public const uint WM_LBUTTONUP = 0x0202;
     public const uint WM_LBUTTONDBLCLK = 0x0203;

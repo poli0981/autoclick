@@ -59,6 +59,12 @@ public class SettingsViewModel : ViewModelBase
         set { _settings.AutoUpdate = value; OnPropertyChanged(); }
     }
 
+    public bool SoundNotifications
+    {
+        get => _settings.SoundNotifications;
+        set { _settings.SoundNotifications = value; OnPropertyChanged(); }
+    }
+
     /// <summary>
     /// Toggle: true = Dark, false = Light.
     /// </summary>
@@ -171,6 +177,7 @@ public class SettingsViewModel : ViewModelBase
         OnPropertyChanged(nameof(MaxGamesInQueue));
         OnPropertyChanged(nameof(ShowRealTimeLogs));
         OnPropertyChanged(nameof(AutoUpdate));
+        OnPropertyChanged(nameof(SoundNotifications));
         OnPropertyChanged(nameof(DarkMode));
         OnPropertyChanged(nameof(Language));
         OnPropertyChanged(nameof(SelectedExitBehaviorIndex));

@@ -10,9 +10,9 @@
     <Company>poli0981</Company>
     <Authors>poli0981</Authors>
     <Copyright>Copyright (c) 2026 poli0981. Licensed under GPL-3.0.</Copyright>
-    <Version>1.0.3</Version>
-    <AssemblyVersion>1.0.3.0</AssemblyVersion>
-    <FileVersion>1.0.3.0</FileVersion>
+    <Version>1.1.0</Version>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
   </PropertyGroup>
 
 </Project>

@@ -93,10 +93,13 @@ public partial class App : Application
         settingsRefreshTimer.Tick += (_, _) => settingsVm.RefreshRunningState();
         settingsRefreshTimer.Start();
 
+        var soundService = new SoundService(mainVm.Settings);
+
         var mainWindow = new MainWindow();
         mainWindow.Initialize(mainVm, settingsVm,
             _serviceProvider.GetRequiredService<AboutViewModel>(),
-            _serviceProvider.GetRequiredService<HotkeyService>());
+            _serviceProvider.GetRequiredService<HotkeyService>(),
+            soundService);
 
         SetupTrayIcon(mainWindow);
         MainWindow = mainWindow;

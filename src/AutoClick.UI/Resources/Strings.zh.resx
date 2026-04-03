@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
+
+  <data name="AppTitle" xml:space="preserve"><value>AutoClick</value></data>
+  <data name="Main" xml:space="preserve"><value>主页</value></data>
+  <data name="Settings" xml:space="preserve"><value>设置</value></data>
+  <data name="About" xml:space="preserve"><value>关于</value></data>
+  <data name="Start" xml:space="preserve"><value>开始</value></data>
+  <data name="Pause" xml:space="preserve"><value>暂停</value></data>
+  <data name="Resume" xml:space="preserve"><value>继续</value></data>
+  <data name="Stop" xml:space="preserve"><value>停止</value></data>
+  <data name="AddGame" xml:space="preserve"><value>添加游戏</value></data>
+  <data name="RemoveGame" xml:space="preserve"><value>删除</value></data>
+  <data name="SelectCoordinate" xml:space="preserve"><value>选择坐标</value></data>
+  <data name="GamesRunning" xml:space="preserve"><value>正在运行的游戏</value></data>
+  <data name="ClickMode" xml:space="preserve"><value>点击模式</value></data>
+  <data name="Random" xml:space="preserve"><value>随机</value></data>
+  <data name="Fixed" xml:space="preserve"><value>固定</value></data>
+  <data name="Interval" xml:space="preserve"><value>间隔（秒）</value></data>
+  <data name="ClickCount" xml:space="preserve"><value>点击次数</value></data>
+  <data name="Status" xml:space="preserve"><value>状态</value></data>
+  <data name="Path" xml:space="preserve"><value>路径</value></data>
+  <data name="Coordinate" xml:space="preserve"><value>坐标</value></data>
+  <data name="CurrentInterval" xml:space="preserve"><value>当前间隔</value></data>
+  <data name="Basic" xml:space="preserve"><value>基本</value></data>
+  <data name="Advanced" xml:space="preserve"><value>高级</value></data>
+  <data name="MaxGames" xml:space="preserve"><value>队列最大游戏数</value></data>
+  <data name="ShowLogs" xml:space="preserve"><value>显示实时日志</value></data>
+  <data name="ExportLog" xml:space="preserve"><value>导出日志</value></data>
+  <data name="ExportSettings" xml:space="preserve"><value>导出设置</value></data>
+  <data name="ImportSettings" xml:space="preserve"><value>导入设置</value></data>
+  <data name="ResetAll" xml:space="preserve"><value>全部重置</value></data>
+  <data name="RemoveAll" xml:space="preserve"><value>全部删除</value></data>
+  <data name="RandomMin" xml:space="preserve"><value>随机最小值（秒）</value></data>
+  <data name="RandomMax" xml:space="preserve"><value>随机最大值（秒）</value></data>
+  <data name="ResetStats" xml:space="preserve"><value>重置</value></data>
+  <data name="AddPoint" xml:space="preserve"><value>添加点</value></data>
+  <data name="ClearPoints" xml:space="preserve"><value>清除所有点</value></data>
+  <data name="Points" xml:space="preserve"><value>个点</value></data>
+  <data name="SequenceDelay" xml:space="preserve"><value>点击间延迟</value></data>
+  <data name="SessionStats" xml:space="preserve"><value>会话统计</value></data>
+  <data name="TotalClicks" xml:space="preserve"><value>总点击数</value></data>
+  <data name="Uptime" xml:space="preserve"><value>运行时间</value></data>
+  <data name="ClicksPerMin" xml:space="preserve"><value>点击/分钟</value></data>
+  <data name="PeakCPM" xml:space="preserve"><value>峰值</value></data>
+  <data name="SoundNotifications" xml:space="preserve"><value>声音通知</value></data>
+  <data name="Language" xml:space="preserve"><value>语言</value></data>
+  <data name="Theme" xml:space="preserve"><value>主题</value></data>
+  <data name="Dark" xml:space="preserve"><value>深色</value></data>
+  <data name="Light" xml:space="preserve"><value>浅色</value></data>
+  <data name="Auto" xml:space="preserve"><value>自动</value></data>
+  <data name="Hotkeys" xml:space="preserve"><value>快捷键</value></data>
+  <data name="Idle" xml:space="preserve"><value>空闲</value></data>
+  <data name="Running" xml:space="preserve"><value>运行中</value></data>
+  <data name="Paused" xml:space="preserve"><value>已暂停</value></data>
+  <data name="Stopped" xml:space="preserve"><value>已停止</value></data>
+  <data name="Logs" xml:space="preserve"><value>日志</value></data>
+  <data name="NoGames" xml:space="preserve"><value>尚未添加游戏。点击"添加游戏"开始。</value></data>
+  <data name="ConfirmReset" xml:space="preserve"><value>将停止所有游戏并重置应用程序。是否继续？</value></data>
+  <data name="StartAll" xml:space="preserve"><value>全部开始</value></data>
+  <data name="StopAll" xml:space="preserve"><value>全部停止</value></data>
+  <data name="PauseResume" xml:space="preserve"><value>暂停/继续</value></data>
+  <data name="ExitBehavior" xml:space="preserve"><value>退出时</value></data>
+  <data name="MinimizeToTray" xml:space="preserve"><value>最小化到托盘</value></data>
+  <data name="StopAndExit" xml:space="preserve"><value>全部停止并退出</value></data>
+  <data name="ForceExit" xml:space="preserve"><value>强制退出</value></data>
+  <data name="ConfirmExitTitle" xml:space="preserve"><value>确认退出</value></data>
+  <data name="ConfirmExitMsg" xml:space="preserve"><value>有正在运行的任务。全部停止并退出吗？</value></data>
+  <data name="LanguageChangeTitle" xml:space="preserve"><value>语言已更改</value></data>
+  <data name="LanguageChangeMsg" xml:space="preserve"><value>需要重新启动应用程序以应用新语言。现在重新启动吗？</value></data>
+  <data name="CoordinateErrorTitle" xml:space="preserve"><value>坐标错误</value></data>
+  <data name="CoordinateErrorMsg" xml:space="preserve"><value>坐标无效或已被使用。请重试。</value></data>
+  <data name="RandomCoordinateErrorTitle" xml:space="preserve"><value>随机坐标</value></data>
+  <data name="RandomCoordinateErrorMsg" xml:space="preserve"><value>无法生成有效的随机坐标。游戏窗口可能太小或所有坐标已被使用。</value></data>
+  <data name="ConfirmResetApp" xml:space="preserve"><value>将应用程序恢复为出厂默认设置？所有设置将被还原为初始值。</value></data>
+  <data name="OpenSettingsFile" xml:space="preserve"><value>打开设置文件</value></data>
+  <data name="SaveSettings" xml:space="preserve"><value>保存设置</value></data>
+  <data name="Documents" xml:space="preserve"><value>文档</value></data>
+  <data name="PrivacyPolicy" xml:space="preserve"><value>隐私政策</value></data>
+  <data name="Disclaimer" xml:space="preserve"><value>免责声明</value></data>
+  <data name="Acknowledgements" xml:space="preserve"><value>致谢与第三方</value></data>
+  <data name="TermsOfService" xml:space="preserve"><value>服务条款</value></data>
+  <data name="EULA" xml:space="preserve"><value>最终用户许可协议</value></data>
+  <data name="SecurityPolicy" xml:space="preserve"><value>安全政策</value></data>
+  <data name="ViewOnGitHub" xml:space="preserve"><value>在GitHub上查看</value></data>
+  <data name="AntiCheatWarning" xml:space="preserve"><value>在有反作弊的游戏中请谨慎使用。内核级反作弊可能导致账号封禁。开发者不承担责任。</value></data>
+  <data name="AIDisclosure" xml:space="preserve"><value>本软件在AI辅助下开发。应用内翻译由AI生成，可能不完全准确。</value></data>
+  <data name="Update" xml:space="preserve"><value>更新</value></data>
+  <data name="AutoUpdate" xml:space="preserve"><value>启动时自动更新</value></data>
+  <data name="CheckForUpdate" xml:space="preserve"><value>检查更新</value></data>
+  <data name="DownloadUpdate" xml:space="preserve"><value>下载更新</value></data>
+  <data name="ApplyAndRestart" xml:space="preserve"><value>应用并重启</value></data>
+  <data name="UpdateReady" xml:space="preserve"><value>点击"检查更新"开始。</value></data>
+  <data name="UpdateDevMode" xml:space="preserve"><value>正在开发模式下运行。更新不可用。</value></data>
+  <data name="UpdateChecking" xml:space="preserve"><value>正在检查更新...</value></data>
+  <data name="UpdateUpToDate" xml:space="preserve"><value>您正在运行最新版本。</value></data>
+  <data name="UpdateFoundMsg" xml:space="preserve"><value>有可用更新：{0} → {1}</value></data>
+  <data name="UpdateDownloading" xml:space="preserve"><value>正在下载更新...</value></data>
+  <data name="UpdateDownloadComplete" xml:space="preserve"><value>下载完成。点击"应用并重启"以更新。</value></data>
+  <data name="UpdateApplying" xml:space="preserve"><value>正在应用更新并重启...</value></data>
+  <data name="UpdateAvailableTitle" xml:space="preserve"><value>有可用更新</value></data>
+  <data name="UpdateAutoDownloadedMsg" xml:space="preserve"><value>版本 {0} 已下载。现在重启吗？</value></data>
+  <data name="UpdateNoRelease" xml:space="preserve"><value>在GitHub上未找到发行版。</value></data>
+  <data name="UpdateRateLimited" xml:space="preserve"><value>超出GitHub API速率限制。请稍后再试。</value></data>
+  <data name="UpdateForbidden" xml:space="preserve"><value>访问被拒绝。请检查仓库权限。</value></data>
+  <data name="UpdateServerError" xml:space="preserve"><value>GitHub服务器错误。请稍后再试。</value></data>
+  <data name="UpdateNetworkError" xml:space="preserve"><value>网络错误。请检查网络连接。</value></data>
+  <data name="UpdateChecksumFailed" xml:space="preserve"><value>下载验证失败。请重试。</value></data>
+  <data name="UpdateUnknownError" xml:space="preserve"><value>更新时发生未知错误。</value></data>
+</root>

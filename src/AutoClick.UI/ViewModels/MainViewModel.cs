@@ -41,6 +41,23 @@ public class MainViewModel : ViewModelBase
     private bool _showLogs = true;
     public bool ShowLogs { get => _showLogs; set => SetProperty(ref _showLogs, value); }
 
+    // ── Session Statistics ──
+    private DateTime? _sessionStartedAt;
+
+    private long _totalClicks;
+    public long TotalClicks { get => _totalClicks; set => SetProperty(ref _totalClicks, value); }
+
+    private string _sessionUptime = "00:00:00";
+    public string SessionUptime { get => _sessionUptime; set => SetProperty(ref _sessionUptime, value); }
+
+    private double _clicksPerMinute;
+    public double ClicksPerMinute { get => _clicksPerMinute; set => SetProperty(ref _clicksPerMinute, value); }
+
+    private long _peakClicksPerMinute;
+    public long PeakClicksPerMinute { get => _peakClicksPerMinute; set => SetProperty(ref _peakClicksPerMinute, value); }
+
+    public bool HasStats => _sessionStartedAt != null;
+
     public bool HasAnyRunning => GameSessions.Any(g =>
         g.Session.State == SessionState.Running || g.Session.State == SessionState.Paused);
 
@@ -109,6 +126,7 @@ public class MainViewModel : ViewModelBase
             OnPropertyChanged(nameof(HasAnyRunning));
             OnPropertyChanged(nameof(HasNoRunning));
             OnPropertyChanged(nameof(CanStartAll));
+            RefreshSessionStats();
             CheckForExitedProcesses();
         };
         timer.Start();
@@ -144,9 +162,9 @@ public class MainViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// Assigns a picked coordinate to a game session. Validates bounds + duplicates + logs.
+    /// Adds a picked coordinate to a game session's click sequence. Validates bounds + duplicates.
     /// </summary>
-    public bool TrySetCoordinate(GameSessionViewModel sessionVm, ClickPoint point)
+    public bool TryAddCoordinate(GameSessionViewModel sessionVm, ClickPoint point)
     {
         // Validate bounds
         if (!CoordinateHelper.IsCoordinateInBounds(sessionVm.Session.WindowHandle, point.X, point.Y))
@@ -155,27 +173,40 @@ public class MainViewModel : ViewModelBase
             return false;
         }
 
-        // Check duplicate
-        var conflict = CheckDuplicateCoordinate(sessionVm.Session.WindowHandle, point, sessionVm.Id);
-        if (conflict != null)
+        // Check duplicate within same session
+        foreach (var existing in sessionVm.Session.ClickPoints)
         {
-            _logService.Warn($"Coordinate ({point.X}, {point.Y}) already used by \"{conflict}\". Rejected for \"{sessionVm.ProcessName}\".");
-            return false;
+            if (existing.X == point.X && existing.Y == point.Y)
+            {
+                _logService.Warn($"Coordinate ({point.X}, {point.Y}) already in sequence for \"{sessionVm.ProcessName}\". Rejected.");
+                return false;
+            }
         }
 
-        sessionVm.Session.ClickPoints.Clear();
         sessionVm.Session.ClickPoints.Add(point);
         sessionVm.UpdateCoordinateText();
-        _logService.Info($"Coordinate ({point.X}, {point.Y}) set for \"{sessionVm.ProcessName}\" (picked)");
+        var idx = sessionVm.Session.ClickPoints.Count;
+        _logService.Info($"Coordinate #{idx} ({point.X}, {point.Y}) added to \"{sessionVm.ProcessName}\" (picked)");
         OnPropertyChanged(nameof(CanStartAll));
         return true;
+    }
+
+    /// <summary>
+    /// Clears all coordinates from a game session.
+    /// </summary>
+    public void ClearCoordinates(GameSessionViewModel sessionVm)
+    {
+        sessionVm.Session.ClickPoints.Clear();
+        sessionVm.UpdateCoordinateText();
+        _logService.Info($"All coordinates cleared for \"{sessionVm.ProcessName}\"");
+        OnPropertyChanged(nameof(CanStartAll));
     }
 
     /// <summary>
     /// Generates a random coordinate within the game window, checks for duplicates, and assigns it.
     /// Retries up to 10 times to avoid duplicates.
     /// </summary>
-    public bool TrySetRandomCoordinate(GameSessionViewModel sessionVm)
+    public bool TryAddRandomCoordinate(GameSessionViewModel sessionVm)
     {
         var hWnd = sessionVm.Session.WindowHandle;
         var (w, h) = CoordinateHelper.GetClientSize(hWnd);
@@ -190,13 +221,14 @@ public class MainViewModel : ViewModelBase
         {
             var point = CoordinateHelper.GenerateRandomCoordinate(hWnd);
 
-            var conflict = CheckDuplicateCoordinate(hWnd, point, sessionVm.Id);
-            if (conflict == null)
+            // Check duplicate within same session
+            bool duplicate = sessionVm.Session.ClickPoints.Exists(p => p.X == point.X && p.Y == point.Y);
+            if (!duplicate)
             {
-                sessionVm.Session.ClickPoints.Clear();
                 sessionVm.Session.ClickPoints.Add(point);
                 sessionVm.UpdateCoordinateText();
-                _logService.Info($"Random coordinate ({point.X}, {point.Y}) set for \"{sessionVm.ProcessName}\" (window: {w}x{h})");
+                var idx = sessionVm.Session.ClickPoints.Count;
+                _logService.Info($"Random coordinate #{idx} ({point.X}, {point.Y}) added to \"{sessionVm.ProcessName}\" (window: {w}x{h})");
                 OnPropertyChanged(nameof(CanStartAll));
                 return true;
             }
@@ -303,6 +335,9 @@ public class MainViewModel : ViewModelBase
 
     private void OnStartAll()
     {
+        if (_sessionStartedAt == null)
+            _sessionStartedAt = DateTime.Now;
+
         foreach (var g in GameSessions.Where(g => g.IsIdle && g.HasCoordinate).ToList())
             g.Start();
     }
@@ -311,6 +346,53 @@ public class MainViewModel : ViewModelBase
     {
         foreach (var g in GameSessions.Where(g => g.IsRunning || g.IsPaused).ToList())
             g.Stop();
+    }
+
+    private long _lastTotalClicks;
+    private DateTime _lastStatsTime;
+
+    private void RefreshSessionStats()
+    {
+        // Sum clicks across all sessions
+        long total = GameSessions.Sum(g => g.Session.ClickCount);
+        TotalClicks = total;
+
+        // Track session start when first game starts
+        if (_sessionStartedAt == null && ActiveGameCount > 0)
+        {
+            _sessionStartedAt = DateTime.Now;
+            _lastStatsTime = DateTime.Now;
+            _lastTotalClicks = 0;
+        }
+
+        // Uptime + rates
+        if (_sessionStartedAt != null)
+        {
+            var elapsed = DateTime.Now - _sessionStartedAt.Value;
+            SessionUptime = elapsed.ToString(@"hh\:mm\:ss");
+
+            // Average clicks per minute (only after 5 seconds to avoid spike)
+            if (elapsed.TotalSeconds >= 5)
+            {
+                ClicksPerMinute = Math.Round(total / elapsed.TotalMinutes, 1);
+            }
+
+            // Realtime CPM: clicks in last interval → extrapolate to per-minute
+            // This gives a meaningful "current rate" for peak tracking
+            var intervalSeconds = (DateTime.Now - _lastStatsTime).TotalSeconds;
+            if (intervalSeconds >= 1.5 && elapsed.TotalSeconds >= 5)
+            {
+                var realtimeCpm = (total - _lastTotalClicks) / intervalSeconds * 60.0;
+                var realtimeLong = (long)Math.Round(realtimeCpm);
+                if (realtimeLong > PeakClicksPerMinute)
+                    PeakClicksPerMinute = realtimeLong;
+
+                _lastTotalClicks = total;
+                _lastStatsTime = DateTime.Now;
+            }
+        }
+
+        OnPropertyChanged(nameof(HasStats));
     }
 
     private void OnResetAll()
@@ -348,6 +430,7 @@ public class MainViewModel : ViewModelBase
         _settings.Language = defaults.Language;
         _settings.ExitBehavior = defaults.ExitBehavior;
         _settings.AutoUpdate = defaults.AutoUpdate;
+        _settings.SoundNotifications = defaults.SoundNotifications;
         _settings.Hotkeys = new HotkeySettings();
         _settingsService.Save(_settings);
 
@@ -357,6 +440,15 @@ public class MainViewModel : ViewModelBase
 
         // Notify settings VM to refresh all its bindings
         SettingsReloaded?.Invoke();
+
+        // Reset session stats
+        _sessionStartedAt = null;
+        TotalClicks = 0;
+        SessionUptime = "00:00:00";
+        ClicksPerMinute = 0;
+        PeakClicksPerMinute = 0;
+        _lastTotalClicks = 0;
+        OnPropertyChanged(nameof(HasStats));
 
         _memoryManager.ForceCleanup();
         _logService.Info("Application reset to factory defaults");

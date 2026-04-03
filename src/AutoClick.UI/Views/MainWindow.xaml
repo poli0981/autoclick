@@ -46,6 +46,7 @@
             <Grid Visibility="{Binding IsChecked, ElementName=TabMain, Converter={StaticResource BoolToVis}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
@@ -77,8 +78,34 @@
                     </DockPanel>
                 </Border>
 
+                <!-- Session Stats Bar -->
+                <Border Grid.Row="1" Padding="16,6" Background="{DynamicResource BackgroundBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
+                        Visibility="{Binding HasStats, Converter={StaticResource BoolToVis}}"
+                        Margin="0,0,0,0" VerticalAlignment="Bottom">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,20,0">
+                            <Run Text="{x:Static res:Strings.TotalClicks}" FontWeight="Medium"/><Run Text=": "/>
+                            <Run Text="{Binding TotalClicks, Mode=OneWay}" FontWeight="Bold" Foreground="{DynamicResource PrimaryBrush}"/>
+                        </TextBlock>
+                        <TextBlock FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,20,0">
+                            <Run Text="{x:Static res:Strings.Uptime}" FontWeight="Medium"/><Run Text=": "/>
+                            <Run Text="{Binding SessionUptime, Mode=OneWay}" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        </TextBlock>
+                        <TextBlock FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,20,0">
+                            <Run Text="{x:Static res:Strings.ClicksPerMin}" FontWeight="Medium"/><Run Text=": "/>
+                            <Run Text="{Binding ClicksPerMinute, Mode=OneWay, StringFormat={}{0:F1}}" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        </TextBlock>
+                        <TextBlock FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,0">
+                            <Run Text="{x:Static res:Strings.PeakCPM}" FontWeight="Medium"/><Run Text=": "/>
+                            <Run Text="{Binding PeakClicksPerMinute, Mode=OneWay}" Foreground="{DynamicResource SuccessBrush}" FontWeight="SemiBold"/>
+                            <Run Text=" c/m"/>
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+
                 <!-- Game List -->
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="16">
+                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Padding="16">
                     <ItemsControl ItemsSource="{Binding GameSessions}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
@@ -108,13 +135,18 @@
 
                                         <!-- Buttons -->
                                         <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-                                            <Button Content="{x:Static res:Strings.SelectCoordinate}"
+                                            <Button Content="{x:Static res:Strings.AddPoint}"
                                                     Click="OnPickCoordinate" Tag="{Binding}"
                                                     Style="{StaticResource DefaultButton}" Margin="0,0,4,0"
-                                                    IsEnabled="{Binding IsIdle}"/>
+                                                    IsEnabled="{Binding IsIdle}"
+                                                    ToolTip="{x:Static res:Strings.SelectCoordinate}"/>
                                             <Button Content="{x:Static res:Strings.Random}" Click="OnRandomCoordinate" Tag="{Binding}"
                                                     Style="{StaticResource DefaultButton}" Margin="0,0,4,0"
                                                     IsEnabled="{Binding IsIdle}"/>
+                                            <Button Content="{x:Static res:Strings.ClearPoints}" Click="OnClearCoordinates" Tag="{Binding}"
+                                                    Style="{StaticResource DefaultButton}" Margin="0,0,4,0"
+                                                    IsEnabled="{Binding IsIdle}"
+                                                    Visibility="{Binding HasCoordinate, Converter={StaticResource BoolToVis}}"/>
                                             <Button Content="{x:Static res:Strings.Start}" Command="{Binding StartCommand}"
                                                     Style="{StaticResource PrimaryButton}" Margin="0,0,4,0"
                                                     Visibility="{Binding IsIdle, Converter={StaticResource BoolToVis}}"/>
@@ -145,9 +177,23 @@
                                         </WrapPanel>
                                         <WrapPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="0,4,0,0">
                                             <TextBlock Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" Margin="0,0,24,0">
-                                                <Run Text="{x:Static res:Strings.Coordinate}"/><Run Text=": "/>
+                                                <Run Text="{x:Static res:Strings.Coordinate}"/>
+                                                <Run Text=" ("/>
+                                                <Run Text="{Binding PointCount, Mode=OneWay}" FontWeight="SemiBold"/>
+                                                <Run Text=" "/><Run Text="{x:Static res:Strings.Points}"/>
+                                                <Run Text="): "/>
                                                 <Run Text="{Binding CoordinateText, Mode=OneWay}" Foreground="{DynamicResource PrimaryBrush}"/>
                                             </TextBlock>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,24,0"
+                                                        Visibility="{Binding HasMultiplePoints, Converter={StaticResource BoolToVis}}">
+                                                <TextBlock Text="{x:Static res:Strings.SequenceDelay}" FontSize="12" VerticalAlignment="Center"
+                                                           Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,4,0"/>
+                                                <TextBox Text="{Binding SequenceDelayMs, UpdateSourceTrigger=LostFocus}"
+                                                         Width="50" FontSize="12" VerticalAlignment="Center"
+                                                         IsEnabled="{Binding IsIdle}"/>
+                                                <TextBlock Text="ms" FontSize="12" VerticalAlignment="Center"
+                                                           Foreground="{DynamicResource TextSecondaryBrush}" Margin="4,0,0,0"/>
+                                            </StackPanel>
                                             <TextBlock Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" Margin="0,0,24,0">
                                                 <Run Text="{x:Static res:Strings.ClickCount}"/><Run Text=": "/>
                                                 <Run Text="{Binding ClickCount, Mode=OneWay}" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/>
@@ -174,7 +220,7 @@
                 </ScrollViewer>
 
                 <!-- Log Panel -->
-                <Border Grid.Row="2" Height="150" Background="{DynamicResource SurfaceBrush}"
+                <Border Grid.Row="3" Height="150" Background="{DynamicResource SurfaceBrush}"
                         BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0"
                         Visibility="{Binding ShowLogs, Converter={StaticResource BoolToVis}}">
                     <Grid>
@@ -209,7 +255,7 @@
         <Border Grid.Row="2" Background="{DynamicResource SurfaceBrush}"
                 BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" Padding="16,6">
             <TextBlock Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11">
-                <Run Text="AutoClick v1.0.3"/>
+                <Run Text="AutoClick v1.1.0"/>
                 <Run Text=" | "/>
                 <Run Text="{Binding GameSessions.Count, Mode=OneWay, StringFormat='{}{0} game(s)'}"/>
             </TextBlock>

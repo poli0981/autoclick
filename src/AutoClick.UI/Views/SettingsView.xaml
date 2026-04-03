@@ -130,7 +130,10 @@
                     <ComboBox Grid.Column="1" SelectedValue="{Binding Language}" SelectedValuePath="Tag"
                               HorizontalAlignment="Left" Width="150">
                         <ComboBoxItem Content="English" Tag="en"/>
-                        <ComboBoxItem Content="Tieng Viet" Tag="vi"/>
+                        <ComboBoxItem Content="Tiếng Việt" Tag="vi"/>
+                        <ComboBoxItem Content="日本語" Tag="ja"/>
+                        <ComboBoxItem Content="한국어" Tag="ko"/>
+                        <ComboBoxItem Content="中文" Tag="zh"/>
                     </ComboBox>
                 </Grid>
 
@@ -165,6 +168,10 @@
 
                 <!-- Auto Update -->
                 <CheckBox Content="{x:Static res:Strings.AutoUpdate}" IsChecked="{Binding AutoUpdate}"
+                          Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,12"/>
+
+                <!-- Sound Notifications -->
+                <CheckBox Content="{x:Static res:Strings.SoundNotifications}" IsChecked="{Binding SoundNotifications}"
                           Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,12"/>
 
                 <!-- Hotkeys -->

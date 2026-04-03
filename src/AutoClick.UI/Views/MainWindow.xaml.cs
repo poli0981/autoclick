@@ -13,17 +13,19 @@ public partial class MainWindow : Window
     private MainViewModel _mainVm = null!;
     private SettingsViewModel _settingsVm = null!;
     private HotkeyService? _hotkeyService;
+    private SoundService? _soundService;
 
     public MainWindow()
     {
         InitializeComponent();
     }
 
-    public void Initialize(MainViewModel mainVm, SettingsViewModel settingsVm, AboutViewModel aboutVm, HotkeyService hotkeyService)
+    public void Initialize(MainViewModel mainVm, SettingsViewModel settingsVm, AboutViewModel aboutVm, HotkeyService hotkeyService, SoundService soundService)
     {
         _mainVm = mainVm;
         _settingsVm = settingsVm;
         _hotkeyService = hotkeyService;
+        _soundService = soundService;
 
         DataContext = mainVm;
 
@@ -88,12 +90,15 @@ public partial class MainWindow : Window
                         if (g.IsRunning) g.Pause();
                         else if (g.IsPaused) g.Resume();
                     }
+                    _soundService?.PlayToggle();
                     break;
                 case "StopAll":
                     _mainVm.StopAllCommand.Execute(null);
+                    _soundService?.PlayStop();
                     break;
                 case "StartAll":
                     _mainVm.StartAllCommand.Execute(null);
+                    _soundService?.PlayStart();
                     break;
             }
         });
@@ -122,8 +127,13 @@ public partial class MainWindow : Window
             var picker = new CoordinatePickerWindow(sessionVm.Session.WindowHandle);
             if (picker.ShowDialog() == true && picker.SelectedPoint != null)
             {
-                if (!_mainVm.TrySetCoordinate(sessionVm, picker.SelectedPoint))
+                if (_mainVm.TryAddCoordinate(sessionVm, picker.SelectedPoint))
                 {
+                    _soundService?.PlaySuccess();
+                }
+                else
+                {
+                    _soundService?.PlayError();
                     MessageBox.Show(
                         Strings.CoordinateErrorMsg,
                         Strings.CoordinateErrorTitle,
@@ -134,12 +144,25 @@ public partial class MainWindow : Window
         }
     }
 
+    private void OnClearCoordinates(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is GameSessionViewModel sessionVm)
+        {
+            _mainVm.ClearCoordinates(sessionVm);
+        }
+    }
+
     private void OnRandomCoordinate(object sender, RoutedEventArgs e)
     {
         if (sender is Button btn && btn.Tag is GameSessionViewModel sessionVm)
         {
-            if (!_mainVm.TrySetRandomCoordinate(sessionVm))
+            if (_mainVm.TryAddRandomCoordinate(sessionVm))
             {
+                _soundService?.PlaySuccess();
+            }
+            else
+            {
+                _soundService?.PlayError();
                 MessageBox.Show(
                     Strings.RandomCoordinateErrorMsg,
                     Strings.RandomCoordinateErrorTitle,
