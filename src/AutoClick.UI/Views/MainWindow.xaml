@@ -61,7 +61,7 @@
                                     Style="{StaticResource DefaultButton}" Margin="0,0,8,0"/>
                             <Button Content="{x:Static res:Strings.StopAll}" Command="{Binding StopAllCommand}"
                                     Style="{StaticResource DangerButton}" Margin="0,0,8,0"/>
-                            <Button Content="Remove All" Command="{Binding RemoveAllCommand}"
+                            <Button Content="{x:Static res:Strings.RemoveAll}" Command="{Binding RemoveAllCommand}"
                                     Style="{StaticResource DangerButton}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
@@ -112,7 +112,7 @@
                                                     Click="OnPickCoordinate" Tag="{Binding}"
                                                     Style="{StaticResource DefaultButton}" Margin="0,0,4,0"
                                                     IsEnabled="{Binding IsIdle}"/>
-                                            <Button Content="Random" Click="OnRandomCoordinate" Tag="{Binding}"
+                                            <Button Content="{x:Static res:Strings.Random}" Click="OnRandomCoordinate" Tag="{Binding}"
                                                     Style="{StaticResource DefaultButton}" Margin="0,0,4,0"
                                                     IsEnabled="{Binding IsIdle}"/>
                                             <Button Content="{x:Static res:Strings.Start}" Command="{Binding StartCommand}"
@@ -127,9 +127,8 @@
                                             <Button Content="{x:Static res:Strings.Stop}" Command="{Binding StopCommand}"
                                                     Style="{StaticResource DangerButton}" Margin="0,0,4,0"
                                                     Visibility="{Binding IsRunning, Converter={StaticResource BoolToVis}}"/>
-                                            <Button Content="Reset" Command="{Binding ResetStatsCommand}"
+                                            <Button Content="{x:Static res:Strings.ResetStats}" Command="{Binding ResetStatsCommand}"
                                                     Style="{StaticResource DefaultButton}" Margin="0,0,4,0"
-                                                    ToolTip="Reset click count and stats"
                                                     Visibility="{Binding IsIdle, Converter={StaticResource BoolToVis}}"/>
                                             <Button Content="{x:Static res:Strings.RemoveGame}"
                                                     Command="{Binding DataContext.RemoveGameCommand, RelativeSource={RelativeSource AncestorType=Window}}"

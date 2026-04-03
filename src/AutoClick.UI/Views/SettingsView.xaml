@@ -50,7 +50,7 @@
                         <ColumnDefinition Width="200"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Random Min (s)" VerticalAlignment="Center"
+                    <TextBlock Text="{x:Static res:Strings.RandomMin}" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
                     <TextBox Grid.Column="1" Text="{Binding RandomMin, UpdateSourceTrigger=LostFocus}"
                              Width="80" HorizontalAlignment="Left" IsEnabled="{Binding IsSettingsEnabled}"/>
@@ -60,7 +60,7 @@
                         <ColumnDefinition Width="200"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Random Max (s)" VerticalAlignment="Center"
+                    <TextBlock Text="{x:Static res:Strings.RandomMax}" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
                     <TextBox Grid.Column="1" Text="{Binding RandomMax, UpdateSourceTrigger=LostFocus}"
                              Width="80" HorizontalAlignment="Left" IsEnabled="{Binding IsSettingsEnabled}"/>

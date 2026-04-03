@@ -57,7 +57,6 @@ public class MainViewModel : ViewModelBase
     public RelayCommand StartAllCommand { get; }
     public RelayCommand StopAllCommand { get; }
     public RelayCommand RemoveAllCommand { get; }
-    public RelayCommand FreeRamCommand { get; }
     public RelayCommand ResetAllCommand { get; }
     public RelayCommand ResetAppCommand { get; }
 
@@ -86,7 +85,6 @@ public class MainViewModel : ViewModelBase
         StartAllCommand = new RelayCommand(OnStartAll, () => CanStartAll);
         StopAllCommand = new RelayCommand(OnStopAll, () => HasAnyRunning);
         RemoveAllCommand = new RelayCommand(OnRemoveAll, () => HasNoRunning && GameSessions.Count > 0);
-        FreeRamCommand = new RelayCommand(OnFreeRam);
         ResetAllCommand = new RelayCommand(OnResetAll);
         ResetAppCommand = new RelayCommand(OnResetApp);
 
@@ -313,12 +311,6 @@ public class MainViewModel : ViewModelBase
     {
         foreach (var g in GameSessions.Where(g => g.IsRunning || g.IsPaused).ToList())
             g.Stop();
-    }
-
-    private void OnFreeRam()
-    {
-        _memoryManager.ForceCleanup();
-        _logService.Info("Manual RAM cleanup performed");
     }
 
     private void OnResetAll()

@@ -56,13 +56,15 @@
   <data name="Basic" xml:space="preserve"><value>Basic</value></data>
   <data name="Advanced" xml:space="preserve"><value>Advanced</value></data>
   <data name="MaxGames" xml:space="preserve"><value>Max Games in Queue</value></data>
-  <data name="MaxRAM" xml:space="preserve"><value>Max RAM Usage (MB)</value></data>
   <data name="ShowLogs" xml:space="preserve"><value>Show Real-time Logs</value></data>
   <data name="ExportLog" xml:space="preserve"><value>Export Log</value></data>
   <data name="ExportSettings" xml:space="preserve"><value>Export Settings</value></data>
   <data name="ImportSettings" xml:space="preserve"><value>Import Settings</value></data>
-  <data name="FreeRAM" xml:space="preserve"><value>Free RAM</value></data>
   <data name="ResetAll" xml:space="preserve"><value>Reset All</value></data>
+  <data name="RemoveAll" xml:space="preserve"><value>Remove All</value></data>
+  <data name="RandomMin" xml:space="preserve"><value>Random Min (s)</value></data>
+  <data name="RandomMax" xml:space="preserve"><value>Random Max (s)</value></data>
+  <data name="ResetStats" xml:space="preserve"><value>Reset</value></data>
   <data name="Language" xml:space="preserve"><value>Language</value></data>
   <data name="Theme" xml:space="preserve"><value>Theme</value></data>
   <data name="Dark" xml:space="preserve"><value>Dark</value></data>

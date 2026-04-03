@@ -26,13 +26,15 @@ public static class Strings
     public static string Basic => GetString("Basic", "Basic");
     public static string Advanced => GetString("Advanced", "Advanced");
     public static string MaxGames => GetString("MaxGames", "Max Games in Queue");
-    public static string MaxRAM => GetString("MaxRAM", "Max RAM Usage (MB)");
     public static string ShowLogs => GetString("ShowLogs", "Show Real-time Logs");
     public static string ExportLog => GetString("ExportLog", "Export Log");
     public static string ExportSettings => GetString("ExportSettings", "Export Settings");
     public static string ImportSettings => GetString("ImportSettings", "Import Settings");
-    public static string FreeRAM => GetString("FreeRAM", "Free RAM");
     public static string ResetAll => GetString("ResetAll", "Reset All");
+    public static string RemoveAll => GetString("RemoveAll", "Remove All");
+    public static string RandomMin => GetString("RandomMin", "Random Min (s)");
+    public static string RandomMax => GetString("RandomMax", "Random Max (s)");
+    public static string ResetStats => GetString("ResetStats", "Reset");
     public static string Language => GetString("Language", "Language");
     public static string Theme => GetString("Theme", "Theme");
     public static string Dark => GetString("Dark", "Dark");

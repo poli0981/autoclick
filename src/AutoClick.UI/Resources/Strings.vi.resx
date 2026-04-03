@@ -32,97 +32,99 @@
   <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
 
   <data name="AppTitle" xml:space="preserve"><value>AutoClick</value></data>
-  <data name="Main" xml:space="preserve"><value>Chinh</value></data>
-  <data name="Settings" xml:space="preserve"><value>Cai dat</value></data>
-  <data name="About" xml:space="preserve"><value>Gioi thieu</value></data>
-  <data name="Start" xml:space="preserve"><value>Bat dau</value></data>
-  <data name="Pause" xml:space="preserve"><value>Tam dung</value></data>
-  <data name="Resume" xml:space="preserve"><value>Tiep tuc</value></data>
-  <data name="Stop" xml:space="preserve"><value>Dung</value></data>
-  <data name="AddGame" xml:space="preserve"><value>Them game</value></data>
-  <data name="RemoveGame" xml:space="preserve"><value>Xoa</value></data>
-  <data name="SelectCoordinate" xml:space="preserve"><value>Chon toa do</value></data>
-  <data name="GamesRunning" xml:space="preserve"><value>Game dang chay</value></data>
-  <data name="ClickMode" xml:space="preserve"><value>Che do click</value></data>
-  <data name="Random" xml:space="preserve"><value>Ngau nhien</value></data>
-  <data name="Fixed" xml:space="preserve"><value>Co dinh</value></data>
-  <data name="Interval" xml:space="preserve"><value>Nhip (giay)</value></data>
-  <data name="ClickCount" xml:space="preserve"><value>So lan click</value></data>
-  <data name="Status" xml:space="preserve"><value>Trang thai</value></data>
-  <data name="Path" xml:space="preserve"><value>Duong dan</value></data>
-  <data name="Coordinate" xml:space="preserve"><value>Toa do</value></data>
-  <data name="CurrentInterval" xml:space="preserve"><value>Nhip hien tai</value></data>
-  <data name="Basic" xml:space="preserve"><value>Co ban</value></data>
-  <data name="Advanced" xml:space="preserve"><value>Nang cao</value></data>
-  <data name="MaxGames" xml:space="preserve"><value>So game toi da trong hang cho</value></data>
-  <data name="MaxRAM" xml:space="preserve"><value>RAM toi da (MB)</value></data>
-  <data name="ShowLogs" xml:space="preserve"><value>Hien thi log real-time</value></data>
-  <data name="ExportLog" xml:space="preserve"><value>Xuat log</value></data>
-  <data name="ExportSettings" xml:space="preserve"><value>Xuat cai dat</value></data>
-  <data name="ImportSettings" xml:space="preserve"><value>Nhap cai dat</value></data>
-  <data name="FreeRAM" xml:space="preserve"><value>Giai phong RAM</value></data>
-  <data name="ResetAll" xml:space="preserve"><value>Reset tat ca</value></data>
-  <data name="Language" xml:space="preserve"><value>Ngon ngu</value></data>
-  <data name="Theme" xml:space="preserve"><value>Giao dien</value></data>
-  <data name="Dark" xml:space="preserve"><value>Toi</value></data>
-  <data name="Light" xml:space="preserve"><value>Sang</value></data>
-  <data name="Auto" xml:space="preserve"><value>Tu dong</value></data>
-  <data name="Hotkeys" xml:space="preserve"><value>Phim tat</value></data>
-  <data name="Idle" xml:space="preserve"><value>Cho</value></data>
-  <data name="Running" xml:space="preserve"><value>Dang chay</value></data>
-  <data name="Paused" xml:space="preserve"><value>Tam dung</value></data>
-  <data name="Stopped" xml:space="preserve"><value>Da dung</value></data>
-  <data name="Logs" xml:space="preserve"><value>Nhat ky</value></data>
-  <data name="NoGames" xml:space="preserve"><value>Chua co game nao. Bam "Them game" de bat dau.</value></data>
-  <data name="ConfirmReset" xml:space="preserve"><value>Thao tac nay se dung tat ca game va reset ung dung. Tiep tuc?</value></data>
-  <data name="StartAll" xml:space="preserve"><value>Bat dau tat ca</value></data>
-  <data name="StopAll" xml:space="preserve"><value>Dung tat ca</value></data>
-  <data name="PauseResume" xml:space="preserve"><value>Tam dung/Tiep tuc</value></data>
-  <data name="ExitBehavior" xml:space="preserve"><value>Khi thoat</value></data>
-  <data name="MinimizeToTray" xml:space="preserve"><value>Thu nho vao khay</value></data>
-  <data name="StopAndExit" xml:space="preserve"><value>Dung tat ca va thoat</value></data>
-  <data name="ForceExit" xml:space="preserve"><value>Thoat han</value></data>
-  <data name="ConfirmExitTitle" xml:space="preserve"><value>Xac nhan thoat</value></data>
-  <data name="ConfirmExitMsg" xml:space="preserve"><value>Co tac vu dang chay. Dung tat ca va thoat?</value></data>
-  <data name="LanguageChangeTitle" xml:space="preserve"><value>Doi ngon ngu</value></data>
-  <data name="LanguageChangeMsg" xml:space="preserve"><value>Ung dung can khoi dong lai de ap dung ngon ngu moi. Khoi dong lai ngay?</value></data>
-  <data name="CoordinateErrorTitle" xml:space="preserve"><value>Loi toa do</value></data>
-  <data name="CoordinateErrorMsg" xml:space="preserve"><value>Toa do khong hop le hoac da duoc su dung. Vui long thu lai.</value></data>
-  <data name="RandomCoordinateErrorTitle" xml:space="preserve"><value>Toa do ngau nhien</value></data>
-  <data name="RandomCoordinateErrorMsg" xml:space="preserve"><value>Khong the tao toa do ngau nhien hop le. Cua so game co the qua nho hoac tat ca toa do da duoc su dung.</value></data>
-  <data name="ConfirmResetApp" xml:space="preserve"><value>Dat lai ung dung ve mac dinh? Tat ca cai dat se duoc khoi phuc ve gia tri ban dau.</value></data>
-  <data name="OpenSettingsFile" xml:space="preserve"><value>Mo file cai dat</value></data>
-  <data name="SaveSettings" xml:space="preserve"><value>Luu cai dat</value></data>
-  <data name="Documents" xml:space="preserve"><value>Tai lieu</value></data>
-  <data name="PrivacyPolicy" xml:space="preserve"><value>Chinh sach bao mat</value></data>
-  <data name="Disclaimer" xml:space="preserve"><value>Mien tru trach nhiem</value></data>
-  <data name="Acknowledgements" xml:space="preserve"><value>Ghi nhan va thu vien ben thu ba</value></data>
-  <data name="TermsOfService" xml:space="preserve"><value>Dieu khoan su dung</value></data>
-  <data name="EULA" xml:space="preserve"><value>Thoa thuan nguoi dung cuoi</value></data>
-  <data name="SecurityPolicy" xml:space="preserve"><value>Chinh sach bao mat ung dung</value></data>
-  <data name="ViewOnGitHub" xml:space="preserve"><value>Xem tren GitHub</value></data>
-  <data name="AntiCheatWarning" xml:space="preserve"><value>Than trong khi su dung voi game co anti-cheat. Anti-cheat kernel co the dan den khoa tai khoan. Nha phat trien khong chiu trach nhiem.</value></data>
-  <data name="AIDisclosure" xml:space="preserve"><value>Phan mem nay duoc xay dung voi su ho tro cua AI. Ban dich trong ung dung do AI tao va co the khong hoan toan chinh xac.</value></data>
-  <data name="Update" xml:space="preserve"><value>Cap nhat</value></data>
-  <data name="AutoUpdate" xml:space="preserve"><value>Tu dong cap nhat khi khoi dong</value></data>
-  <data name="CheckForUpdate" xml:space="preserve"><value>Kiem tra cap nhat</value></data>
-  <data name="DownloadUpdate" xml:space="preserve"><value>Tai cap nhat</value></data>
-  <data name="ApplyAndRestart" xml:space="preserve"><value>Ap dung va khoi dong lai</value></data>
-  <data name="UpdateReady" xml:space="preserve"><value>Nhan 'Kiem tra cap nhat' de bat dau.</value></data>
-  <data name="UpdateDevMode" xml:space="preserve"><value>Dang chay o che do phat trien. Khong the cap nhat.</value></data>
-  <data name="UpdateChecking" xml:space="preserve"><value>Dang kiem tra cap nhat...</value></data>
-  <data name="UpdateUpToDate" xml:space="preserve"><value>Ban dang su dung phien ban moi nhat.</value></data>
-  <data name="UpdateFoundMsg" xml:space="preserve"><value>Co ban cap nhat: {0} → {1}</value></data>
-  <data name="UpdateDownloading" xml:space="preserve"><value>Dang tai cap nhat...</value></data>
-  <data name="UpdateDownloadComplete" xml:space="preserve"><value>Tai xong. Nhan 'Ap dung va khoi dong lai' de cap nhat.</value></data>
-  <data name="UpdateApplying" xml:space="preserve"><value>Dang ap dung cap nhat va khoi dong lai...</value></data>
-  <data name="UpdateAvailableTitle" xml:space="preserve"><value>Co ban cap nhat</value></data>
-  <data name="UpdateAutoDownloadedMsg" xml:space="preserve"><value>Phien ban {0} da tai xong. Khoi dong lai ngay?</value></data>
-  <data name="UpdateNoRelease" xml:space="preserve"><value>Khong tim thay ban phat hanh tren GitHub.</value></data>
-  <data name="UpdateRateLimited" xml:space="preserve"><value>Vuot gioi han API GitHub. Vui long doi vai phut.</value></data>
-  <data name="UpdateForbidden" xml:space="preserve"><value>Truy cap bi tu choi. Kiem tra quyen truy cap.</value></data>
-  <data name="UpdateServerError" xml:space="preserve"><value>Loi may chu GitHub. Vui long thu lai sau.</value></data>
-  <data name="UpdateNetworkError" xml:space="preserve"><value>Loi mang. Kiem tra ket noi internet.</value></data>
-  <data name="UpdateChecksumFailed" xml:space="preserve"><value>Xac minh tai xuong that bai. Vui long thu lai.</value></data>
-  <data name="UpdateUnknownError" xml:space="preserve"><value>Loi khong xac dinh khi cap nhat.</value></data>
+  <data name="Main" xml:space="preserve"><value>Chính</value></data>
+  <data name="Settings" xml:space="preserve"><value>Cài đặt</value></data>
+  <data name="About" xml:space="preserve"><value>Giới thiệu</value></data>
+  <data name="Start" xml:space="preserve"><value>Bắt đầu</value></data>
+  <data name="Pause" xml:space="preserve"><value>Tạm dừng</value></data>
+  <data name="Resume" xml:space="preserve"><value>Tiếp tục</value></data>
+  <data name="Stop" xml:space="preserve"><value>Dừng</value></data>
+  <data name="AddGame" xml:space="preserve"><value>Thêm game</value></data>
+  <data name="RemoveGame" xml:space="preserve"><value>Xóa</value></data>
+  <data name="SelectCoordinate" xml:space="preserve"><value>Chọn tọa độ</value></data>
+  <data name="GamesRunning" xml:space="preserve"><value>Game đang chạy</value></data>
+  <data name="ClickMode" xml:space="preserve"><value>Chế độ click</value></data>
+  <data name="Random" xml:space="preserve"><value>Ngẫu nhiên</value></data>
+  <data name="Fixed" xml:space="preserve"><value>Cố định</value></data>
+  <data name="Interval" xml:space="preserve"><value>Nhịp (giây)</value></data>
+  <data name="ClickCount" xml:space="preserve"><value>Số lần click</value></data>
+  <data name="Status" xml:space="preserve"><value>Trạng thái</value></data>
+  <data name="Path" xml:space="preserve"><value>Đường dẫn</value></data>
+  <data name="Coordinate" xml:space="preserve"><value>Tọa độ</value></data>
+  <data name="CurrentInterval" xml:space="preserve"><value>Nhịp hiện tại</value></data>
+  <data name="Basic" xml:space="preserve"><value>Cơ bản</value></data>
+  <data name="Advanced" xml:space="preserve"><value>Nâng cao</value></data>
+  <data name="MaxGames" xml:space="preserve"><value>Số game tối đa trong hàng chờ</value></data>
+  <data name="ShowLogs" xml:space="preserve"><value>Hiển thị log real-time</value></data>
+  <data name="ExportLog" xml:space="preserve"><value>Xuất log</value></data>
+  <data name="ExportSettings" xml:space="preserve"><value>Xuất cài đặt</value></data>
+  <data name="ImportSettings" xml:space="preserve"><value>Nhập cài đặt</value></data>
+  <data name="ResetAll" xml:space="preserve"><value>Reset tất cả</value></data>
+  <data name="RemoveAll" xml:space="preserve"><value>Xóa tất cả</value></data>
+  <data name="RandomMin" xml:space="preserve"><value>Ngẫu nhiên tối thiểu (giây)</value></data>
+  <data name="RandomMax" xml:space="preserve"><value>Ngẫu nhiên tối đa (giây)</value></data>
+  <data name="ResetStats" xml:space="preserve"><value>Đặt lại</value></data>
+  <data name="Language" xml:space="preserve"><value>Ngôn ngữ</value></data>
+  <data name="Theme" xml:space="preserve"><value>Giao diện</value></data>
+  <data name="Dark" xml:space="preserve"><value>Tối</value></data>
+  <data name="Light" xml:space="preserve"><value>Sáng</value></data>
+  <data name="Auto" xml:space="preserve"><value>Tự động</value></data>
+  <data name="Hotkeys" xml:space="preserve"><value>Phím tắt</value></data>
+  <data name="Idle" xml:space="preserve"><value>Chờ</value></data>
+  <data name="Running" xml:space="preserve"><value>Đang chạy</value></data>
+  <data name="Paused" xml:space="preserve"><value>Tạm dừng</value></data>
+  <data name="Stopped" xml:space="preserve"><value>Đã dừng</value></data>
+  <data name="Logs" xml:space="preserve"><value>Nhật ký</value></data>
+  <data name="NoGames" xml:space="preserve"><value>Chưa có game nào. Bấm "Thêm game" để bắt đầu.</value></data>
+  <data name="ConfirmReset" xml:space="preserve"><value>Thao tác này sẽ dừng tất cả game và reset ứng dụng. Tiếp tục?</value></data>
+  <data name="StartAll" xml:space="preserve"><value>Bắt đầu tất cả</value></data>
+  <data name="StopAll" xml:space="preserve"><value>Dừng tất cả</value></data>
+  <data name="PauseResume" xml:space="preserve"><value>Tạm dừng/Tiếp tục</value></data>
+  <data name="ExitBehavior" xml:space="preserve"><value>Khi thoát</value></data>
+  <data name="MinimizeToTray" xml:space="preserve"><value>Thu nhỏ vào khay</value></data>
+  <data name="StopAndExit" xml:space="preserve"><value>Dừng tất cả và thoát</value></data>
+  <data name="ForceExit" xml:space="preserve"><value>Thoát hẳn</value></data>
+  <data name="ConfirmExitTitle" xml:space="preserve"><value>Xác nhận thoát</value></data>
+  <data name="ConfirmExitMsg" xml:space="preserve"><value>Có tác vụ đang chạy. Dừng tất cả và thoát?</value></data>
+  <data name="LanguageChangeTitle" xml:space="preserve"><value>Đổi ngôn ngữ</value></data>
+  <data name="LanguageChangeMsg" xml:space="preserve"><value>Ứng dụng cần khởi động lại để áp dụng ngôn ngữ mới. Khởi động lại ngay?</value></data>
+  <data name="CoordinateErrorTitle" xml:space="preserve"><value>Lỗi tọa độ</value></data>
+  <data name="CoordinateErrorMsg" xml:space="preserve"><value>Tọa độ không hợp lệ hoặc đã được sử dụng. Vui lòng thử lại.</value></data>
+  <data name="RandomCoordinateErrorTitle" xml:space="preserve"><value>Tọa độ ngẫu nhiên</value></data>
+  <data name="RandomCoordinateErrorMsg" xml:space="preserve"><value>Không thể tạo tọa độ ngẫu nhiên hợp lệ. Cửa sổ game có thể quá nhỏ hoặc tất cả tọa độ đã được sử dụng.</value></data>
+  <data name="ConfirmResetApp" xml:space="preserve"><value>Đặt lại ứng dụng về mặc định? Tất cả cài đặt sẽ được khôi phục về giá trị ban đầu.</value></data>
+  <data name="OpenSettingsFile" xml:space="preserve"><value>Mở file cài đặt</value></data>
+  <data name="SaveSettings" xml:space="preserve"><value>Lưu cài đặt</value></data>
+  <data name="Documents" xml:space="preserve"><value>Tài liệu</value></data>
+  <data name="PrivacyPolicy" xml:space="preserve"><value>Chính sách bảo mật</value></data>
+  <data name="Disclaimer" xml:space="preserve"><value>Miễn trừ trách nhiệm</value></data>
+  <data name="Acknowledgements" xml:space="preserve"><value>Ghi nhận và thư viện bên thứ ba</value></data>
+  <data name="TermsOfService" xml:space="preserve"><value>Điều khoản sử dụng</value></data>
+  <data name="EULA" xml:space="preserve"><value>Thỏa thuận người dùng cuối</value></data>
+  <data name="SecurityPolicy" xml:space="preserve"><value>Chính sách bảo mật ứng dụng</value></data>
+  <data name="ViewOnGitHub" xml:space="preserve"><value>Xem trên GitHub</value></data>
+  <data name="AntiCheatWarning" xml:space="preserve"><value>Thận trọng khi sử dụng với game có anti-cheat. Anti-cheat kernel có thể dẫn đến khóa tài khoản. Nhà phát triển không chịu trách nhiệm.</value></data>
+  <data name="AIDisclosure" xml:space="preserve"><value>Phần mềm này được xây dựng với sự hỗ trợ của AI. Bản dịch trong ứng dụng do AI tạo và có thể không hoàn toàn chính xác.</value></data>
+  <data name="Update" xml:space="preserve"><value>Cập nhật</value></data>
+  <data name="AutoUpdate" xml:space="preserve"><value>Tự động cập nhật khi khởi động</value></data>
+  <data name="CheckForUpdate" xml:space="preserve"><value>Kiểm tra cập nhật</value></data>
+  <data name="DownloadUpdate" xml:space="preserve"><value>Tải cập nhật</value></data>
+  <data name="ApplyAndRestart" xml:space="preserve"><value>Áp dụng và khởi động lại</value></data>
+  <data name="UpdateReady" xml:space="preserve"><value>Nhấn 'Kiểm tra cập nhật' để bắt đầu.</value></data>
+  <data name="UpdateDevMode" xml:space="preserve"><value>Đang chạy ở chế độ phát triển. Không thể cập nhật.</value></data>
+  <data name="UpdateChecking" xml:space="preserve"><value>Đang kiểm tra cập nhật...</value></data>
+  <data name="UpdateUpToDate" xml:space="preserve"><value>Bạn đang sử dụng phiên bản mới nhất.</value></data>
+  <data name="UpdateFoundMsg" xml:space="preserve"><value>Có bản cập nhật: {0} → {1}</value></data>
+  <data name="UpdateDownloading" xml:space="preserve"><value>Đang tải cập nhật...</value></data>
+  <data name="UpdateDownloadComplete" xml:space="preserve"><value>Tải xong. Nhấn 'Áp dụng và khởi động lại' để cập nhật.</value></data>
+  <data name="UpdateApplying" xml:space="preserve"><value>Đang áp dụng cập nhật và khởi động lại...</value></data>
+  <data name="UpdateAvailableTitle" xml:space="preserve"><value>Có bản cập nhật</value></data>
+  <data name="UpdateAutoDownloadedMsg" xml:space="preserve"><value>Phiên bản {0} đã tải xong. Khởi động lại ngay?</value></data>
+  <data name="UpdateNoRelease" xml:space="preserve"><value>Không tìm thấy bản phát hành trên GitHub.</value></data>
+  <data name="UpdateRateLimited" xml:space="preserve"><value>Vượt giới hạn API GitHub. Vui lòng đợi vài phút.</value></data>
+  <data name="UpdateForbidden" xml:space="preserve"><value>Truy cập bị từ chối. Kiểm tra quyền truy cập.</value></data>
+  <data name="UpdateServerError" xml:space="preserve"><value>Lỗi máy chủ GitHub. Vui lòng thử lại sau.</value></data>
+  <data name="UpdateNetworkError" xml:space="preserve"><value>Lỗi mạng. Kiểm tra kết nối internet.</value></data>
+  <data name="UpdateChecksumFailed" xml:space="preserve"><value>Xác minh tải xuống thất bại. Vui lòng thử lại.</value></data>
+  <data name="UpdateUnknownError" xml:space="preserve"><value>Lỗi không xác định khi cập nhật.</value></data>
 </root>
