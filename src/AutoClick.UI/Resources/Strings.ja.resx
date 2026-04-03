@@ -73,6 +73,7 @@
   <data name="Uptime" xml:space="preserve"><value>稼働時間</value></data>
   <data name="ClicksPerMin" xml:space="preserve"><value>クリック/分</value></data>
   <data name="PeakCPM" xml:space="preserve"><value>ピーク</value></data>
+  <data name="SoundNotifications" xml:space="preserve"><value>サウンド通知</value></data>
   <data name="Language" xml:space="preserve"><value>言語</value></data>
   <data name="Theme" xml:space="preserve"><value>テーマ</value></data>
   <data name="Dark" xml:space="preserve"><value>ダーク</value></data>

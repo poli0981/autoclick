@@ -170,6 +170,10 @@
                 <CheckBox Content="{x:Static res:Strings.AutoUpdate}" IsChecked="{Binding AutoUpdate}"
                           Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,12"/>
 
+                <!-- Sound Notifications -->
+                <CheckBox Content="{x:Static res:Strings.SoundNotifications}" IsChecked="{Binding SoundNotifications}"
+                          Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,12"/>
+
                 <!-- Hotkeys -->
                 <TextBlock Text="{x:Static res:Strings.Hotkeys}" FontWeight="SemiBold"
                            Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,4,0,8"/>

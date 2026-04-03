@@ -73,6 +73,7 @@
   <data name="Uptime" xml:space="preserve"><value>运行时间</value></data>
   <data name="ClicksPerMin" xml:space="preserve"><value>点击/分钟</value></data>
   <data name="PeakCPM" xml:space="preserve"><value>峰值</value></data>
+  <data name="SoundNotifications" xml:space="preserve"><value>声音通知</value></data>
   <data name="Language" xml:space="preserve"><value>语言</value></data>
   <data name="Theme" xml:space="preserve"><value>主题</value></data>
   <data name="Dark" xml:space="preserve"><value>深色</value></data>

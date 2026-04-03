@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [1.1.0] - 2026-04-04
+
+### Added
+- **Multi-point click sequence**: Add multiple coordinates per game, executed in order each cycle (`#1 → #2 → #3 → [interval] → repeat`). "Add Point" button replaces old "Select Coordinate"; "Clear Points" to reset. Click count now tracks individual clicks, not cycles.
+- **Configurable sequence delay**: User-editable "Delay between points" (0-10000ms) input on each game card, visible when >1 point exists.
+- **WM_MOUSEMOVE for game dialog compatibility**: InputSimulator now sends mouse-move + delay before clicks, fixing issues where game choice/dialog buttons ignored PostMessage clicks.
+- **Japanese, Korean, Chinese (Simplified) translations**: 3 new `.resx` files (~100 keys each). Language selector: EN / Tiếng Việt / 日本語 / 한국어 / 中文. All AI-generated.
+- **Session statistics panel**: Live stats bar below toolbar showing Total Clicks, Uptime (hh:mm:ss), Clicks/min (average), Peak c/m (realtime interval-based). Resets on Reset App.
+- **Sound notifications**: System sounds for Start (Asterisk), Stop (Hand), Pause/Resume (Question), coordinate pick success (Beep), errors (Exclamation). Toggle in Settings > Advanced > "Sound Notifications". Uses `System.Media.SystemSounds` — no external files.
+
+### Fixed
+- Peak clicks/min no longer shows absurd values on first tick (was dividing by near-zero elapsed time)
+
+---
+
 ## [1.0.3] - 2026-04-03
 
 ### Fixed

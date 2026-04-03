@@ -255,7 +255,7 @@
         <Border Grid.Row="2" Background="{DynamicResource SurfaceBrush}"
                 BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" Padding="16,6">
             <TextBlock Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11">
-                <Run Text="AutoClick v1.0.3"/>
+                <Run Text="AutoClick v1.1.0"/>
                 <Run Text=" | "/>
                 <Run Text="{Binding GameSessions.Count, Mode=OneWay, StringFormat='{}{0} game(s)'}"/>
             </TextBlock>

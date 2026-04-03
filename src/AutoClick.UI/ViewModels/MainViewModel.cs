@@ -430,6 +430,7 @@ public class MainViewModel : ViewModelBase
         _settings.Language = defaults.Language;
         _settings.ExitBehavior = defaults.ExitBehavior;
         _settings.AutoUpdate = defaults.AutoUpdate;
+        _settings.SoundNotifications = defaults.SoundNotifications;
         _settings.Hotkeys = new HotkeySettings();
         _settingsService.Save(_settings);
 
