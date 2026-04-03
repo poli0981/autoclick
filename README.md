@@ -15,7 +15,7 @@
 
 ---
 
-> **Upgrade Notice:** Users on v1.0.0 or v1.0.1 should upgrade to **v1.0.2+**. Earlier versions contain an incorrect update URL that prevents auto-update from working. v1.0.2 fixes this automatically on first launch.
+> **Do NOT use v1.0.0 ~ v1.0.2.** These versions contain a broken update URL that cannot be fixed through auto-update or reinstall. Please download **v1.0.3 or later** manually from the [Releases page](https://github.com/poli0981/autoclick/releases). Only v1.0.3+ has the correct hardcoded update endpoint.
 
 ## About
 

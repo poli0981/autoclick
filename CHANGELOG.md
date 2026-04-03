@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [1.0.3] - 2026-04-03
+
+### Fixed
+- **Critical:** Update manager still pointed to wrong repository (`autoclick/autoclick`) on installed builds. Root cause: the repo URL was stored in `AppSettings.GitHubRepo` and read from `settings.json` at runtime — stale values from older installs persisted even after reinstall. Additionally, builds prior to v1.0.3 may have shipped with old cached binaries due to file-lock issues during compilation.
+- Repo URL is now a **compile-time constant** in `UpdateService` (`https://github.com/poli0981/autoclick`). The `GitHubRepo` property has been completely removed from `AppSettings` and `settings.json`. No runtime value can override it.
+- Removed the v1.0.2 migration code (no longer necessary since the URL is hardcoded).
+
+### Important
+
+> **Do NOT download v1.0.0, v1.0.1, or v1.0.2.** These versions contain a broken update URL that cannot be fixed through auto-update. Only v1.0.3 and later are guaranteed to have the correct update endpoint. If you are on an older version, please download v1.0.3+ manually from the [Releases page](https://github.com/poli0981/autoclick/releases).
+
+---
+
 ## [1.0.2] - 2026-04-03
 
 ### Fixed
