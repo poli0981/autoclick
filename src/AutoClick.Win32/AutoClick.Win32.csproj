@@ -8,6 +8,15 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Product>AutoClick</Product>
+    <AssemblyTitle>AutoClick.Win32</AssemblyTitle>
+    <Description>Win32 P/Invoke wrappers for AutoClick (PostMessage, EnumWindows, Hotkeys).</Description>
+    <Company>poli0981</Company>
+    <Authors>poli0981</Authors>
+    <Copyright>Copyright (c) 2026 poli0981. Licensed under GPL-3.0.</Copyright>
+    <Version>1.0.3</Version>
+    <AssemblyVersion>1.0.3.0</AssemblyVersion>
+    <FileVersion>1.0.3.0</FileVersion>
   </PropertyGroup>
 
 </Project>

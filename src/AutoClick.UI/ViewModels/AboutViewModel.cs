@@ -9,7 +9,15 @@ public class AboutViewModel : ViewModelBase
     private const string RepoBase = "https://github.com/poli0981/autoclick";
 
     public string AppName => "AutoClick";
-    public string Version => Assembly.GetExecutingAssembly()?.GetName().Version?.ToString() ?? "1.0.0";
+    public string Version =>
+        Assembly.GetExecutingAssembly()
+            ?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion
+        ?? Assembly.GetExecutingAssembly()?.GetName().Version?.ToString()
+        ?? "dev";
+    public string Copyright =>
+        Assembly.GetExecutingAssembly()
+            ?.GetCustomAttribute<AssemblyCopyrightAttribute>()?.Copyright
+        ?? "Copyright (c) 2026 poli0981";
     public string License => "GPL-3.0 License";
     public string Developer => "poli0981";
     public string Description => "Auto-click utility for games. Helps automate repetitive clicking without modifying game source code.";

@@ -158,10 +158,20 @@ public partial class App : Application
 
     private void SetupTrayIcon(Window mainWindow)
     {
+        // Use the embedded app icon for tray; fall back to system default
+        System.Drawing.Icon? appIcon = null;
+        try
+        {
+            var exePath = Environment.ProcessPath;
+            if (exePath != null)
+                appIcon = System.Drawing.Icon.ExtractAssociatedIcon(exePath);
+        }
+        catch { /* ignore */ }
+
         _trayIcon = new NotifyIcon
         {
-            Text = "AutoClick",
-            Icon = SystemIcons.Application,
+            Text = "AutoClick — Auto-click utility for games",
+            Icon = appIcon ?? SystemIcons.Application,
             Visible = true
         };
 

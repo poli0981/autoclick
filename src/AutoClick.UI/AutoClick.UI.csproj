@@ -20,6 +20,29 @@
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+
+    <!-- Assembly / NuGet metadata -->
+    <AssemblyName>AutoClick.UI</AssemblyName>
+    <RootNamespace>AutoClick.UI</RootNamespace>
+    <Product>AutoClick</Product>
+    <AssemblyTitle>AutoClick</AssemblyTitle>
+    <Description>Auto-click utility for games. Background clicking via Win32 PostMessage API.</Description>
+    <Company>poli0981</Company>
+    <Authors>poli0981</Authors>
+    <Copyright>Copyright (c) 2026 poli0981. Licensed under GPL-3.0.</Copyright>
+    <Version>1.0.3</Version>
+    <AssemblyVersion>1.0.3.0</AssemblyVersion>
+    <FileVersion>1.0.3.0</FileVersion>
+    <InformationalVersion>1.0.3</InformationalVersion>
+    <NeutralLanguage>en</NeutralLanguage>
+    <RepositoryUrl>https://github.com/poli0981/autoclick</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/poli0981/autoclick</PackageProjectUrl>
+
+    <!-- Win32 file properties (shown in File Explorer tooltip & Properties > Details) -->
+    <Win32Resource />
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
   </PropertyGroup>
 
 
