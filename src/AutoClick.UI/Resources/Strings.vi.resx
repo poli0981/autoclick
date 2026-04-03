@@ -67,6 +67,7 @@
   <data name="AddPoint" xml:space="preserve"><value>Thêm điểm</value></data>
   <data name="ClearPoints" xml:space="preserve"><value>Xóa tất cả điểm</value></data>
   <data name="Points" xml:space="preserve"><value>điểm</value></data>
+  <data name="SequenceDelay" xml:space="preserve"><value>Độ trễ giữa các điểm</value></data>
   <data name="Language" xml:space="preserve"><value>Ngôn ngữ</value></data>
   <data name="Theme" xml:space="preserve"><value>Giao diện</value></data>
   <data name="Dark" xml:space="preserve"><value>Tối</value></data>

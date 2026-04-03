@@ -60,6 +60,25 @@ public class GameSessionViewModel : ViewModelBase
     public bool IsPaused => _session.State == SessionState.Paused;
     public bool HasCoordinate => _session.ClickPoints.Count > 0;
     public int PointCount => _session.ClickPoints.Count;
+    public bool HasMultiplePoints => _session.ClickPoints.Count > 1;
+
+    /// <summary>
+    /// Delay in ms between each click point in the sequence.
+    /// Applied to all points uniformly. Editable while idle.
+    /// </summary>
+    private int _sequenceDelayMs = 200;
+    public int SequenceDelayMs
+    {
+        get => _sequenceDelayMs;
+        set
+        {
+            var clamped = Math.Clamp(value, 0, 10000);
+            SetProperty(ref _sequenceDelayMs, clamped);
+            // Apply to all points
+            foreach (var pt in _session.ClickPoints)
+                pt.DelayAfterMs = clamped;
+        }
+    }
 
     public RelayCommand StartCommand { get; }
     public RelayCommand PauseCommand { get; }
@@ -136,6 +155,7 @@ public class GameSessionViewModel : ViewModelBase
             : "-";
         OnPropertyChanged(nameof(HasCoordinate));
         OnPropertyChanged(nameof(PointCount));
+        OnPropertyChanged(nameof(HasMultiplePoints));
     }
 
     private void RefreshUI()
