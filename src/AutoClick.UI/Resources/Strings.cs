@@ -117,6 +117,11 @@ public static class Strings
     public static string UpdateChecksumFailed => GetString("UpdateChecksumFailed", "Download verification failed. Please try again.");
     public static string UpdateUnknownError => GetString("UpdateUnknownError", "An unknown error occurred during update.");
 
+    // Game exit notification
+    public static string GameExitNotification => GetString("GameExitNotification", "Game Exit Notification");
+    public static string GameExitNotificationTitle => GetString("GameExitNotificationTitle", "Game Exited");
+    public static string GameExitNotificationMessage => GetString("GameExitNotificationMessage", "{0} has exited. Total clicks: {1}");
+
     private static readonly System.Resources.ResourceManager ResourceManager =
         new("AutoClick.UI.Resources.Strings", typeof(Strings).Assembly);
 

@@ -137,4 +137,7 @@
   <data name="UpdateNetworkError" xml:space="preserve"><value>Lỗi mạng. Kiểm tra kết nối internet.</value></data>
   <data name="UpdateChecksumFailed" xml:space="preserve"><value>Xác minh tải xuống thất bại. Vui lòng thử lại.</value></data>
   <data name="UpdateUnknownError" xml:space="preserve"><value>Lỗi không xác định khi cập nhật.</value></data>
+  <data name="GameExitNotification" xml:space="preserve"><value>Thông báo game thoát</value></data>
+  <data name="GameExitNotificationTitle" xml:space="preserve"><value>Game đã thoát</value></data>
+  <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} đã thoát. Tổng click: {1}</value></data>
 </root>

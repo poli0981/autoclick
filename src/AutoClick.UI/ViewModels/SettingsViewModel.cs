@@ -65,6 +65,12 @@ public class SettingsViewModel : ViewModelBase
         set { _settings.SoundNotifications = value; OnPropertyChanged(); }
     }
 
+    public bool ShowGameExitNotification
+    {
+        get => _settings.ShowGameExitNotification;
+        set { _settings.ShowGameExitNotification = value; OnPropertyChanged(); }
+    }
+
     /// <summary>
     /// Toggle: true = Dark, false = Light.
     /// </summary>
@@ -178,6 +184,7 @@ public class SettingsViewModel : ViewModelBase
         OnPropertyChanged(nameof(ShowRealTimeLogs));
         OnPropertyChanged(nameof(AutoUpdate));
         OnPropertyChanged(nameof(SoundNotifications));
+        OnPropertyChanged(nameof(ShowGameExitNotification));
         OnPropertyChanged(nameof(DarkMode));
         OnPropertyChanged(nameof(Language));
         OnPropertyChanged(nameof(SelectedExitBehaviorIndex));

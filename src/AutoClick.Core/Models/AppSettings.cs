@@ -15,6 +15,7 @@ public class AppSettings
     public ExitBehavior ExitBehavior { get; set; } = ExitBehavior.MinimizeToTray;
     public bool AutoUpdate { get; set; } = true;
     public bool SoundNotifications { get; set; } = true;
+    public bool ShowGameExitNotification { get; set; } = true;
     public HotkeySettings Hotkeys { get; set; } = new();
 }
 

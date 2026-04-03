@@ -308,6 +308,15 @@ public class MainViewModel : ViewModelBase
             if (vm.IsRunning || vm.IsPaused)
                 vm.Stop();
             _logService.Info($"Game \"{vm.ProcessName}\" (PID: {vm.Session.ProcessId}) has exited. Total clicks: {vm.Session.ClickCount}. Auto-removed.");
+
+            if (_settings.ShowGameExitNotification)
+            {
+                App.ShowBalloonTip(
+                    Strings.GameExitNotificationTitle,
+                    string.Format(Strings.GameExitNotificationMessage, vm.ProcessName, vm.Session.ClickCount),
+                    System.Windows.Forms.ToolTipIcon.Warning);
+            }
+
             GameSessions.Remove(vm);
         }
         if (toRemove.Count > 0)
@@ -435,6 +444,7 @@ public class MainViewModel : ViewModelBase
         _settings.ExitBehavior = defaults.ExitBehavior;
         _settings.AutoUpdate = defaults.AutoUpdate;
         _settings.SoundNotifications = defaults.SoundNotifications;
+        _settings.ShowGameExitNotification = defaults.ShowGameExitNotification;
         _settings.Hotkeys = new HotkeySettings();
         _settingsService.Save(_settings);
 
