@@ -2,7 +2,7 @@
 
 <p align="center">
   <strong>Auto-click utility for games on Windows</strong><br/>
-  Background clicking via Win32 API &bull; Multi-game queue &bull; Dark/Light theme &bull; EN/VI
+  Background clicking via Win32 API &bull; Multi-point sequences &bull; Dark/Light theme &bull; 5 languages
 </p>
 
 <p align="center">
@@ -15,7 +15,7 @@
 
 ---
 
-> **Do NOT use v1.0.0 ~ v1.0.2.** These versions contain a broken update URL that cannot be fixed through auto-update or reinstall. Please download **v1.0.3 or later** manually from the [Releases page](https://github.com/poli0981/autoclick/releases). Only v1.0.3+ has the correct hardcoded update endpoint.
+> **Recommended: v1.1.0+** — Older versions (v1.0.0~v1.0.2) have a broken update URL. Download the latest from the [Releases page](https://github.com/poli0981/autoclick/releases).
 
 ## About
 
@@ -28,12 +28,15 @@ AutoClick is a Windows desktop application that automates repetitive mouse click
 ## Features
 
 - **Multi-game queue** -- add multiple games, each with independent click profiles
+- **Multi-point click sequences** -- add multiple coordinates per game, executed in order with configurable delay between points (`#1 → #2 → #3 → [interval] → repeat`)
 - **Click modes** -- Fixed interval or Random interval (configurable min/max)
 - **Coordinate picking** -- Manual crosshair picker or random generation within game window
-- **Background clicking** -- Uses `PostMessage` with anti-detection jitter (no foreground focus needed)
+- **Background clicking** -- Uses `PostMessage` with `WM_MOUSEMOVE` + anti-detection jitter, works on game dialogs and choice screens
+- **Session statistics** -- live stats bar: Total Clicks, Uptime, Clicks/min, Peak CPM
+- **Sound notifications** -- system sounds for Start, Stop, Pause, coordinate pick, errors (toggleable)
 - **Global hotkeys** -- Start All (F8), Stop All (F7), Pause/Resume (F6), fully customizable
 - **Dark / Light theme** -- toggle in settings, defaults to system preference
-- **Multi-language** -- English and Vietnamese (expandable via .resx)
+- **5 languages** -- English, Tiếng Việt, 日本語, 한국어, 中文
 - **System tray** -- minimize to tray, configurable exit behavior
 - **Auto-update** -- via Velopack + GitHub Releases, optional on startup
 - **Settings persistence** -- JSON file at `%LocalAppData%\AutoClick\`, export/import supported
@@ -77,9 +80,11 @@ dotnet run --project src/AutoClick.UI
 ## Usage
 
 1. **Add Game** -- click "Add Game", select a running game window
-2. **Set Coordinate** -- click "Select Coordinate" (crosshair picker) or "Random" (auto-generate)
-3. **Start** -- click "Start" on individual games, or "Start All" for all at once
-4. **Configure** -- go to Settings tab to adjust intervals, hotkeys, theme, language
+2. **Add Points** -- click "Add Point" (crosshair picker) or "Random" to build a click sequence. Add multiple points for multi-step automation
+3. **Set Delay** -- when >1 point exists, set delay between points (ms) for the sequence timing
+4. **Start** -- click "Start" on individual games, or "Start All" for all at once
+5. **Monitor** -- watch live stats (Total Clicks, Uptime, Clicks/min, Peak) on the stats bar
+6. **Configure** -- go to Settings tab to adjust intervals, hotkeys, theme, language, sounds
 
 ### Settings
 
