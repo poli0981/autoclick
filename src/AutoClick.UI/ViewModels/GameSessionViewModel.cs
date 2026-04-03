@@ -59,6 +59,7 @@ public class GameSessionViewModel : ViewModelBase
     public bool IsRunning => _session.State == SessionState.Running;
     public bool IsPaused => _session.State == SessionState.Paused;
     public bool HasCoordinate => _session.ClickPoints.Count > 0;
+    public int PointCount => _session.ClickPoints.Count;
 
     public RelayCommand StartCommand { get; }
     public RelayCommand PauseCommand { get; }
@@ -131,9 +132,10 @@ public class GameSessionViewModel : ViewModelBase
     public void UpdateCoordinateText()
     {
         CoordinateText = _session.ClickPoints.Count > 0
-            ? string.Join("; ", _session.ClickPoints.Select(p => p.ToString()))
+            ? string.Join(" → ", _session.ClickPoints.Select((p, i) => $"#{i + 1}{p}"))
             : "-";
         OnPropertyChanged(nameof(HasCoordinate));
+        OnPropertyChanged(nameof(PointCount));
     }
 
     private void RefreshUI()

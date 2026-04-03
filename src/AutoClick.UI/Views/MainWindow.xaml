@@ -108,13 +108,18 @@
 
                                         <!-- Buttons -->
                                         <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-                                            <Button Content="{x:Static res:Strings.SelectCoordinate}"
+                                            <Button Content="{x:Static res:Strings.AddPoint}"
                                                     Click="OnPickCoordinate" Tag="{Binding}"
                                                     Style="{StaticResource DefaultButton}" Margin="0,0,4,0"
-                                                    IsEnabled="{Binding IsIdle}"/>
+                                                    IsEnabled="{Binding IsIdle}"
+                                                    ToolTip="{x:Static res:Strings.SelectCoordinate}"/>
                                             <Button Content="{x:Static res:Strings.Random}" Click="OnRandomCoordinate" Tag="{Binding}"
                                                     Style="{StaticResource DefaultButton}" Margin="0,0,4,0"
                                                     IsEnabled="{Binding IsIdle}"/>
+                                            <Button Content="{x:Static res:Strings.ClearPoints}" Click="OnClearCoordinates" Tag="{Binding}"
+                                                    Style="{StaticResource DefaultButton}" Margin="0,0,4,0"
+                                                    IsEnabled="{Binding IsIdle}"
+                                                    Visibility="{Binding HasCoordinate, Converter={StaticResource BoolToVis}}"/>
                                             <Button Content="{x:Static res:Strings.Start}" Command="{Binding StartCommand}"
                                                     Style="{StaticResource PrimaryButton}" Margin="0,0,4,0"
                                                     Visibility="{Binding IsIdle, Converter={StaticResource BoolToVis}}"/>
@@ -145,7 +150,11 @@
                                         </WrapPanel>
                                         <WrapPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="0,4,0,0">
                                             <TextBlock Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" Margin="0,0,24,0">
-                                                <Run Text="{x:Static res:Strings.Coordinate}"/><Run Text=": "/>
+                                                <Run Text="{x:Static res:Strings.Coordinate}"/>
+                                                <Run Text=" ("/>
+                                                <Run Text="{Binding PointCount, Mode=OneWay}" FontWeight="SemiBold"/>
+                                                <Run Text=" "/><Run Text="{x:Static res:Strings.Points}"/>
+                                                <Run Text="): "/>
                                                 <Run Text="{Binding CoordinateText, Mode=OneWay}" Foreground="{DynamicResource PrimaryBrush}"/>
                                             </TextBlock>
                                             <TextBlock Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" Margin="0,0,24,0">

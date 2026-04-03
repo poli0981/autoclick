@@ -35,6 +35,9 @@ public static class Strings
     public static string RandomMin => GetString("RandomMin", "Random Min (s)");
     public static string RandomMax => GetString("RandomMax", "Random Max (s)");
     public static string ResetStats => GetString("ResetStats", "Reset");
+    public static string AddPoint => GetString("AddPoint", "Add Point");
+    public static string ClearPoints => GetString("ClearPoints", "Clear Points");
+    public static string Points => GetString("Points", "points");
     public static string Language => GetString("Language", "Language");
     public static string Theme => GetString("Theme", "Theme");
     public static string Dark => GetString("Dark", "Dark");

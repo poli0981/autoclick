@@ -144,9 +144,9 @@ public class MainViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// Assigns a picked coordinate to a game session. Validates bounds + duplicates + logs.
+    /// Adds a picked coordinate to a game session's click sequence. Validates bounds + duplicates.
     /// </summary>
-    public bool TrySetCoordinate(GameSessionViewModel sessionVm, ClickPoint point)
+    public bool TryAddCoordinate(GameSessionViewModel sessionVm, ClickPoint point)
     {
         // Validate bounds
         if (!CoordinateHelper.IsCoordinateInBounds(sessionVm.Session.WindowHandle, point.X, point.Y))
@@ -155,27 +155,40 @@ public class MainViewModel : ViewModelBase
             return false;
         }
 
-        // Check duplicate
-        var conflict = CheckDuplicateCoordinate(sessionVm.Session.WindowHandle, point, sessionVm.Id);
-        if (conflict != null)
+        // Check duplicate within same session
+        foreach (var existing in sessionVm.Session.ClickPoints)
         {
-            _logService.Warn($"Coordinate ({point.X}, {point.Y}) already used by \"{conflict}\". Rejected for \"{sessionVm.ProcessName}\".");
-            return false;
+            if (existing.X == point.X && existing.Y == point.Y)
+            {
+                _logService.Warn($"Coordinate ({point.X}, {point.Y}) already in sequence for \"{sessionVm.ProcessName}\". Rejected.");
+                return false;
+            }
         }
 
-        sessionVm.Session.ClickPoints.Clear();
         sessionVm.Session.ClickPoints.Add(point);
         sessionVm.UpdateCoordinateText();
-        _logService.Info($"Coordinate ({point.X}, {point.Y}) set for \"{sessionVm.ProcessName}\" (picked)");
+        var idx = sessionVm.Session.ClickPoints.Count;
+        _logService.Info($"Coordinate #{idx} ({point.X}, {point.Y}) added to \"{sessionVm.ProcessName}\" (picked)");
         OnPropertyChanged(nameof(CanStartAll));
         return true;
+    }
+
+    /// <summary>
+    /// Clears all coordinates from a game session.
+    /// </summary>
+    public void ClearCoordinates(GameSessionViewModel sessionVm)
+    {
+        sessionVm.Session.ClickPoints.Clear();
+        sessionVm.UpdateCoordinateText();
+        _logService.Info($"All coordinates cleared for \"{sessionVm.ProcessName}\"");
+        OnPropertyChanged(nameof(CanStartAll));
     }
 
     /// <summary>
     /// Generates a random coordinate within the game window, checks for duplicates, and assigns it.
     /// Retries up to 10 times to avoid duplicates.
     /// </summary>
-    public bool TrySetRandomCoordinate(GameSessionViewModel sessionVm)
+    public bool TryAddRandomCoordinate(GameSessionViewModel sessionVm)
     {
         var hWnd = sessionVm.Session.WindowHandle;
         var (w, h) = CoordinateHelper.GetClientSize(hWnd);
@@ -190,13 +203,14 @@ public class MainViewModel : ViewModelBase
         {
             var point = CoordinateHelper.GenerateRandomCoordinate(hWnd);
 
-            var conflict = CheckDuplicateCoordinate(hWnd, point, sessionVm.Id);
-            if (conflict == null)
+            // Check duplicate within same session
+            bool duplicate = sessionVm.Session.ClickPoints.Exists(p => p.X == point.X && p.Y == point.Y);
+            if (!duplicate)
             {
-                sessionVm.Session.ClickPoints.Clear();
                 sessionVm.Session.ClickPoints.Add(point);
                 sessionVm.UpdateCoordinateText();
-                _logService.Info($"Random coordinate ({point.X}, {point.Y}) set for \"{sessionVm.ProcessName}\" (window: {w}x{h})");
+                var idx = sessionVm.Session.ClickPoints.Count;
+                _logService.Info($"Random coordinate #{idx} ({point.X}, {point.Y}) added to \"{sessionVm.ProcessName}\" (window: {w}x{h})");
                 OnPropertyChanged(nameof(CanStartAll));
                 return true;
             }

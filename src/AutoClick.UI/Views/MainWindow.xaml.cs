@@ -122,7 +122,7 @@ public partial class MainWindow : Window
             var picker = new CoordinatePickerWindow(sessionVm.Session.WindowHandle);
             if (picker.ShowDialog() == true && picker.SelectedPoint != null)
             {
-                if (!_mainVm.TrySetCoordinate(sessionVm, picker.SelectedPoint))
+                if (!_mainVm.TryAddCoordinate(sessionVm, picker.SelectedPoint))
                 {
                     MessageBox.Show(
                         Strings.CoordinateErrorMsg,
@@ -134,11 +134,19 @@ public partial class MainWindow : Window
         }
     }
 
+    private void OnClearCoordinates(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is GameSessionViewModel sessionVm)
+        {
+            _mainVm.ClearCoordinates(sessionVm);
+        }
+    }
+
     private void OnRandomCoordinate(object sender, RoutedEventArgs e)
     {
         if (sender is Button btn && btn.Tag is GameSessionViewModel sessionVm)
         {
-            if (!_mainVm.TrySetRandomCoordinate(sessionVm))
+            if (!_mainVm.TryAddRandomCoordinate(sessionVm))
             {
                 MessageBox.Show(
                     Strings.RandomCoordinateErrorMsg,
