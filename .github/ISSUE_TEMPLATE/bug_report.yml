@@ -1,0 +1,106 @@
+name: Bug Report
+description: Report a bug or unexpected behavior in AutoClick.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Before You Submit
+
+        Thank you for reporting a bug! Please fill out the required fields below.
+
+        > **Auto-Ignore Policy:** This issue will be ignored if it contains suspicious links, unrelated topics, excessive verbosity, vague descriptions, or disrespectful language toward any contributor. See [Code of Conduct](https://github.com/poli0981/autoclick/blob/master/docs/CODE_OF_CONDUCT.md).
+
+        You may use this template or write your own, as long as required fields (Description, OS Version, Reason, Game) are included.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Clearly describe the bug. What happened? What did you expect instead?
+      placeholder: |
+        Steps to reproduce:
+        1. Open AutoClick
+        2. Add game "..."
+        3. Click "Start"
+        4. Error: ...
+
+        Expected: ...
+        Actual: ...
+    validations:
+      required: true
+
+  - type: input
+    id: os-version
+    attributes:
+      label: OS Version
+      description: Your Windows version and build number (Settings > System > About).
+      placeholder: "Windows 11 Pro 24H2 (Build 26100.1234)"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: reason
+    attributes:
+      label: Bug Category
+      description: Select all that apply.
+      options:
+        - label: App crashes or freezes
+        - label: Click not working on game window
+        - label: Hotkeys not registering
+        - label: Coordinate picker not accurate
+        - label: Settings not saving or loading
+        - label: Auto-update error
+        - label: UI display or theme issue
+        - label: Language / translation issue
+        - label: Performance issue (high CPU/memory)
+    validations:
+      required: true
+
+  - type: input
+    id: reason-other
+    attributes:
+      label: Other Reason
+      description: If your issue doesn't fit the categories above, describe it briefly.
+      placeholder: "e.g., Tray icon disappears after resume from sleep"
+    validations:
+      required: false
+
+  - type: input
+    id: game
+    attributes:
+      label: Game (Steam/Store link)
+      description: Link to the game on Steam or its official store page. Must be a legitimate link.
+      placeholder: "https://store.steampowered.com/app/..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshot
+      description: Attach a screenshot showing the issue (optional).
+      placeholder: "Drag and drop images here"
+    validations:
+      required: false
+
+  - type: textarea
+    id: log
+    attributes:
+      label: Log Output
+      description: Paste relevant log entries from the app's log panel or exported log file (optional).
+      render: shell
+      placeholder: |
+        2026-04-03 12:00:00 [ERR] ...
+    validations:
+      required: false
+
+  - type: input
+    id: ide
+    attributes:
+      label: IDE / Build Environment
+      description: If you built from source, which IDE and .NET SDK version? (optional)
+      placeholder: "JetBrains Rider 2026.1 / .NET SDK 8.0.400"
+    validations:
+      required: false

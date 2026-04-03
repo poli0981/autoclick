@@ -1,0 +1,112 @@
+name: Feature Request
+description: Suggest a new feature or improvement for AutoClick.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Before You Submit
+
+        Thank you for suggesting a feature! Please fill out the required fields below.
+
+        > **Auto-Ignore Policy:** This request will be ignored if it contains suspicious links, unrelated topics, excessive verbosity, vague descriptions, or disrespectful language toward any contributor. See [Code of Conduct](https://github.com/poli0981/autoclick/blob/master/docs/CODE_OF_CONDUCT.md).
+
+        You may use this template or write your own, as long as required fields (Description, OS Version, Reason, Game) are included.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Clearly describe the feature you'd like. What problem does it solve?
+      placeholder: |
+        I'd like AutoClick to support...
+
+        Use case: When playing [game], I need to...
+    validations:
+      required: true
+
+  - type: input
+    id: os-version
+    attributes:
+      label: OS Version
+      description: Your Windows version and build number.
+      placeholder: "Windows 11 Pro 24H2 (Build 26100.1234)"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: reason
+    attributes:
+      label: Feature Category
+      description: Select all that apply.
+      options:
+        - label: New click mode or pattern
+        - label: New game detection method
+        - label: UI / UX improvement
+        - label: New language / translation
+        - label: Hotkey or shortcut enhancement
+        - label: Settings or configuration option
+        - label: Performance optimization
+        - label: Integration with external tool
+    validations:
+      required: true
+
+  - type: input
+    id: reason-other
+    attributes:
+      label: Other Category
+      description: If your request doesn't fit the categories above, describe it briefly.
+      placeholder: "e.g., Support for multi-monitor setups"
+    validations:
+      required: false
+
+  - type: input
+    id: game
+    attributes:
+      label: Game (Steam/Store link)
+      description: Which game would benefit from this feature? Provide a legitimate store link.
+      placeholder: "https://store.steampowered.com/app/..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: pseudocode
+    attributes:
+      label: Pseudocode / Technical Approach
+      description: If you have a technical idea of how this could work, share pseudocode or a brief approach (optional).
+      render: csharp
+      placeholder: |
+        // Example:
+        // if (game.HasMultipleWindows)
+        //     foreach (var window in game.Windows)
+        //         engine.Click(window, coordinate);
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Mockup / Screenshot
+      description: Attach a mockup, wireframe, or screenshot illustrating the feature (optional).
+      placeholder: "Drag and drop images here"
+    validations:
+      required: false
+
+  - type: textarea
+    id: log
+    attributes:
+      label: Related Log Output
+      description: If this request is based on a limitation you encountered, paste relevant log entries (optional).
+      render: shell
+    validations:
+      required: false
+
+  - type: input
+    id: ide
+    attributes:
+      label: IDE / Build Environment
+      description: If relevant, your IDE and .NET SDK version (optional).
+      placeholder: "Visual Studio 2022 / .NET SDK 8.0.400"
+    validations:
+      required: false
