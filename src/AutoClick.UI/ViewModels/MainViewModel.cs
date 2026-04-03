@@ -5,6 +5,7 @@ using System.Windows;
 using AutoClick.Core.Enums;
 using AutoClick.Core.Interfaces;
 using AutoClick.Core.Models;
+using AutoClick.Services;
 using AutoClick.UI.Resources;
 using AutoClick.Win32;
 
@@ -17,6 +18,7 @@ public class MainViewModel : ViewModelBase
     private readonly ISettingsService _settingsService;
     private readonly ILogService _logService;
     private readonly IMemoryManager _memoryManager;
+    private SoundService? _soundService;
 
     public ObservableCollection<GameSessionViewModel> GameSessions { get; } = new();
     public ObservableCollection<string> LogEntries { get; } = new();
@@ -131,6 +133,8 @@ public class MainViewModel : ViewModelBase
         };
         timer.Start();
     }
+
+    public void SetSoundService(SoundService sound) => _soundService = sound;
 
     public IGameDetector GameDetector => _gameDetector;
 
@@ -268,7 +272,7 @@ public class MainViewModel : ViewModelBase
             }
         };
 
-        var vm = new GameSessionViewModel(session, _clickEngine, _logService);
+        var vm = new GameSessionViewModel(session, _clickEngine, _logService, _soundService);
         GameSessions.Add(vm);
         _logService.Info($"Added game \"{window.ProcessName}\" (PID: {window.ProcessId}) to queue");
         return vm;

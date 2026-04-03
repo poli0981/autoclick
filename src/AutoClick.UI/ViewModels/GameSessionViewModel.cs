@@ -6,6 +6,7 @@ using System.Windows.Threading;
 using AutoClick.Core.Enums;
 using AutoClick.Core.Interfaces;
 using AutoClick.Core.Models;
+using AutoClick.Services;
 using AutoClick.UI.Resources;
 
 namespace AutoClick.UI.ViewModels;
@@ -14,6 +15,7 @@ public class GameSessionViewModel : ViewModelBase
 {
     private readonly IClickEngine _clickEngine;
     private readonly ILogService _log;
+    private readonly SoundService? _sound;
     private readonly GameSession _session;
     private CancellationTokenSource? _cts;
     private readonly DispatcherTimer _uiTimer;
@@ -86,11 +88,12 @@ public class GameSessionViewModel : ViewModelBase
     public RelayCommand StopCommand { get; }
     public RelayCommand ResetStatsCommand { get; }
 
-    public GameSessionViewModel(GameSession session, IClickEngine clickEngine, ILogService log)
+    public GameSessionViewModel(GameSession session, IClickEngine clickEngine, ILogService log, SoundService? sound = null)
     {
         _session = session;
         _clickEngine = clickEngine;
         _log = log;
+        _sound = sound;
 
         StartCommand = new RelayCommand(Start, () => IsIdle && HasCoordinate);
         PauseCommand = new RelayCommand(Pause, () => IsRunning);
@@ -112,6 +115,7 @@ public class GameSessionViewModel : ViewModelBase
         _uiTimer.Start();
         _ = _clickEngine.StartAsync(_session, _cts.Token);
         RefreshState();
+        _sound?.PlayStart();
     }
 
     public void Pause()
@@ -119,6 +123,7 @@ public class GameSessionViewModel : ViewModelBase
         _clickEngine.Pause(_session);
         CanEditInterval = true;
         RefreshState();
+        _sound?.PlayToggle();
     }
 
     public void Resume()
@@ -126,6 +131,7 @@ public class GameSessionViewModel : ViewModelBase
         _clickEngine.Resume(_session);
         CanEditInterval = false;
         RefreshState();
+        _sound?.PlayToggle();
     }
 
     public void Stop()
@@ -136,6 +142,7 @@ public class GameSessionViewModel : ViewModelBase
         CanEditInterval = true;
         _session.State = SessionState.Stopped;
         RefreshState();
+        _sound?.PlayStop();
     }
 
     public void ResetStats()

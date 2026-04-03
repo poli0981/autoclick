@@ -94,6 +94,7 @@ public partial class App : Application
         settingsRefreshTimer.Start();
 
         var soundService = new SoundService(mainVm.Settings);
+        mainVm.SetSoundService(soundService);
 
         var mainWindow = new MainWindow();
         mainWindow.Initialize(mainVm, settingsVm,
