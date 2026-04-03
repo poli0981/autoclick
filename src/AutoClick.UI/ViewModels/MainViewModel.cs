@@ -349,6 +349,7 @@ public class MainViewModel : ViewModelBase
     }
 
     private long _lastTotalClicks;
+    private DateTime _lastStatsTime;
 
     private void RefreshSessionStats()
     {
@@ -358,28 +359,40 @@ public class MainViewModel : ViewModelBase
 
         // Track session start when first game starts
         if (_sessionStartedAt == null && ActiveGameCount > 0)
+        {
             _sessionStartedAt = DateTime.Now;
+            _lastStatsTime = DateTime.Now;
+            _lastTotalClicks = 0;
+        }
 
-        // Uptime
+        // Uptime + rates
         if (_sessionStartedAt != null)
         {
             var elapsed = DateTime.Now - _sessionStartedAt.Value;
             SessionUptime = elapsed.ToString(@"hh\:mm\:ss");
 
-            // Clicks per minute
-            var minutes = elapsed.TotalMinutes;
-            if (minutes > 0)
+            // Average clicks per minute (only after 5 seconds to avoid spike)
+            if (elapsed.TotalSeconds >= 5)
             {
-                var cpm = total / minutes;
-                ClicksPerMinute = Math.Round(cpm, 1);
-                var cpmLong = (long)Math.Round(cpm);
-                if (cpmLong > PeakClicksPerMinute)
-                    PeakClicksPerMinute = cpmLong;
+                ClicksPerMinute = Math.Round(total / elapsed.TotalMinutes, 1);
+            }
+
+            // Realtime CPM: clicks in last interval → extrapolate to per-minute
+            // This gives a meaningful "current rate" for peak tracking
+            var intervalSeconds = (DateTime.Now - _lastStatsTime).TotalSeconds;
+            if (intervalSeconds >= 1.5 && elapsed.TotalSeconds >= 5)
+            {
+                var realtimeCpm = (total - _lastTotalClicks) / intervalSeconds * 60.0;
+                var realtimeLong = (long)Math.Round(realtimeCpm);
+                if (realtimeLong > PeakClicksPerMinute)
+                    PeakClicksPerMinute = realtimeLong;
+
+                _lastTotalClicks = total;
+                _lastStatsTime = DateTime.Now;
             }
         }
 
         OnPropertyChanged(nameof(HasStats));
-        _lastTotalClicks = total;
     }
 
     private void OnResetAll()
