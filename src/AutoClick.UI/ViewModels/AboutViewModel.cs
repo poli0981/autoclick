@@ -37,13 +37,13 @@ public class AboutViewModel : ViewModelBase
     public AboutViewModel()
     {
         OpenGitHubCommand = new RelayCommand(() => OpenUrl(RepoBase));
-        OpenLicenseCommand = new RelayCommand(() => OpenUrl($"{RepoBase}/blob/main/LICENSE"));
-        OpenPrivacyPolicyCommand = new RelayCommand(() => OpenUrl($"{RepoBase}/blob/main/docs/PRIVACY_POLICY.md"));
-        OpenDisclaimerCommand = new RelayCommand(() => OpenUrl($"{RepoBase}/blob/main/docs/DISCLAIMER.md"));
-        OpenAcknowledgementsCommand = new RelayCommand(() => OpenUrl($"{RepoBase}/blob/main/docs/ACKNOWLEDGEMENTS.md"));
-        OpenTermsCommand = new RelayCommand(() => OpenUrl($"{RepoBase}/blob/main/docs/TERMS_OF_SERVICE.md"));
-        OpenEulaCommand = new RelayCommand(() => OpenUrl($"{RepoBase}/blob/main/docs/EULA.md"));
-        OpenSecurityCommand = new RelayCommand(() => OpenUrl($"{RepoBase}/blob/main/docs/SECURITY.md"));
+        OpenLicenseCommand = new RelayCommand(() => OpenUrl($"{RepoBase}/blob/master/LICENSE"));
+        OpenPrivacyPolicyCommand = new RelayCommand(() => OpenUrl($"{RepoBase}/blob/master/docs/PRIVACY_POLICY.md"));
+        OpenDisclaimerCommand = new RelayCommand(() => OpenUrl($"{RepoBase}/blob/master/docs/DISCLAIMER.md"));
+        OpenAcknowledgementsCommand = new RelayCommand(() => OpenUrl($"{RepoBase}/blob/master/docs/ACKNOWLEDGEMENTS.md"));
+        OpenTermsCommand = new RelayCommand(() => OpenUrl($"{RepoBase}/blob/master/docs/TERMS_OF_SERVICE.md"));
+        OpenEulaCommand = new RelayCommand(() => OpenUrl($"{RepoBase}/blob/master/docs/EULA.md"));
+        OpenSecurityCommand = new RelayCommand(() => OpenUrl($"{RepoBase}/blob/master/docs/SECURITY.md"));
     }
 
     /// <summary>
