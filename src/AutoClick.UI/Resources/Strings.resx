@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
+
+  <data name="AppTitle" xml:space="preserve"><value>AutoClick</value></data>
+  <data name="Main" xml:space="preserve"><value>Main</value></data>
+  <data name="Settings" xml:space="preserve"><value>Settings</value></data>
+  <data name="About" xml:space="preserve"><value>About</value></data>
+  <data name="Start" xml:space="preserve"><value>Start</value></data>
+  <data name="Pause" xml:space="preserve"><value>Pause</value></data>
+  <data name="Resume" xml:space="preserve"><value>Resume</value></data>
+  <data name="Stop" xml:space="preserve"><value>Stop</value></data>
+  <data name="AddGame" xml:space="preserve"><value>Add Game</value></data>
+  <data name="RemoveGame" xml:space="preserve"><value>Remove</value></data>
+  <data name="SelectCoordinate" xml:space="preserve"><value>Select Coordinate</value></data>
+  <data name="GamesRunning" xml:space="preserve"><value>Games Running</value></data>
+  <data name="ClickMode" xml:space="preserve"><value>Click Mode</value></data>
+  <data name="Random" xml:space="preserve"><value>Random</value></data>
+  <data name="Fixed" xml:space="preserve"><value>Fixed</value></data>
+  <data name="Interval" xml:space="preserve"><value>Interval (s)</value></data>
+  <data name="ClickCount" xml:space="preserve"><value>Click Count</value></data>
+  <data name="Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Path" xml:space="preserve"><value>Path</value></data>
+  <data name="Coordinate" xml:space="preserve"><value>Coordinate</value></data>
+  <data name="CurrentInterval" xml:space="preserve"><value>Current Interval</value></data>
+  <data name="Basic" xml:space="preserve"><value>Basic</value></data>
+  <data name="Advanced" xml:space="preserve"><value>Advanced</value></data>
+  <data name="MaxGames" xml:space="preserve"><value>Max Games in Queue</value></data>
+  <data name="MaxRAM" xml:space="preserve"><value>Max RAM Usage (MB)</value></data>
+  <data name="ShowLogs" xml:space="preserve"><value>Show Real-time Logs</value></data>
+  <data name="ExportLog" xml:space="preserve"><value>Export Log</value></data>
+  <data name="ExportSettings" xml:space="preserve"><value>Export Settings</value></data>
+  <data name="ImportSettings" xml:space="preserve"><value>Import Settings</value></data>
+  <data name="FreeRAM" xml:space="preserve"><value>Free RAM</value></data>
+  <data name="ResetAll" xml:space="preserve"><value>Reset All</value></data>
+  <data name="Language" xml:space="preserve"><value>Language</value></data>
+  <data name="Theme" xml:space="preserve"><value>Theme</value></data>
+  <data name="Dark" xml:space="preserve"><value>Dark</value></data>
+  <data name="Light" xml:space="preserve"><value>Light</value></data>
+  <data name="Auto" xml:space="preserve"><value>Auto</value></data>
+  <data name="Hotkeys" xml:space="preserve"><value>Hotkeys</value></data>
+  <data name="Idle" xml:space="preserve"><value>Idle</value></data>
+  <data name="Running" xml:space="preserve"><value>Running</value></data>
+  <data name="Paused" xml:space="preserve"><value>Paused</value></data>
+  <data name="Stopped" xml:space="preserve"><value>Stopped</value></data>
+  <data name="Logs" xml:space="preserve"><value>Logs</value></data>
+  <data name="NoGames" xml:space="preserve"><value>No games added yet. Click "Add Game" to begin.</value></data>
+  <data name="ConfirmReset" xml:space="preserve"><value>This will stop all running games and reset the application. Continue?</value></data>
+  <data name="StartAll" xml:space="preserve"><value>Start All</value></data>
+  <data name="StopAll" xml:space="preserve"><value>Stop All</value></data>
+  <data name="PauseResume" xml:space="preserve"><value>Pause/Resume</value></data>
+  <data name="ExitBehavior" xml:space="preserve"><value>On Exit</value></data>
+  <data name="MinimizeToTray" xml:space="preserve"><value>Minimize to Tray</value></data>
+  <data name="StopAndExit" xml:space="preserve"><value>Stop All &amp; Exit</value></data>
+  <data name="ForceExit" xml:space="preserve"><value>Force Exit</value></data>
+  <data name="ConfirmExitTitle" xml:space="preserve"><value>Confirm Exit</value></data>
+  <data name="ConfirmExitMsg" xml:space="preserve"><value>There are running tasks. Stop all and exit?</value></data>
+  <data name="LanguageChangeTitle" xml:space="preserve"><value>Language Changed</value></data>
+  <data name="LanguageChangeMsg" xml:space="preserve"><value>The application needs to restart to apply the new language. Restart now?</value></data>
+  <data name="CoordinateErrorTitle" xml:space="preserve"><value>Coordinate Error</value></data>
+  <data name="CoordinateErrorMsg" xml:space="preserve"><value>The coordinate is invalid or already in use. Please try again.</value></data>
+  <data name="RandomCoordinateErrorTitle" xml:space="preserve"><value>Random Coordinate</value></data>
+  <data name="RandomCoordinateErrorMsg" xml:space="preserve"><value>Could not generate a valid random coordinate. The game window may be too small or all coordinates are in use.</value></data>
+  <data name="ConfirmResetApp" xml:space="preserve"><value>Reset the application to factory defaults? All settings will be restored to their initial values.</value></data>
+  <data name="OpenSettingsFile" xml:space="preserve"><value>Open Settings File</value></data>
+  <data name="SaveSettings" xml:space="preserve"><value>Save Settings</value></data>
+  <data name="Documents" xml:space="preserve"><value>Documents</value></data>
+  <data name="PrivacyPolicy" xml:space="preserve"><value>Privacy Policy</value></data>
+  <data name="Disclaimer" xml:space="preserve"><value>Disclaimer</value></data>
+  <data name="Acknowledgements" xml:space="preserve"><value>Acknowledgements &amp; Third-Party</value></data>
+  <data name="TermsOfService" xml:space="preserve"><value>Terms of Service</value></data>
+  <data name="EULA" xml:space="preserve"><value>End-User License Agreement</value></data>
+  <data name="SecurityPolicy" xml:space="preserve"><value>Security Policy</value></data>
+  <data name="ViewOnGitHub" xml:space="preserve"><value>View on GitHub</value></data>
+  <data name="AntiCheatWarning" xml:space="preserve"><value>Use with caution on games with anti-cheat. Kernel-level anti-cheat may result in account bans. The developer is not responsible.</value></data>
+  <data name="AIDisclosure" xml:space="preserve"><value>This software was built with AI assistance. In-app translations are AI-generated and may not be fully accurate.</value></data>
+  <data name="Update" xml:space="preserve"><value>Update</value></data>
+  <data name="AutoUpdate" xml:space="preserve"><value>Auto-update on Startup</value></data>
+  <data name="CheckForUpdate" xml:space="preserve"><value>Check for Update</value></data>
+  <data name="DownloadUpdate" xml:space="preserve"><value>Download Update</value></data>
+  <data name="ApplyAndRestart" xml:space="preserve"><value>Apply &amp; Restart</value></data>
+  <data name="UpdateReady" xml:space="preserve"><value>Click 'Check for Update' to get started.</value></data>
+  <data name="UpdateDevMode" xml:space="preserve"><value>Running in development mode. Updates not available.</value></data>
+  <data name="UpdateChecking" xml:space="preserve"><value>Checking for updates...</value></data>
+  <data name="UpdateUpToDate" xml:space="preserve"><value>You are running the latest version.</value></data>
+  <data name="UpdateFoundMsg" xml:space="preserve"><value>Update available: {0} → {1}</value></data>
+  <data name="UpdateDownloading" xml:space="preserve"><value>Downloading update...</value></data>
+  <data name="UpdateDownloadComplete" xml:space="preserve"><value>Download complete. Click 'Apply &amp; Restart' to update.</value></data>
+  <data name="UpdateApplying" xml:space="preserve"><value>Applying update and restarting...</value></data>
+  <data name="UpdateAvailableTitle" xml:space="preserve"><value>Update Available</value></data>
+  <data name="UpdateAutoDownloadedMsg" xml:space="preserve"><value>Version {0} has been downloaded. Restart now to apply?</value></data>
+  <data name="UpdateNoRelease" xml:space="preserve"><value>No releases found on GitHub.</value></data>
+  <data name="UpdateRateLimited" xml:space="preserve"><value>GitHub API rate limit exceeded. Please wait a few minutes.</value></data>
+  <data name="UpdateForbidden" xml:space="preserve"><value>Access denied. Check repository permissions.</value></data>
+  <data name="UpdateServerError" xml:space="preserve"><value>GitHub server error. Please try again later.</value></data>
+  <data name="UpdateNetworkError" xml:space="preserve"><value>Network error. Check your internet connection.</value></data>
+  <data name="UpdateChecksumFailed" xml:space="preserve"><value>Download verification failed. Please try again.</value></data>
+  <data name="UpdateUnknownError" xml:space="preserve"><value>An unknown error occurred during update.</value></data>
+</root>

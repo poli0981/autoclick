@@ -1,0 +1,37 @@
+<Window x:Class="AutoClick.UI.Views.GamePickerDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:res="clr-namespace:AutoClick.UI.Resources"
+        Title="Select Game" Height="450" Width="500"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        Background="{DynamicResource BackgroundBrush}">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="{x:Static res:Strings.AddGame}" FontSize="18" FontWeight="SemiBold"
+                   Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,12"/>
+
+        <TextBox Grid.Row="1" x:Name="SearchBox" Margin="0,0,0,12"
+                 TextChanged="OnSearchTextChanged"
+                 Tag="Search by process name or title..."/>
+
+        <ListBox Grid.Row="2" x:Name="WindowList" DisplayMemberPath="DisplayText"
+                 Background="{DynamicResource SurfaceBrush}"
+                 Foreground="{DynamicResource TextPrimaryBrush}"
+                 BorderBrush="{DynamicResource BorderBrush}"
+                 MouseDoubleClick="OnWindowDoubleClick"/>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <Button Content="Refresh" Click="OnRefresh" Style="{StaticResource DefaultButton}" Margin="0,0,8,0"/>
+            <Button Content="Select" Click="OnSelect" Style="{StaticResource PrimaryButton}" Margin="0,0,8,0"
+                    IsEnabled="{Binding SelectedItem, ElementName=WindowList, Converter={x:Null}}"/>
+            <Button Content="Cancel" Click="OnCancel" Style="{StaticResource DefaultButton}"/>
+        </StackPanel>
+    </Grid>
+</Window>

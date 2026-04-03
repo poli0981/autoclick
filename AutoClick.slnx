@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="src/AutoClick.Core/AutoClick.Core.csproj" />
+  <Project Path="src/AutoClick.Win32/AutoClick.Win32.csproj" />
+  <Project Path="src/AutoClick.Services/AutoClick.Services.csproj" />
+  <Project Path="src/AutoClick.UI/AutoClick.UI.csproj" />
+</Solution>
