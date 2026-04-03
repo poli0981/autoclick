@@ -104,7 +104,7 @@ public partial class App : Application
 
         // Initialize update service + about VM
         var logService = _serviceProvider.GetRequiredService<ILogService>();
-        var updateService = new UpdateService(logService, mainVm.Settings);
+        var updateService = new UpdateService(logService);
         var aboutVm = _serviceProvider.GetRequiredService<AboutViewModel>();
         aboutVm.InitializeUpdate(updateService, logService);
 

@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AutoClick.Core.Interfaces;
-using AutoClick.Core.Models;
 using Velopack;
 using Velopack.Sources;
 
@@ -15,18 +14,21 @@ namespace AutoClick.UI.Services;
 /// </summary>
 public sealed class UpdateService : IUpdateService
 {
+    /// <summary>
+    /// Hardcoded repo URL — never read from settings to avoid stale/corrupt values.
+    /// </summary>
+    private const string GitHubRepoUrl = "https://github.com/poli0981/autoclick";
+
     private readonly ILogService _log;
-    private readonly AppSettings _settings;
     private UpdateManager? _updateManager;
     private UpdateInfo? _latestUpdate;
 
     public bool IsInstalled => _updateManager?.IsInstalled ?? false;
     public string CurrentVersion => _updateManager?.CurrentVersion?.ToString() ?? "dev";
 
-    public UpdateService(ILogService log, AppSettings settings)
+    public UpdateService(ILogService log)
     {
         _log = log;
-        _settings = settings;
         InitializeManager();
     }
 
@@ -35,12 +37,12 @@ public sealed class UpdateService : IUpdateService
         try
         {
             var source = new GithubSource(
-                $"https://github.com/{_settings.GitHubRepo}",
+                GitHubRepoUrl,
                 null, // access token (null for public repos)
                 false // prerelease = false → stable only
             );
             _updateManager = new UpdateManager(source);
-            _log.Info($"Update manager initialized for github.com/{_settings.GitHubRepo} (installed: {IsInstalled}, current: {CurrentVersion})");
+            _log.Info($"Update manager initialized for {GitHubRepoUrl} (installed: {IsInstalled}, current: {CurrentVersion})");
         }
         catch (Exception ex)
         {

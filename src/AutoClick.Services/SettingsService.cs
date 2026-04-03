@@ -35,33 +35,12 @@ public class SettingsService : ISettingsService
         try
         {
             var json = File.ReadAllText(_settingsPath);
-            var settings = JsonSerializer.Deserialize<AppSettings>(json, JsonOptions) ?? new AppSettings();
-            MigrateIfNeeded(settings);
-            return settings;
+            return JsonSerializer.Deserialize<AppSettings>(json, JsonOptions) ?? new AppSettings();
         }
         catch
         {
             return new AppSettings();
         }
-    }
-
-    /// <summary>
-    /// Fix stale values left by older versions in the user's settings file.
-    /// </summary>
-    private void MigrateIfNeeded(AppSettings settings)
-    {
-        var dirty = false;
-        var defaults = new AppSettings();
-
-        // v1.0.0 → v1.0.1: repo URL was wrong
-        if (settings.GitHubRepo is "autoclick/autoclick" or "")
-        {
-            settings.GitHubRepo = defaults.GitHubRepo;
-            dirty = true;
-        }
-
-        if (dirty)
-            Save(settings);
     }
 
     public void Save(AppSettings settings)

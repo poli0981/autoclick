@@ -14,7 +14,6 @@ public class AppSettings
     public string Language { get; set; } = "en";
     public ExitBehavior ExitBehavior { get; set; } = ExitBehavior.MinimizeToTray;
     public bool AutoUpdate { get; set; } = true;
-    public string GitHubRepo { get; set; } = "poli0981/autoclick";
     public HotkeySettings Hotkeys { get; set; } = new();
 }
 
