@@ -137,4 +137,7 @@
   <data name="UpdateNetworkError" xml:space="preserve"><value>网络错误。请检查网络连接。</value></data>
   <data name="UpdateChecksumFailed" xml:space="preserve"><value>下载验证失败。请重试。</value></data>
   <data name="UpdateUnknownError" xml:space="preserve"><value>更新时发生未知错误。</value></data>
+  <data name="GameExitNotification" xml:space="preserve"><value>游戏退出通知</value></data>
+  <data name="GameExitNotificationTitle" xml:space="preserve"><value>游戏已退出</value></data>
+  <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} 已退出。总点击数: {1}</value></data>
 </root>

@@ -138,4 +138,7 @@
   <data name="UpdateNetworkError" xml:space="preserve"><value>Network error. Check your internet connection.</value></data>
   <data name="UpdateChecksumFailed" xml:space="preserve"><value>Download verification failed. Please try again.</value></data>
   <data name="UpdateUnknownError" xml:space="preserve"><value>An unknown error occurred during update.</value></data>
+  <data name="GameExitNotification" xml:space="preserve"><value>Game Exit Notification</value></data>
+  <data name="GameExitNotificationTitle" xml:space="preserve"><value>Game Exited</value></data>
+  <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} has exited. Total clicks: {1}</value></data>
 </root>

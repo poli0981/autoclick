@@ -137,4 +137,7 @@
   <data name="UpdateNetworkError" xml:space="preserve"><value>ネットワークエラー。インターネット接続を確認してください。</value></data>
   <data name="UpdateChecksumFailed" xml:space="preserve"><value>ダウンロードの検証に失敗しました。もう一度お試しください。</value></data>
   <data name="UpdateUnknownError" xml:space="preserve"><value>更新中に不明なエラーが発生しました。</value></data>
+  <data name="GameExitNotification" xml:space="preserve"><value>ゲーム終了通知</value></data>
+  <data name="GameExitNotificationTitle" xml:space="preserve"><value>ゲームが終了しました</value></data>
+  <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} が終了しました。合計クリック数: {1}</value></data>
 </root>

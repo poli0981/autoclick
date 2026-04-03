@@ -215,6 +215,12 @@ public partial class App : Application
         Current.Shutdown();
     }
 
+    public static void ShowBalloonTip(string title, string text, ToolTipIcon icon = ToolTipIcon.Info)
+    {
+        if (Current is App app)
+            app._trayIcon?.ShowBalloonTip(3000, title, text, icon);
+    }
+
     protected override void OnExit(ExitEventArgs e)
     {
         _trayIcon?.Dispose();
