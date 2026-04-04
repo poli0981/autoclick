@@ -137,6 +137,9 @@
   <data name="UpdateNetworkError" xml:space="preserve"><value>Lỗi mạng. Kiểm tra kết nối internet.</value></data>
   <data name="UpdateChecksumFailed" xml:space="preserve"><value>Xác minh tải xuống thất bại. Vui lòng thử lại.</value></data>
   <data name="UpdateUnknownError" xml:space="preserve"><value>Lỗi không xác định khi cập nhật.</value></data>
+  <data name="Dashboard" xml:space="preserve"><value>Bảng điều khiển</value></data>
+  <data name="DashboardCpmChart" xml:space="preserve"><value>Nhấp/phút (Trực tiếp)</value></data>
+  <data name="DashboardGameBreakdown" xml:space="preserve"><value>Phân tích theo game</value></data>
   <data name="ClickSuccess" xml:space="preserve"><value>Thành công</value></data>
   <data name="ClickSkipped" xml:space="preserve"><value>Bỏ qua</value></data>
   <data name="ClickTotal" xml:space="preserve"><value>Tổng</value></data>
@@ -190,4 +193,10 @@
   <data name="GameExitNotification" xml:space="preserve"><value>Thông báo game thoát</value></data>
   <data name="GameExitNotificationTitle" xml:space="preserve"><value>Game đã thoát</value></data>
   <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} đã thoát. Thành công: {1}, Bỏ qua: {2}</value></data>
+  <data name="AutoStoppedQueueEmpty" xml:space="preserve"><value>Tất cả game đã thoát. Đã tự động dừng.</value></data>
+  <data name="DashboardSuccessRatio" xml:space="preserve"><value>Tỷ lệ Thành công / Bỏ qua</value></data>
+  <data name="DashboardGameTimeline" xml:space="preserve"><value>CPM theo Game (Timeline)</value></data>
+  <data name="ExportStats" xml:space="preserve"><value>Xuất Thống kê</value></data>
+  <data name="ResetDashboard" xml:space="preserve"><value>Đặt lại Thống kê</value></data>
+  <data name="ConfirmResetStats" xml:space="preserve"><value>Đặt lại toàn bộ thống kê phiên và dữ liệu dashboard? Không thể hoàn tác.</value></data>
 </root>

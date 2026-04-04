@@ -137,6 +137,9 @@
   <data name="UpdateNetworkError" xml:space="preserve"><value>网络错误。请检查网络连接。</value></data>
   <data name="UpdateChecksumFailed" xml:space="preserve"><value>下载验证失败。请重试。</value></data>
   <data name="UpdateUnknownError" xml:space="preserve"><value>更新时发生未知错误。</value></data>
+  <data name="Dashboard" xml:space="preserve"><value>仪表板</value></data>
+  <data name="DashboardCpmChart" xml:space="preserve"><value>每分钟点击数 (实时)</value></data>
+  <data name="DashboardGameBreakdown" xml:space="preserve"><value>游戏分析</value></data>
   <data name="ClickSuccess" xml:space="preserve"><value>成功</value></data>
   <data name="ClickSkipped" xml:space="preserve"><value>已跳过</value></data>
   <data name="ClickTotal" xml:space="preserve"><value>总计</value></data>
@@ -190,4 +193,10 @@
   <data name="GameExitNotification" xml:space="preserve"><value>游戏退出通知</value></data>
   <data name="GameExitNotificationTitle" xml:space="preserve"><value>游戏已退出</value></data>
   <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} 已退出。成功: {1}，已跳过: {2}</value></data>
+  <data name="AutoStoppedQueueEmpty" xml:space="preserve"><value>所有游戏已退出。已自动停止。</value></data>
+  <data name="DashboardSuccessRatio" xml:space="preserve"><value>成功 / 跳过比率</value></data>
+  <data name="DashboardGameTimeline" xml:space="preserve"><value>每游戏CPM时间线</value></data>
+  <data name="ExportStats" xml:space="preserve"><value>导出统计</value></data>
+  <data name="ResetDashboard" xml:space="preserve"><value>重置统计</value></data>
+  <data name="ConfirmResetStats" xml:space="preserve"><value>重置所有会话统计和仪表板数据？此操作无法撤消。</value></data>
 </root>

@@ -35,6 +35,8 @@
                     <RadioButton x:Name="TabSettings" Content="{x:Static res:Strings.Settings}"
                                  Style="{StaticResource TabRadioButton}" Margin="0,0,4,0"/>
                     <RadioButton x:Name="TabAbout" Content="{x:Static res:Strings.About}"
+                                 Style="{StaticResource TabRadioButton}" Margin="0,0,4,0"/>
+                    <RadioButton x:Name="TabDashboard" Content="{x:Static res:Strings.Dashboard}"
                                  Style="{StaticResource TabRadioButton}"/>
                 </StackPanel>
             </Grid>
@@ -105,6 +107,11 @@
                         BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1"
                         Visibility="{Binding HasStats, Converter={StaticResource BoolToVis}}"
                         Margin="0,0,0,0" VerticalAlignment="Bottom">
+                    <DockPanel>
+                    <Button Content="{x:Static res:Strings.ResetDashboard}" Click="OnResetAllStats"
+                            DockPanel.Dock="Right" Style="{StaticResource DangerButton}"
+                            FontSize="11" Padding="8,2" VerticalAlignment="Center"
+                            IsEnabled="{Binding HasNoRunning}"/>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,20,0">
                             <Run Text="{x:Static res:Strings.ClickSuccess}" FontWeight="Medium"/><Run Text=": "/>
@@ -126,6 +133,7 @@
                             <Run Text=" c/m"/>
                         </TextBlock>
                     </StackPanel>
+                    </DockPanel>
                 </Border>
 
                 <!-- Game List -->
@@ -344,6 +352,12 @@
             <ScrollViewer Visibility="{Binding IsChecked, ElementName=TabAbout, Converter={StaticResource BoolToVis}}"
                           VerticalScrollBarVisibility="Auto" Padding="24">
                 <ContentControl x:Name="AboutContent"/>
+            </ScrollViewer>
+
+            <!-- Dashboard Tab -->
+            <ScrollViewer Visibility="{Binding IsChecked, ElementName=TabDashboard, Converter={StaticResource BoolToVis}}"
+                          VerticalScrollBarVisibility="Auto" Padding="24">
+                <ContentControl x:Name="DashboardContent"/>
             </ScrollViewer>
         </Grid>
 

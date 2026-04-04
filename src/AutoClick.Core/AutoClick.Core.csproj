@@ -15,4 +15,10 @@
     <FileVersion>1.1.0.0</FileVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="LiveChartsCore" Version="2.0.0" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView" Version="2.0.0" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0" />
+  </ItemGroup>
+
 </Project>

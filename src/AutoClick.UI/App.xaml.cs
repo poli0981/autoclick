@@ -44,6 +44,8 @@ public partial class App : Application
                 () => mainVm.HasAnyRunning);
         });
         services.AddSingleton<AboutViewModel>();
+        services.AddSingleton<DashboardViewModel>(sp =>
+            new DashboardViewModel(sp.GetRequiredService<MainViewModel>()));
 
         _serviceProvider = services.BuildServiceProvider();
 
@@ -96,6 +98,7 @@ public partial class App : Application
         var mainWindow = new MainWindow();
         mainWindow.Initialize(mainVm, settingsVm,
             _serviceProvider.GetRequiredService<AboutViewModel>(),
+            _serviceProvider.GetRequiredService<DashboardViewModel>(),
             _serviceProvider.GetRequiredService<HotkeyService>(),
             soundService);
 

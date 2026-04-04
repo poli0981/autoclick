@@ -14,6 +14,7 @@ public partial class MainWindow : Window
 {
     private MainViewModel _mainVm = null!;
     private SettingsViewModel _settingsVm = null!;
+    private DashboardViewModel _dashboardVm = null!;
     private HotkeyService? _hotkeyService;
     private SoundService? _soundService;
 
@@ -22,10 +23,11 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
 
-    public void Initialize(MainViewModel mainVm, SettingsViewModel settingsVm, AboutViewModel aboutVm, HotkeyService hotkeyService, SoundService soundService)
+    public void Initialize(MainViewModel mainVm, SettingsViewModel settingsVm, AboutViewModel aboutVm, DashboardViewModel dashboardVm, HotkeyService hotkeyService, SoundService soundService)
     {
         _mainVm = mainVm;
         _settingsVm = settingsVm;
+        _dashboardVm = dashboardVm;
         _hotkeyService = hotkeyService;
         _soundService = soundService;
 
@@ -36,6 +38,9 @@ public partial class MainWindow : Window
 
         var aboutView = new AboutView { DataContext = aboutVm };
         AboutContent.Content = aboutView;
+
+        var dashboardView = new DashboardView { DataContext = dashboardVm };
+        DashboardContent.Content = dashboardView;
 
         mainVm.RequestAddGame += OnRequestAddGame;
 
@@ -354,6 +359,11 @@ public partial class MainWindow : Window
         _hotkeyService?.UnregisterAll();
         _mainVm.SaveSettings();
         base.OnClosing(e);
+    }
+
+    private void OnResetAllStats(object sender, RoutedEventArgs e)
+    {
+        _dashboardVm.ResetDashboardCommand.Execute(null);
     }
 
     /// <summary>

@@ -138,6 +138,9 @@
   <data name="UpdateNetworkError" xml:space="preserve"><value>Network error. Check your internet connection.</value></data>
   <data name="UpdateChecksumFailed" xml:space="preserve"><value>Download verification failed. Please try again.</value></data>
   <data name="UpdateUnknownError" xml:space="preserve"><value>An unknown error occurred during update.</value></data>
+  <data name="Dashboard" xml:space="preserve"><value>Dashboard</value></data>
+  <data name="DashboardCpmChart" xml:space="preserve"><value>Clicks Per Minute (Live)</value></data>
+  <data name="DashboardGameBreakdown" xml:space="preserve"><value>Per-Game Breakdown</value></data>
   <data name="ClickSuccess" xml:space="preserve"><value>Success</value></data>
   <data name="ClickSkipped" xml:space="preserve"><value>Skipped</value></data>
   <data name="ClickTotal" xml:space="preserve"><value>Total</value></data>
@@ -191,4 +194,10 @@
   <data name="GameExitNotification" xml:space="preserve"><value>Game Exit Notification</value></data>
   <data name="GameExitNotificationTitle" xml:space="preserve"><value>Game Exited</value></data>
   <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} has exited. Success: {1}, Skipped: {2}</value></data>
+  <data name="AutoStoppedQueueEmpty" xml:space="preserve"><value>All games have exited. Auto-stopped.</value></data>
+  <data name="DashboardSuccessRatio" xml:space="preserve"><value>Success / Skip Ratio</value></data>
+  <data name="DashboardGameTimeline" xml:space="preserve"><value>Per-Game CPM Timeline</value></data>
+  <data name="ExportStats" xml:space="preserve"><value>Export Stats</value></data>
+  <data name="ResetDashboard" xml:space="preserve"><value>Reset All Stats</value></data>
+  <data name="ConfirmResetStats" xml:space="preserve"><value>Reset all session statistics and dashboard data? This cannot be undone.</value></data>
 </root>
