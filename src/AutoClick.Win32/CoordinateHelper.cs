@@ -1,4 +1,3 @@
-using System;
 using AutoClick.Core.Models;
 using static AutoClick.Win32.NativeMethods;
 

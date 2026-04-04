@@ -1,5 +1,3 @@
-using System;
-
 namespace AutoClick.Core.Models;
 
 public class GameWindowInfo

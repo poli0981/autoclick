@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics;
 using AutoClick.Core.Interfaces;
 using static AutoClick.Win32.NativeMethods;

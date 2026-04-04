@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using AutoClick.Core.Enums;
 
 namespace AutoClick.Core.Models;

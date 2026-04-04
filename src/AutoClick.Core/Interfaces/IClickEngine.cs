@@ -1,5 +1,3 @@
-using System.Threading;
-using System.Threading.Tasks;
 using AutoClick.Core.Models;
 
 namespace AutoClick.Core.Interfaces;

@@ -1,6 +1,3 @@
-using System;
-using System.Threading.Tasks;
-
 namespace AutoClick.Core.Interfaces;
 
 /// <summary>

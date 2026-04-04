@@ -1,6 +1,3 @@
-using System;
-using System.Threading.Tasks;
-using System.Windows;
 using AutoClick.Core.Interfaces;
 using AutoClick.UI.Resources;
 

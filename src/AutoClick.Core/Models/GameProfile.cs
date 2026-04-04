@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace AutoClick.Core.Models;
 
 public class GameProfile

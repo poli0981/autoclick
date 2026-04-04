@@ -1,7 +1,3 @@
-using System;
-using System.Linq;
-using System.Threading;
-using System.Windows;
 using System.Windows.Threading;
 using AutoClick.Core.Enums;
 using AutoClick.Core.Interfaces;

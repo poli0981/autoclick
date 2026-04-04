@@ -1,5 +1,3 @@
-using System;
-using System.Threading;
 using AutoClick.Core.Enums;
 using static AutoClick.Win32.NativeMethods;
 
