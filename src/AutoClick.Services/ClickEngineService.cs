@@ -55,11 +55,20 @@ public class ClickEngineService : IClickEngine
 
                     // Execute click sequence: each point in order with optional per-point delay
                     var points = session.ClickPoints;
+                    bool outOfBounds = false;
                     for (int i = 0; i < points.Count; i++)
                     {
                         if (cts.Token.IsCancellationRequested) break;
 
                         var point = points[i];
+
+                        if (!CoordinateHelper.IsCoordinateInBounds(session.WindowHandle, point.X, point.Y))
+                        {
+                            _log.Warn($"Coordinate ({point.X}, {point.Y}) is out of bounds for \"{session.ProcessName}\". Window may have been resized. Stopping.");
+                            outOfBounds = true;
+                            break;
+                        }
+
                         InputSimulator.SendClick(session.WindowHandle, point.X, point.Y, point.ClickType);
                         session.ClickCount++;
 
@@ -68,6 +77,12 @@ public class ClickEngineService : IClickEngine
                         {
                             await Task.Delay(point.DelayAfterMs, cts.Token);
                         }
+                    }
+
+                    if (outOfBounds)
+                    {
+                        session.State = SessionState.Stopped;
+                        break;
                     }
 
                     // Main interval (between full sequence cycles)

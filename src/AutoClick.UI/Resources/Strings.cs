@@ -117,6 +117,14 @@ public static class Strings
     public static string UpdateChecksumFailed => GetString("UpdateChecksumFailed", "Download verification failed. Please try again.");
     public static string UpdateUnknownError => GetString("UpdateUnknownError", "An unknown error occurred during update.");
 
+    // Settings Mode
+    public static string SettingsMode => GetString("SettingsMode", "Settings Mode");
+    public static string GlobalMode => GetString("GlobalMode", "Global (Same for all)");
+    public static string CustomMode => GetString("CustomMode", "Custom (Per game)");
+    public static string PerGameMode => GetString("PerGameMode", "Mode");
+    public static string PerGameRandomMin => GetString("PerGameRandomMin", "Min (s)");
+    public static string PerGameRandomMax => GetString("PerGameRandomMax", "Max (s)");
+
     // Profiles
     public static string Profile => GetString("Profile", "Profile");
     public static string SaveProfile => GetString("SaveProfile", "Save Profile");

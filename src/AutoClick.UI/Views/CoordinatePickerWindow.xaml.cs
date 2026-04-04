@@ -17,6 +17,12 @@ public partial class CoordinatePickerWindow : Window
         MouseMove += OnMouseMove;
     }
 
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
+        Activate();
+        Focus();
+    }
+
     private void OnMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
     {
         var pos = e.GetPosition(this);

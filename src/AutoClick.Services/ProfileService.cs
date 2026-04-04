@@ -81,9 +81,19 @@ public class ProfileService : IProfileService
         var json = File.ReadAllText(filePath);
         var profile = JsonSerializer.Deserialize<GameProfile>(json, JsonOptions)
                       ?? throw new InvalidOperationException("Invalid profile file.");
-        // Assign new Id to avoid collisions
-        profile.Id = Guid.NewGuid().ToString("N")[..8];
-        profile.CreatedAt = DateTime.Now;
+
+        var existing = GetByName(profile.Name);
+        if (existing != null)
+        {
+            profile.Id = existing.Id;
+            profile.CreatedAt = existing.CreatedAt;
+        }
+        else
+        {
+            profile.Id = Guid.NewGuid().ToString("N")[..8];
+            profile.CreatedAt = DateTime.Now;
+        }
+
         profile.UpdatedAt = DateTime.Now;
         Save(profile);
         return profile;

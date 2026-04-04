@@ -169,8 +169,9 @@
                                                     Style="{StaticResource DangerButton}"/>
                                         </StackPanel>
 
-                                        <!-- Profile Row -->
-                                        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,0,0,4">
+                                        <!-- Profile Row (Custom mode only) -->
+                                        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,0,0,4"
+                                                    Visibility="{Binding IsCustomMode, Converter={StaticResource BoolToVis}}">
                                             <TextBlock Text="{x:Static res:Strings.Profile}" FontSize="12" VerticalAlignment="Center"
                                                        Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,8,0"/>
                                             <ComboBox x:Name="ProfileCombo" Width="160" FontSize="12" VerticalAlignment="Center"
@@ -192,6 +193,28 @@
                                             <Button Content="{x:Static res:Strings.DeleteProfile}" Click="OnDeleteProfile" Tag="{Binding}"
                                                     Style="{StaticResource DangerButton}" FontSize="11" Padding="8,3"
                                                     IsEnabled="{Binding IsIdle}"/>
+                                            <TextBlock Text="{x:Static res:Strings.PerGameMode}" FontSize="12" VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource TextSecondaryBrush}" Margin="16,0,4,0"/>
+                                            <ComboBox Width="90" FontSize="11" VerticalAlignment="Center" Margin="0,0,8,0"
+                                                      SelectedIndex="{Binding SelectedModeIndex}" IsEnabled="{Binding IsIdle}">
+                                                <ComboBoxItem Content="{x:Static res:Strings.Random}"/>
+                                                <ComboBoxItem Content="{x:Static res:Strings.Fixed}"/>
+                                            </ComboBox>
+                                            <TextBlock Text="{x:Static res:Strings.Interval}" FontSize="12" VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,4,0"/>
+                                            <TextBox Text="{Binding FixedInterval, UpdateSourceTrigger=LostFocus}"
+                                                     Width="45" FontSize="11" VerticalAlignment="Center" Margin="0,0,8,0"
+                                                     IsEnabled="{Binding IsIdle}"/>
+                                            <TextBlock Text="{x:Static res:Strings.PerGameRandomMin}" FontSize="12" VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,4,0"/>
+                                            <TextBox Text="{Binding PerGameRandomMin, UpdateSourceTrigger=LostFocus}"
+                                                     Width="45" FontSize="11" VerticalAlignment="Center" Margin="0,0,8,0"
+                                                     IsEnabled="{Binding IsIdle}"/>
+                                            <TextBlock Text="{x:Static res:Strings.PerGameRandomMax}" FontSize="12" VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,4,0"/>
+                                            <TextBox Text="{Binding PerGameRandomMax, UpdateSourceTrigger=LostFocus}"
+                                                     Width="45" FontSize="11" VerticalAlignment="Center"
+                                                     IsEnabled="{Binding IsIdle}"/>
                                         </StackPanel>
 
                                         <!-- Info Row -->

@@ -276,6 +276,7 @@ public class MainViewModel : ViewModelBase
         };
 
         var vm = new GameSessionViewModel(session, _clickEngine, _logService, _soundService);
+        vm.IsCustomMode = _settings.SettingsMode == SettingsMode.Custom;
         GameSessions.Add(vm);
         _logService.Info($"Added game \"{window.ProcessName}\" (PID: {window.ProcessId}) to queue");
         return vm;
@@ -287,13 +288,22 @@ public class MainViewModel : ViewModelBase
     /// </summary>
     public void ReloadSettingsToSessions()
     {
-        foreach (var g in GameSessions.Where(g => g.IsIdle))
+        var isCustom = _settings.SettingsMode == SettingsMode.Custom;
+
+        if (!isCustom)
         {
-            g.Session.Profile.Mode = _settings.DefaultClickMode;
-            g.Session.Profile.FixedIntervalSeconds = _settings.DefaultFixedInterval;
-            g.Session.Profile.RandomMinSeconds = _settings.RandomMin;
-            g.Session.Profile.RandomMaxSeconds = _settings.RandomMax;
+            foreach (var g in GameSessions.Where(g => g.IsIdle))
+            {
+                g.Session.Profile.Mode = _settings.DefaultClickMode;
+                g.Session.Profile.FixedIntervalSeconds = _settings.DefaultFixedInterval;
+                g.Session.Profile.RandomMinSeconds = _settings.RandomMin;
+                g.Session.Profile.RandomMaxSeconds = _settings.RandomMax;
+            }
         }
+
+        foreach (var g in GameSessions)
+            g.IsCustomMode = isCustom;
+
         _showLogs = _settings.ShowRealTimeLogs;
         OnPropertyChanged(nameof(ShowLogs));
         _logService.Info("Settings saved and applied");
@@ -366,45 +376,57 @@ public class MainViewModel : ViewModelBase
 
     private long _lastTotalClicks;
     private DateTime _lastStatsTime;
+    private TimeSpan _frozenElapsed;
+    private bool _statsFrozen;
 
     private void RefreshSessionStats()
     {
-        // Sum clicks across all sessions
         long total = GameSessions.Sum(g => g.Session.ClickCount);
         TotalClicks = total;
 
-        // Track session start when first game starts
         if (_sessionStartedAt == null && ActiveGameCount > 0)
         {
             _sessionStartedAt = DateTime.Now;
             _lastStatsTime = DateTime.Now;
             _lastTotalClicks = 0;
+            _statsFrozen = false;
         }
 
-        // Uptime + rates
         if (_sessionStartedAt != null)
         {
-            var elapsed = DateTime.Now - _sessionStartedAt.Value;
-            SessionUptime = elapsed.ToString(@"hh\:mm\:ss");
-
-            // Average clicks per minute (only after 5 seconds to avoid spike)
-            if (elapsed.TotalSeconds >= 5)
+            if (ActiveGameCount == 0 && !_statsFrozen)
             {
-                ClicksPerMinute = Math.Round(total / elapsed.TotalMinutes, 1);
+                _frozenElapsed = DateTime.Now - _sessionStartedAt.Value;
+                _statsFrozen = true;
+            }
+            else if (ActiveGameCount > 0 && _statsFrozen)
+            {
+                _sessionStartedAt = DateTime.Now - _frozenElapsed;
+                _lastStatsTime = DateTime.Now;
+                _statsFrozen = false;
             }
 
-            // Realtime CPM: clicks in last interval → extrapolate to per-minute
-            // This gives a meaningful "current rate" for peak tracking
-            var intervalSeconds = (DateTime.Now - _lastStatsTime).TotalSeconds;
-            if (intervalSeconds >= 1.5 && elapsed.TotalSeconds >= 5)
+            if (!_statsFrozen)
             {
-                var realtimeCpm = (total - _lastTotalClicks) / intervalSeconds * 60.0;
-                var realtimeLong = (long)Math.Round(realtimeCpm);
-                if (realtimeLong > PeakClicksPerMinute)
-                    PeakClicksPerMinute = realtimeLong;
+                var elapsed = DateTime.Now - _sessionStartedAt.Value;
+                SessionUptime = elapsed.ToString(@"hh\:mm\:ss");
 
-                _lastTotalClicks = total;
-                _lastStatsTime = DateTime.Now;
+                if (elapsed.TotalSeconds >= 5)
+                {
+                    ClicksPerMinute = Math.Round(total / elapsed.TotalMinutes, 1);
+                }
+
+                var intervalSeconds = (DateTime.Now - _lastStatsTime).TotalSeconds;
+                if (intervalSeconds >= 1.5 && elapsed.TotalSeconds >= 5)
+                {
+                    var realtimeCpm = (total - _lastTotalClicks) / intervalSeconds * 60.0;
+                    var realtimeLong = (long)Math.Round(realtimeCpm);
+                    if (realtimeLong > PeakClicksPerMinute)
+                        PeakClicksPerMinute = realtimeLong;
+
+                    _lastTotalClicks = total;
+                    _lastStatsTime = DateTime.Now;
+                }
             }
         }
 
@@ -448,6 +470,7 @@ public class MainViewModel : ViewModelBase
         _settings.AutoUpdate = defaults.AutoUpdate;
         _settings.SoundNotifications = defaults.SoundNotifications;
         _settings.ShowGameExitNotification = defaults.ShowGameExitNotification;
+        _settings.SettingsMode = defaults.SettingsMode;
         _settings.Hotkeys = new HotkeySettings();
         _settingsService.Save(_settings);
 
@@ -521,6 +544,25 @@ public class MainViewModel : ViewModelBase
     {
         _profileService.Export(filePath, profile);
         _logService.Info(string.Format(Strings.ProfileExported, filePath));
+    }
+
+    public string? CheckImportDuplicateName(string filePath)
+    {
+        try
+        {
+            var json = System.IO.File.ReadAllText(filePath);
+            var preview = System.Text.Json.JsonSerializer.Deserialize<GameProfile>(json,
+                new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase });
+            if (preview?.Name != null)
+            {
+                var existing = SavedProfiles.FirstOrDefault(p =>
+                    string.Equals(p.Name, preview.Name, StringComparison.OrdinalIgnoreCase));
+                if (existing != null)
+                    return preview.Name;
+            }
+        }
+        catch { }
+        return null;
     }
 
     public GameProfile? ImportProfile(string filePath)

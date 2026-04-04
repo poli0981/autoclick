@@ -4,6 +4,7 @@ namespace AutoClick.Core.Models;
 
 public class AppSettings
 {
+    public SettingsMode SettingsMode { get; set; } = SettingsMode.Global;
     public ClickMode DefaultClickMode { get; set; } = ClickMode.Random;
     public double DefaultFixedInterval { get; set; } = 2.0;
     public double RandomMin { get; set; } = 1.0;

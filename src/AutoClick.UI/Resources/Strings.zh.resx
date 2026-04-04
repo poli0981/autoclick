@@ -137,6 +137,12 @@
   <data name="UpdateNetworkError" xml:space="preserve"><value>网络错误。请检查网络连接。</value></data>
   <data name="UpdateChecksumFailed" xml:space="preserve"><value>下载验证失败。请重试。</value></data>
   <data name="UpdateUnknownError" xml:space="preserve"><value>更新时发生未知错误。</value></data>
+  <data name="SettingsMode" xml:space="preserve"><value>设置模式</value></data>
+  <data name="GlobalMode" xml:space="preserve"><value>全局（所有游戏相同）</value></data>
+  <data name="CustomMode" xml:space="preserve"><value>自定义（每个游戏）</value></data>
+  <data name="PerGameMode" xml:space="preserve"><value>模式</value></data>
+  <data name="PerGameRandomMin" xml:space="preserve"><value>最小 (s)</value></data>
+  <data name="PerGameRandomMax" xml:space="preserve"><value>最大 (s)</value></data>
   <data name="Profile" xml:space="preserve"><value>配置</value></data>
   <data name="SaveProfile" xml:space="preserve"><value>保存配置</value></data>
   <data name="LoadProfile" xml:space="preserve"><value>加载</value></data>
