@@ -120,6 +120,7 @@
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
 
                                         <!-- Game Name & Status -->
@@ -168,14 +169,39 @@
                                                     Style="{StaticResource DangerButton}"/>
                                         </StackPanel>
 
+                                        <!-- Profile Row -->
+                                        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,0,0,4">
+                                            <TextBlock Text="{x:Static res:Strings.Profile}" FontSize="12" VerticalAlignment="Center"
+                                                       Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,8,0"/>
+                                            <ComboBox x:Name="ProfileCombo" Width="160" FontSize="12" VerticalAlignment="Center"
+                                                      ItemsSource="{Binding DataContext.SavedProfiles, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                      DisplayMemberPath="Name" Margin="0,0,8,0"
+                                                      IsEnabled="{Binding IsIdle}"/>
+                                            <Button Content="{x:Static res:Strings.SaveProfile}" Click="OnSaveProfile" Tag="{Binding}"
+                                                    Style="{StaticResource DefaultButton}" FontSize="11" Padding="8,3" Margin="0,0,4,0"
+                                                    IsEnabled="{Binding IsIdle}"/>
+                                            <Button Content="{x:Static res:Strings.LoadProfile}" Click="OnLoadProfile" Tag="{Binding}"
+                                                    Style="{StaticResource DefaultButton}" FontSize="11" Padding="8,3" Margin="0,0,4,0"
+                                                    IsEnabled="{Binding IsIdle}"/>
+                                            <Button Content="{x:Static res:Strings.ExportProfile}" Click="OnExportProfile" Tag="{Binding}"
+                                                    Style="{StaticResource DefaultButton}" FontSize="11" Padding="8,3" Margin="0,0,4,0"
+                                                    IsEnabled="{Binding IsIdle}"/>
+                                            <Button Content="{x:Static res:Strings.ImportProfile}" Click="OnImportProfile" Tag="{Binding}"
+                                                    Style="{StaticResource DefaultButton}" FontSize="11" Padding="8,3" Margin="0,0,4,0"
+                                                    IsEnabled="{Binding IsIdle}"/>
+                                            <Button Content="{x:Static res:Strings.DeleteProfile}" Click="OnDeleteProfile" Tag="{Binding}"
+                                                    Style="{StaticResource DangerButton}" FontSize="11" Padding="8,3"
+                                                    IsEnabled="{Binding IsIdle}"/>
+                                        </StackPanel>
+
                                         <!-- Info Row -->
-                                        <WrapPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0,4,0,0">
+                                        <WrapPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="0,4,0,0">
                                             <TextBlock Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" Margin="0,0,24,0">
                                                 <Run Text="{x:Static res:Strings.Path}"/><Run Text=": "/>
                                                 <Run Text="{Binding ExecutablePath, Mode=OneWay}"/>
                                             </TextBlock>
                                         </WrapPanel>
-                                        <WrapPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="0,4,0,0">
+                                        <WrapPanel Grid.Row="3" Grid.ColumnSpan="2" Margin="0,4,0,0">
                                             <TextBlock Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" Margin="0,0,24,0">
                                                 <Run Text="{x:Static res:Strings.Coordinate}"/>
                                                 <Run Text=" ("/>

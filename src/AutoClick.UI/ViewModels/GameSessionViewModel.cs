@@ -165,6 +165,26 @@ public class GameSessionViewModel : ViewModelBase
         OnPropertyChanged(nameof(HasMultiplePoints));
     }
 
+    public void ApplyProfile(GameProfile profile)
+    {
+        _session.ClickPoints.Clear();
+        foreach (var p in profile.ClickPoints)
+            _session.ClickPoints.Add(new ClickPoint(p.X, p.Y, p.ClickType, p.DelayAfterMs));
+
+        _session.Profile.Mode = profile.ClickSettings.Mode;
+        _session.Profile.FixedIntervalSeconds = profile.ClickSettings.FixedIntervalSeconds;
+        _session.Profile.RandomMinSeconds = profile.ClickSettings.RandomMinSeconds;
+        _session.Profile.RandomMaxSeconds = profile.ClickSettings.RandomMaxSeconds;
+
+        _fixedInterval = profile.ClickSettings.FixedIntervalSeconds;
+        OnPropertyChanged(nameof(FixedInterval));
+
+        _sequenceDelayMs = profile.SequenceDelayMs;
+        OnPropertyChanged(nameof(SequenceDelayMs));
+
+        UpdateCoordinateText();
+    }
+
     private void RefreshUI()
     {
         ClickCount = _session.ClickCount;

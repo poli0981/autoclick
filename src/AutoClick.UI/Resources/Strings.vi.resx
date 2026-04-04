@@ -137,6 +137,24 @@
   <data name="UpdateNetworkError" xml:space="preserve"><value>Lỗi mạng. Kiểm tra kết nối internet.</value></data>
   <data name="UpdateChecksumFailed" xml:space="preserve"><value>Xác minh tải xuống thất bại. Vui lòng thử lại.</value></data>
   <data name="UpdateUnknownError" xml:space="preserve"><value>Lỗi không xác định khi cập nhật.</value></data>
+  <data name="Profile" xml:space="preserve"><value>Hồ sơ</value></data>
+  <data name="SaveProfile" xml:space="preserve"><value>Lưu hồ sơ</value></data>
+  <data name="LoadProfile" xml:space="preserve"><value>Tải</value></data>
+  <data name="DeleteProfile" xml:space="preserve"><value>Xóa</value></data>
+  <data name="ExportProfile" xml:space="preserve"><value>Xuất</value></data>
+  <data name="ImportProfile" xml:space="preserve"><value>Nhập</value></data>
+  <data name="ProfileNamePrompt" xml:space="preserve"><value>Tên hồ sơ:</value></data>
+  <data name="ProfileSaved" xml:space="preserve"><value>Đã lưu hồ sơ "{0}".</value></data>
+  <data name="ProfileLoaded" xml:space="preserve"><value>Đã tải hồ sơ "{0}" vào "{1}".</value></data>
+  <data name="ProfileDeleted" xml:space="preserve"><value>Đã xóa hồ sơ "{0}".</value></data>
+  <data name="ProfileExported" xml:space="preserve"><value>Đã xuất hồ sơ ra {0}.</value></data>
+  <data name="ProfileImported" xml:space="preserve"><value>Đã nhập hồ sơ "{0}".</value></data>
+  <data name="ProfileImportError" xml:space="preserve"><value>Không thể nhập hồ sơ.</value></data>
+  <data name="ConfirmDeleteProfile" xml:space="preserve"><value>Xóa hồ sơ "{0}"?</value></data>
+  <data name="ProfileNameEmpty" xml:space="preserve"><value>Tên hồ sơ không được để trống.</value></data>
+  <data name="ProfileNameDuplicate" xml:space="preserve"><value>Đã có hồ sơ tên "{0}". Ghi đè?</value></data>
+  <data name="NoCoordinatesToSave" xml:space="preserve"><value>Thêm tọa độ trước khi lưu hồ sơ.</value></data>
+  <data name="SelectProfile" xml:space="preserve"><value>Chọn hồ sơ...</value></data>
   <data name="GameExitNotification" xml:space="preserve"><value>Thông báo game thoát</value></data>
   <data name="GameExitNotificationTitle" xml:space="preserve"><value>Game đã thoát</value></data>
   <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} đã thoát. Tổng click: {1}</value></data>

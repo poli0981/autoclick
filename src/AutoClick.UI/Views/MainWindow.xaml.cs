@@ -1,9 +1,11 @@
 using System.Windows;
 using System.Windows.Interop;
 using AutoClick.Core.Enums;
+using AutoClick.Core.Models;
 using AutoClick.Services;
 using AutoClick.UI.Resources;
 using AutoClick.UI.ViewModels;
+using Microsoft.Win32;
 using static AutoClick.Win32.NativeMethods;
 
 namespace AutoClick.UI.Views;
@@ -168,6 +170,122 @@ public partial class MainWindow : Window
                     Strings.RandomCoordinateErrorTitle,
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
+            }
+        }
+    }
+
+    // ── Profile Event Handlers ──
+
+    private void OnSaveProfile(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is GameSessionViewModel sessionVm)
+        {
+            if (!sessionVm.HasCoordinate)
+            {
+                MessageBox.Show(Strings.NoCoordinatesToSave, Strings.Profile,
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var dialog = new ProfileNameDialog { Owner = this };
+            if (dialog.ShowDialog() == true)
+            {
+                var name = dialog.ProfileName;
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    MessageBox.Show(Strings.ProfileNameEmpty, Strings.Profile,
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                var existing = _mainVm.SavedProfiles.FirstOrDefault(p =>
+                    string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase));
+                if (existing != null)
+                {
+                    var result = MessageBox.Show(
+                        string.Format(Strings.ProfileNameDuplicate, name),
+                        Strings.Profile, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result != MessageBoxResult.Yes) return;
+                }
+
+                _mainVm.SaveProfileFromSession(sessionVm, name);
+                _soundService?.PlaySuccess();
+            }
+        }
+    }
+
+    private void OnLoadProfile(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is GameSessionViewModel sessionVm)
+        {
+            // Find the ComboBox in the same parent
+            var parent = btn.Parent as System.Windows.Controls.StackPanel;
+            var combo = parent?.Children.OfType<System.Windows.Controls.ComboBox>().FirstOrDefault();
+            if (combo?.SelectedItem is GameProfile profile)
+            {
+                _mainVm.LoadProfileIntoSession(sessionVm, profile);
+                _soundService?.PlaySuccess();
+            }
+        }
+    }
+
+    private void OnExportProfile(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is GameSessionViewModel)
+        {
+            var parent = btn.Parent as System.Windows.Controls.StackPanel;
+            var combo = parent?.Children.OfType<System.Windows.Controls.ComboBox>().FirstOrDefault();
+            if (combo?.SelectedItem is GameProfile profile)
+            {
+                var dlg = new SaveFileDialog
+                {
+                    Filter = "AutoClick Profile (*.autoclick)|*.autoclick",
+                    FileName = $"{profile.Name}.autoclick"
+                };
+                if (dlg.ShowDialog() == true)
+                {
+                    _mainVm.ExportProfile(profile, dlg.FileName);
+                    _soundService?.PlaySuccess();
+                }
+            }
+        }
+    }
+
+    private void OnImportProfile(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is GameSessionViewModel)
+        {
+            var dlg = new OpenFileDialog
+            {
+                Filter = "AutoClick Profile (*.autoclick)|*.autoclick|JSON files (*.json)|*.json"
+            };
+            if (dlg.ShowDialog() == true)
+            {
+                var profile = _mainVm.ImportProfile(dlg.FileName);
+                if (profile != null)
+                    _soundService?.PlaySuccess();
+                else
+                    _soundService?.PlayError();
+            }
+        }
+    }
+
+    private void OnDeleteProfile(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button btn && btn.Tag is GameSessionViewModel)
+        {
+            var parent = btn.Parent as System.Windows.Controls.StackPanel;
+            var combo = parent?.Children.OfType<System.Windows.Controls.ComboBox>().FirstOrDefault();
+            if (combo?.SelectedItem is GameProfile profile)
+            {
+                var result = MessageBox.Show(
+                    string.Format(Strings.ConfirmDeleteProfile, profile.Name),
+                    Strings.Profile, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    _mainVm.DeleteProfile(profile.Id);
+                    combo.SelectedItem = null;
+                }
             }
         }
     }

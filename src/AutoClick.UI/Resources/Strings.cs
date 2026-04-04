@@ -117,6 +117,26 @@ public static class Strings
     public static string UpdateChecksumFailed => GetString("UpdateChecksumFailed", "Download verification failed. Please try again.");
     public static string UpdateUnknownError => GetString("UpdateUnknownError", "An unknown error occurred during update.");
 
+    // Profiles
+    public static string Profile => GetString("Profile", "Profile");
+    public static string SaveProfile => GetString("SaveProfile", "Save Profile");
+    public static string LoadProfile => GetString("LoadProfile", "Load");
+    public static string DeleteProfile => GetString("DeleteProfile", "Delete");
+    public static string ExportProfile => GetString("ExportProfile", "Export");
+    public static string ImportProfile => GetString("ImportProfile", "Import");
+    public static string ProfileNamePrompt => GetString("ProfileNamePrompt", "Profile name:");
+    public static string ProfileSaved => GetString("ProfileSaved", "Profile \"{0}\" saved.");
+    public static string ProfileLoaded => GetString("ProfileLoaded", "Profile \"{0}\" loaded into \"{1}\".");
+    public static string ProfileDeleted => GetString("ProfileDeleted", "Profile \"{0}\" deleted.");
+    public static string ProfileExported => GetString("ProfileExported", "Profile exported to {0}.");
+    public static string ProfileImported => GetString("ProfileImported", "Profile \"{0}\" imported.");
+    public static string ProfileImportError => GetString("ProfileImportError", "Failed to import profile.");
+    public static string ConfirmDeleteProfile => GetString("ConfirmDeleteProfile", "Delete profile \"{0}\"?");
+    public static string ProfileNameEmpty => GetString("ProfileNameEmpty", "Profile name cannot be empty.");
+    public static string ProfileNameDuplicate => GetString("ProfileNameDuplicate", "A profile named \"{0}\" exists. Overwrite?");
+    public static string NoCoordinatesToSave => GetString("NoCoordinatesToSave", "Add coordinates before saving a profile.");
+    public static string SelectProfile => GetString("SelectProfile", "Select a profile...");
+
     // Game exit notification
     public static string GameExitNotification => GetString("GameExitNotification", "Game Exit Notification");
     public static string GameExitNotificationTitle => GetString("GameExitNotificationTitle", "Game Exited");

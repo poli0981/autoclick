@@ -1,10 +1,6 @@
-using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using AutoClick.Core.Interfaces;
 using AutoClick.Services;
@@ -33,6 +29,7 @@ public partial class App : Application
         services.AddSingleton<IGameDetector, GameDetectorService>();
         services.AddSingleton<IMemoryManager, MemoryManagerService>();
         services.AddSingleton<IClickEngine, ClickEngineService>();
+        services.AddSingleton<IProfileService, ProfileService>();
         services.AddSingleton<HotkeyService>();
         services.AddSingleton<IHotkeyService>(sp => sp.GetRequiredService<HotkeyService>());
 

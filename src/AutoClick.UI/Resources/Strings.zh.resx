@@ -137,6 +137,24 @@
   <data name="UpdateNetworkError" xml:space="preserve"><value>网络错误。请检查网络连接。</value></data>
   <data name="UpdateChecksumFailed" xml:space="preserve"><value>下载验证失败。请重试。</value></data>
   <data name="UpdateUnknownError" xml:space="preserve"><value>更新时发生未知错误。</value></data>
+  <data name="Profile" xml:space="preserve"><value>配置</value></data>
+  <data name="SaveProfile" xml:space="preserve"><value>保存配置</value></data>
+  <data name="LoadProfile" xml:space="preserve"><value>加载</value></data>
+  <data name="DeleteProfile" xml:space="preserve"><value>删除</value></data>
+  <data name="ExportProfile" xml:space="preserve"><value>导出</value></data>
+  <data name="ImportProfile" xml:space="preserve"><value>导入</value></data>
+  <data name="ProfileNamePrompt" xml:space="preserve"><value>配置名称:</value></data>
+  <data name="ProfileSaved" xml:space="preserve"><value>配置"{0}"已保存。</value></data>
+  <data name="ProfileLoaded" xml:space="preserve"><value>配置"{0}"已加载到"{1}"。</value></data>
+  <data name="ProfileDeleted" xml:space="preserve"><value>配置"{0}"已删除。</value></data>
+  <data name="ProfileExported" xml:space="preserve"><value>配置已导出到{0}。</value></data>
+  <data name="ProfileImported" xml:space="preserve"><value>配置"{0}"已导入。</value></data>
+  <data name="ProfileImportError" xml:space="preserve"><value>导入配置失败。</value></data>
+  <data name="ConfirmDeleteProfile" xml:space="preserve"><value>删除配置"{0}"？</value></data>
+  <data name="ProfileNameEmpty" xml:space="preserve"><value>配置名称不能为空。</value></data>
+  <data name="ProfileNameDuplicate" xml:space="preserve"><value>已存在名为"{0}"的配置。是否覆盖？</value></data>
+  <data name="NoCoordinatesToSave" xml:space="preserve"><value>请先添加坐标再保存配置。</value></data>
+  <data name="SelectProfile" xml:space="preserve"><value>选择配置...</value></data>
   <data name="GameExitNotification" xml:space="preserve"><value>游戏退出通知</value></data>
   <data name="GameExitNotificationTitle" xml:space="preserve"><value>游戏已退出</value></data>
   <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} 已退出。总点击数: {1}</value></data>
