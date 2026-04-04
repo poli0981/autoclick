@@ -137,6 +137,21 @@
   <data name="UpdateNetworkError" xml:space="preserve"><value>ネットワークエラー。インターネット接続を確認してください。</value></data>
   <data name="UpdateChecksumFailed" xml:space="preserve"><value>ダウンロードの検証に失敗しました。もう一度お試しください。</value></data>
   <data name="UpdateUnknownError" xml:space="preserve"><value>更新中に不明なエラーが発生しました。</value></data>
+  <data name="Schedule" xml:space="preserve"><value>スケジュール</value></data>
+  <data name="CancelSchedule" xml:space="preserve"><value>キャンセル</value></data>
+  <data name="StartTime" xml:space="preserve"><value>開始:</value></data>
+  <data name="StopTime" xml:space="preserve"><value>停止:</value></data>
+  <data name="SchedulerStartsIn" xml:space="preserve"><value>開始まで: {0}</value></data>
+  <data name="SchedulerStopsIn" xml:space="preserve"><value>停止まで: {0}</value></data>
+  <data name="SchedulerStarted" xml:space="preserve"><value>スケジューラが開始をトリガーしました</value></data>
+  <data name="SchedulerStopped" xml:space="preserve"><value>スケジューラが停止をトリガーしました</value></data>
+  <data name="SchedulerInvalidTime" xml:space="preserve"><value>時刻形式が無効です。HH:mmを使用してください。</value></data>
+  <data name="SchedulerInvalidFormat" xml:space="preserve"><value>形式が無効です。HH:mm形式で入力してください（例: 20:00）。</value></data>
+  <data name="SchedulerInvalidHour" xml:space="preserve"><value>「{0}」: 時は00〜23の範囲で入力してください。</value></data>
+  <data name="SchedulerInvalidMinute" xml:space="preserve"><value>「{0}」: 分は00〜59の範囲で入力してください。</value></data>
+  <data name="SchedulerStopBeforeStart" xml:space="preserve"><value>停止時刻は開始時刻より後にしてください。</value></data>
+  <data name="SchedulerStartRequired" xml:space="preserve"><value>開始時刻は必須です。</value></data>
+  <data name="SchedulerNoGames" xml:space="preserve"><value>スケジュール前に座標付きのゲームを追加してください。</value></data>
   <data name="SettingsMode" xml:space="preserve"><value>設定モード</value></data>
   <data name="GlobalMode" xml:space="preserve"><value>グローバル（全ゲーム共通）</value></data>
   <data name="CustomMode" xml:space="preserve"><value>カスタム（ゲームごと）</value></data>

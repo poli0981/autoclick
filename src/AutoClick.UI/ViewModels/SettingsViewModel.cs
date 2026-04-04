@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using AutoClick.Core.Enums;
 using AutoClick.Core.Interfaces;
 using AutoClick.Core.Models;
-using Microsoft.Win32;
 
 namespace AutoClick.UI.ViewModels;
 

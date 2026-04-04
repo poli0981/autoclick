@@ -1,4 +1,3 @@
-using System;
 using AutoClick.Core.Enums;
 
 namespace AutoClick.Core.Models;

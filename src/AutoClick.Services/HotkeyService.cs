@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Windows.Input;
 using AutoClick.Core.Interfaces;
 using static AutoClick.Win32.NativeMethods;

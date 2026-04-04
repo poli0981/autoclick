@@ -1,5 +1,3 @@
-using System;
-
 namespace AutoClick.Core.Interfaces;
 
 public interface ILogService

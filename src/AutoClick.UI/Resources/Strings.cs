@@ -117,6 +117,23 @@ public static class Strings
     public static string UpdateChecksumFailed => GetString("UpdateChecksumFailed", "Download verification failed. Please try again.");
     public static string UpdateUnknownError => GetString("UpdateUnknownError", "An unknown error occurred during update.");
 
+    // Scheduler
+    public static string Schedule => GetString("Schedule", "Schedule");
+    public static string CancelSchedule => GetString("CancelSchedule", "Cancel");
+    public static string StartTime => GetString("StartTime", "Start:");
+    public static string StopTime => GetString("StopTime", "Stop:");
+    public static string SchedulerStartsIn => GetString("SchedulerStartsIn", "Starts in: {0}");
+    public static string SchedulerStopsIn => GetString("SchedulerStopsIn", "Stops in: {0}");
+    public static string SchedulerStarted => GetString("SchedulerStarted", "Scheduler triggered start");
+    public static string SchedulerStopped => GetString("SchedulerStopped", "Scheduler triggered stop");
+    public static string SchedulerInvalidTime => GetString("SchedulerInvalidTime", "Invalid time format. Use HH:mm.");
+    public static string SchedulerInvalidFormat => GetString("SchedulerInvalidFormat", "Invalid format. Enter time as HH:mm (e.g., 20:00).");
+    public static string SchedulerInvalidHour => GetString("SchedulerInvalidHour", "\"{0}\": hour must be 00–23.");
+    public static string SchedulerInvalidMinute => GetString("SchedulerInvalidMinute", "\"{0}\": minute must be 00–59.");
+    public static string SchedulerStopBeforeStart => GetString("SchedulerStopBeforeStart", "Stop time must be after start time.");
+    public static string SchedulerStartRequired => GetString("SchedulerStartRequired", "Start time is required.");
+    public static string SchedulerNoGames => GetString("SchedulerNoGames", "Add games with coordinates before scheduling.");
+
     // Settings Mode
     public static string SettingsMode => GetString("SettingsMode", "Settings Mode");
     public static string GlobalMode => GetString("GlobalMode", "Global (Same for all)");

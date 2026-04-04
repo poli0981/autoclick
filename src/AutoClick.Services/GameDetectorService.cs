@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using AutoClick.Core.Interfaces;
 using AutoClick.Core.Models;
 using AutoClick.Win32;

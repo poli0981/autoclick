@@ -1,7 +1,5 @@
-using System;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 using AutoClick.Core.Interfaces;
 using Velopack;
 using Velopack.Sources;

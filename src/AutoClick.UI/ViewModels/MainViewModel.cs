@@ -77,6 +77,29 @@ public class MainViewModel : ViewModelBase
     public RelayCommand RemoveAllCommand { get; }
     public RelayCommand ResetAllCommand { get; }
     public RelayCommand ResetAppCommand { get; }
+    public RelayCommand ToggleSchedulerCommand { get; }
+
+    // ── Scheduler ──
+    private bool _isSchedulerEnabled;
+    public bool IsSchedulerEnabled { get => _isSchedulerEnabled; set => SetProperty(ref _isSchedulerEnabled, value); }
+
+    public bool HasScheduler => _isSchedulerEnabled;
+
+    private string _scheduledStartTimeText = "";
+    public string ScheduledStartTimeText { get => _scheduledStartTimeText; set => SetProperty(ref _scheduledStartTimeText, value); }
+
+    private string _scheduledStopTimeText = "";
+    public string ScheduledStopTimeText { get => _scheduledStopTimeText; set => SetProperty(ref _scheduledStopTimeText, value); }
+
+    private DateTime? _scheduledStartTime;
+    private DateTime? _scheduledStopTime;
+    private bool _schedulerStarted;
+
+    private string _schedulerCountdown = "";
+    public string SchedulerCountdown { get => _schedulerCountdown; set => SetProperty(ref _schedulerCountdown, value); }
+
+    private string _scheduleButtonText = Strings.Schedule;
+    public string ScheduleButtonText { get => _scheduleButtonText; set => SetProperty(ref _scheduleButtonText, value); }
 
     public event Action? RequestAddGame;
 
@@ -107,6 +130,7 @@ public class MainViewModel : ViewModelBase
         RemoveAllCommand = new RelayCommand(OnRemoveAll, () => HasNoRunning && GameSessions.Count > 0);
         ResetAllCommand = new RelayCommand(OnResetAll);
         ResetAppCommand = new RelayCommand(OnResetApp);
+        ToggleSchedulerCommand = new RelayCommand(OnToggleScheduler);
 
         _logService.LogReceived += entry =>
         {
@@ -131,6 +155,7 @@ public class MainViewModel : ViewModelBase
             OnPropertyChanged(nameof(CanStartAll));
             RefreshSessionStats();
             CheckForExitedProcesses();
+            CheckScheduler();
         };
         timer.Start();
 
@@ -579,6 +604,159 @@ public class MainViewModel : ViewModelBase
             _logService.Error(Strings.ProfileImportError, ex);
             return null;
         }
+    }
+
+    // ── Scheduler Logic ──
+
+    private void OnToggleScheduler()
+    {
+        if (_isSchedulerEnabled)
+        {
+            // Cancel
+            IsSchedulerEnabled = false;
+            _schedulerStarted = false;
+            _scheduledStartTime = null;
+            _scheduledStopTime = null;
+            SchedulerCountdown = "";
+            ScheduleButtonText = Strings.Schedule;
+            OnPropertyChanged(nameof(HasScheduler));
+            _logService.Info("Scheduler cancelled");
+            return;
+        }
+
+        // Validate queue has games with coordinates
+        if (!GameSessions.Any(g => g.HasCoordinate))
+        {
+            _logService.Warn(Strings.SchedulerNoGames);
+            return;
+        }
+
+        // Validate start time (required)
+        if (string.IsNullOrWhiteSpace(_scheduledStartTimeText))
+        {
+            _logService.Warn(Strings.SchedulerStartRequired);
+            return;
+        }
+
+        var startError = ValidateTimeInput(_scheduledStartTimeText);
+        if (startError != null)
+        {
+            _logService.Warn($"{Strings.StartTime} {startError}");
+            return;
+        }
+        _scheduledStartTime = ParseValidTime(_scheduledStartTimeText);
+
+        // Validate stop time (optional)
+        if (!string.IsNullOrWhiteSpace(_scheduledStopTimeText))
+        {
+            var stopError = ValidateTimeInput(_scheduledStopTimeText);
+            if (stopError != null)
+            {
+                _logService.Warn($"{Strings.StopTime} {stopError}");
+                return;
+            }
+            _scheduledStopTime = ParseValidTime(_scheduledStopTimeText);
+
+            // Ensure stop is after start (same-day comparison)
+            if (_scheduledStopTime <= _scheduledStartTime)
+            {
+                _logService.Warn(Strings.SchedulerStopBeforeStart);
+                return;
+            }
+        }
+        else
+        {
+            _scheduledStopTime = null;
+        }
+
+        _schedulerStarted = false;
+        IsSchedulerEnabled = true;
+        ScheduleButtonText = Strings.CancelSchedule;
+        OnPropertyChanged(nameof(HasScheduler));
+        _logService.Info($"Scheduler armed: start at {_scheduledStartTime:HH:mm}, stop at {(_scheduledStopTime?.ToString("HH:mm") ?? "—")}");
+    }
+
+    private void CheckScheduler()
+    {
+        if (!_isSchedulerEnabled) return;
+
+        var now = DateTime.Now;
+
+        // Trigger start
+        if (!_schedulerStarted && _scheduledStartTime != null && now >= _scheduledStartTime)
+        {
+            _schedulerStarted = true;
+            _logService.Info(Strings.SchedulerStarted);
+            OnStartAll();
+        }
+
+        // Trigger stop
+        if (_schedulerStarted && _scheduledStopTime != null && now >= _scheduledStopTime)
+        {
+            _logService.Info(Strings.SchedulerStopped);
+            OnStopAll();
+            // One-shot: disable after stop
+            IsSchedulerEnabled = false;
+            _schedulerStarted = false;
+            SchedulerCountdown = "";
+            ScheduleButtonText = Strings.Schedule;
+            OnPropertyChanged(nameof(HasScheduler));
+            return;
+        }
+
+        // Update countdown display
+        if (!_schedulerStarted && _scheduledStartTime != null)
+        {
+            var remaining = _scheduledStartTime.Value - now;
+            SchedulerCountdown = remaining.TotalSeconds > 0
+                ? string.Format(Strings.SchedulerStartsIn, remaining.ToString(@"hh\:mm\:ss"))
+                : "";
+        }
+        else if (_schedulerStarted && _scheduledStopTime != null)
+        {
+            var remaining = _scheduledStopTime.Value - now;
+            SchedulerCountdown = remaining.TotalSeconds > 0
+                ? string.Format(Strings.SchedulerStopsIn, remaining.ToString(@"hh\:mm\:ss"))
+                : "";
+        }
+    }
+
+    /// <summary>
+    /// Validates a time input string. Returns error message or null if valid.
+    /// </summary>
+    private string? ValidateTimeInput(string text)
+    {
+        var trimmed = text.Trim();
+
+        // Check for non-numeric/colon characters
+        if (!System.Text.RegularExpressions.Regex.IsMatch(trimmed, @"^\d{1,2}:\d{2}$"))
+            return Strings.SchedulerInvalidFormat;
+
+        var parts = trimmed.Split(':');
+        if (!int.TryParse(parts[0], out var hours) || !int.TryParse(parts[1], out var minutes))
+            return Strings.SchedulerInvalidFormat;
+
+        // Validate hour range 0-23
+        if (hours < 0 || hours > 23)
+            return string.Format(Strings.SchedulerInvalidHour, trimmed);
+
+        // Validate minute range 0-59
+        if (minutes < 0 || minutes > 59)
+            return string.Format(Strings.SchedulerInvalidMinute, trimmed);
+
+        return null;
+    }
+
+    /// <summary>
+    /// Parses a validated "HH:mm" string to DateTime (today or tomorrow if past).
+    /// Call only after ValidateTimeInput returns null.
+    /// </summary>
+    private static DateTime ParseValidTime(string text)
+    {
+        var parts = text.Trim().Split(':');
+        var time = new TimeSpan(int.Parse(parts[0]), int.Parse(parts[1]), 0);
+        var today = DateTime.Today.Add(time);
+        return today > DateTime.Now ? today : today.AddDays(1);
     }
 
     public void SaveSettings()

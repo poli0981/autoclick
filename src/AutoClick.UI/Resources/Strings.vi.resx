@@ -137,6 +137,21 @@
   <data name="UpdateNetworkError" xml:space="preserve"><value>Lỗi mạng. Kiểm tra kết nối internet.</value></data>
   <data name="UpdateChecksumFailed" xml:space="preserve"><value>Xác minh tải xuống thất bại. Vui lòng thử lại.</value></data>
   <data name="UpdateUnknownError" xml:space="preserve"><value>Lỗi không xác định khi cập nhật.</value></data>
+  <data name="Schedule" xml:space="preserve"><value>Hẹn giờ</value></data>
+  <data name="CancelSchedule" xml:space="preserve"><value>Hủy</value></data>
+  <data name="StartTime" xml:space="preserve"><value>Bắt đầu:</value></data>
+  <data name="StopTime" xml:space="preserve"><value>Dừng:</value></data>
+  <data name="SchedulerStartsIn" xml:space="preserve"><value>Bắt đầu sau: {0}</value></data>
+  <data name="SchedulerStopsIn" xml:space="preserve"><value>Dừng sau: {0}</value></data>
+  <data name="SchedulerStarted" xml:space="preserve"><value>Hẹn giờ đã kích hoạt bắt đầu</value></data>
+  <data name="SchedulerStopped" xml:space="preserve"><value>Hẹn giờ đã kích hoạt dừng</value></data>
+  <data name="SchedulerInvalidTime" xml:space="preserve"><value>Định dạng giờ không hợp lệ. Dùng HH:mm.</value></data>
+  <data name="SchedulerInvalidFormat" xml:space="preserve"><value>Định dạng không hợp lệ. Nhập giờ dạng HH:mm (ví dụ: 20:00).</value></data>
+  <data name="SchedulerInvalidHour" xml:space="preserve"><value>"{0}": giờ phải từ 00–23.</value></data>
+  <data name="SchedulerInvalidMinute" xml:space="preserve"><value>"{0}": phút phải từ 00–59.</value></data>
+  <data name="SchedulerStopBeforeStart" xml:space="preserve"><value>Giờ dừng phải sau giờ bắt đầu.</value></data>
+  <data name="SchedulerStartRequired" xml:space="preserve"><value>Giờ bắt đầu là bắt buộc.</value></data>
+  <data name="SchedulerNoGames" xml:space="preserve"><value>Thêm game có toạ độ trước khi hẹn giờ.</value></data>
   <data name="SettingsMode" xml:space="preserve"><value>Chế độ cài đặt</value></data>
   <data name="GlobalMode" xml:space="preserve"><value>Chung (Giống nhau cho tất cả)</value></data>
   <data name="CustomMode" xml:space="preserve"><value>Tùy chỉnh (Theo từng game)</value></data>

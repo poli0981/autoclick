@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using AutoClick.Core.Models;
 
 namespace AutoClick.Core.Interfaces;

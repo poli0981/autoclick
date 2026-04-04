@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Concurrent;
-using System.Threading;
-using System.Threading.Tasks;
 using AutoClick.Core.Enums;
 using AutoClick.Core.Interfaces;
 using AutoClick.Core.Models;
