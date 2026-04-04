@@ -5,7 +5,8 @@
         Background="#01000000" Topmost="True" Cursor="Cross"
         WindowState="Maximized" ShowInTaskbar="False"
         MouseLeftButtonDown="OnMouseDown"
-        KeyDown="OnKeyDown">
+        PreviewKeyDown="OnKeyDown"
+        Loaded="OnLoaded">
 
     <Grid>
         <!-- Crosshair overlay -->

@@ -138,6 +138,12 @@
   <data name="UpdateNetworkError" xml:space="preserve"><value>Network error. Check your internet connection.</value></data>
   <data name="UpdateChecksumFailed" xml:space="preserve"><value>Download verification failed. Please try again.</value></data>
   <data name="UpdateUnknownError" xml:space="preserve"><value>An unknown error occurred during update.</value></data>
+  <data name="SettingsMode" xml:space="preserve"><value>Settings Mode</value></data>
+  <data name="GlobalMode" xml:space="preserve"><value>Global (Same for all)</value></data>
+  <data name="CustomMode" xml:space="preserve"><value>Custom (Per game)</value></data>
+  <data name="PerGameMode" xml:space="preserve"><value>Mode</value></data>
+  <data name="PerGameRandomMin" xml:space="preserve"><value>Min (s)</value></data>
+  <data name="PerGameRandomMax" xml:space="preserve"><value>Max (s)</value></data>
   <data name="Profile" xml:space="preserve"><value>Profile</value></data>
   <data name="SaveProfile" xml:space="preserve"><value>Save Profile</value></data>
   <data name="LoadProfile" xml:space="preserve"><value>Load</value></data>

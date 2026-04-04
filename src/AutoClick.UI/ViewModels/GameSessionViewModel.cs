@@ -82,6 +82,27 @@ public class GameSessionViewModel : ViewModelBase
         }
     }
 
+    public int SelectedModeIndex
+    {
+        get => _session.Profile.Mode == ClickMode.Random ? 0 : 1;
+        set { _session.Profile.Mode = value == 0 ? ClickMode.Random : ClickMode.Fixed; OnPropertyChanged(); }
+    }
+
+    public double PerGameRandomMin
+    {
+        get => _session.Profile.RandomMinSeconds;
+        set { _session.Profile.RandomMinSeconds = Math.Clamp(value, 1, _session.Profile.RandomMaxSeconds - 1); OnPropertyChanged(); }
+    }
+
+    public double PerGameRandomMax
+    {
+        get => _session.Profile.RandomMaxSeconds;
+        set { _session.Profile.RandomMaxSeconds = Math.Clamp(value, _session.Profile.RandomMinSeconds + 1, 60); OnPropertyChanged(); }
+    }
+
+    private bool _isCustomMode;
+    public bool IsCustomMode { get => _isCustomMode; set => SetProperty(ref _isCustomMode, value); }
+
     public RelayCommand StartCommand { get; }
     public RelayCommand PauseCommand { get; }
     public RelayCommand ResumeCommand { get; }
@@ -178,6 +199,9 @@ public class GameSessionViewModel : ViewModelBase
 
         _fixedInterval = profile.ClickSettings.FixedIntervalSeconds;
         OnPropertyChanged(nameof(FixedInterval));
+        OnPropertyChanged(nameof(SelectedModeIndex));
+        OnPropertyChanged(nameof(PerGameRandomMin));
+        OnPropertyChanged(nameof(PerGameRandomMax));
 
         _sequenceDelayMs = profile.SequenceDelayMs;
         OnPropertyChanged(nameof(SequenceDelayMs));

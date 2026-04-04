@@ -17,6 +17,21 @@
         <Border Background="{DynamicResource CardBrush}" CornerRadius="8" Padding="16" Margin="0,0,0,16"
                 BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
             <StackPanel>
+                <!-- Settings Mode -->
+                <Grid Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{x:Static res:Strings.SettingsMode}" VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedSettingsModeIndex}"
+                              IsEnabled="{Binding IsSettingsEnabled}" HorizontalAlignment="Left" Width="200">
+                        <ComboBoxItem Content="{x:Static res:Strings.GlobalMode}"/>
+                        <ComboBoxItem Content="{x:Static res:Strings.CustomMode}"/>
+                    </ComboBox>
+                </Grid>
+
                 <!-- Click Mode -->
                 <Grid Margin="0,0,0,12">
                     <Grid.ColumnDefinitions>
@@ -26,7 +41,7 @@
                     <TextBlock Text="{x:Static res:Strings.ClickMode}" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
                     <ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedClickModeIndex}"
-                              IsEnabled="{Binding IsSettingsEnabled}" HorizontalAlignment="Left" Width="150">
+                              IsEnabled="{Binding IsGlobalParamsEnabled}" HorizontalAlignment="Left" Width="150">
                         <ComboBoxItem Content="{x:Static res:Strings.Random}"/>
                         <ComboBoxItem Content="{x:Static res:Strings.Fixed}"/>
                     </ComboBox>
@@ -41,7 +56,7 @@
                     <TextBlock Text="{x:Static res:Strings.Interval}" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
                     <TextBox Grid.Column="1" Text="{Binding FixedInterval, UpdateSourceTrigger=LostFocus}"
-                             Width="80" HorizontalAlignment="Left" IsEnabled="{Binding IsSettingsEnabled}"/>
+                             Width="80" HorizontalAlignment="Left" IsEnabled="{Binding IsGlobalParamsEnabled}"/>
                 </Grid>
 
                 <!-- Random Min/Max -->
@@ -53,7 +68,7 @@
                     <TextBlock Text="{x:Static res:Strings.RandomMin}" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
                     <TextBox Grid.Column="1" Text="{Binding RandomMin, UpdateSourceTrigger=LostFocus}"
-                             Width="80" HorizontalAlignment="Left" IsEnabled="{Binding IsSettingsEnabled}"/>
+                             Width="80" HorizontalAlignment="Left" IsEnabled="{Binding IsGlobalParamsEnabled}"/>
                 </Grid>
                 <Grid Margin="0,0,0,12">
                     <Grid.ColumnDefinitions>
@@ -63,7 +78,7 @@
                     <TextBlock Text="{x:Static res:Strings.RandomMax}" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
                     <TextBox Grid.Column="1" Text="{Binding RandomMax, UpdateSourceTrigger=LostFocus}"
-                             Width="80" HorizontalAlignment="Left" IsEnabled="{Binding IsSettingsEnabled}"/>
+                             Width="80" HorizontalAlignment="Left" IsEnabled="{Binding IsGlobalParamsEnabled}"/>
                 </Grid>
 
                 <!-- Max Games -->

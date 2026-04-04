@@ -49,6 +49,14 @@ public partial class MainWindow : Window
         // Save button in settings -> save + reload
         settingsVm.SaveRequested += () => mainVm.SaveSettings();
 
+        // Settings mode changed -> propagate to game sessions
+        settingsVm.SettingsModeChanged += () =>
+        {
+            var isCustom = settingsVm.IsCustomMode;
+            foreach (var g in mainVm.GameSessions)
+                g.IsCustomMode = isCustom;
+        };
+
         // Reset app -> refresh settings UI
         mainVm.SettingsReloaded += () => settingsVm.RefreshAllBindings();
 
@@ -261,6 +269,16 @@ public partial class MainWindow : Window
             };
             if (dlg.ShowDialog() == true)
             {
+                var dupName = _mainVm.CheckImportDuplicateName(dlg.FileName);
+                if (dupName != null)
+                {
+                    var result = MessageBox.Show(
+                        string.Format(Strings.ProfileNameDuplicate, dupName),
+                        Strings.Profile, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result != MessageBoxResult.Yes)
+                        return;
+                }
+
                 var profile = _mainVm.ImportProfile(dlg.FileName);
                 if (profile != null)
                     _soundService?.PlaySuccess();

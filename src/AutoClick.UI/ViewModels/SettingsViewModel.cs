@@ -17,6 +17,23 @@ public class SettingsViewModel : ViewModelBase
 
     public bool IsSettingsEnabled => !_hasAnyRunning();
 
+    public int SelectedSettingsModeIndex
+    {
+        get => (int)_settings.SettingsMode;
+        set
+        {
+            _settings.SettingsMode = (SettingsMode)Math.Clamp(value, 0, 1);
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(IsGlobalMode));
+            OnPropertyChanged(nameof(IsCustomMode));
+            SettingsModeChanged?.Invoke();
+        }
+    }
+
+    public bool IsGlobalMode => _settings.SettingsMode == SettingsMode.Global;
+    public bool IsCustomMode => _settings.SettingsMode == SettingsMode.Custom;
+    public bool IsGlobalParamsEnabled => IsGlobalMode && IsSettingsEnabled;
+
     public int SelectedClickModeIndex
     {
         get => _settings.DefaultClickMode == ClickMode.Random ? 0 : 1;
@@ -148,6 +165,7 @@ public class SettingsViewModel : ViewModelBase
     public event Action? ResetAppRequested;
     public event Action? SaveRequested;
     public event Action? RestartRequested;
+    public event Action? SettingsModeChanged;
 
     public SettingsViewModel(
         ISettingsService settingsService,
@@ -169,13 +187,21 @@ public class SettingsViewModel : ViewModelBase
         OpenSettingsFileCommand = new RelayCommand(OnOpenSettingsFile);
     }
 
-    public void RefreshRunningState() => OnPropertyChanged(nameof(IsSettingsEnabled));
+    public void RefreshRunningState()
+    {
+        OnPropertyChanged(nameof(IsSettingsEnabled));
+        OnPropertyChanged(nameof(IsGlobalParamsEnabled));
+    }
 
     /// <summary>
     /// Refreshes ALL property bindings. Called after ResetApp to update UI.
     /// </summary>
     public void RefreshAllBindings()
     {
+        OnPropertyChanged(nameof(SelectedSettingsModeIndex));
+        OnPropertyChanged(nameof(IsGlobalMode));
+        OnPropertyChanged(nameof(IsCustomMode));
+        OnPropertyChanged(nameof(IsGlobalParamsEnabled));
         OnPropertyChanged(nameof(SelectedClickModeIndex));
         OnPropertyChanged(nameof(FixedInterval));
         OnPropertyChanged(nameof(RandomMin));

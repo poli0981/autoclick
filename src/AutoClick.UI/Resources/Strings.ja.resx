@@ -137,6 +137,12 @@
   <data name="UpdateNetworkError" xml:space="preserve"><value>ネットワークエラー。インターネット接続を確認してください。</value></data>
   <data name="UpdateChecksumFailed" xml:space="preserve"><value>ダウンロードの検証に失敗しました。もう一度お試しください。</value></data>
   <data name="UpdateUnknownError" xml:space="preserve"><value>更新中に不明なエラーが発生しました。</value></data>
+  <data name="SettingsMode" xml:space="preserve"><value>設定モード</value></data>
+  <data name="GlobalMode" xml:space="preserve"><value>グローバル（全ゲーム共通）</value></data>
+  <data name="CustomMode" xml:space="preserve"><value>カスタム（ゲームごと）</value></data>
+  <data name="PerGameMode" xml:space="preserve"><value>モード</value></data>
+  <data name="PerGameRandomMin" xml:space="preserve"><value>最小 (s)</value></data>
+  <data name="PerGameRandomMax" xml:space="preserve"><value>最大 (s)</value></data>
   <data name="Profile" xml:space="preserve"><value>プロファイル</value></data>
   <data name="SaveProfile" xml:space="preserve"><value>保存</value></data>
   <data name="LoadProfile" xml:space="preserve"><value>読込</value></data>

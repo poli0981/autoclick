@@ -137,6 +137,12 @@
   <data name="UpdateNetworkError" xml:space="preserve"><value>Lỗi mạng. Kiểm tra kết nối internet.</value></data>
   <data name="UpdateChecksumFailed" xml:space="preserve"><value>Xác minh tải xuống thất bại. Vui lòng thử lại.</value></data>
   <data name="UpdateUnknownError" xml:space="preserve"><value>Lỗi không xác định khi cập nhật.</value></data>
+  <data name="SettingsMode" xml:space="preserve"><value>Chế độ cài đặt</value></data>
+  <data name="GlobalMode" xml:space="preserve"><value>Chung (Giống nhau cho tất cả)</value></data>
+  <data name="CustomMode" xml:space="preserve"><value>Tùy chỉnh (Theo từng game)</value></data>
+  <data name="PerGameMode" xml:space="preserve"><value>Chế độ</value></data>
+  <data name="PerGameRandomMin" xml:space="preserve"><value>Tối thiểu (s)</value></data>
+  <data name="PerGameRandomMax" xml:space="preserve"><value>Tối đa (s)</value></data>
   <data name="Profile" xml:space="preserve"><value>Hồ sơ</value></data>
   <data name="SaveProfile" xml:space="preserve"><value>Lưu hồ sơ</value></data>
   <data name="LoadProfile" xml:space="preserve"><value>Tải</value></data>
