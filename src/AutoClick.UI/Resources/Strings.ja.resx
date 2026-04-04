@@ -137,6 +137,9 @@
   <data name="UpdateNetworkError" xml:space="preserve"><value>ネットワークエラー。インターネット接続を確認してください。</value></data>
   <data name="UpdateChecksumFailed" xml:space="preserve"><value>ダウンロードの検証に失敗しました。もう一度お試しください。</value></data>
   <data name="UpdateUnknownError" xml:space="preserve"><value>更新中に不明なエラーが発生しました。</value></data>
+  <data name="Dashboard" xml:space="preserve"><value>ダッシュボード</value></data>
+  <data name="DashboardCpmChart" xml:space="preserve"><value>クリック数/分 (リアルタイム)</value></data>
+  <data name="DashboardGameBreakdown" xml:space="preserve"><value>ゲーム別内訳</value></data>
   <data name="ClickSuccess" xml:space="preserve"><value>成功</value></data>
   <data name="ClickSkipped" xml:space="preserve"><value>スキップ</value></data>
   <data name="ClickTotal" xml:space="preserve"><value>合計</value></data>
@@ -190,4 +193,10 @@
   <data name="GameExitNotification" xml:space="preserve"><value>ゲーム終了通知</value></data>
   <data name="GameExitNotificationTitle" xml:space="preserve"><value>ゲームが終了しました</value></data>
   <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} が終了しました。成功: {1}、スキップ: {2}</value></data>
+  <data name="AutoStoppedQueueEmpty" xml:space="preserve"><value>すべてのゲームが終了しました。自動停止しました。</value></data>
+  <data name="DashboardSuccessRatio" xml:space="preserve"><value>成功 / スキップ比率</value></data>
+  <data name="DashboardGameTimeline" xml:space="preserve"><value>ゲーム別CPMタイムライン</value></data>
+  <data name="ExportStats" xml:space="preserve"><value>統計をエクスポート</value></data>
+  <data name="ResetDashboard" xml:space="preserve"><value>統計をリセット</value></data>
+  <data name="ConfirmResetStats" xml:space="preserve"><value>セッション統計とダッシュボードデータをリセットしますか？元に戻せません。</value></data>
 </root>

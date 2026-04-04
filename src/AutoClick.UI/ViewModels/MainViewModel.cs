@@ -108,6 +108,12 @@ public class MainViewModel : ViewModelBase
 
     public event Action? SettingsReloaded;
 
+    /// <summary>
+    /// Fired when a game process exits. Args: processName, clickCount, skippedClicks.
+    /// Used by dashboard to archive stats of exited games.
+    /// </summary>
+    public event Action<string, long, long>? GameExited;
+
     public MainViewModel(
         IClickEngine clickEngine,
         IGameDetector gameDetector,
@@ -351,6 +357,10 @@ public class MainViewModel : ViewModelBase
         {
             if (vm.IsRunning || vm.IsPaused)
                 vm.Stop();
+
+            // Archive stats before removing
+            GameExited?.Invoke(vm.ProcessName, vm.Session.ClickCount, vm.Session.SkippedClicks);
+
             _logService.Info($"Game \"{vm.ProcessName}\" (PID: {vm.Session.ProcessId}) has exited. Total clicks: {vm.Session.ClickCount}. Auto-removed.");
 
             if (_settings.ShowGameExitNotification)
@@ -358,13 +368,25 @@ public class MainViewModel : ViewModelBase
                 App.ShowBalloonTip(
                     Strings.GameExitNotificationTitle,
                     string.Format(Strings.GameExitNotificationMessage, vm.ProcessName, vm.Session.ClickCount, vm.Session.SkippedClicks),
-                    System.Windows.Forms.ToolTipIcon.Warning);
+                    ToolTipIcon.Warning);
             }
 
             GameSessions.Remove(vm);
         }
         if (toRemove.Count > 0)
+        {
             _memoryManager.ForceCleanup();
+
+            // Auto-stop when no games remain in queue
+            if (GameSessions.Count == 0 && _sessionStartedAt != null)
+            {
+                _logService.Info(Strings.AutoStoppedQueueEmpty);
+                App.ShowBalloonTip(
+                    Strings.AppTitle,
+                    Strings.AutoStoppedQueueEmpty,
+                    System.Windows.Forms.ToolTipIcon.Info);
+            }
+        }
     }
 
     private void OnAddGame() => RequestAddGame?.Invoke();
@@ -517,14 +539,7 @@ public class MainViewModel : ViewModelBase
         SettingsReloaded?.Invoke();
 
         // Reset session stats
-        _sessionStartedAt = null;
-        TotalClicks = 0;
-        TotalSkipped = 0;
-        SessionUptime = "00:00:00";
-        ClicksPerMinute = 0;
-        PeakClicksPerMinute = 0;
-        _lastTotalClicks = 0;
-        OnPropertyChanged(nameof(HasStats));
+        ResetSessionStats();
 
         _memoryManager.ForceCleanup();
         _logService.Info("Application reset to factory defaults");
@@ -768,6 +783,26 @@ public class MainViewModel : ViewModelBase
         var time = new TimeSpan(int.Parse(parts[0]), int.Parse(parts[1]), 0);
         var today = DateTime.Today.Add(time);
         return today > DateTime.Now ? today : today.AddDays(1);
+    }
+
+    /// <summary>
+    /// Resets session statistics (called from dashboard reset too).
+    /// </summary>
+    public void ResetSessionStats()
+    {
+        _sessionStartedAt = null;
+        TotalClicks = 0;
+        TotalSkipped = 0;
+        SessionUptime = "00:00:00";
+        ClicksPerMinute = 0;
+        PeakClicksPerMinute = 0;
+        _lastTotalClicks = 0;
+        _statsFrozen = false;
+        OnPropertyChanged(nameof(HasStats));
+
+        // Reset per-game stats
+        foreach (var g in GameSessions)
+            g.ResetStats();
     }
 
     public void SaveSettings()

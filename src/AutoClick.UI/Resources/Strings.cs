@@ -117,6 +117,11 @@ public static class Strings
     public static string UpdateChecksumFailed => GetString("UpdateChecksumFailed", "Download verification failed. Please try again.");
     public static string UpdateUnknownError => GetString("UpdateUnknownError", "An unknown error occurred during update.");
 
+    // Dashboard
+    public static string Dashboard => GetString("Dashboard", "Dashboard");
+    public static string DashboardCpmChart => GetString("DashboardCpmChart", "Clicks Per Minute (Live)");
+    public static string DashboardGameBreakdown => GetString("DashboardGameBreakdown", "Per-Game Breakdown");
+
     // Click count labels
     public static string ClickSuccess => GetString("ClickSuccess", "Success");
     public static string ClickSkipped => GetString("ClickSkipped", "Skipped");
@@ -181,6 +186,14 @@ public static class Strings
     public static string GameExitNotification => GetString("GameExitNotification", "Game Exit Notification");
     public static string GameExitNotificationTitle => GetString("GameExitNotificationTitle", "Game Exited");
     public static string GameExitNotificationMessage => GetString("GameExitNotificationMessage", "{0} has exited. Success: {1}, Skipped: {2}");
+
+    // Dashboard extras
+    public static string AutoStoppedQueueEmpty => GetString("AutoStoppedQueueEmpty", "All games have exited. Auto-stopped.");
+    public static string DashboardSuccessRatio => GetString("DashboardSuccessRatio", "Success / Skip Ratio");
+    public static string DashboardGameTimeline => GetString("DashboardGameTimeline", "Per-Game CPM Timeline");
+    public static string ExportStats => GetString("ExportStats", "Export Stats");
+    public static string ResetDashboard => GetString("ResetDashboard", "Reset All Stats");
+    public static string ConfirmResetStats => GetString("ConfirmResetStats", "Reset all session statistics and dashboard data? This cannot be undone.");
 
     private static readonly System.Resources.ResourceManager ResourceManager =
         new("AutoClick.UI.Resources.Strings", typeof(Strings).Assembly);

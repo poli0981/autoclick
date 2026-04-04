@@ -137,6 +137,9 @@
   <data name="UpdateNetworkError" xml:space="preserve"><value>네트워크 오류. 인터넷 연결을 확인하세요.</value></data>
   <data name="UpdateChecksumFailed" xml:space="preserve"><value>다운로드 검증 실패. 다시 시도해 주세요.</value></data>
   <data name="UpdateUnknownError" xml:space="preserve"><value>업데이트 중 알 수 없는 오류가 발생했습니다.</value></data>
+  <data name="Dashboard" xml:space="preserve"><value>대시보드</value></data>
+  <data name="DashboardCpmChart" xml:space="preserve"><value>분당 클릭 수 (실시간)</value></data>
+  <data name="DashboardGameBreakdown" xml:space="preserve"><value>게임별 분석</value></data>
   <data name="ClickSuccess" xml:space="preserve"><value>성공</value></data>
   <data name="ClickSkipped" xml:space="preserve"><value>건너뜀</value></data>
   <data name="ClickTotal" xml:space="preserve"><value>합계</value></data>
@@ -190,4 +193,10 @@
   <data name="GameExitNotification" xml:space="preserve"><value>게임 종료 알림</value></data>
   <data name="GameExitNotificationTitle" xml:space="preserve"><value>게임이 종료되었습니다</value></data>
   <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0}이(가) 종료되었습니다. 성공: {1}, 건너뜀: {2}</value></data>
+  <data name="AutoStoppedQueueEmpty" xml:space="preserve"><value>모든 게임이 종료되었습니다. 자동 중지되었습니다.</value></data>
+  <data name="DashboardSuccessRatio" xml:space="preserve"><value>성공 / 건너뜀 비율</value></data>
+  <data name="DashboardGameTimeline" xml:space="preserve"><value>게임별 CPM 타임라인</value></data>
+  <data name="ExportStats" xml:space="preserve"><value>통계 내보내기</value></data>
+  <data name="ResetDashboard" xml:space="preserve"><value>통계 초기화</value></data>
+  <data name="ConfirmResetStats" xml:space="preserve"><value>세션 통계와 대시보드 데이터를 초기화하시겠습니까? 되돌릴 수 없습니다.</value></data>
 </root>

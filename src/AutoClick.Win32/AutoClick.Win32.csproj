@@ -4,6 +4,12 @@
     <ProjectReference Include="..\AutoClick.Core\AutoClick.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="LiveChartsCore" Version="2.0.0" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView" Version="2.0.0" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
