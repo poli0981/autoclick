@@ -193,6 +193,35 @@
                 <CheckBox Content="{x:Static res:Strings.GameExitNotification}" IsChecked="{Binding ShowGameExitNotification}"
                           Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,12"/>
 
+                <!-- Pixel Color Guard -->
+                <TextBlock Text="{x:Static res:Strings.PixelColorGuard}" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,4,0,8"/>
+                <CheckBox Content="{x:Static res:Strings.EnablePixelColorGuard}" IsChecked="{Binding EnablePixelColorGuard}"
+                          Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,12"/>
+                <Grid Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{x:Static res:Strings.ColorTolerance}" VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    <TextBox Grid.Column="1" Text="{Binding ColorTolerance, UpdateSourceTrigger=LostFocus}"
+                             Width="80" HorizontalAlignment="Left"/>
+                </Grid>
+                <Grid Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{x:Static res:Strings.OnColorMismatch}" VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    <ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedMismatchBehaviorIndex}"
+                              HorizontalAlignment="Left" Width="200">
+                        <ComboBoxItem Content="{x:Static res:Strings.SkipPoint}"/>
+                        <ComboBoxItem Content="{x:Static res:Strings.StopSession}"/>
+                    </ComboBox>
+                </Grid>
+
                 <!-- Hotkeys -->
                 <TextBlock Text="{x:Static res:Strings.Hotkeys}" FontWeight="SemiBold"
                            Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,4,0,8"/>

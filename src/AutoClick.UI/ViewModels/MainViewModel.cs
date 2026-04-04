@@ -48,6 +48,9 @@ public class MainViewModel : ViewModelBase
     private long _totalClicks;
     public long TotalClicks { get => _totalClicks; set => SetProperty(ref _totalClicks, value); }
 
+    private long _totalSkipped;
+    public long TotalSkipped { get => _totalSkipped; set => SetProperty(ref _totalSkipped, value); }
+
     private string _sessionUptime = "00:00:00";
     public string SessionUptime { get => _sessionUptime; set => SetProperty(ref _sessionUptime, value); }
 
@@ -297,7 +300,10 @@ public class MainViewModel : ViewModelBase
                 FixedIntervalSeconds = _settings.DefaultFixedInterval,
                 RandomMinSeconds = _settings.RandomMin,
                 RandomMaxSeconds = _settings.RandomMax
-            }
+            },
+            EnablePixelColorGuard = _settings.EnablePixelColorGuard,
+            ColorTolerance = _settings.ColorTolerance,
+            ColorMismatchBehavior = _settings.ColorMismatchBehavior
         };
 
         var vm = new GameSessionViewModel(session, _clickEngine, _logService, _soundService);
@@ -351,7 +357,7 @@ public class MainViewModel : ViewModelBase
             {
                 App.ShowBalloonTip(
                     Strings.GameExitNotificationTitle,
-                    string.Format(Strings.GameExitNotificationMessage, vm.ProcessName, vm.Session.ClickCount),
+                    string.Format(Strings.GameExitNotificationMessage, vm.ProcessName, vm.Session.ClickCount, vm.Session.SkippedClicks),
                     System.Windows.Forms.ToolTipIcon.Warning);
             }
 
@@ -408,6 +414,7 @@ public class MainViewModel : ViewModelBase
     {
         long total = GameSessions.Sum(g => g.Session.ClickCount);
         TotalClicks = total;
+        TotalSkipped = GameSessions.Sum(g => g.Session.SkippedClicks);
 
         if (_sessionStartedAt == null && ActiveGameCount > 0)
         {
@@ -496,6 +503,9 @@ public class MainViewModel : ViewModelBase
         _settings.SoundNotifications = defaults.SoundNotifications;
         _settings.ShowGameExitNotification = defaults.ShowGameExitNotification;
         _settings.SettingsMode = defaults.SettingsMode;
+        _settings.EnablePixelColorGuard = defaults.EnablePixelColorGuard;
+        _settings.ColorTolerance = defaults.ColorTolerance;
+        _settings.ColorMismatchBehavior = defaults.ColorMismatchBehavior;
         _settings.Hotkeys = new HotkeySettings();
         _settingsService.Save(_settings);
 
@@ -509,6 +519,7 @@ public class MainViewModel : ViewModelBase
         // Reset session stats
         _sessionStartedAt = null;
         TotalClicks = 0;
+        TotalSkipped = 0;
         SessionUptime = "00:00:00";
         ClicksPerMinute = 0;
         PeakClicksPerMinute = 0;
@@ -534,7 +545,7 @@ public class MainViewModel : ViewModelBase
         var profile = existing ?? new GameProfile();
         profile.Name = profileName;
         profile.ClickPoints = sessionVm.Session.ClickPoints
-            .Select(p => new ClickPoint(p.X, p.Y, p.ClickType, p.DelayAfterMs))
+            .Select(p => new ClickPoint(p.X, p.Y, p.ClickType, p.DelayAfterMs) { ReferenceColor = p.ReferenceColor })
             .ToList();
         profile.ClickSettings = new ClickProfile
         {

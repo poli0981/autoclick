@@ -4,6 +4,7 @@ using AutoClick.Core.Interfaces;
 using AutoClick.Core.Models;
 using AutoClick.Services;
 using AutoClick.UI.Resources;
+using AutoClick.Win32;
 
 namespace AutoClick.UI.ViewModels;
 
@@ -33,6 +34,11 @@ public class GameSessionViewModel : ViewModelBase
 
     private long _clickCount;
     public long ClickCount { get => _clickCount; set => SetProperty(ref _clickCount, value); }
+
+    private long _skippedClicks;
+    public long SkippedClicks { get => _skippedClicks; set => SetProperty(ref _skippedClicks, value); }
+
+    public long TotalClicks => _clickCount + _skippedClicks;
 
     private double _lastInterval;
     public double LastInterval { get => _lastInterval; set => SetProperty(ref _lastInterval, value); }
@@ -77,6 +83,16 @@ public class GameSessionViewModel : ViewModelBase
                 pt.DelayAfterMs = clamped;
         }
     }
+
+    /// <summary>
+    /// Returns hex color strings for each click point that has a reference color. Used for UI color swatches.
+    /// </summary>
+    public List<string> ColorSwatches => _session.ClickPoints
+        .Where(p => p.HasReferenceColor)
+        .Select(p => PixelColorHelper.ColorToHex(p.ReferenceColor))
+        .ToList();
+
+    public bool HasColorSwatches => ColorSwatches.Count > 0;
 
     public int SelectedModeIndex
     {
@@ -165,9 +181,11 @@ public class GameSessionViewModel : ViewModelBase
     public void ResetStats()
     {
         _session.ClickCount = 0;
+        _session.SkippedClicks = 0;
         _session.LastIntervalSeconds = 0;
         _session.StartedAt = null;
         ClickCount = 0;
+        SkippedClicks = 0;
         LastInterval = 0;
         _log.Info($"Stats reset for \"{ProcessName}\"");
     }
@@ -175,18 +193,24 @@ public class GameSessionViewModel : ViewModelBase
     public void UpdateCoordinateText()
     {
         CoordinateText = _session.ClickPoints.Count > 0
-            ? string.Join(" → ", _session.ClickPoints.Select((p, i) => $"#{i + 1}{p}"))
+            ? string.Join(" → ", _session.ClickPoints.Select((p, i) =>
+            {
+                var color = p.HasReferenceColor ? $" [{PixelColorHelper.ColorToHex(p.ReferenceColor)}]" : "";
+                return $"#{i + 1}{p}{color}";
+            }))
             : "-";
         OnPropertyChanged(nameof(HasCoordinate));
         OnPropertyChanged(nameof(PointCount));
         OnPropertyChanged(nameof(HasMultiplePoints));
+        OnPropertyChanged(nameof(ColorSwatches));
+        OnPropertyChanged(nameof(HasColorSwatches));
     }
 
     public void ApplyProfile(GameProfile profile)
     {
         _session.ClickPoints.Clear();
         foreach (var p in profile.ClickPoints)
-            _session.ClickPoints.Add(new ClickPoint(p.X, p.Y, p.ClickType, p.DelayAfterMs));
+            _session.ClickPoints.Add(new ClickPoint(p.X, p.Y, p.ClickType, p.DelayAfterMs) { ReferenceColor = p.ReferenceColor });
 
         _session.Profile.Mode = profile.ClickSettings.Mode;
         _session.Profile.FixedIntervalSeconds = profile.ClickSettings.FixedIntervalSeconds;
@@ -208,6 +232,8 @@ public class GameSessionViewModel : ViewModelBase
     private void RefreshUI()
     {
         ClickCount = _session.ClickCount;
+        SkippedClicks = _session.SkippedClicks;
+        OnPropertyChanged(nameof(TotalClicks));
         LastInterval = Math.Round(_session.LastIntervalSeconds, 2);
         RefreshState();
     }

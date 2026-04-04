@@ -117,6 +117,21 @@ public static class Strings
     public static string UpdateChecksumFailed => GetString("UpdateChecksumFailed", "Download verification failed. Please try again.");
     public static string UpdateUnknownError => GetString("UpdateUnknownError", "An unknown error occurred during update.");
 
+    // Click count labels
+    public static string ClickSuccess => GetString("ClickSuccess", "Success");
+    public static string ClickSkipped => GetString("ClickSkipped", "Skipped");
+    public static string ClickTotal => GetString("ClickTotal", "Total");
+
+    // Pixel Color Guard
+    public static string PixelColorGuard => GetString("PixelColorGuard", "Pixel Color Guard");
+    public static string EnablePixelColorGuard => GetString("EnablePixelColorGuard", "Enable Pixel Color Guard");
+    public static string ColorTolerance => GetString("ColorTolerance", "Color Tolerance (0-50)");
+    public static string OnColorMismatch => GetString("OnColorMismatch", "On Color Mismatch");
+    public static string SkipPoint => GetString("SkipPoint", "Skip Point");
+    public static string StopSession => GetString("StopSession", "Stop Session");
+    public static string ColorMismatchSkipped => GetString("ColorMismatchSkipped", "Color mismatch at ({0}, {1}): skipped.");
+    public static string ColorMismatchStopped => GetString("ColorMismatchStopped", "Color mismatch at ({0}, {1}): expected {2}, got {3}. Stopped.");
+
     // Scheduler
     public static string Schedule => GetString("Schedule", "Schedule");
     public static string CancelSchedule => GetString("CancelSchedule", "Cancel");
@@ -165,7 +180,7 @@ public static class Strings
     // Game exit notification
     public static string GameExitNotification => GetString("GameExitNotification", "Game Exit Notification");
     public static string GameExitNotificationTitle => GetString("GameExitNotificationTitle", "Game Exited");
-    public static string GameExitNotificationMessage => GetString("GameExitNotificationMessage", "{0} has exited. Total clicks: {1}");
+    public static string GameExitNotificationMessage => GetString("GameExitNotificationMessage", "{0} has exited. Success: {1}, Skipped: {2}");
 
     private static readonly System.Resources.ResourceManager ResourceManager =
         new("AutoClick.UI.Resources.Strings", typeof(Strings).Assembly);

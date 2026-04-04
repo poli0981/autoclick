@@ -85,6 +85,24 @@ public class SettingsViewModel : ViewModelBase
         set { _settings.ShowGameExitNotification = value; OnPropertyChanged(); }
     }
 
+    public bool EnablePixelColorGuard
+    {
+        get => _settings.EnablePixelColorGuard;
+        set { _settings.EnablePixelColorGuard = value; OnPropertyChanged(); }
+    }
+
+    public int ColorTolerance
+    {
+        get => _settings.ColorTolerance;
+        set { _settings.ColorTolerance = Math.Clamp(value, 0, 50); OnPropertyChanged(); }
+    }
+
+    public int SelectedMismatchBehaviorIndex
+    {
+        get => (int)_settings.ColorMismatchBehavior;
+        set { _settings.ColorMismatchBehavior = (ColorMismatchBehavior)Math.Clamp(value, 0, 1); OnPropertyChanged(); }
+    }
+
     /// <summary>
     /// Toggle: true = Dark, false = Light.
     /// </summary>
@@ -208,6 +226,9 @@ public class SettingsViewModel : ViewModelBase
         OnPropertyChanged(nameof(AutoUpdate));
         OnPropertyChanged(nameof(SoundNotifications));
         OnPropertyChanged(nameof(ShowGameExitNotification));
+        OnPropertyChanged(nameof(EnablePixelColorGuard));
+        OnPropertyChanged(nameof(ColorTolerance));
+        OnPropertyChanged(nameof(SelectedMismatchBehaviorIndex));
         OnPropertyChanged(nameof(DarkMode));
         OnPropertyChanged(nameof(Language));
         OnPropertyChanged(nameof(SelectedExitBehaviorIndex));
