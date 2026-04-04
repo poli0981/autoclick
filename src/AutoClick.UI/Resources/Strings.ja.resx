@@ -137,6 +137,24 @@
   <data name="UpdateNetworkError" xml:space="preserve"><value>ネットワークエラー。インターネット接続を確認してください。</value></data>
   <data name="UpdateChecksumFailed" xml:space="preserve"><value>ダウンロードの検証に失敗しました。もう一度お試しください。</value></data>
   <data name="UpdateUnknownError" xml:space="preserve"><value>更新中に不明なエラーが発生しました。</value></data>
+  <data name="Profile" xml:space="preserve"><value>プロファイル</value></data>
+  <data name="SaveProfile" xml:space="preserve"><value>保存</value></data>
+  <data name="LoadProfile" xml:space="preserve"><value>読込</value></data>
+  <data name="DeleteProfile" xml:space="preserve"><value>削除</value></data>
+  <data name="ExportProfile" xml:space="preserve"><value>エクスポート</value></data>
+  <data name="ImportProfile" xml:space="preserve"><value>インポート</value></data>
+  <data name="ProfileNamePrompt" xml:space="preserve"><value>プロファイル名:</value></data>
+  <data name="ProfileSaved" xml:space="preserve"><value>プロファイル「{0}」を保存しました。</value></data>
+  <data name="ProfileLoaded" xml:space="preserve"><value>プロファイル「{0}」を「{1}」に読み込みました。</value></data>
+  <data name="ProfileDeleted" xml:space="preserve"><value>プロファイル「{0}」を削除しました。</value></data>
+  <data name="ProfileExported" xml:space="preserve"><value>プロファイルを{0}にエクスポートしました。</value></data>
+  <data name="ProfileImported" xml:space="preserve"><value>プロファイル「{0}」をインポートしました。</value></data>
+  <data name="ProfileImportError" xml:space="preserve"><value>プロファイルのインポートに失敗しました。</value></data>
+  <data name="ConfirmDeleteProfile" xml:space="preserve"><value>プロファイル「{0}」を削除しますか？</value></data>
+  <data name="ProfileNameEmpty" xml:space="preserve"><value>プロファイル名を入力してください。</value></data>
+  <data name="ProfileNameDuplicate" xml:space="preserve"><value>「{0}」というプロファイルが既に存在します。上書きしますか？</value></data>
+  <data name="NoCoordinatesToSave" xml:space="preserve"><value>プロファイルを保存する前に座標を追加してください。</value></data>
+  <data name="SelectProfile" xml:space="preserve"><value>プロファイルを選択...</value></data>
   <data name="GameExitNotification" xml:space="preserve"><value>ゲーム終了通知</value></data>
   <data name="GameExitNotificationTitle" xml:space="preserve"><value>ゲームが終了しました</value></data>
   <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} が終了しました。合計クリック数: {1}</value></data>

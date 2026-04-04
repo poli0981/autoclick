@@ -1,7 +1,4 @@
-using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
 using AutoClick.Core.Enums;
 using AutoClick.Core.Interfaces;
 using AutoClick.Core.Models;
@@ -18,10 +15,12 @@ public class MainViewModel : ViewModelBase
     private readonly ISettingsService _settingsService;
     private readonly ILogService _logService;
     private readonly IMemoryManager _memoryManager;
+    private readonly IProfileService _profileService;
     private SoundService? _soundService;
 
     public ObservableCollection<GameSessionViewModel> GameSessions { get; } = new();
     public ObservableCollection<string> LogEntries { get; } = new();
+    public ObservableCollection<GameProfile> SavedProfiles { get; } = new();
 
     private GameSessionViewModel? _selectedSession;
     public GameSessionViewModel? SelectedSession
@@ -88,13 +87,15 @@ public class MainViewModel : ViewModelBase
         IGameDetector gameDetector,
         ISettingsService settingsService,
         ILogService logService,
-        IMemoryManager memoryManager)
+        IMemoryManager memoryManager,
+        IProfileService profileService)
     {
         _clickEngine = clickEngine;
         _gameDetector = gameDetector;
         _settingsService = settingsService;
         _logService = logService;
         _memoryManager = memoryManager;
+        _profileService = profileService;
 
         _settings = _settingsService.Load();
         _showLogs = _settings.ShowRealTimeLogs;
@@ -132,6 +133,8 @@ public class MainViewModel : ViewModelBase
             CheckForExitedProcesses();
         };
         timer.Start();
+
+        RefreshProfiles();
     }
 
     public void SetSoundService(SoundService sound) => _soundService = sound;
@@ -466,6 +469,74 @@ public class MainViewModel : ViewModelBase
 
         _memoryManager.ForceCleanup();
         _logService.Info("Application reset to factory defaults");
+    }
+
+    // ── Profile Management ──
+
+    public void RefreshProfiles()
+    {
+        SavedProfiles.Clear();
+        foreach (var p in _profileService.GetAll())
+            SavedProfiles.Add(p);
+    }
+
+    public void SaveProfileFromSession(GameSessionViewModel sessionVm, string profileName)
+    {
+        var existing = _profileService.GetByName(profileName);
+        var profile = existing ?? new GameProfile();
+        profile.Name = profileName;
+        profile.ClickPoints = sessionVm.Session.ClickPoints
+            .Select(p => new ClickPoint(p.X, p.Y, p.ClickType, p.DelayAfterMs))
+            .ToList();
+        profile.ClickSettings = new ClickProfile
+        {
+            Mode = sessionVm.Session.Profile.Mode,
+            FixedIntervalSeconds = sessionVm.Session.Profile.FixedIntervalSeconds,
+            RandomMinSeconds = sessionVm.Session.Profile.RandomMinSeconds,
+            RandomMaxSeconds = sessionVm.Session.Profile.RandomMaxSeconds
+        };
+        profile.SequenceDelayMs = sessionVm.SequenceDelayMs;
+        _profileService.Save(profile);
+        RefreshProfiles();
+        _logService.Info(string.Format(Strings.ProfileSaved, profileName));
+    }
+
+    public void LoadProfileIntoSession(GameSessionViewModel sessionVm, GameProfile profile)
+    {
+        sessionVm.ApplyProfile(profile);
+        OnPropertyChanged(nameof(CanStartAll));
+        _logService.Info(string.Format(Strings.ProfileLoaded, profile.Name, sessionVm.ProcessName));
+    }
+
+    public void DeleteProfile(string profileId)
+    {
+        var profile = SavedProfiles.FirstOrDefault(p => p.Id == profileId);
+        if (profile == null) return;
+        _profileService.Delete(profileId);
+        RefreshProfiles();
+        _logService.Info(string.Format(Strings.ProfileDeleted, profile.Name));
+    }
+
+    public void ExportProfile(GameProfile profile, string filePath)
+    {
+        _profileService.Export(filePath, profile);
+        _logService.Info(string.Format(Strings.ProfileExported, filePath));
+    }
+
+    public GameProfile? ImportProfile(string filePath)
+    {
+        try
+        {
+            var profile = _profileService.Import(filePath);
+            RefreshProfiles();
+            _logService.Info(string.Format(Strings.ProfileImported, profile.Name));
+            return profile;
+        }
+        catch (Exception ex)
+        {
+            _logService.Error(Strings.ProfileImportError, ex);
+            return null;
+        }
     }
 
     public void SaveSettings()

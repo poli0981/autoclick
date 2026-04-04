@@ -138,6 +138,24 @@
   <data name="UpdateNetworkError" xml:space="preserve"><value>Network error. Check your internet connection.</value></data>
   <data name="UpdateChecksumFailed" xml:space="preserve"><value>Download verification failed. Please try again.</value></data>
   <data name="UpdateUnknownError" xml:space="preserve"><value>An unknown error occurred during update.</value></data>
+  <data name="Profile" xml:space="preserve"><value>Profile</value></data>
+  <data name="SaveProfile" xml:space="preserve"><value>Save Profile</value></data>
+  <data name="LoadProfile" xml:space="preserve"><value>Load</value></data>
+  <data name="DeleteProfile" xml:space="preserve"><value>Delete</value></data>
+  <data name="ExportProfile" xml:space="preserve"><value>Export</value></data>
+  <data name="ImportProfile" xml:space="preserve"><value>Import</value></data>
+  <data name="ProfileNamePrompt" xml:space="preserve"><value>Profile name:</value></data>
+  <data name="ProfileSaved" xml:space="preserve"><value>Profile "{0}" saved.</value></data>
+  <data name="ProfileLoaded" xml:space="preserve"><value>Profile "{0}" loaded into "{1}".</value></data>
+  <data name="ProfileDeleted" xml:space="preserve"><value>Profile "{0}" deleted.</value></data>
+  <data name="ProfileExported" xml:space="preserve"><value>Profile exported to {0}.</value></data>
+  <data name="ProfileImported" xml:space="preserve"><value>Profile "{0}" imported.</value></data>
+  <data name="ProfileImportError" xml:space="preserve"><value>Failed to import profile.</value></data>
+  <data name="ConfirmDeleteProfile" xml:space="preserve"><value>Delete profile "{0}"?</value></data>
+  <data name="ProfileNameEmpty" xml:space="preserve"><value>Profile name cannot be empty.</value></data>
+  <data name="ProfileNameDuplicate" xml:space="preserve"><value>A profile named "{0}" exists. Overwrite?</value></data>
+  <data name="NoCoordinatesToSave" xml:space="preserve"><value>Add coordinates before saving a profile.</value></data>
+  <data name="SelectProfile" xml:space="preserve"><value>Select a profile...</value></data>
   <data name="GameExitNotification" xml:space="preserve"><value>Game Exit Notification</value></data>
   <data name="GameExitNotificationTitle" xml:space="preserve"><value>Game Exited</value></data>
   <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} has exited. Total clicks: {1}</value></data>

@@ -1,0 +1,30 @@
+<Window x:Class="AutoClick.UI.Views.ProfileNameDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:res="clr-namespace:AutoClick.UI.Resources"
+        Title="{x:Static res:Strings.SaveProfile}" Height="180" Width="380"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        Background="{DynamicResource BackgroundBrush}">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="{x:Static res:Strings.ProfileNamePrompt}" FontSize="14"
+                   Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,12"/>
+
+        <TextBox Grid.Row="1" x:Name="NameBox" FontSize="14" Padding="8,6"
+                 Loaded="NameBox_Loaded"/>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+            <Button Content="OK" Click="OnOk" Style="{StaticResource PrimaryButton}" Margin="0,0,8,0"
+                    Width="80" IsDefault="True"/>
+            <Button Content="Cancel" Click="OnCancel" Style="{StaticResource DefaultButton}"
+                    Width="80" IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</Window>
