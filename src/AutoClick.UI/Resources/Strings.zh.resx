@@ -137,6 +137,21 @@
   <data name="UpdateNetworkError" xml:space="preserve"><value>网络错误。请检查网络连接。</value></data>
   <data name="UpdateChecksumFailed" xml:space="preserve"><value>下载验证失败。请重试。</value></data>
   <data name="UpdateUnknownError" xml:space="preserve"><value>更新时发生未知错误。</value></data>
+  <data name="Schedule" xml:space="preserve"><value>定时</value></data>
+  <data name="CancelSchedule" xml:space="preserve"><value>取消</value></data>
+  <data name="StartTime" xml:space="preserve"><value>开始:</value></data>
+  <data name="StopTime" xml:space="preserve"><value>停止:</value></data>
+  <data name="SchedulerStartsIn" xml:space="preserve"><value>开始倒计时: {0}</value></data>
+  <data name="SchedulerStopsIn" xml:space="preserve"><value>停止倒计时: {0}</value></data>
+  <data name="SchedulerStarted" xml:space="preserve"><value>定时器已触发开始</value></data>
+  <data name="SchedulerStopped" xml:space="preserve"><value>定时器已触发停止</value></data>
+  <data name="SchedulerInvalidTime" xml:space="preserve"><value>时间格式无效。请使用 HH:mm。</value></data>
+  <data name="SchedulerInvalidFormat" xml:space="preserve"><value>格式无效。请输入 HH:mm 格式（例如 20:00）。</value></data>
+  <data name="SchedulerInvalidHour" xml:space="preserve"><value>"{0}": 小时必须为 00–23。</value></data>
+  <data name="SchedulerInvalidMinute" xml:space="preserve"><value>"{0}": 分钟必须为 00–59。</value></data>
+  <data name="SchedulerStopBeforeStart" xml:space="preserve"><value>停止时间必须在开始时间之后。</value></data>
+  <data name="SchedulerStartRequired" xml:space="preserve"><value>开始时间为必填项。</value></data>
+  <data name="SchedulerNoGames" xml:space="preserve"><value>请先添加有坐标的游戏再设置定时。</value></data>
   <data name="SettingsMode" xml:space="preserve"><value>设置模式</value></data>
   <data name="GlobalMode" xml:space="preserve"><value>全局（所有游戏相同）</value></data>
   <data name="CustomMode" xml:space="preserve"><value>自定义（每个游戏）</value></data>

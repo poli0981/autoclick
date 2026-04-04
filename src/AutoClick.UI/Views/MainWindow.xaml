@@ -64,6 +64,28 @@
                                     Style="{StaticResource DangerButton}" Margin="0,0,8,0"/>
                             <Button Content="{x:Static res:Strings.RemoveAll}" Command="{Binding RemoveAllCommand}"
                                     Style="{StaticResource DangerButton}"/>
+
+                            <!-- Scheduler -->
+                            <Border Margin="12,0,0,0" Padding="0" BorderThickness="1,0,0,0"
+                                    BorderBrush="{DynamicResource BorderBrush}">
+                                <StackPanel Orientation="Horizontal" Margin="12,0,0,0">
+                                    <TextBlock Text="{x:Static res:Strings.StartTime}" FontSize="12" VerticalAlignment="Center"
+                                               Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,4,0"/>
+                                    <TextBox Text="{Binding ScheduledStartTimeText, UpdateSourceTrigger=LostFocus}"
+                                             Width="55" FontSize="12" VerticalAlignment="Center" Margin="0,0,8,0"
+                                             IsEnabled="{Binding IsSchedulerEnabled, Converter={StaticResource InverseBool}}"/>
+                                    <TextBlock Text="{x:Static res:Strings.StopTime}" FontSize="12" VerticalAlignment="Center"
+                                               Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,4,0"/>
+                                    <TextBox Text="{Binding ScheduledStopTimeText, UpdateSourceTrigger=LostFocus}"
+                                             Width="55" FontSize="12" VerticalAlignment="Center" Margin="0,0,8,0"
+                                             IsEnabled="{Binding IsSchedulerEnabled, Converter={StaticResource InverseBool}}"/>
+                                    <Button Content="{Binding ScheduleButtonText}" Command="{Binding ToggleSchedulerCommand}"
+                                            Style="{StaticResource DefaultButton}" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding SchedulerCountdown}" FontSize="12" VerticalAlignment="Center"
+                                               Foreground="{DynamicResource SuccessBrush}" FontWeight="SemiBold"
+                                               Visibility="{Binding HasScheduler, Converter={StaticResource BoolToVis}}"/>
+                                </StackPanel>
+                            </Border>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
                             <TextBlock Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center">
