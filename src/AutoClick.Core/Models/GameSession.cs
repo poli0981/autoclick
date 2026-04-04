@@ -14,8 +14,14 @@ public class GameSession
     public List<ClickPoint> ClickPoints { get; set; } = new();
     public ClickProfile Profile { get; set; } = new();
     public long ClickCount { get; set; }
+    public long SkippedClicks { get; set; }
     public double LastIntervalSeconds { get; set; }
     public DateTime? StartedAt { get; set; }
+
+    // Pixel Color Guard (populated from AppSettings when session is created)
+    public bool EnablePixelColorGuard { get; set; }
+    public int ColorTolerance { get; set; } = 10;
+    public ColorMismatchBehavior ColorMismatchBehavior { get; set; }
 
     public override string ToString() => $"{ProcessName} ({State})";
 }

@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using AutoClick.Core.Models;
+using AutoClick.Win32;
 using static AutoClick.Win32.NativeMethods;
 
 namespace AutoClick.UI.Views;
@@ -64,7 +65,8 @@ public partial class CoordinatePickerWindow : Window
         if (clientPoint.X >= 0 && clientPoint.Y >= 0 &&
             clientPoint.X < rect.Width && clientPoint.Y < rect.Height)
         {
-            SelectedPoint = new ClickPoint(clientPoint.X, clientPoint.Y);
+            var refColor = PixelColorHelper.ReadPixelColor(_targetWindow, clientPoint.X, clientPoint.Y);
+            SelectedPoint = new ClickPoint(clientPoint.X, clientPoint.Y) { ReferenceColor = refColor };
             DialogResult = true;
         }
         else

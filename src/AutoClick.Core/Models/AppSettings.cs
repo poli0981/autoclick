@@ -17,6 +17,9 @@ public class AppSettings
     public bool AutoUpdate { get; set; } = true;
     public bool SoundNotifications { get; set; } = true;
     public bool ShowGameExitNotification { get; set; } = true;
+    public bool EnablePixelColorGuard { get; set; } = false;
+    public int ColorTolerance { get; set; } = 10;
+    public ColorMismatchBehavior ColorMismatchBehavior { get; set; } = ColorMismatchBehavior.StopSession;
     public HotkeySettings Hotkeys { get; set; } = new();
 }
 

@@ -137,7 +137,18 @@
   <data name="UpdateNetworkError" xml:space="preserve"><value>ネットワークエラー。インターネット接続を確認してください。</value></data>
   <data name="UpdateChecksumFailed" xml:space="preserve"><value>ダウンロードの検証に失敗しました。もう一度お試しください。</value></data>
   <data name="UpdateUnknownError" xml:space="preserve"><value>更新中に不明なエラーが発生しました。</value></data>
-  <data name="Schedule" xml:space="preserve"><value>スケジュール</value></data>
+  <data name="ClickSuccess" xml:space="preserve"><value>成功</value></data>
+  <data name="ClickSkipped" xml:space="preserve"><value>スキップ</value></data>
+  <data name="ClickTotal" xml:space="preserve"><value>合計</value></data>
+  <data name="PixelColorGuard" xml:space="preserve"><value>ピクセルカラーガード</value></data>
+  <data name="EnablePixelColorGuard" xml:space="preserve"><value>ピクセルカラーガードを有効にす��</value></data>
+  <data name="ColorTolerance" xml:space="preserve"><value>色の許容差 (0-50)</value></data>
+  <data name="OnColorMismatch" xml:space="preserve"><value>色が不一致の場��</value></data>
+  <data name="SkipPoint" xml:space="preserve"><value>ポイントをスキップ</value></data>
+  <data name="StopSession" xml:space="preserve"><value>セッションを停止</value></data>
+  <data name="ColorMismatchSkipped" xml:space="preserve"><value>({0}, {1}) で色が不一致: スキップしました。</value></data>
+  <data name="ColorMismatchStopped" xml:space="preserve"><value>({0}, {1}) で色が不一致: 期待値 {2}、実際 {3}。停止しました。</value></data>
+  <data name="Schedule" xml:space="preserve"><value>スケジュー���</value></data>
   <data name="CancelSchedule" xml:space="preserve"><value>キャンセル</value></data>
   <data name="StartTime" xml:space="preserve"><value>開始:</value></data>
   <data name="StopTime" xml:space="preserve"><value>停止:</value></data>
@@ -178,5 +189,5 @@
   <data name="SelectProfile" xml:space="preserve"><value>プロファイルを選択...</value></data>
   <data name="GameExitNotification" xml:space="preserve"><value>ゲーム終了通知</value></data>
   <data name="GameExitNotificationTitle" xml:space="preserve"><value>ゲームが終了しました</value></data>
-  <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} が終了しました。合計クリック数: {1}</value></data>
+  <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} が終了しました。成功: {1}、スキップ: {2}</value></data>
 </root>

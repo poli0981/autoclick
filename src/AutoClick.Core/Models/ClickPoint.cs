@@ -14,6 +14,13 @@ public class ClickPoint
     /// </summary>
     public int DelayAfterMs { get; set; }
 
+    /// <summary>
+    /// Reference pixel color (COLORREF 0x00BBGGRR) captured when coordinate was picked.
+    /// 0xFFFFFFFF means no color was captured (sentinel value).
+    /// </summary>
+    public uint ReferenceColor { get; set; } = 0xFFFFFFFF;
+    public bool HasReferenceColor => ReferenceColor != 0xFFFFFFFF;
+
     public ClickPoint() { }
 
     public ClickPoint(int x, int y, ClickType clickType = ClickType.LeftClick, int delayAfterMs = 0)

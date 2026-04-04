@@ -66,6 +66,29 @@ public class ClickEngineService : IClickEngine
                             break;
                         }
 
+                        // Pixel color guard: check color before clicking
+                        if (session.EnablePixelColorGuard && point.HasReferenceColor)
+                        {
+                            var currentColor = PixelColorHelper.ReadPixelColor(session.WindowHandle, point.X, point.Y);
+                            if (!PixelColorHelper.IsColorMatch(currentColor, point.ReferenceColor, session.ColorTolerance))
+                            {
+                                var expected = PixelColorHelper.ColorToHex(point.ReferenceColor);
+                                var actual = PixelColorHelper.ColorToHex(currentColor);
+                                session.SkippedClicks++;
+                                if (session.ColorMismatchBehavior == ColorMismatchBehavior.StopSession)
+                                {
+                                    _log.Warn($"Color mismatch at ({point.X}, {point.Y}) for \"{session.ProcessName}\": expected {expected}, got {actual}. Stopping.");
+                                    outOfBounds = true;
+                                    break;
+                                }
+                                else
+                                {
+                                    _log.Info($"Color mismatch at ({point.X}, {point.Y}) for \"{session.ProcessName}\": expected {expected}, got {actual}. Skipping.");
+                                    continue;
+                                }
+                            }
+                        }
+
                         InputSimulator.SendClick(session.WindowHandle, point.X, point.Y, point.ClickType);
                         session.ClickCount++;
 

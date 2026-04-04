@@ -137,6 +137,17 @@
   <data name="UpdateNetworkError" xml:space="preserve"><value>Lỗi mạng. Kiểm tra kết nối internet.</value></data>
   <data name="UpdateChecksumFailed" xml:space="preserve"><value>Xác minh tải xuống thất bại. Vui lòng thử lại.</value></data>
   <data name="UpdateUnknownError" xml:space="preserve"><value>Lỗi không xác định khi cập nhật.</value></data>
+  <data name="ClickSuccess" xml:space="preserve"><value>Thành công</value></data>
+  <data name="ClickSkipped" xml:space="preserve"><value>Bỏ qua</value></data>
+  <data name="ClickTotal" xml:space="preserve"><value>Tổng</value></data>
+  <data name="PixelColorGuard" xml:space="preserve"><value>Bảo vệ màu pixel</value></data>
+  <data name="EnablePixelColorGuard" xml:space="preserve"><value>Bật bảo vệ màu pixel</value></data>
+  <data name="ColorTolerance" xml:space="preserve"><value>Dung sai màu (0-50)</value></data>
+  <data name="OnColorMismatch" xml:space="preserve"><value>Khi màu không khớp</value></data>
+  <data name="SkipPoint" xml:space="preserve"><value>B��� qua điểm</value></data>
+  <data name="StopSession" xml:space="preserve"><value>Dừng phiên</value></data>
+  <data name="ColorMismatchSkipped" xml:space="preserve"><value>Màu không khớp tại ({0}, {1}): đã bỏ qua.</value></data>
+  <data name="ColorMismatchStopped" xml:space="preserve"><value>Màu không khớp tại ({0}, {1}): mong đợi {2}, nhận {3}. Đã dừng.</value></data>
   <data name="Schedule" xml:space="preserve"><value>Hẹn giờ</value></data>
   <data name="CancelSchedule" xml:space="preserve"><value>Hủy</value></data>
   <data name="StartTime" xml:space="preserve"><value>Bắt đầu:</value></data>
@@ -178,5 +189,5 @@
   <data name="SelectProfile" xml:space="preserve"><value>Chọn hồ sơ...</value></data>
   <data name="GameExitNotification" xml:space="preserve"><value>Thông báo game thoát</value></data>
   <data name="GameExitNotificationTitle" xml:space="preserve"><value>Game đã thoát</value></data>
-  <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} đã thoát. Tổng click: {1}</value></data>
+  <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} đã thoát. Thành công: {1}, Bỏ qua: {2}</value></data>
 </root>
