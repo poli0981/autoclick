@@ -10,7 +10,7 @@
 | **RAM** | 4 GB |
 | **CPU** | Dual-core processor (x64) |
 | **GPU** | Required only if running games; no GPU needed for AutoClick itself |
-| **Disk** | ~150 MB (self-contained build, includes .NET 8 runtime) |
+| **Disk** | ~260 MB (self-contained build, includes .NET 8 runtime) |
 | **Runtime** | None (self-contained; .NET 8 is bundled in the installer) |
 
 ### Windows 8.1 Notes
@@ -33,7 +33,7 @@
 | **RAM** | 8 GB or more |
 | **CPU** | Quad-core processor (x64) |
 | **GPU** | Dedicated GPU if running games |
-| **Disk** | ~150 MB + space for game(s) |
+| **Disk** | ~260 MB + space for game(s) |
 
 > **Multi-game usage:** Running multiple games simultaneously requires significantly more RAM, CPU, and GPU resources than running a single game. Add the minimum requirements of each game you intend to run concurrently. For example, if Game A requires 4 GB RAM and Game B requires 6 GB RAM, you need at least 10 GB RAM plus OS overhead.
 
