@@ -193,6 +193,11 @@
   <data name="GameExitNotification" xml:space="preserve"><value>게임 종료 알림</value></data>
   <data name="GameExitNotificationTitle" xml:space="preserve"><value>게임이 종료되었습니다</value></data>
   <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0}이(가) 종료되었습니다. 성공: {1}, 건너뜀: {2}</value></data>
+  <data name="PickerInstruction" xml:space="preserve"><value>클릭하여 선택. 1=왼쪽 2=더블 3=오른쪽. ESC=취소</value></data>
+  <data name="PickerCurrentType" xml:space="preserve"><value>현재: {0}</value></data>
+  <data name="ClickTypeLeft" xml:space="preserve"><value>왼쪽</value></data>
+  <data name="ClickTypeDouble" xml:space="preserve"><value>더블</value></data>
+  <data name="ClickTypeRight" xml:space="preserve"><value>오른쪽</value></data>
   <data name="AutoStoppedQueueEmpty" xml:space="preserve"><value>모든 게임이 종료되었습니다. 자동 중지되었습니다.</value></data>
   <data name="DashboardSuccessRatio" xml:space="preserve"><value>성공 / 건너뜀 비율</value></data>
   <data name="DashboardGameTimeline" xml:space="preserve"><value>게임별 CPM 타임라인</value></data>

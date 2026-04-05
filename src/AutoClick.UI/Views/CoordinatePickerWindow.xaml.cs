@@ -1,6 +1,8 @@
 using System.Windows;
 using System.Windows.Controls;
+using AutoClick.Core.Enums;
 using AutoClick.Core.Models;
+using AutoClick.UI.Resources;
 using AutoClick.Win32;
 using static AutoClick.Win32.NativeMethods;
 
@@ -9,6 +11,7 @@ namespace AutoClick.UI.Views;
 public partial class CoordinatePickerWindow : Window
 {
     private readonly IntPtr _targetWindow;
+    private ClickType _selectedClickType = ClickType.LeftClick;
     public ClickPoint? SelectedPoint { get; private set; }
 
     public CoordinatePickerWindow(IntPtr targetWindow)
@@ -16,6 +19,7 @@ public partial class CoordinatePickerWindow : Window
         InitializeComponent();
         _targetWindow = targetWindow;
         MouseMove += OnMouseMove;
+        UpdateInstructionText();
     }
 
     private void OnLoaded(object sender, RoutedEventArgs e)
@@ -43,12 +47,13 @@ public partial class CoordinatePickerWindow : Window
         var screenPoint = PointToScreen(pos);
         var clientPoint = ScreenToClient(_targetWindow, (int)screenPoint.X, (int)screenPoint.Y);
 
-        CoordText.Text = $"({clientPoint.X}, {clientPoint.Y})";
+        var typeTag = GetClickTypeTag(_selectedClickType);
+        CoordText.Text = $"({clientPoint.X}, {clientPoint.Y}) {typeTag}";
 
         // Position label near cursor
         double labelX = pos.X + 16;
         double labelY = pos.Y + 16;
-        if (labelX + 120 > ActualWidth) labelX = pos.X - 120;
+        if (labelX + 140 > ActualWidth) labelX = pos.X - 140;
         if (labelY + 30 > ActualHeight) labelY = pos.Y - 30;
         Canvas.SetLeft(CoordLabel, labelX);
         Canvas.SetTop(CoordLabel, labelY);
@@ -66,7 +71,10 @@ public partial class CoordinatePickerWindow : Window
             clientPoint.X < rect.Width && clientPoint.Y < rect.Height)
         {
             var refColor = PixelColorHelper.ReadPixelColor(_targetWindow, clientPoint.X, clientPoint.Y);
-            SelectedPoint = new ClickPoint(clientPoint.X, clientPoint.Y) { ReferenceColor = refColor };
+            SelectedPoint = new ClickPoint(clientPoint.X, clientPoint.Y, _selectedClickType)
+            {
+                ReferenceColor = refColor
+            };
             DialogResult = true;
         }
         else
@@ -78,21 +86,53 @@ public partial class CoordinatePickerWindow : Window
 
     private void OnKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
     {
-        if (e.Key == System.Windows.Input.Key.Escape)
+        switch (e.Key)
         {
-            DialogResult = false;
+            case System.Windows.Input.Key.Escape:
+                DialogResult = false;
+                break;
+            case System.Windows.Input.Key.D1:
+            case System.Windows.Input.Key.NumPad1:
+                _selectedClickType = ClickType.LeftClick;
+                UpdateInstructionText();
+                break;
+            case System.Windows.Input.Key.D2:
+            case System.Windows.Input.Key.NumPad2:
+                _selectedClickType = ClickType.DoubleClick;
+                UpdateInstructionText();
+                break;
+            case System.Windows.Input.Key.D3:
+            case System.Windows.Input.Key.NumPad3:
+                _selectedClickType = ClickType.RightClick;
+                UpdateInstructionText();
+                break;
         }
     }
+
+    private void UpdateInstructionText()
+    {
+        var currentName = _selectedClickType switch
+        {
+            ClickType.DoubleClick => Strings.ClickTypeDouble,
+            ClickType.RightClick => Strings.ClickTypeRight,
+            _ => Strings.ClickTypeLeft
+        };
+        InstructionText.Text = $"{Strings.PickerInstruction}  [{currentName}]";
+    }
+
+    private static string GetClickTypeTag(ClickType type) => type switch
+    {
+        ClickType.DoubleClick => "[D]",
+        ClickType.RightClick => "[R]",
+        _ => "[L]"
+    };
 
     private static POINT ScreenToClient(IntPtr hWnd, int screenX, int screenY)
     {
         var pt = new POINT(screenX, screenY);
-        // ClientToScreen is the inverse; we need ScreenToClient
-        // Use GetWindowRect to calculate offset
         GetWindowRect(hWnd, out RECT windowRect);
         GetClientRect(hWnd, out RECT clientRect);
 
-        // Calculate non-client area offset (title bar, borders)
         var clientOrigin = new POINT(0, 0);
         ClientToScreen(hWnd, ref clientOrigin);
 
