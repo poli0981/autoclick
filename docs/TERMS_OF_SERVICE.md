@@ -26,55 +26,65 @@ You agree NOT to use the Software to:
 - Interfere with other users' gaming experience
 - Commercially exploit the Software without complying with GPL-3.0
 
-## 5. Game Compatibility & Anti-Cheat
+## 5. System Requirements & Multi-Game Operation
+
+- **You are responsible for ensuring your hardware meets the minimum requirements** specified by each game's developer before running games with AutoClick.
+- Running multiple games simultaneously with AutoClick places **significant additional load** on CPU, RAM, GPU, and power supply. The combined resource requirements may far exceed individual game minimums.
+- **The developer is not liable for any hardware damage**, overheating, system instability, data loss, or component failure resulting from running the Software with one or more games beyond your system's capacity.
+- You agree to **monitor system temperatures and resource usage** during operation and to stop the Software immediately if signs of excessive system stress are observed.
+- It is your sole responsibility to ensure adequate cooling, ventilation, and power supply for sustained multi-game operation.
+
+## 6. Game Compatibility & Anti-Cheat
 
 - **Not all games support background clicking.** The Software uses Win32 PostMessage, which is not universally compatible.
 - **Anti-cheat systems may detect this Software.** Kernel-level anti-cheat (EasyAntiCheat, BattlEye, Vanguard, etc.) can detect and flag automation tools.
 - **Account bans are your responsibility.** The developer is not liable for any penalties imposed by game publishers.
 - You are solely responsible for verifying whether automation is permitted in the games you play.
 
-## 6. AI-Assisted Development
+## 7. AI-Assisted Development
 
 - This Software was built with AI assistance (Claude by Anthropic) for code generation, debugging, and translation.
 - In-app language translations are AI-generated and may not be perfectly accurate.
 - AI assistance does not affect your rights or obligations under these Terms.
 
-## 7. Updates
+## 8. Updates
 
 - The Software may check for updates via the GitHub Releases API.
 - Updates are optional and can be disabled in Settings.
 - Updated versions may include changes to these Terms; continued use constitutes acceptance.
 
-## 8. Disclaimer of Warranties
+## 9. Disclaimer of Warranties
 
 THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. THE DEVELOPER MAKES NO WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
 
-## 9. Limitation of Liability
+## 10. Limitation of Liability
 
 IN NO EVENT SHALL THE DEVELOPER BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 This includes but is not limited to:
 - Game account bans or suspensions
 - Loss of in-game items, currency, or progress
-- Hardware or software damage
-- Data loss
+- Hardware damage, overheating, or component failure
+- Software damage or system instability
+- Data loss or corruption
+- Electrical costs or increased power consumption
 
-## 10. Indemnification
+## 11. Indemnification
 
 You agree to indemnify and hold harmless the developer from any claims, damages, or expenses arising from your use of the Software, including violations of any third-party terms of service.
 
-## 11. Termination
+## 12. Termination
 
 Your right to use the Software terminates automatically if you violate any of these Terms. Upon termination, you must cease all use and destroy all copies of the Software.
 
-## 12. Governing Law
+## 13. Governing Law
 
 These Terms shall be governed by and construed in accordance with applicable laws, without regard to conflict of law principles.
 
-## 13. Changes to Terms
+## 14. Changes to Terms
 
 The developer reserves the right to modify these Terms at any time. Changes will be posted in the GitHub repository. Your continued use of the Software after changes constitutes acceptance of the new Terms.
 
-## 14. Contact
+## 15. Contact
 
 For questions about these Terms, please open an issue on the [GitHub repository](https://github.com/poli0981/autoclick).
