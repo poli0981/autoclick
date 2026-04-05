@@ -2,7 +2,7 @@
 
 <p align="center">
   <strong>Auto-click utility for games on Windows</strong><br/>
-  Background clicking via Win32 API &bull; Multi-point sequences &bull; Dark/Light theme &bull; 5 languages
+  Background clicking via Win32 API &bull; Multi-point sequences &bull; Per-point click types &bull; Real-time dashboard &bull; 5 languages
 </p>
 
 <p align="center">
@@ -15,7 +15,7 @@
 
 ---
 
-> **Recommended: v1.1.0+** — Older versions (v1.0.0~v1.0.2) have a broken update URL. Download the latest from the [Releases page](https://github.com/poli0981/autoclick/releases).
+> **Recommended: v1.2.0+** — Older versions (v1.0.0~v1.0.2) have a broken update URL. Download the latest from the [Releases page](https://github.com/poli0981/autoclick/releases).
 
 ## About
 
@@ -23,16 +23,24 @@ AutoClick is a Windows desktop application that automates repetitive mouse click
 
 > **Anti-Cheat Warning:** Games with kernel-level anti-cheat (EasyAntiCheat, BattlEye, Vanguard, etc.) may detect this tool. **Use at your own risk.** The developer is not responsible for any account bans. See [DISCLAIMER](docs/DISCLAIMER.md) and [EULA](docs/EULA.md).
 
+> **System Requirements Warning:** Running multiple games simultaneously increases CPU, RAM, and GPU usage significantly. **Ensure your system meets the minimum requirements specified by each game's developer.** The developer is not responsible for hardware damage, overheating, system instability, or data loss caused by running multiple games beyond your system's capacity. See [DISCLAIMER](docs/DISCLAIMER.md).
+
 > **AI Disclosure:** This software was built with AI assistance (Claude by Anthropic). In-app translations are AI-generated and may not be fully accurate. See [ACKNOWLEDGEMENTS](docs/ACKNOWLEDGEMENTS.md).
 
 ## Features
 
 - **Multi-game queue** -- add multiple games, each with independent click profiles
 - **Multi-point click sequences** -- add multiple coordinates per game, executed in order with configurable delay between points (`#1 → #2 → #3 → [interval] → repeat`)
-- **Click modes** -- Fixed interval or Random interval (configurable min/max)
+- **Click type per point** -- each point can be Left Click, Double Click, or Right Click independently (press `1`/`2`/`3` in picker)
+- **Click modes** -- Fixed interval or Random interval (configurable min/max), Global or Custom (per-game) settings
 - **Coordinate picking** -- Manual crosshair picker or random generation within game window
 - **Background clicking** -- Uses `PostMessage` with `WM_MOUSEMOVE` + anti-detection jitter, works on game dialogs and choice screens
-- **Session statistics** -- live stats bar: Total Clicks, Uptime, Clicks/min, Peak CPM
+- **Pixel color guard** -- optionally verify pixel color before clicking; skip or stop on mismatch (configurable tolerance)
+- **Game profiles** -- save/load coordinate sets + click settings as named presets; export/import `.autoclick` files
+- **Scheduler** -- set start/stop times for automated sessions with live countdown
+- **Real-time dashboard** -- CPM line chart, per-game breakdown, success/skip ratio pie, per-game CPM timeline, session summary cards, JSON stats export
+- **Session statistics** -- live stats bar: Total Clicks, Skipped, Uptime, Clicks/min, Peak CPM
+- **Game exit notifications** -- balloon notification when a game process exits; auto-stop when queue is empty
 - **Sound notifications** -- system sounds for Start, Stop, Pause, coordinate pick, errors (toggleable)
 - **Global hotkeys** -- Start All (F8), Stop All (F7), Pause/Resume (F6), fully customizable
 - **Dark / Light theme** -- toggle in settings, defaults to system preference
@@ -47,6 +55,7 @@ AutoClick is a Windows desktop application that automates repetitive mouse click
 | Layer | Technology |
 |-------|------------|
 | UI | WPF (.NET 8), MVVM pattern |
+| Charts | LiveChartsCore + SkiaSharp |
 | Click engine | Win32 `PostMessage` via P/Invoke |
 | Game detection | `EnumWindows` + process filtering |
 | Hotkeys | `RegisterHotKey` global hooks |
@@ -56,16 +65,17 @@ AutoClick is a Windows desktop application that automates repetitive mouse click
 
 ## Requirements
 
-- Windows 10 / 11
-- .NET 8 Desktop Runtime
+- Windows 10 / 11 (x64)
+- No additional runtime required — the release is **self-contained** (includes .NET 8 runtime)
 - Administrator privileges (required for global hotkeys and PostMessage to elevated processes)
+- **For multi-game usage:** Ensure your system meets the minimum hardware requirements specified by each game's developer. Running multiple games simultaneously increases CPU, RAM, and GPU load significantly.
 
 ## Installation
 
 ### From Release (recommended)
 
 1. Go to [Releases](https://github.com/poli0981/autoclick/releases)
-2. Download the latest installer
+2. Download the latest `.exe` installer (self-contained, no .NET runtime needed)
 3. Run and follow the setup wizard
 
 ### From Source

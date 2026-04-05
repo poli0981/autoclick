@@ -6,6 +6,37 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [1.2.0] - 2026-04-05
+
+### Added
+- **Click type per point**: Each coordinate in a sequence can independently be Left Click, Double Click, or Right Click. Press `1`/`2`/`3` in the coordinate picker to switch type. Coordinate text shows `[D]` or `[R]` suffix for non-default types.
+- **Game profile save/load**: Save coordinates + intervals + click types + delay as named presets. Load, export (`.autoclick`), import, and delete profiles per game. Profiles persist across sessions.
+- **Pixel color guard**: Before each click, optionally verify the pixel color at the coordinate matches a reference color (captured at pick time). On mismatch: skip point or stop session. Configurable tolerance (0–50).
+- **Game exit notification**: Balloon/toast notification when a game process exits while tasks are running (AFK crash detection). Shows success/skipped click counts.
+- **Scheduler**: Set start/stop times (HH:mm format) for automated sessions. Live countdown display, one-shot execution, cancel anytime.
+- **Real-time dashboard**: Dedicated Dashboard tab with:
+  - Live CPM line chart (2s intervals, 5-minute rolling window)
+  - Per-game breakdown horizontal bar chart (success vs skipped)
+  - Success/skip ratio pie chart
+  - Per-game CPM timeline (individual line per game with color coding)
+  - Summary cards: Total Clicks, Skipped, Uptime, CPM, Peak CPM
+- **Auto-stop on empty queue**: When all games exit, the app auto-stops and shows a notification
+- **Archived game stats**: Exited game stats preserved in dashboard until reset or app exit
+- **Chart freeze**: Live charts (CPM, timeline) freeze when no tasks are running, preventing pointless 0-value drift
+- **Export session stats**: Export full session data (active + exited games, per-game breakdown) to JSON
+- **Reset all stats**: Button on both Main view stats bar and Dashboard to reset all session statistics. Disabled while tasks are running, with confirmation dialog.
+- **Settings mode**: Global (same for all games) or Custom (per-game intervals and click mode)
+- **Bounds validation**: Coordinates validated against window client area; auto-stop if window resizes and points go out of bounds
+- **Per-game click stats**: Each game card shows Success, Skipped, and Total click counts separately
+
+### Fixed
+- **Pixel color guard not syncing on settings change**: Toggling the guard in Settings and saving now correctly propagates `EnablePixelColorGuard`, `ColorTolerance`, and `ColorMismatchBehavior` to all existing sessions (previously only applied to newly created sessions)
+- **Color swatches shown when guard disabled**: Coordinate picker no longer captures reference colors when pixel color guard is off
+- **Per-game chart showing only one process name**: Added `MinStep`/`ForceStepToMin` to Y-axis and increased per-game row height to ensure all labels render
+- **ESC key handling** in coordinate picker window
+
+---
+
 ## [1.1.0] - 2026-04-04
 
 ### Added
