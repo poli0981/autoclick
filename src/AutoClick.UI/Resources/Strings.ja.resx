@@ -193,6 +193,11 @@
   <data name="GameExitNotification" xml:space="preserve"><value>ゲーム終了通知</value></data>
   <data name="GameExitNotificationTitle" xml:space="preserve"><value>ゲームが終了しました</value></data>
   <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} が終了しました。成功: {1}、スキップ: {2}</value></data>
+  <data name="PickerInstruction" xml:space="preserve"><value>クリックで選択。1=左 2=ダブル 3=右。ESC=キャンセル</value></data>
+  <data name="PickerCurrentType" xml:space="preserve"><value>現在: {0}</value></data>
+  <data name="ClickTypeLeft" xml:space="preserve"><value>左</value></data>
+  <data name="ClickTypeDouble" xml:space="preserve"><value>ダブル</value></data>
+  <data name="ClickTypeRight" xml:space="preserve"><value>右</value></data>
   <data name="AutoStoppedQueueEmpty" xml:space="preserve"><value>すべてのゲームが終了しました。自動停止しました。</value></data>
   <data name="DashboardSuccessRatio" xml:space="preserve"><value>成功 / スキップ比率</value></data>
   <data name="DashboardGameTimeline" xml:space="preserve"><value>ゲーム別CPMタイムライン</value></data>

@@ -142,6 +142,10 @@ public partial class MainWindow : Window
             var picker = new CoordinatePickerWindow(sessionVm.Session.WindowHandle);
             if (picker.ShowDialog() == true && picker.SelectedPoint != null)
             {
+                // Only keep reference color when pixel color guard is enabled
+                if (!sessionVm.Session.EnablePixelColorGuard)
+                    picker.SelectedPoint.ReferenceColor = 0xFFFFFFFF;
+
                 if (_mainVm.TryAddCoordinate(sessionVm, picker.SelectedPoint))
                 {
                     _soundService?.PlaySuccess();

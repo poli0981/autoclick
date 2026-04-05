@@ -339,7 +339,14 @@ public class MainViewModel : ViewModelBase
         }
 
         foreach (var g in GameSessions)
+        {
             g.IsCustomMode = isCustom;
+
+            // Sync pixel color guard settings to all sessions
+            g.Session.EnablePixelColorGuard = _settings.EnablePixelColorGuard;
+            g.Session.ColorTolerance = _settings.ColorTolerance;
+            g.Session.ColorMismatchBehavior = _settings.ColorMismatchBehavior;
+        }
 
         _showLogs = _settings.ShowRealTimeLogs;
         OnPropertyChanged(nameof(ShowLogs));

@@ -195,8 +195,14 @@ public class GameSessionViewModel : ViewModelBase
         CoordinateText = _session.ClickPoints.Count > 0
             ? string.Join(" → ", _session.ClickPoints.Select((p, i) =>
             {
+                var clickTag = p.ClickType switch
+                {
+                    Core.Enums.ClickType.DoubleClick => "[D]",
+                    Core.Enums.ClickType.RightClick => "[R]",
+                    _ => ""
+                };
                 var color = p.HasReferenceColor ? $" [{PixelColorHelper.ColorToHex(p.ReferenceColor)}]" : "";
-                return $"#{i + 1}{p}{color}";
+                return $"#{i + 1}{p}{clickTag}{color}";
             }))
             : "-";
         OnPropertyChanged(nameof(HasCoordinate));

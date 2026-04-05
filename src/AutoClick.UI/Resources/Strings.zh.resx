@@ -193,6 +193,11 @@
   <data name="GameExitNotification" xml:space="preserve"><value>游戏退出通知</value></data>
   <data name="GameExitNotificationTitle" xml:space="preserve"><value>游戏已退出</value></data>
   <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} 已退出。成功: {1}，已跳过: {2}</value></data>
+  <data name="PickerInstruction" xml:space="preserve"><value>点击选择。1=左键 2=双击 3=右键。ESC=取消</value></data>
+  <data name="PickerCurrentType" xml:space="preserve"><value>当前: {0}</value></data>
+  <data name="ClickTypeLeft" xml:space="preserve"><value>左键</value></data>
+  <data name="ClickTypeDouble" xml:space="preserve"><value>双击</value></data>
+  <data name="ClickTypeRight" xml:space="preserve"><value>右键</value></data>
   <data name="AutoStoppedQueueEmpty" xml:space="preserve"><value>所有游戏已退出。已自动停止。</value></data>
   <data name="DashboardSuccessRatio" xml:space="preserve"><value>成功 / 跳过比率</value></data>
   <data name="DashboardGameTimeline" xml:space="preserve"><value>每游戏CPM时间线</value></data>
