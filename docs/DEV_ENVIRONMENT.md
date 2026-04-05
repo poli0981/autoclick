@@ -55,6 +55,23 @@ The following games were tested during development. Results are specific to the 
 |------|------------|-------|
 | **Mercury Elopement Syndrome** | [Steam](https://store.steampowered.com/app/4417890/Mercury_Elopement_Syndrome/) | PostMessage clicks not recognized by the game. Likely uses DirectInput or Raw Input, which does not respond to `WM_LBUTTONDOWN` messages. |
 
+## VM Testing Environment
+
+OS compatibility was tested using virtual machines. See [System Requirements](SYSTEM_REQUIREMENTS.md) for the full compatibility matrix.
+
+| Tool | Version | Notes |
+|------|---------|-------|
+| **Oracle VirtualBox** | 7.2.6 r172322 (Qt 6.8.0 on Windows) | Primary VM platform |
+| **Windows Sandbox** | Windows 10/11 built-in | Quick isolated testing |
+
+### VM Test Results
+
+| OS | RAM | CPU | Result |
+|----|-----|-----|--------|
+| Windows 10 22H2 (Build 19045.3803) | 4 GB | 2 cores | **Pass** — all features including dashboard |
+| Windows 8.1 / 8.1 Pro (Build 9600) | 8 GB | 2 cores | **Partial** — v1.1.0 only; requires [VC++ 2015 Redistributable](https://www.microsoft.com/en-us/download/details.aspx?id=48145); dashboard (LiveChartsCore/SkiaSharp) not compatible |
+| Windows 7 | — | — | **Failed** — .NET 8 not supported |
+
 ## Compatibility Notes
 
 - **PostMessage-based clicking** works with games that process standard Windows messages (`WM_LBUTTONDOWN` / `WM_LBUTTONUP`). Games using DirectInput, Raw Input, or custom input pipelines may not respond.

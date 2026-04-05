@@ -65,10 +65,19 @@ AutoClick is a Windows desktop application that automates repetitive mouse click
 
 ## Requirements
 
-- Windows 10 / 11 (x64)
+| | Minimum | Recommended |
+|---|---|---|
+| **OS** | Windows 8.1 (x64) | Windows 10 22H2+ (x64) |
+| **RAM** | 4 GB | 8 GB+ |
+| **CPU** | Dual-core (x64) | Quad-core (x64) |
+| **Runtime** | None (self-contained) | None (self-contained) |
+
 - No additional runtime required — the release is **self-contained** (includes .NET 8 runtime)
-- Administrator privileges (required for global hotkeys and PostMessage to elevated processes)
+- **Windows 8.1** requires [Visual C++ Redistributable 2015 (Legacy)](https://www.microsoft.com/en-us/download/details.aspx?id=48145) and is limited to v1.1.0 (no dashboard). **Windows 7 is not supported.**
+- Administrator privileges required for global hotkeys and PostMessage to elevated processes
 - **For multi-game usage:** Ensure your system meets the minimum hardware requirements specified by each game's developer. Running multiple games simultaneously increases CPU, RAM, and GPU load significantly.
+
+See [System Requirements](docs/SYSTEM_REQUIREMENTS.md) for tested configurations, compatibility matrix, and performance notes.
 
 ## Installation
 
@@ -139,8 +148,9 @@ See [Code of Conduct](docs/CODE_OF_CONDUCT.md) for community guidelines.
 | Document | Description |
 |----------|-------------|
 | [LICENSE](LICENSE) | GPL-3.0 |
+| [System Requirements](docs/SYSTEM_REQUIREMENTS.md) | Tested configs, min/recommended specs, compatibility matrix |
 | [Privacy Policy](docs/PRIVACY_POLICY.md) | No data collection, local-only storage |
-| [Disclaimer](docs/DISCLAIMER.md) | Anti-cheat risks, AI disclosure, liability |
+| [Disclaimer](docs/DISCLAIMER.md) | Anti-cheat risks, system requirements, AI disclosure, liability |
 | [Terms of Service](docs/TERMS_OF_SERVICE.md) | Usage terms and conditions |
 | [EULA](docs/EULA.md) | End-user license agreement |
 | [Acknowledgements](docs/ACKNOWLEDGEMENTS.md) | Third-party libraries, AI credits |

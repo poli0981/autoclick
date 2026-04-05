@@ -70,6 +70,16 @@ Major feature update with click type per point, pixel color guard, game profiles
 
 > **Self-Contained Build:** This release includes the .NET 8 runtime. No separate runtime installation is required.
 
+## Compatibility
+
+| OS | v1.2.0 | Notes |
+|----|:------:|-------|
+| Windows 10 22H2+ / Windows 11 | **Full** | Recommended |
+| Windows 8.1 | Partial | Requires [VC++ 2015 Redistributable](https://www.microsoft.com/en-us/download/details.aspx?id=48145). Dashboard not available; use v1.1.0 |
+| Windows 7 | **Failed** | Not supported |
+
+See [System Requirements](docs/SYSTEM_REQUIREMENTS.md) for tested configs and performance notes.
+
 ## Upgrade
 If you are on v1.0.x or v1.1.0, this version includes all previous fixes. Auto-update from v1.0.3+ should work seamlessly.
 
