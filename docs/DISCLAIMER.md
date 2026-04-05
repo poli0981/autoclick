@@ -8,6 +8,18 @@ AutoClick is provided "as is" and "as available" without any warranties of any k
 
 ## System Requirements & Multi-Game Usage
 
+### Supported Operating Systems
+
+AutoClick has been tested on the following configurations (see [System Requirements](SYSTEM_REQUIREMENTS.md) for full details):
+
+| OS | Status |
+|----|--------|
+| Windows 10 22H2+ / Windows 11 | **Full support** (all features) |
+| Windows 8.1 | **Partial support** (requires [VC++ 2015 Redistributable](https://www.microsoft.com/en-us/download/details.aspx?id=48145); dashboard not available; v1.1.0 recommended) |
+| Windows 7 and earlier | **Not supported** (application will not launch) |
+
+The developer makes no guarantees of compatibility with OS versions, builds, or configurations not listed in [System Requirements](SYSTEM_REQUIREMENTS.md).
+
 ### Hardware Requirements
 
 AutoClick supports running multiple games simultaneously. **This places significant additional load on your system.** Before using AutoClick with multiple games, you MUST:
