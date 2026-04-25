@@ -202,6 +202,11 @@ public static class Strings
     public static string ClickTypeRight => GetString("ClickTypeRight", "Right");
     public static string ClickTypeKeystroke => GetString("ClickTypeKeystroke", "Keystroke");
 
+    // Click heatmap overlay
+    public static string HeatmapToggle => GetString("HeatmapToggle", "Heatmap");
+    public static string HeatmapTooltip => GetString("HeatmapTooltip", "Toggle click heatmap overlay over the game window");
+    public static string HeatmapTitle => GetString("HeatmapTitle", "Heatmap");
+
     // Dashboard extras
     public static string AutoStoppedQueueEmpty => GetString("AutoStoppedQueueEmpty", "All games have exited. Auto-stopped.");
     public static string DashboardSuccessRatio => GetString("DashboardSuccessRatio", "Success / Skip Ratio");

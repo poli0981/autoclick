@@ -25,5 +25,15 @@ public class GameSession
     public ColorMismatchBehavior ColorMismatchBehavior { get; set; }
     public int ColorWaitTimeoutMs { get; set; } = 5000;
 
+    /// <summary>
+    /// Per-coordinate click count for the heatmap overlay. Keys are the original
+    /// (X, Y) before anti-detection jitter; written by the click engine task,
+    /// read by the heatmap UI on the dispatcher — uses ConcurrentDictionary
+    /// to keep increments race-free.
+    /// </summary>
+    [System.Text.Json.Serialization.JsonIgnore]
+    public System.Collections.Concurrent.ConcurrentDictionary<(int X, int Y), int> ClickHeatmap { get; }
+        = new();
+
     public override string ToString() => $"{ProcessName} ({State})";
 }

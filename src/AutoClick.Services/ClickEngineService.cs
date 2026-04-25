@@ -130,6 +130,7 @@ public class ClickEngineService : IClickEngine
 
                         InputSimulator.SendClick(session.WindowHandle, point.X, point.Y, point.ClickType);
                         session.ClickCount++;
+                        session.ClickHeatmap.AddOrUpdate((point.X, point.Y), 1, (_, c) => c + 1);
 
                         // Per-point delay (between points in a sequence)
                         if (point.DelayAfterMs > 0 && i < points.Count - 1)

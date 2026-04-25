@@ -203,6 +203,7 @@ public class GameSessionViewModel : ViewModelBase
         _session.SkippedClicks = 0;
         _session.LastIntervalSeconds = 0;
         _session.StartedAt = null;
+        _session.ClickHeatmap.Clear();
         ClickCount = 0;
         SkippedClicks = 0;
         LastInterval = 0;

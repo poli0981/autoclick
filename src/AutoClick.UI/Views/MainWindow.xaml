@@ -196,6 +196,10 @@
                                             <Button Content="{x:Static res:Strings.ResetStats}" Command="{Binding ResetStatsCommand}"
                                                     Style="{StaticResource DefaultButton}" Margin="0,0,4,0"
                                                     Visibility="{Binding IsIdle, Converter={StaticResource BoolToVis}}"/>
+                                            <Button Content="{x:Static res:Strings.HeatmapToggle}" Click="OnToggleHeatmap" Tag="{Binding}"
+                                                    Style="{StaticResource DefaultButton}" Margin="0,0,4,0"
+                                                    Visibility="{Binding HasCoordinate, Converter={StaticResource BoolToVis}}"
+                                                    ToolTip="{x:Static res:Strings.HeatmapTooltip}"/>
                                             <Button Content="{x:Static res:Strings.RemoveGame}"
                                                     Command="{Binding DataContext.RemoveGameCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                     CommandParameter="{Binding}"
