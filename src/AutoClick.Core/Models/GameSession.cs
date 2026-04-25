@@ -23,6 +23,7 @@ public class GameSession
     public bool EnablePixelColorGuard { get; set; }
     public int ColorTolerance { get; set; } = 10;
     public ColorMismatchBehavior ColorMismatchBehavior { get; set; }
+    public int ColorWaitTimeoutMs { get; set; } = 5000;
 
     public override string ToString() => $"{ProcessName} ({State})";
 }

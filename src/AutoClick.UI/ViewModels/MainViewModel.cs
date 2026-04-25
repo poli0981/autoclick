@@ -313,7 +313,8 @@ public class MainViewModel : ViewModelBase
             },
             EnablePixelColorGuard = _settings.EnablePixelColorGuard,
             ColorTolerance = _settings.ColorTolerance,
-            ColorMismatchBehavior = _settings.ColorMismatchBehavior
+            ColorMismatchBehavior = _settings.ColorMismatchBehavior,
+            ColorWaitTimeoutMs = _settings.ColorWaitTimeoutMs
         };
 
         var vm = new GameSessionViewModel(session, _clickEngine, _logService, _soundService);
@@ -350,6 +351,7 @@ public class MainViewModel : ViewModelBase
             g.Session.EnablePixelColorGuard = _settings.EnablePixelColorGuard;
             g.Session.ColorTolerance = _settings.ColorTolerance;
             g.Session.ColorMismatchBehavior = _settings.ColorMismatchBehavior;
+            g.Session.ColorWaitTimeoutMs = _settings.ColorWaitTimeoutMs;
         }
 
         _showLogs = _settings.ShowRealTimeLogs;
@@ -547,6 +549,7 @@ public class MainViewModel : ViewModelBase
         _settings.EnablePixelColorGuard = defaults.EnablePixelColorGuard;
         _settings.ColorTolerance = defaults.ColorTolerance;
         _settings.ColorMismatchBehavior = defaults.ColorMismatchBehavior;
+        _settings.ColorWaitTimeoutMs = defaults.ColorWaitTimeoutMs;
         _settings.Hotkeys = new HotkeySettings();
         _settingsService.Save(_settings);
 
@@ -996,6 +999,7 @@ public class MainViewModel : ViewModelBase
             EnablePixelColorGuard = src.EnablePixelColorGuard,
             ColorTolerance = src.ColorTolerance,
             ColorMismatchBehavior = src.ColorMismatchBehavior,
+            ColorWaitTimeoutMs = src.ColorWaitTimeoutMs,
             Hotkeys = new HotkeySettings
             {
                 PauseResume = src.Hotkeys.PauseResume,
@@ -1024,6 +1028,7 @@ public class MainViewModel : ViewModelBase
         _settings.EnablePixelColorGuard = src.EnablePixelColorGuard;
         _settings.ColorTolerance = src.ColorTolerance;
         _settings.ColorMismatchBehavior = src.ColorMismatchBehavior;
+        _settings.ColorWaitTimeoutMs = src.ColorWaitTimeoutMs;
         _settings.Hotkeys = new HotkeySettings
         {
             PauseResume = src.Hotkeys.PauseResume,

@@ -106,7 +106,20 @@ public class SettingsViewModel : ViewModelBase
     public int SelectedMismatchBehaviorIndex
     {
         get => (int)_settings.ColorMismatchBehavior;
-        set { _settings.ColorMismatchBehavior = (ColorMismatchBehavior)Math.Clamp(value, 0, 1); OnPropertyChanged(); }
+        set
+        {
+            _settings.ColorMismatchBehavior = (ColorMismatchBehavior)Math.Clamp(value, 0, 2);
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(IsWaitUntilMatch));
+        }
+    }
+
+    public bool IsWaitUntilMatch => _settings.ColorMismatchBehavior == ColorMismatchBehavior.WaitUntilMatch;
+
+    public int ColorWaitTimeoutMs
+    {
+        get => _settings.ColorWaitTimeoutMs;
+        set { _settings.ColorWaitTimeoutMs = Math.Clamp(value, 100, 600000); OnPropertyChanged(); }
     }
 
     /// <summary>
@@ -242,6 +255,8 @@ public class SettingsViewModel : ViewModelBase
         OnPropertyChanged(nameof(EnablePixelColorGuard));
         OnPropertyChanged(nameof(ColorTolerance));
         OnPropertyChanged(nameof(SelectedMismatchBehaviorIndex));
+        OnPropertyChanged(nameof(IsWaitUntilMatch));
+        OnPropertyChanged(nameof(ColorWaitTimeoutMs));
         OnPropertyChanged(nameof(DarkMode));
         OnPropertyChanged(nameof(Language));
         OnPropertyChanged(nameof(SelectedExitBehaviorIndex));

@@ -223,7 +223,24 @@
                               HorizontalAlignment="Left" Width="200">
                         <ComboBoxItem Content="{x:Static res:Strings.SkipPoint}"/>
                         <ComboBoxItem Content="{x:Static res:Strings.StopSession}"/>
+                        <ComboBoxItem Content="{x:Static res:Strings.WaitUntilMatch}"/>
                     </ComboBox>
+                </Grid>
+
+                <!-- Wait-until-match timeout (only when WaitUntilMatch behavior selected) -->
+                <Grid Margin="0,0,0,12" Visibility="{Binding IsWaitUntilMatch, Converter={StaticResource BoolToVis}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{x:Static res:Strings.ColorWaitTimeout}" VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <TextBox Text="{Binding ColorWaitTimeoutMs, UpdateSourceTrigger=LostFocus}"
+                                 Width="80" HorizontalAlignment="Left"/>
+                        <TextBlock Text="ms" Margin="6,0,0,0" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    </StackPanel>
                 </Grid>
 
                 <!-- Hotkeys -->

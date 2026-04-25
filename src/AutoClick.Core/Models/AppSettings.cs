@@ -21,6 +21,11 @@ public class AppSettings
     public bool EnablePixelColorGuard { get; set; } = false;
     public int ColorTolerance { get; set; } = 10;
     public ColorMismatchBehavior ColorMismatchBehavior { get; set; } = ColorMismatchBehavior.StopSession;
+    /// <summary>
+    /// Maximum time the click loop will wait for a pixel to match its reference color
+    /// when ColorMismatchBehavior is WaitUntilMatch. After timeout, the point is skipped.
+    /// </summary>
+    public int ColorWaitTimeoutMs { get; set; } = 5000;
     public HotkeySettings Hotkeys { get; set; } = new();
 }
 

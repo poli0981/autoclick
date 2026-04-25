@@ -49,6 +49,8 @@ public static class Strings
     public static string SoundNotifications => GetString("SoundNotifications", "Sound Notifications");
     public static string MinimizeOnStartAll => GetString("MinimizeOnStartAll", "Minimize to tray on Start All");
     public static string DragToReorder => GetString("DragToReorder", "Drag to reorder");
+    public static string WaitUntilMatch => GetString("WaitUntilMatch", "Wait until pixel matches");
+    public static string ColorWaitTimeout => GetString("ColorWaitTimeout", "Wait timeout");
     public static string Language => GetString("Language", "Language");
     public static string Theme => GetString("Theme", "Theme");
     public static string Dark => GetString("Dark", "Dark");
