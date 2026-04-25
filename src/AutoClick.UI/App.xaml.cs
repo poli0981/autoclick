@@ -30,6 +30,7 @@ public partial class App : Application
         services.AddSingleton<IMemoryManager, MemoryManagerService>();
         services.AddSingleton<IClickEngine, ClickEngineService>();
         services.AddSingleton<IProfileService, ProfileService>();
+        services.AddSingleton<ISessionExportService, SessionExportService>();
         services.AddSingleton<HotkeyService>();
         services.AddSingleton<IHotkeyService>(sp => sp.GetRequiredService<HotkeyService>());
 
@@ -64,6 +65,14 @@ public partial class App : Application
         var mainVm = _serviceProvider.GetRequiredService<MainViewModel>();
 
         settingsVm.ResetAppRequested += () => mainVm.ResetAppCommand.Execute(null);
+        settingsVm.SessionExportRequested += filePath => mainVm.ExportSessionToFile(filePath);
+        settingsVm.SessionImportRequested += filePath =>
+        {
+            mainVm.ImportSessionFromFile(filePath);
+            settingsVm.RefreshAllBindings();
+            ApplyTheme(settingsVm.DarkMode);
+            ApplyLanguage(settingsVm.Language);
+        };
         mainVm.SettingsReloaded += () =>
         {
             settingsVm.RefreshAllBindings();

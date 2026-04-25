@@ -30,6 +30,8 @@ public static class Strings
     public static string ExportLog => GetString("ExportLog", "Export Log");
     public static string ExportSettings => GetString("ExportSettings", "Export Settings");
     public static string ImportSettings => GetString("ImportSettings", "Import Settings");
+    public static string ExportSession => GetString("ExportSession", "Export Session");
+    public static string ImportSession => GetString("ImportSession", "Import Session");
     public static string ResetAll => GetString("ResetAll", "Reset All");
     public static string RemoveAll => GetString("RemoveAll", "Remove All");
     public static string RandomMin => GetString("RandomMin", "Random Min (s)");

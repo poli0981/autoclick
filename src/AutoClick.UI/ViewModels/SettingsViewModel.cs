@@ -176,6 +176,8 @@ public class SettingsViewModel : ViewModelBase
     public RelayCommand ExportLogCommand { get; }
     public RelayCommand ExportSettingsCommand { get; }
     public RelayCommand ImportSettingsCommand { get; }
+    public RelayCommand ExportSessionCommand { get; }
+    public RelayCommand ImportSessionCommand { get; }
     public RelayCommand<object?> CaptureHotkeyCommand { get; }
     public RelayCommand ResetAppCommand { get; }
     public RelayCommand OpenSettingsFileCommand { get; }
@@ -187,6 +189,8 @@ public class SettingsViewModel : ViewModelBase
     public event Action? SaveRequested;
     public event Action? RestartRequested;
     public event Action? SettingsModeChanged;
+    public event Action<string>? SessionExportRequested;
+    public event Action<string>? SessionImportRequested;
 
     public SettingsViewModel(
         ISettingsService settingsService,
@@ -203,6 +207,8 @@ public class SettingsViewModel : ViewModelBase
         ExportLogCommand = new RelayCommand(OnExportLog);
         ExportSettingsCommand = new RelayCommand(OnExportSettings);
         ImportSettingsCommand = new RelayCommand(OnImportSettings);
+        ExportSessionCommand = new RelayCommand(OnExportSession);
+        ImportSessionCommand = new RelayCommand(OnImportSession);
         CaptureHotkeyCommand = new RelayCommand<object?>(OnStartCapture);
         ResetAppCommand = new RelayCommand(OnResetApp);
         OpenSettingsFileCommand = new RelayCommand(OnOpenSettingsFile);
@@ -310,6 +316,27 @@ public class SettingsViewModel : ViewModelBase
     {
         var dlg = new SaveFileDialog { Filter = "JSON files (*.json)|*.json", FileName = "autoclick-settings.json" };
         if (dlg.ShowDialog() == true) { _settingsService.Export(dlg.FileName, _settings); _logService.Info($"Settings exported to {dlg.FileName}"); }
+    }
+
+    private void OnExportSession()
+    {
+        var dlg = new SaveFileDialog
+        {
+            Filter = "AutoClick session (*.autoclick-session)|*.autoclick-session",
+            FileName = $"autoclick-session-{DateTime.Now:yyyyMMdd-HHmmss}.autoclick-session"
+        };
+        if (dlg.ShowDialog() == true)
+            SessionExportRequested?.Invoke(dlg.FileName);
+    }
+
+    private void OnImportSession()
+    {
+        var dlg = new OpenFileDialog
+        {
+            Filter = "AutoClick session (*.autoclick-session)|*.autoclick-session"
+        };
+        if (dlg.ShowDialog() == true)
+            SessionImportRequested?.Invoke(dlg.FileName);
     }
 
     private void OnImportSettings()
