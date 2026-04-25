@@ -66,7 +66,17 @@ The push of a `v*` tag triggers `.github/workflows/release.yml`, which will:
    - `AutoClick-win-Setup.exe`
 6. Run `vpk upload github` to attach the artifacts to a GitHub Release named `AutoClick vX.Y.Z`.
 
-### 5. Manual trigger (alternative)
+### 5. Publish the draft
+
+`vpk upload github` creates the release as a **draft** by default. After the workflow succeeds:
+
+```bash
+gh release edit vX.Y.Z --repo poli0981/autoclick --draft=false
+```
+
+Or open the release on GitHub and click "Publish release". Until this is done the release is invisible to end users and the auto-updater won't pick it up.
+
+### 6. Manual trigger (alternative)
 
 If you need to re-run a release without re-tagging (e.g. transient CI failure), use **Actions → Release → Run workflow** and enter the version number (e.g. `1.2.1`). The workflow uses `--merge` on upload, so re-runs add to the existing release rather than failing.
 
