@@ -60,6 +60,16 @@ public class ClickEngineService : IClickEngine
 
                         var point = points[i];
 
+                        // Keystroke points have no coordinate; skip bounds + pixel checks and dispatch directly.
+                        if (point.ClickType == ClickType.Keystroke)
+                        {
+                            InputSimulator.SendKeystroke(session.WindowHandle, point.VirtualKeyCode);
+                            session.ClickCount++;
+                            if (point.DelayAfterMs > 0 && i < points.Count - 1)
+                                await Task.Delay(point.DelayAfterMs, cts.Token);
+                            continue;
+                        }
+
                         if (!CoordinateHelper.IsCoordinateInBounds(session.WindowHandle, point.X, point.Y))
                         {
                             _log.Warn($"Coordinate ({point.X}, {point.Y}) is out of bounds for \"{session.ProcessName}\". Window may have been resized. Stopping.");

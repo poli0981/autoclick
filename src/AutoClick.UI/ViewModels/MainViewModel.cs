@@ -211,6 +211,17 @@ public class MainViewModel : ViewModelBase
     /// </summary>
     public bool TryAddCoordinate(GameSessionViewModel sessionVm, ClickPoint point)
     {
+        // Keystroke points have no coordinate — skip bounds + duplicate checks and append directly.
+        if (point.ClickType == ClickType.Keystroke)
+        {
+            sessionVm.Session.ClickPoints.Add(point);
+            sessionVm.UpdateCoordinateText();
+            var keystrokeIdx = sessionVm.Session.ClickPoints.Count;
+            _logService.Info($"Keystroke #{keystrokeIdx} (vk=0x{point.VirtualKeyCode:X2}) added to \"{sessionVm.ProcessName}\"");
+            OnPropertyChanged(nameof(CanStartAll));
+            return true;
+        }
+
         // Validate bounds
         if (!CoordinateHelper.IsCoordinateInBounds(sessionVm.Session.WindowHandle, point.X, point.Y))
         {
@@ -221,7 +232,7 @@ public class MainViewModel : ViewModelBase
         // Check duplicate within same session
         foreach (var existing in sessionVm.Session.ClickPoints)
         {
-            if (existing.X == point.X && existing.Y == point.Y)
+            if (existing.X == point.X && existing.Y == point.Y && existing.ClickType != ClickType.Keystroke)
             {
                 _logService.Warn($"Coordinate ({point.X}, {point.Y}) already in sequence for \"{sessionVm.ProcessName}\". Rejected.");
                 return false;

@@ -200,11 +200,13 @@
   <data name="GameExitNotification" xml:space="preserve"><value>Game Exit Notification</value></data>
   <data name="GameExitNotificationTitle" xml:space="preserve"><value>Game Exited</value></data>
   <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} has exited. Success: {1}, Skipped: {2}</value></data>
-  <data name="PickerInstruction" xml:space="preserve"><value>Click to select. 1=Left 2=Double 3=Right. ESC=Cancel</value></data>
+  <data name="PickerInstruction" xml:space="preserve"><value>Click to select. 1=Left 2=Double 3=Right 4=Keystroke. ESC=Cancel</value></data>
+  <data name="PickerInstructionKeystroke" xml:space="preserve"><value>Press the key to send. 1/2/3 to switch back. ESC=Cancel</value></data>
   <data name="PickerCurrentType" xml:space="preserve"><value>Current: {0}</value></data>
   <data name="ClickTypeLeft" xml:space="preserve"><value>Left</value></data>
   <data name="ClickTypeDouble" xml:space="preserve"><value>Double</value></data>
   <data name="ClickTypeRight" xml:space="preserve"><value>Right</value></data>
+  <data name="ClickTypeKeystroke" xml:space="preserve"><value>Keystroke</value></data>
   <data name="AutoStoppedQueueEmpty" xml:space="preserve"><value>All games have exited. Auto-stopped.</value></data>
   <data name="DashboardSuccessRatio" xml:space="preserve"><value>Success / Skip Ratio</value></data>
   <data name="DashboardGameTimeline" xml:space="preserve"><value>Per-Game CPM Timeline</value></data>

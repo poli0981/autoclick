@@ -21,6 +21,12 @@ public class ClickPoint
     public uint ReferenceColor { get; set; } = 0xFFFFFFFF;
     public bool HasReferenceColor => ReferenceColor != 0xFFFFFFFF;
 
+    /// <summary>
+    /// Virtual-key code (VK_*) sent when ClickType is Keystroke. Ignored otherwise.
+    /// 0 means no key set.
+    /// </summary>
+    public int VirtualKeyCode { get; set; }
+
     public ClickPoint() { }
 
     public ClickPoint(int x, int y, ClickType clickType = ClickType.LeftClick, int delayAfterMs = 0)

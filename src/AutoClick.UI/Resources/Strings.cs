@@ -194,11 +194,13 @@ public static class Strings
     public static string GameExitNotificationMessage => GetString("GameExitNotificationMessage", "{0} has exited. Success: {1}, Skipped: {2}");
 
     // Click type per point
-    public static string PickerInstruction => GetString("PickerInstruction", "Click to select. 1=Left 2=Double 3=Right. ESC=Cancel");
+    public static string PickerInstruction => GetString("PickerInstruction", "Click to select. 1=Left 2=Double 3=Right 4=Keystroke. ESC=Cancel");
+    public static string PickerInstructionKeystroke => GetString("PickerInstructionKeystroke", "Press the key to send. 1/2/3 to switch back. ESC=Cancel");
     public static string PickerCurrentType => GetString("PickerCurrentType", "Current: {0}");
     public static string ClickTypeLeft => GetString("ClickTypeLeft", "Left");
     public static string ClickTypeDouble => GetString("ClickTypeDouble", "Double");
     public static string ClickTypeRight => GetString("ClickTypeRight", "Right");
+    public static string ClickTypeKeystroke => GetString("ClickTypeKeystroke", "Keystroke");
 
     // Dashboard extras
     public static string AutoStoppedQueueEmpty => GetString("AutoStoppedQueueEmpty", "All games have exited. Auto-stopped.");

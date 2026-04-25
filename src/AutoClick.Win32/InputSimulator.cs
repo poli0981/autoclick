@@ -58,4 +58,25 @@ public static class InputSimulator
                 break;
         }
     }
+
+    /// <summary>
+    /// Sends a single keystroke (WM_KEYDOWN + WM_KEYUP) to the target window via PostMessage.
+    /// Note: many DirectInput / anti-cheat games ignore PostMessage keystrokes — use for
+    /// windowed games and standard Win32 controls.
+    /// </summary>
+    public static void SendKeystroke(IntPtr hWnd, int virtualKeyCode)
+    {
+        if (virtualKeyCode <= 0) return;
+
+        // lParam encoding for WM_KEYDOWN: bits 0-15 = repeat count, 16-23 = scan code,
+        // 24 = extended, 29 = context, 30 = previous state, 31 = transition.
+        // For a synthetic single press, repeat=1 and the rest 0 is the conventional value.
+        var downLParam = (IntPtr)0x00000001;
+        // For WM_KEYUP: previous state = 1 (bit 30), transition = 1 (bit 31).
+        var upLParam = unchecked((IntPtr)0xC0000001);
+
+        PostMessage(hWnd, WM_KEYDOWN, (IntPtr)virtualKeyCode, downLParam);
+        Thread.Sleep(MouseEventDelayMs);
+        PostMessage(hWnd, WM_KEYUP, (IntPtr)virtualKeyCode, upLParam);
+    }
 }
