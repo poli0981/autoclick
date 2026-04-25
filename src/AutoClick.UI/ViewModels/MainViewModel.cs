@@ -549,7 +549,7 @@ public class MainViewModel : ViewModelBase
         _settings.RandomMax = defaults.RandomMax;
         _settings.MaxGamesInQueue = defaults.MaxGamesInQueue;
         _settings.ShowRealTimeLogs = defaults.ShowRealTimeLogs;
-        _settings.DarkMode = defaults.DarkMode;
+        _settings.Theme = defaults.Theme;
         _settings.Language = defaults.Language;
         _settings.ExitBehavior = defaults.ExitBehavior;
         _settings.AutoUpdate = defaults.AutoUpdate;
@@ -1000,7 +1000,7 @@ public class MainViewModel : ViewModelBase
             RandomMax = src.RandomMax,
             MaxGamesInQueue = src.MaxGamesInQueue,
             ShowRealTimeLogs = src.ShowRealTimeLogs,
-            DarkMode = src.DarkMode,
+            Theme = src.Theme,
             Language = src.Language,
             ExitBehavior = src.ExitBehavior,
             AutoUpdate = src.AutoUpdate,
@@ -1029,7 +1029,7 @@ public class MainViewModel : ViewModelBase
         _settings.RandomMax = src.RandomMax;
         _settings.MaxGamesInQueue = src.MaxGamesInQueue;
         _settings.ShowRealTimeLogs = src.ShowRealTimeLogs;
-        _settings.DarkMode = src.DarkMode;
+        _settings.Theme = src.Theme;
         _settings.Language = src.Language;
         _settings.ExitBehavior = src.ExitBehavior;
         _settings.AutoUpdate = src.AutoUpdate;

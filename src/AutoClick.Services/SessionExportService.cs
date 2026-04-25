@@ -10,7 +10,8 @@ public class SessionExportService : ISessionExportService
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         WriteIndented = true,
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        Converters = { new System.Text.Json.Serialization.JsonStringEnumConverter() }
     };
 
     public void Export(string filePath, SessionExport payload)

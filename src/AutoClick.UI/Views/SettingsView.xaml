@@ -93,7 +93,7 @@
                              Width="80" HorizontalAlignment="Left" IsEnabled="{Binding IsSettingsEnabled}"/>
                 </Grid>
 
-                <!-- Theme Toggle: Dark / Light -->
+                <!-- Theme: Dark / Light / High Contrast -->
                 <Grid Margin="0,0,0,12">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="200"/>
@@ -101,37 +101,13 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="{x:Static res:Strings.Theme}" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
-                    <ToggleButton Grid.Column="1" IsChecked="{Binding DarkMode}" HorizontalAlignment="Left"
-                                  Width="100" Height="28" Cursor="Hand">
-                        <ToggleButton.Style>
-                            <Style TargetType="ToggleButton">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="ToggleButton">
-                                            <Border x:Name="Bg" CornerRadius="14" Background="{DynamicResource BorderBrush}" Padding="4,2">
-                                                <Grid>
-                                                    <TextBlock x:Name="Label" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                               Foreground="{DynamicResource TextPrimaryBrush}" FontSize="11" FontWeight="SemiBold"/>
-                                                </Grid>
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsChecked" Value="True">
-                                                    <Setter TargetName="Bg" Property="Background" Value="#334155"/>
-                                                    <Setter TargetName="Label" Property="Text" Value="Dark"/>
-                                                    <Setter TargetName="Label" Property="Foreground" Value="#F1F5F9"/>
-                                                </Trigger>
-                                                <Trigger Property="IsChecked" Value="False">
-                                                    <Setter TargetName="Bg" Property="Background" Value="#E2E8F0"/>
-                                                    <Setter TargetName="Label" Property="Text" Value="Light"/>
-                                                    <Setter TargetName="Label" Property="Foreground" Value="#0F172A"/>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ToggleButton.Style>
-                    </ToggleButton>
+                    <ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedThemeIndex}"
+                              HorizontalAlignment="Left" Width="200"
+                              AutomationProperties.Name="{x:Static res:Strings.Theme}">
+                        <ComboBoxItem Content="{x:Static res:Strings.ThemeDark}"/>
+                        <ComboBoxItem Content="{x:Static res:Strings.ThemeLight}"/>
+                        <ComboBoxItem Content="{x:Static res:Strings.ThemeHighContrast}"/>
+                    </ComboBox>
                 </Grid>
 
                 <!-- Language -->

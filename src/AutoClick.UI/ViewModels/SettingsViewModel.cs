@@ -123,17 +123,25 @@ public class SettingsViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// Toggle: true = Dark, false = Light.
+    /// Theme selection — Dark / Light / HighContrast.
     /// </summary>
-    public bool DarkMode
+    public ThemeMode Theme
     {
-        get => _settings.DarkMode;
+        get => _settings.Theme;
         set
         {
-            _settings.DarkMode = value;
+            if (_settings.Theme == value) return;
+            _settings.Theme = value;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(SelectedThemeIndex));
             ThemeChanged?.Invoke();
         }
+    }
+
+    public int SelectedThemeIndex
+    {
+        get => (int)_settings.Theme;
+        set { Theme = (ThemeMode)Math.Clamp(value, 0, 2); }
     }
 
     public string Language
@@ -257,7 +265,8 @@ public class SettingsViewModel : ViewModelBase
         OnPropertyChanged(nameof(SelectedMismatchBehaviorIndex));
         OnPropertyChanged(nameof(IsWaitUntilMatch));
         OnPropertyChanged(nameof(ColorWaitTimeoutMs));
-        OnPropertyChanged(nameof(DarkMode));
+        OnPropertyChanged(nameof(Theme));
+        OnPropertyChanged(nameof(SelectedThemeIndex));
         OnPropertyChanged(nameof(Language));
         OnPropertyChanged(nameof(SelectedExitBehaviorIndex));
         OnPropertyChanged(nameof(HotkeyPauseResume));
@@ -368,7 +377,7 @@ public class SettingsViewModel : ViewModelBase
                 _settings.RandomMax = imported.RandomMax;
                 _settings.MaxGamesInQueue = imported.MaxGamesInQueue;
                 _settings.ShowRealTimeLogs = imported.ShowRealTimeLogs;
-                _settings.DarkMode = imported.DarkMode;
+                _settings.Theme = imported.Theme;
                 _settings.Language = imported.Language;
                 _settings.Hotkeys = imported.Hotkeys;
                 _settingsService.Save(_settings);

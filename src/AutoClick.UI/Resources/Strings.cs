@@ -207,6 +207,11 @@ public static class Strings
     public static string HeatmapTooltip => GetString("HeatmapTooltip", "Toggle click heatmap overlay over the game window");
     public static string HeatmapTitle => GetString("HeatmapTitle", "Heatmap");
 
+    // Theme options
+    public static string ThemeDark => GetString("ThemeDark", "Dark");
+    public static string ThemeLight => GetString("ThemeLight", "Light");
+    public static string ThemeHighContrast => GetString("ThemeHighContrast", "High Contrast");
+
     // Dashboard extras
     public static string AutoStoppedQueueEmpty => GetString("AutoStoppedQueueEmpty", "All games have exited. Auto-stopped.");
     public static string DashboardSuccessRatio => GetString("DashboardSuccessRatio", "Success / Skip Ratio");
