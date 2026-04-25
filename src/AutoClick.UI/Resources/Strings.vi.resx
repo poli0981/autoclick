@@ -74,6 +74,7 @@
   <data name="ClicksPerMin" xml:space="preserve"><value>Click/phút</value></data>
   <data name="PeakCPM" xml:space="preserve"><value>Cao nhất</value></data>
   <data name="SoundNotifications" xml:space="preserve"><value>Âm thanh thông báo</value></data>
+  <data name="MinimizeOnStartAll" xml:space="preserve"><value>Thu nhỏ về tray khi Start All</value></data>
   <data name="Language" xml:space="preserve"><value>Ngôn ngữ</value></data>
   <data name="Theme" xml:space="preserve"><value>Giao diện</value></data>
   <data name="Dark" xml:space="preserve"><value>Tối</value></data>

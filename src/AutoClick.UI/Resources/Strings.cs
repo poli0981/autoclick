@@ -45,6 +45,7 @@ public static class Strings
     public static string ClicksPerMin => GetString("ClicksPerMin", "Clicks/min");
     public static string PeakCPM => GetString("PeakCPM", "Peak");
     public static string SoundNotifications => GetString("SoundNotifications", "Sound Notifications");
+    public static string MinimizeOnStartAll => GetString("MinimizeOnStartAll", "Minimize to tray on Start All");
     public static string Language => GetString("Language", "Language");
     public static string Theme => GetString("Theme", "Theme");
     public static string Dark => GetString("Dark", "Dark");
