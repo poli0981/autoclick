@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [1.3.0] - Unreleased
+
+### Added
+- _PR #1 — Minimize on Start All_
+- _PR #2 — Import/Export full session_
+- _PR #3 — Drag-drop reorder points_
+- _PR #4 — Conditional click (pixel-trigger wait)_
+- _PR #5 — Keyboard input simulation_
+- _PR #6 — Click heatmap overlay_
+- _PR #7 — Accessibility & high-contrast theme_
+- _PR #8 — JA/KO/ZH translations for new strings_
+
+### Changed
+- _Settings schema: `DarkMode: bool` → `ThemeMode: enum { Dark, Light, HighContrast }` with auto-migration on load_
+
+---
+
 ## [1.2.1] - 2026-04-25
 
 ### Added
