@@ -318,6 +318,10 @@
                             Style="{StaticResource DefaultButton}" Margin="0,0,8,8"/>
                     <Button Content="{x:Static res:Strings.ImportSettings}" Command="{Binding ImportSettingsCommand}"
                             Style="{StaticResource DefaultButton}" Margin="0,0,8,8" IsEnabled="{Binding IsSettingsEnabled}"/>
+                    <Button Content="{x:Static res:Strings.ExportSession}" Command="{Binding ExportSessionCommand}"
+                            Style="{StaticResource DefaultButton}" Margin="0,0,8,8"/>
+                    <Button Content="{x:Static res:Strings.ImportSession}" Command="{Binding ImportSessionCommand}"
+                            Style="{StaticResource DefaultButton}" Margin="0,0,8,8" IsEnabled="{Binding IsSettingsEnabled}"/>
                     <Button Content="{x:Static res:Strings.ResetAll}" Command="{Binding ResetAppCommand}"
                             Style="{StaticResource DangerButton}" Margin="0,0,8,8"/>
                 </WrapPanel>

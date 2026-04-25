@@ -59,6 +59,8 @@
   <data name="ExportLog" xml:space="preserve"><value>Xuất log</value></data>
   <data name="ExportSettings" xml:space="preserve"><value>Xuất cài đặt</value></data>
   <data name="ImportSettings" xml:space="preserve"><value>Nhập cài đặt</value></data>
+  <data name="ExportSession" xml:space="preserve"><value>Xuất phiên</value></data>
+  <data name="ImportSession" xml:space="preserve"><value>Nhập phiên</value></data>
   <data name="ResetAll" xml:space="preserve"><value>Reset tất cả</value></data>
   <data name="RemoveAll" xml:space="preserve"><value>Xóa tất cả</value></data>
   <data name="RandomMin" xml:space="preserve"><value>Ngẫu nhiên tối thiểu (giây)</value></data>

@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 - **Minimize on Start All**: New Settings > Advanced toggle. When enabled, the main window auto-minimizes (to tray if Exit Behavior is set to Tray) on Start All — only when at least one game actually started. AFK convenience.
-- _PR #2 — Import/Export full session_
+- **Import/Export full session**: New `*.autoclick-session` snapshot of the entire app state — settings, all saved profiles, and the current per-game queue (process name, window title, click points, intervals, sequence delay, pixel-guard config). On import, settings are restored and queued games are re-attached to currently running windows by exact ProcessName + WindowTitle match (mismatches log a warning and are skipped). Schema version 1; refuses to import while a session is running.
 - _PR #3 — Drag-drop reorder points_
 - _PR #4 — Conditional click (pixel-trigger wait)_
 - _PR #5 — Keyboard input simulation_
