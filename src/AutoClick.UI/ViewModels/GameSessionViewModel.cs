@@ -66,6 +66,25 @@ public class GameSessionViewModel : ViewModelBase
     public int PointCount => _session.ClickPoints.Count;
     public bool HasMultiplePoints => _session.ClickPoints.Count > 1;
 
+    public System.Collections.ObjectModel.ObservableCollection<ClickPoint> ClickPoints => _session.ClickPoints;
+
+    /// <summary>
+    /// Reorders click points by moving the item at fromIndex to toIndex. No-op if running.
+    /// </summary>
+    public void MoveClickPoint(int fromIndex, int toIndex)
+    {
+        if (!IsIdle) return;
+        if (fromIndex == toIndex) return;
+        if (fromIndex < 0 || fromIndex >= _session.ClickPoints.Count) return;
+        if (toIndex < 0 || toIndex >= _session.ClickPoints.Count) return;
+
+        _session.ClickPoints.Move(fromIndex, toIndex);
+        UpdateCoordinateText();
+        OnPropertyChanged(nameof(ColorSwatches));
+        OnPropertyChanged(nameof(HasColorSwatches));
+        _log.Info($"Reordered point #{fromIndex + 1} → #{toIndex + 1} for \"{_session.ProcessName}\"");
+    }
+
     /// <summary>
     /// Delay in ms between each click point in the sequence.
     /// Applied to all points uniformly. Editable while idle.
@@ -184,6 +203,7 @@ public class GameSessionViewModel : ViewModelBase
         _session.SkippedClicks = 0;
         _session.LastIntervalSeconds = 0;
         _session.StartedAt = null;
+        _session.ClickHeatmap.Clear();
         ClickCount = 0;
         SkippedClicks = 0;
         LastInterval = 0;
@@ -195,6 +215,11 @@ public class GameSessionViewModel : ViewModelBase
         CoordinateText = _session.ClickPoints.Count > 0
             ? string.Join(" → ", _session.ClickPoints.Select((p, i) =>
             {
+                if (p.ClickType == Core.Enums.ClickType.Keystroke)
+                {
+                    var keyName = ((System.Windows.Input.Key)System.Windows.Input.KeyInterop.KeyFromVirtualKey(p.VirtualKeyCode)).ToString();
+                    return $"#{i + 1}[K:{keyName}]";
+                }
                 var clickTag = p.ClickType switch
                 {
                     Core.Enums.ClickType.DoubleClick => "[D]",

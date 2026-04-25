@@ -30,6 +30,7 @@ public partial class App : Application
         services.AddSingleton<IMemoryManager, MemoryManagerService>();
         services.AddSingleton<IClickEngine, ClickEngineService>();
         services.AddSingleton<IProfileService, ProfileService>();
+        services.AddSingleton<ISessionExportService, SessionExportService>();
         services.AddSingleton<HotkeyService>();
         services.AddSingleton<IHotkeyService>(sp => sp.GetRequiredService<HotkeyService>());
 
@@ -55,19 +56,27 @@ public partial class App : Application
         var settingsService = _serviceProvider.GetRequiredService<ISettingsService>();
         var loaded = settingsService.Load();
         // Apply: if settings file didn't exist yet, default to system theme
-        ApplyTheme(loaded.DarkMode);
+        ApplyTheme(loaded.Theme);
         ApplyLanguage(settingsVm.Language);
 
-        settingsVm.ThemeChanged += () => ApplyTheme(settingsVm.DarkMode);
+        settingsVm.ThemeChanged += () => ApplyTheme(settingsVm.Theme);
         settingsVm.LanguageChanged += ApplyLanguage;
 
         var mainVm = _serviceProvider.GetRequiredService<MainViewModel>();
 
         settingsVm.ResetAppRequested += () => mainVm.ResetAppCommand.Execute(null);
+        settingsVm.SessionExportRequested += filePath => mainVm.ExportSessionToFile(filePath);
+        settingsVm.SessionImportRequested += filePath =>
+        {
+            mainVm.ImportSessionFromFile(filePath);
+            settingsVm.RefreshAllBindings();
+            ApplyTheme(settingsVm.Theme);
+            ApplyLanguage(settingsVm.Language);
+        };
         mainVm.SettingsReloaded += () =>
         {
             settingsVm.RefreshAllBindings();
-            ApplyTheme(settingsVm.DarkMode);
+            ApplyTheme(settingsVm.Theme);
             ApplyLanguage(settingsVm.Language);
         };
 
@@ -131,12 +140,15 @@ public partial class App : Application
         }
     }
 
-    private void ApplyTheme(bool dark)
+    private void ApplyTheme(AutoClick.Core.Enums.ThemeMode theme)
     {
-        var dict = new ResourceDictionary
+        var path = theme switch
         {
-            Source = new Uri(dark ? "Themes/DarkTheme.xaml" : "Themes/LightTheme.xaml", UriKind.Relative)
+            AutoClick.Core.Enums.ThemeMode.Light => "Themes/LightTheme.xaml",
+            AutoClick.Core.Enums.ThemeMode.HighContrast => "Themes/HighContrastTheme.xaml",
+            _ => "Themes/DarkTheme.xaml"
         };
+        var dict = new ResourceDictionary { Source = new Uri(path, UriKind.Relative) };
         var merged = Resources.MergedDictionaries;
         if (merged.Count > 0) merged[0] = dict;
         else merged.Insert(0, dict);

@@ -85,6 +85,12 @@ public class SettingsViewModel : ViewModelBase
         set { _settings.ShowGameExitNotification = value; OnPropertyChanged(); }
     }
 
+    public bool MinimizeOnStartAll
+    {
+        get => _settings.MinimizeOnStartAll;
+        set { _settings.MinimizeOnStartAll = value; OnPropertyChanged(); }
+    }
+
     public bool EnablePixelColorGuard
     {
         get => _settings.EnablePixelColorGuard;
@@ -100,21 +106,42 @@ public class SettingsViewModel : ViewModelBase
     public int SelectedMismatchBehaviorIndex
     {
         get => (int)_settings.ColorMismatchBehavior;
-        set { _settings.ColorMismatchBehavior = (ColorMismatchBehavior)Math.Clamp(value, 0, 1); OnPropertyChanged(); }
+        set
+        {
+            _settings.ColorMismatchBehavior = (ColorMismatchBehavior)Math.Clamp(value, 0, 2);
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(IsWaitUntilMatch));
+        }
+    }
+
+    public bool IsWaitUntilMatch => _settings.ColorMismatchBehavior == ColorMismatchBehavior.WaitUntilMatch;
+
+    public int ColorWaitTimeoutMs
+    {
+        get => _settings.ColorWaitTimeoutMs;
+        set { _settings.ColorWaitTimeoutMs = Math.Clamp(value, 100, 600000); OnPropertyChanged(); }
     }
 
     /// <summary>
-    /// Toggle: true = Dark, false = Light.
+    /// Theme selection — Dark / Light / HighContrast.
     /// </summary>
-    public bool DarkMode
+    public ThemeMode Theme
     {
-        get => _settings.DarkMode;
+        get => _settings.Theme;
         set
         {
-            _settings.DarkMode = value;
+            if (_settings.Theme == value) return;
+            _settings.Theme = value;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(SelectedThemeIndex));
             ThemeChanged?.Invoke();
         }
+    }
+
+    public int SelectedThemeIndex
+    {
+        get => (int)_settings.Theme;
+        set { Theme = (ThemeMode)Math.Clamp(value, 0, 2); }
     }
 
     public string Language
@@ -170,6 +197,8 @@ public class SettingsViewModel : ViewModelBase
     public RelayCommand ExportLogCommand { get; }
     public RelayCommand ExportSettingsCommand { get; }
     public RelayCommand ImportSettingsCommand { get; }
+    public RelayCommand ExportSessionCommand { get; }
+    public RelayCommand ImportSessionCommand { get; }
     public RelayCommand<object?> CaptureHotkeyCommand { get; }
     public RelayCommand ResetAppCommand { get; }
     public RelayCommand OpenSettingsFileCommand { get; }
@@ -181,6 +210,8 @@ public class SettingsViewModel : ViewModelBase
     public event Action? SaveRequested;
     public event Action? RestartRequested;
     public event Action? SettingsModeChanged;
+    public event Action<string>? SessionExportRequested;
+    public event Action<string>? SessionImportRequested;
 
     public SettingsViewModel(
         ISettingsService settingsService,
@@ -197,6 +228,8 @@ public class SettingsViewModel : ViewModelBase
         ExportLogCommand = new RelayCommand(OnExportLog);
         ExportSettingsCommand = new RelayCommand(OnExportSettings);
         ImportSettingsCommand = new RelayCommand(OnImportSettings);
+        ExportSessionCommand = new RelayCommand(OnExportSession);
+        ImportSessionCommand = new RelayCommand(OnImportSession);
         CaptureHotkeyCommand = new RelayCommand<object?>(OnStartCapture);
         ResetAppCommand = new RelayCommand(OnResetApp);
         OpenSettingsFileCommand = new RelayCommand(OnOpenSettingsFile);
@@ -226,10 +259,14 @@ public class SettingsViewModel : ViewModelBase
         OnPropertyChanged(nameof(AutoUpdate));
         OnPropertyChanged(nameof(SoundNotifications));
         OnPropertyChanged(nameof(ShowGameExitNotification));
+        OnPropertyChanged(nameof(MinimizeOnStartAll));
         OnPropertyChanged(nameof(EnablePixelColorGuard));
         OnPropertyChanged(nameof(ColorTolerance));
         OnPropertyChanged(nameof(SelectedMismatchBehaviorIndex));
-        OnPropertyChanged(nameof(DarkMode));
+        OnPropertyChanged(nameof(IsWaitUntilMatch));
+        OnPropertyChanged(nameof(ColorWaitTimeoutMs));
+        OnPropertyChanged(nameof(Theme));
+        OnPropertyChanged(nameof(SelectedThemeIndex));
         OnPropertyChanged(nameof(Language));
         OnPropertyChanged(nameof(SelectedExitBehaviorIndex));
         OnPropertyChanged(nameof(HotkeyPauseResume));
@@ -305,6 +342,27 @@ public class SettingsViewModel : ViewModelBase
         if (dlg.ShowDialog() == true) { _settingsService.Export(dlg.FileName, _settings); _logService.Info($"Settings exported to {dlg.FileName}"); }
     }
 
+    private void OnExportSession()
+    {
+        var dlg = new SaveFileDialog
+        {
+            Filter = "AutoClick session (*.autoclick-session)|*.autoclick-session",
+            FileName = $"autoclick-session-{DateTime.Now:yyyyMMdd-HHmmss}.autoclick-session"
+        };
+        if (dlg.ShowDialog() == true)
+            SessionExportRequested?.Invoke(dlg.FileName);
+    }
+
+    private void OnImportSession()
+    {
+        var dlg = new OpenFileDialog
+        {
+            Filter = "AutoClick session (*.autoclick-session)|*.autoclick-session"
+        };
+        if (dlg.ShowDialog() == true)
+            SessionImportRequested?.Invoke(dlg.FileName);
+    }
+
     private void OnImportSettings()
     {
         var dlg = new OpenFileDialog { Filter = "JSON files (*.json)|*.json" };
@@ -319,7 +377,7 @@ public class SettingsViewModel : ViewModelBase
                 _settings.RandomMax = imported.RandomMax;
                 _settings.MaxGamesInQueue = imported.MaxGamesInQueue;
                 _settings.ShowRealTimeLogs = imported.ShowRealTimeLogs;
-                _settings.DarkMode = imported.DarkMode;
+                _settings.Theme = imported.Theme;
                 _settings.Language = imported.Language;
                 _settings.Hotkeys = imported.Hotkeys;
                 _settingsService.Save(_settings);

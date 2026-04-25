@@ -76,6 +76,10 @@ public static class NativeMethods
     public const uint WM_RBUTTONUP = 0x0205;
     public const uint WM_HOTKEY = 0x0312;
 
+    // Keyboard messages
+    public const uint WM_KEYDOWN = 0x0100;
+    public const uint WM_KEYUP = 0x0101;
+
     // Mouse key flags
     public const int MK_LBUTTON = 0x0001;
     public const int MK_RBUTTON = 0x0002;

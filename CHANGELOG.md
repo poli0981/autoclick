@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [1.3.0] - 2026-04-25
+
+### Added
+- **Minimize on Start All**: New Settings > Advanced toggle. When enabled, the main window auto-minimizes (to tray if Exit Behavior is set to Tray) on Start All — only when at least one game actually started. AFK convenience.
+- **Import/Export full session**: New `*.autoclick-session` snapshot of the entire app state — settings, all saved profiles, and the current per-game queue (process name, window title, click points, intervals, sequence delay, pixel-guard config). On import, settings are restored and queued games are re-attached to currently running windows by exact ProcessName + WindowTitle match (mismatches log a warning and are skipped). Schema version 1; refuses to import while a session is running.
+- **Drag-drop reorder points**: Per-game card now shows each click point as a draggable chip (visible when 2+ points exist). Drag any chip onto another to swap positions. Drag is confined to a single game (cross-game drops are ignored) and disabled while the session is running. `GameSession.ClickPoints` migrated from `List` to `ObservableCollection` so the UI updates live; `ClickEngineService` snapshots the points list at the start of each cycle to keep mid-edit reorders safe.
+- **Conditional click — wait until pixel matches**: New third option for the existing pixel color guard ("On color mismatch"). Where Skip and Stop were the previous choices, **Wait until pixel matches** blocks the click loop on a point and polls every 50ms until the pixel matches the reference color or `ColorWaitTimeoutMs` (default 5000ms, configurable in Settings) elapses — on timeout, the point is skipped. Use it for cooldown or button-lit triggers. Polling respects pause/cancel.
+- **Keyboard input simulation**: `ClickType.Keystroke` is now a fourth point type alongside Left / Double / Right click. In the coordinate picker, press `4` to enter Keystroke capture mode, then press any key — the next non-modifier key is captured as a `VirtualKeyCode` and added to the sequence. The click engine dispatches keystrokes via `PostMessage(WM_KEYDOWN/WM_KEYUP)` (skipping bounds + pixel-guard checks). **Limitation:** PostMessage keystrokes don't reach DirectInput / many anti-cheat games — works best for windowed games and standard Win32 controls.
+- **Click heatmap overlay**: New per-game **Heatmap** toggle button on the game card opens a transparent, click-through, always-on-top overlay aligned to the game window's client area. Each clicked coordinate is rendered as a colored circle on a blue → red gradient sized by relative click frequency. The overlay follows the target window's position/size at 200ms cadence and auto-closes when the game window goes away. Heatmap is cleared on Reset Stats / Reset All / Reset App.
+- **High-contrast theme**: New `Themes/HighContrastTheme.xaml` joins Dark and Light. The Settings > Theme control switches from a Dark/Light toggle to a 3-option ComboBox (Dark / Light / High Contrast). High-contrast uses pure black background, white text, white borders, and saturated yellow primary accents — every brush key the existing themes define is mirrored so no control loses its background/text/border.
+- **`AutomationProperties.Name` on the Theme picker** ensures screen readers announce "Theme" when focusing the new ComboBox. Comprehensive `AutomationProperties` + keyboard-nav annotations across all views are being rolled out incrementally; this release lands the high-contrast palette and the picker, with broader a11y annotations to follow in v1.3.1.
+- **JA/KO/ZH translations** for every new v1.3.0 string (Minimize on Start All, Export/Import Session, Drag to reorder, Wait until pixel matches, Wait timeout, Picker keystroke instructions, Click type Keystroke, Heatmap toggle/tooltip/title, Theme Dark/Light/High Contrast). Existing `PickerInstruction` updated to include the new `4=Keystroke` mode in all five locales. AI-generated, mirroring the v1.1.0 disclosure pattern.
+
+### Changed
+- **Settings schema migration**: `DarkMode: bool` → `Theme: enum { Dark, Light, HighContrast }`. `SettingsService.Load` reads legacy `darkMode` JSON values and seeds `Theme = darkMode ? Dark : Light` automatically — no user action required when upgrading from v1.2.x. New settings are emitted as `"theme": "Dark|Light|HighContrast"` (string enum).
+
+---
+
 ## [1.2.1] - 2026-04-25
 
 ### Added

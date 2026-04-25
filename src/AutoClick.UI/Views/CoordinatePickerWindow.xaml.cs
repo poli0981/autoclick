@@ -84,28 +84,61 @@ public partial class CoordinatePickerWindow : Window
         }
     }
 
+    private bool _captureNextKey;
+
     private void OnKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
     {
+        // Mode toggles 1/2/3/4 are always treated as mode switches, not as keystroke captures.
         switch (e.Key)
         {
             case System.Windows.Input.Key.Escape:
                 DialogResult = false;
-                break;
+                return;
             case System.Windows.Input.Key.D1:
             case System.Windows.Input.Key.NumPad1:
                 _selectedClickType = ClickType.LeftClick;
+                _captureNextKey = false;
                 UpdateInstructionText();
-                break;
+                return;
             case System.Windows.Input.Key.D2:
             case System.Windows.Input.Key.NumPad2:
                 _selectedClickType = ClickType.DoubleClick;
+                _captureNextKey = false;
                 UpdateInstructionText();
-                break;
+                return;
             case System.Windows.Input.Key.D3:
             case System.Windows.Input.Key.NumPad3:
                 _selectedClickType = ClickType.RightClick;
+                _captureNextKey = false;
                 UpdateInstructionText();
-                break;
+                return;
+            case System.Windows.Input.Key.D4:
+            case System.Windows.Input.Key.NumPad4:
+                _selectedClickType = ClickType.Keystroke;
+                _captureNextKey = true;
+                UpdateInstructionText();
+                return;
+        }
+
+        // In Keystroke mode, the next key press is captured as the keystroke to send.
+        if (_captureNextKey && _selectedClickType == ClickType.Keystroke)
+        {
+            // Skip pure modifier-only presses; user expects to capture an actual key.
+            if (e.Key == System.Windows.Input.Key.LeftCtrl || e.Key == System.Windows.Input.Key.RightCtrl ||
+                e.Key == System.Windows.Input.Key.LeftAlt  || e.Key == System.Windows.Input.Key.RightAlt  ||
+                e.Key == System.Windows.Input.Key.LeftShift|| e.Key == System.Windows.Input.Key.RightShift||
+                e.Key == System.Windows.Input.Key.LWin     || e.Key == System.Windows.Input.Key.RWin)
+            {
+                return;
+            }
+
+            var vk = System.Windows.Input.KeyInterop.VirtualKeyFromKey(e.Key);
+            SelectedPoint = new ClickPoint(0, 0, ClickType.Keystroke)
+            {
+                VirtualKeyCode = vk
+            };
+            DialogResult = true;
+            e.Handled = true;
         }
     }
 
@@ -115,15 +148,20 @@ public partial class CoordinatePickerWindow : Window
         {
             ClickType.DoubleClick => Strings.ClickTypeDouble,
             ClickType.RightClick => Strings.ClickTypeRight,
+            ClickType.Keystroke => Strings.ClickTypeKeystroke,
             _ => Strings.ClickTypeLeft
         };
-        InstructionText.Text = $"{Strings.PickerInstruction}  [{currentName}]";
+
+        InstructionText.Text = _selectedClickType == ClickType.Keystroke
+            ? $"{Strings.PickerInstructionKeystroke}  [{currentName}]"
+            : $"{Strings.PickerInstruction}  [{currentName}]";
     }
 
     private static string GetClickTypeTag(ClickType type) => type switch
     {
         ClickType.DoubleClick => "[D]",
         ClickType.RightClick => "[R]",
+        ClickType.Keystroke => "[K]",
         _ => "[L]"
     };
 

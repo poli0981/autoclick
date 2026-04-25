@@ -59,6 +59,8 @@
   <data name="ExportLog" xml:space="preserve"><value>Xuất log</value></data>
   <data name="ExportSettings" xml:space="preserve"><value>Xuất cài đặt</value></data>
   <data name="ImportSettings" xml:space="preserve"><value>Nhập cài đặt</value></data>
+  <data name="ExportSession" xml:space="preserve"><value>Xuất phiên</value></data>
+  <data name="ImportSession" xml:space="preserve"><value>Nhập phiên</value></data>
   <data name="ResetAll" xml:space="preserve"><value>Reset tất cả</value></data>
   <data name="RemoveAll" xml:space="preserve"><value>Xóa tất cả</value></data>
   <data name="RandomMin" xml:space="preserve"><value>Ngẫu nhiên tối thiểu (giây)</value></data>
@@ -74,6 +76,10 @@
   <data name="ClicksPerMin" xml:space="preserve"><value>Click/phút</value></data>
   <data name="PeakCPM" xml:space="preserve"><value>Cao nhất</value></data>
   <data name="SoundNotifications" xml:space="preserve"><value>Âm thanh thông báo</value></data>
+  <data name="MinimizeOnStartAll" xml:space="preserve"><value>Thu nhỏ về tray khi Start All</value></data>
+  <data name="DragToReorder" xml:space="preserve"><value>Kéo để đổi thứ tự</value></data>
+  <data name="WaitUntilMatch" xml:space="preserve"><value>Đợi đến khi pixel khớp màu</value></data>
+  <data name="ColorWaitTimeout" xml:space="preserve"><value>Thời gian chờ</value></data>
   <data name="Language" xml:space="preserve"><value>Ngôn ngữ</value></data>
   <data name="Theme" xml:space="preserve"><value>Giao diện</value></data>
   <data name="Dark" xml:space="preserve"><value>Tối</value></data>
@@ -193,11 +199,19 @@
   <data name="GameExitNotification" xml:space="preserve"><value>Thông báo game thoát</value></data>
   <data name="GameExitNotificationTitle" xml:space="preserve"><value>Game đã thoát</value></data>
   <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} đã thoát. Thành công: {1}, Bỏ qua: {2}</value></data>
-  <data name="PickerInstruction" xml:space="preserve"><value>Nhấp để chọn. 1=Trái 2=Đúp 3=Phải. ESC=Hủy</value></data>
+  <data name="PickerInstruction" xml:space="preserve"><value>Nhấp để chọn. 1=Trái 2=Đúp 3=Phải 4=Phím. ESC=Hủy</value></data>
+  <data name="PickerInstructionKeystroke" xml:space="preserve"><value>Nhấn phím cần gửi. 1/2/3 để chuyển lại. ESC=Hủy</value></data>
   <data name="PickerCurrentType" xml:space="preserve"><value>Hiện tại: {0}</value></data>
   <data name="ClickTypeLeft" xml:space="preserve"><value>Trái</value></data>
   <data name="ClickTypeDouble" xml:space="preserve"><value>Đúp</value></data>
   <data name="ClickTypeRight" xml:space="preserve"><value>Phải</value></data>
+  <data name="ClickTypeKeystroke" xml:space="preserve"><value>Phím</value></data>
+  <data name="HeatmapToggle" xml:space="preserve"><value>Bản đồ nhiệt</value></data>
+  <data name="HeatmapTooltip" xml:space="preserve"><value>Bật/tắt overlay bản đồ nhiệt click trên cửa sổ game</value></data>
+  <data name="HeatmapTitle" xml:space="preserve"><value>Bản đồ nhiệt</value></data>
+  <data name="ThemeDark" xml:space="preserve"><value>Tối</value></data>
+  <data name="ThemeLight" xml:space="preserve"><value>Sáng</value></data>
+  <data name="ThemeHighContrast" xml:space="preserve"><value>Tương phản cao</value></data>
   <data name="AutoStoppedQueueEmpty" xml:space="preserve"><value>Tất cả game đã thoát. Đã tự động dừng.</value></data>
   <data name="DashboardSuccessRatio" xml:space="preserve"><value>Tỷ lệ Thành công / Bỏ qua</value></data>
   <data name="DashboardGameTimeline" xml:space="preserve"><value>CPM theo Game (Timeline)</value></data>

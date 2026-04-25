@@ -114,13 +114,16 @@ public class MainViewModel : ViewModelBase
     /// </summary>
     public event Action<string, long, long>? GameExited;
 
+    private readonly ISessionExportService _sessionExportService;
+
     public MainViewModel(
         IClickEngine clickEngine,
         IGameDetector gameDetector,
         ISettingsService settingsService,
         ILogService logService,
         IMemoryManager memoryManager,
-        IProfileService profileService)
+        IProfileService profileService,
+        ISessionExportService sessionExportService)
     {
         _clickEngine = clickEngine;
         _gameDetector = gameDetector;
@@ -128,6 +131,7 @@ public class MainViewModel : ViewModelBase
         _logService = logService;
         _memoryManager = memoryManager;
         _profileService = profileService;
+        _sessionExportService = sessionExportService;
 
         _settings = _settingsService.Load();
         _showLogs = _settings.ShowRealTimeLogs;
@@ -207,6 +211,17 @@ public class MainViewModel : ViewModelBase
     /// </summary>
     public bool TryAddCoordinate(GameSessionViewModel sessionVm, ClickPoint point)
     {
+        // Keystroke points have no coordinate — skip bounds + duplicate checks and append directly.
+        if (point.ClickType == ClickType.Keystroke)
+        {
+            sessionVm.Session.ClickPoints.Add(point);
+            sessionVm.UpdateCoordinateText();
+            var keystrokeIdx = sessionVm.Session.ClickPoints.Count;
+            _logService.Info($"Keystroke #{keystrokeIdx} (vk=0x{point.VirtualKeyCode:X2}) added to \"{sessionVm.ProcessName}\"");
+            OnPropertyChanged(nameof(CanStartAll));
+            return true;
+        }
+
         // Validate bounds
         if (!CoordinateHelper.IsCoordinateInBounds(sessionVm.Session.WindowHandle, point.X, point.Y))
         {
@@ -217,7 +232,7 @@ public class MainViewModel : ViewModelBase
         // Check duplicate within same session
         foreach (var existing in sessionVm.Session.ClickPoints)
         {
-            if (existing.X == point.X && existing.Y == point.Y)
+            if (existing.X == point.X && existing.Y == point.Y && existing.ClickType != ClickType.Keystroke)
             {
                 _logService.Warn($"Coordinate ({point.X}, {point.Y}) already in sequence for \"{sessionVm.ProcessName}\". Rejected.");
                 return false;
@@ -263,7 +278,7 @@ public class MainViewModel : ViewModelBase
             var point = CoordinateHelper.GenerateRandomCoordinate(hWnd);
 
             // Check duplicate within same session
-            bool duplicate = sessionVm.Session.ClickPoints.Exists(p => p.X == point.X && p.Y == point.Y);
+            bool duplicate = sessionVm.Session.ClickPoints.Any(p => p.X == point.X && p.Y == point.Y);
             if (!duplicate)
             {
                 sessionVm.Session.ClickPoints.Add(point);
@@ -309,7 +324,8 @@ public class MainViewModel : ViewModelBase
             },
             EnablePixelColorGuard = _settings.EnablePixelColorGuard,
             ColorTolerance = _settings.ColorTolerance,
-            ColorMismatchBehavior = _settings.ColorMismatchBehavior
+            ColorMismatchBehavior = _settings.ColorMismatchBehavior,
+            ColorWaitTimeoutMs = _settings.ColorWaitTimeoutMs
         };
 
         var vm = new GameSessionViewModel(session, _clickEngine, _logService, _soundService);
@@ -346,6 +362,7 @@ public class MainViewModel : ViewModelBase
             g.Session.EnablePixelColorGuard = _settings.EnablePixelColorGuard;
             g.Session.ColorTolerance = _settings.ColorTolerance;
             g.Session.ColorMismatchBehavior = _settings.ColorMismatchBehavior;
+            g.Session.ColorWaitTimeoutMs = _settings.ColorWaitTimeoutMs;
         }
 
         _showLogs = _settings.ShowRealTimeLogs;
@@ -424,8 +441,15 @@ public class MainViewModel : ViewModelBase
         if (_sessionStartedAt == null)
             _sessionStartedAt = DateTime.Now;
 
-        foreach (var g in GameSessions.Where(g => g.IsIdle && g.HasCoordinate).ToList())
+        var startable = GameSessions.Where(g => g.IsIdle && g.HasCoordinate).ToList();
+        foreach (var g in startable)
             g.Start();
+
+        if (startable.Count > 0 && _settings.MinimizeOnStartAll
+            && Application.Current?.MainWindow is { } mainWindow)
+        {
+            mainWindow.WindowState = WindowState.Minimized;
+        }
     }
 
     private void OnStopAll()
@@ -525,16 +549,18 @@ public class MainViewModel : ViewModelBase
         _settings.RandomMax = defaults.RandomMax;
         _settings.MaxGamesInQueue = defaults.MaxGamesInQueue;
         _settings.ShowRealTimeLogs = defaults.ShowRealTimeLogs;
-        _settings.DarkMode = defaults.DarkMode;
+        _settings.Theme = defaults.Theme;
         _settings.Language = defaults.Language;
         _settings.ExitBehavior = defaults.ExitBehavior;
         _settings.AutoUpdate = defaults.AutoUpdate;
         _settings.SoundNotifications = defaults.SoundNotifications;
         _settings.ShowGameExitNotification = defaults.ShowGameExitNotification;
+        _settings.MinimizeOnStartAll = defaults.MinimizeOnStartAll;
         _settings.SettingsMode = defaults.SettingsMode;
         _settings.EnablePixelColorGuard = defaults.EnablePixelColorGuard;
         _settings.ColorTolerance = defaults.ColorTolerance;
         _settings.ColorMismatchBehavior = defaults.ColorMismatchBehavior;
+        _settings.ColorWaitTimeoutMs = defaults.ColorWaitTimeoutMs;
         _settings.Hotkeys = new HotkeySettings();
         _settingsService.Save(_settings);
 
@@ -816,6 +842,210 @@ public class MainViewModel : ViewModelBase
     {
         _settingsService.Save(_settings);
         ReloadSettingsToSessions();
+    }
+
+    // ── Full Session Export / Import ──
+
+    public SessionExport BuildSessionExport()
+    {
+        var export = new SessionExport
+        {
+            SchemaVersion = 1,
+            ExportedAt = DateTime.UtcNow,
+            AppVersion = typeof(MainViewModel).Assembly.GetName().Version?.ToString() ?? "",
+            Settings = CloneSettings(_settings),
+            Profiles = _profileService.GetAll(),
+            Games = GameSessions.Select(vm => new SavedGameSession
+            {
+                ProcessName = vm.Session.ProcessName,
+                WindowTitle = vm.Session.WindowTitle,
+                ExecutablePath = vm.Session.ExecutablePath,
+                ClickPoints = vm.Session.ClickPoints
+                    .Select(p => new ClickPoint(p.X, p.Y, p.ClickType, p.DelayAfterMs) { ReferenceColor = p.ReferenceColor })
+                    .ToList(),
+                Profile = new ClickProfile
+                {
+                    Mode = vm.Session.Profile.Mode,
+                    FixedIntervalSeconds = vm.Session.Profile.FixedIntervalSeconds,
+                    RandomMinSeconds = vm.Session.Profile.RandomMinSeconds,
+                    RandomMaxSeconds = vm.Session.Profile.RandomMaxSeconds
+                },
+                SequenceDelayMs = vm.SequenceDelayMs,
+                EnablePixelColorGuard = vm.Session.EnablePixelColorGuard,
+                ColorTolerance = vm.Session.ColorTolerance,
+                ColorMismatchBehavior = vm.Session.ColorMismatchBehavior,
+                IsCustomMode = vm.IsCustomMode
+            }).ToList()
+        };
+        return export;
+    }
+
+    public void ExportSessionToFile(string filePath)
+    {
+        try
+        {
+            var payload = BuildSessionExport();
+            _sessionExportService.Export(filePath, payload);
+            _logService.Info($"Session exported to {filePath} ({payload.Games.Count} games, {payload.Profiles.Count} profiles)");
+        }
+        catch (Exception ex)
+        {
+            _logService.Error("Failed to export session", ex);
+        }
+    }
+
+    /// <summary>
+    /// Imports a full session: replaces settings, restores profiles, and re-attaches saved games
+    /// to currently running windows by ProcessName + WindowTitle. Refuses while any session is running.
+    /// </summary>
+    public void ImportSessionFromFile(string filePath)
+    {
+        if (HasAnyRunning)
+        {
+            _logService.Warn("Cannot import session while clicks are running. Stop all first.");
+            return;
+        }
+
+        SessionExport import;
+        try
+        {
+            import = _sessionExportService.Import(filePath);
+        }
+        catch (Exception ex)
+        {
+            _logService.Error("Failed to read session file", ex);
+            return;
+        }
+
+        if (import.SchemaVersion != 1)
+        {
+            _logService.Warn($"Unsupported session schema version {import.SchemaVersion} (expected 1).");
+            return;
+        }
+
+        // 1. Apply imported settings (mutate in place to keep _settings reference stable)
+        ApplySettings(import.Settings);
+        _settingsService.Save(_settings);
+
+        // 2. Restore profiles (Save preserves IDs if name matches; otherwise creates new)
+        foreach (var profile in import.Profiles)
+        {
+            var existing = _profileService.GetByName(profile.Name);
+            if (existing != null)
+            {
+                profile.Id = existing.Id;
+                profile.CreatedAt = existing.CreatedAt;
+            }
+            _profileService.Save(profile);
+        }
+        RefreshProfiles();
+
+        // 3. Clear current queue and re-attach saved games to live windows
+        GameSessions.Clear();
+        var liveWindows = _gameDetector.GetRunningWindows();
+        var attached = 0;
+        var skipped = 0;
+        foreach (var saved in import.Games)
+        {
+            var match = liveWindows.FirstOrDefault(w =>
+                string.Equals(w.ProcessName, saved.ProcessName, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(w.Title, saved.WindowTitle, StringComparison.Ordinal));
+            if (match == null)
+            {
+                _logService.Warn($"Imported game \"{saved.ProcessName}\" / \"{saved.WindowTitle}\" not found among running windows. Skipped.");
+                skipped++;
+                continue;
+            }
+
+            var session = new GameSession
+            {
+                ProcessName = match.ProcessName,
+                WindowTitle = match.Title,
+                ExecutablePath = match.ExecutablePath,
+                ProcessId = match.ProcessId,
+                WindowHandle = match.Handle,
+                ClickPoints = new System.Collections.ObjectModel.ObservableCollection<ClickPoint>(
+                    saved.ClickPoints.Select(p => new ClickPoint(p.X, p.Y, p.ClickType, p.DelayAfterMs) { ReferenceColor = p.ReferenceColor })),
+                Profile = new ClickProfile
+                {
+                    Mode = saved.Profile.Mode,
+                    FixedIntervalSeconds = saved.Profile.FixedIntervalSeconds,
+                    RandomMinSeconds = saved.Profile.RandomMinSeconds,
+                    RandomMaxSeconds = saved.Profile.RandomMaxSeconds
+                },
+                EnablePixelColorGuard = saved.EnablePixelColorGuard,
+                ColorTolerance = saved.ColorTolerance,
+                ColorMismatchBehavior = saved.ColorMismatchBehavior
+            };
+
+            var vm = new GameSessionViewModel(session, _clickEngine, _logService, _soundService);
+            vm.IsCustomMode = saved.IsCustomMode;
+            vm.SequenceDelayMs = saved.SequenceDelayMs;
+            GameSessions.Add(vm);
+            attached++;
+        }
+
+        SettingsReloaded?.Invoke();
+        _logService.Info($"Session imported: {attached} attached, {skipped} skipped (no matching window).");
+    }
+
+    private static AppSettings CloneSettings(AppSettings src)
+    {
+        return new AppSettings
+        {
+            SettingsMode = src.SettingsMode,
+            DefaultClickMode = src.DefaultClickMode,
+            DefaultFixedInterval = src.DefaultFixedInterval,
+            RandomMin = src.RandomMin,
+            RandomMax = src.RandomMax,
+            MaxGamesInQueue = src.MaxGamesInQueue,
+            ShowRealTimeLogs = src.ShowRealTimeLogs,
+            Theme = src.Theme,
+            Language = src.Language,
+            ExitBehavior = src.ExitBehavior,
+            AutoUpdate = src.AutoUpdate,
+            SoundNotifications = src.SoundNotifications,
+            ShowGameExitNotification = src.ShowGameExitNotification,
+            MinimizeOnStartAll = src.MinimizeOnStartAll,
+            EnablePixelColorGuard = src.EnablePixelColorGuard,
+            ColorTolerance = src.ColorTolerance,
+            ColorMismatchBehavior = src.ColorMismatchBehavior,
+            ColorWaitTimeoutMs = src.ColorWaitTimeoutMs,
+            Hotkeys = new HotkeySettings
+            {
+                PauseResume = src.Hotkeys.PauseResume,
+                StopAll = src.Hotkeys.StopAll,
+                StartAll = src.Hotkeys.StartAll
+            }
+        };
+    }
+
+    private void ApplySettings(AppSettings src)
+    {
+        _settings.SettingsMode = src.SettingsMode;
+        _settings.DefaultClickMode = src.DefaultClickMode;
+        _settings.DefaultFixedInterval = src.DefaultFixedInterval;
+        _settings.RandomMin = src.RandomMin;
+        _settings.RandomMax = src.RandomMax;
+        _settings.MaxGamesInQueue = src.MaxGamesInQueue;
+        _settings.ShowRealTimeLogs = src.ShowRealTimeLogs;
+        _settings.Theme = src.Theme;
+        _settings.Language = src.Language;
+        _settings.ExitBehavior = src.ExitBehavior;
+        _settings.AutoUpdate = src.AutoUpdate;
+        _settings.SoundNotifications = src.SoundNotifications;
+        _settings.ShowGameExitNotification = src.ShowGameExitNotification;
+        _settings.MinimizeOnStartAll = src.MinimizeOnStartAll;
+        _settings.EnablePixelColorGuard = src.EnablePixelColorGuard;
+        _settings.ColorTolerance = src.ColorTolerance;
+        _settings.ColorMismatchBehavior = src.ColorMismatchBehavior;
+        _settings.ColorWaitTimeoutMs = src.ColorWaitTimeoutMs;
+        _settings.Hotkeys = new HotkeySettings
+        {
+            PauseResume = src.Hotkeys.PauseResume,
+            StopAll = src.Hotkeys.StopAll,
+            StartAll = src.Hotkeys.StartAll
+        };
     }
 }
 

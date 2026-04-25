@@ -50,14 +50,25 @@ public class ClickEngineService : IClickEngine
                         break;
                     }
 
-                    // Execute click sequence: each point in order with optional per-point delay
-                    var points = session.ClickPoints;
+                    // Execute click sequence: each point in order with optional per-point delay.
+                    // Snapshot to a local list so reorder/edit on the UI thread can't disturb mid-cycle iteration.
+                    var points = session.ClickPoints.ToList();
                     bool outOfBounds = false;
                     for (int i = 0; i < points.Count; i++)
                     {
                         if (cts.Token.IsCancellationRequested) break;
 
                         var point = points[i];
+
+                        // Keystroke points have no coordinate; skip bounds + pixel checks and dispatch directly.
+                        if (point.ClickType == ClickType.Keystroke)
+                        {
+                            InputSimulator.SendKeystroke(session.WindowHandle, point.VirtualKeyCode);
+                            session.ClickCount++;
+                            if (point.DelayAfterMs > 0 && i < points.Count - 1)
+                                await Task.Delay(point.DelayAfterMs, cts.Token);
+                            continue;
+                        }
 
                         if (!CoordinateHelper.IsCoordinateInBounds(session.WindowHandle, point.X, point.Y))
                         {
@@ -74,15 +85,43 @@ public class ClickEngineService : IClickEngine
                             {
                                 var expected = PixelColorHelper.ColorToHex(point.ReferenceColor);
                                 var actual = PixelColorHelper.ColorToHex(currentColor);
-                                session.SkippedClicks++;
-                                if (session.ColorMismatchBehavior == ColorMismatchBehavior.StopSession)
+
+                                if (session.ColorMismatchBehavior == ColorMismatchBehavior.WaitUntilMatch)
                                 {
-                                    _log.Warn($"Color mismatch at ({point.X}, {point.Y}) for \"{session.ProcessName}\": expected {expected}, got {actual}. Stopping.");
-                                    outOfBounds = true;
-                                    break;
+                                    // Poll until the pixel matches, the session is paused/cancelled, or the timeout expires.
+                                    var timeoutMs = Math.Max(50, session.ColorWaitTimeoutMs);
+                                    var deadline = DateTime.UtcNow.AddMilliseconds(timeoutMs);
+                                    bool matched = false;
+                                    _log.Info($"Waiting for color match at ({point.X}, {point.Y}) for \"{session.ProcessName}\": expected {expected}, got {actual} (timeout {timeoutMs}ms).");
+                                    while (DateTime.UtcNow < deadline)
+                                    {
+                                        if (cts.Token.IsCancellationRequested) break;
+                                        pauseEvent.Wait(cts.Token);
+                                        await Task.Delay(50, cts.Token);
+                                        currentColor = PixelColorHelper.ReadPixelColor(session.WindowHandle, point.X, point.Y);
+                                        if (PixelColorHelper.IsColorMatch(currentColor, point.ReferenceColor, session.ColorTolerance))
+                                        {
+                                            matched = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!matched)
+                                    {
+                                        session.SkippedClicks++;
+                                        _log.Info($"Color wait timed out at ({point.X}, {point.Y}) for \"{session.ProcessName}\". Skipping point.");
+                                        continue;
+                                    }
+                                    // matched → fall through to click
                                 }
                                 else
                                 {
+                                    session.SkippedClicks++;
+                                    if (session.ColorMismatchBehavior == ColorMismatchBehavior.StopSession)
+                                    {
+                                        _log.Warn($"Color mismatch at ({point.X}, {point.Y}) for \"{session.ProcessName}\": expected {expected}, got {actual}. Stopping.");
+                                        outOfBounds = true;
+                                        break;
+                                    }
                                     _log.Info($"Color mismatch at ({point.X}, {point.Y}) for \"{session.ProcessName}\": expected {expected}, got {actual}. Skipping.");
                                     continue;
                                 }
@@ -91,6 +130,7 @@ public class ClickEngineService : IClickEngine
 
                         InputSimulator.SendClick(session.WindowHandle, point.X, point.Y, point.ClickType);
                         session.ClickCount++;
+                        session.ClickHeatmap.AddOrUpdate((point.X, point.Y), 1, (_, c) => c + 1);
 
                         // Per-point delay (between points in a sequence)
                         if (point.DelayAfterMs > 0 && i < points.Count - 1)

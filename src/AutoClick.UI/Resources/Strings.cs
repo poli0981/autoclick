@@ -30,6 +30,8 @@ public static class Strings
     public static string ExportLog => GetString("ExportLog", "Export Log");
     public static string ExportSettings => GetString("ExportSettings", "Export Settings");
     public static string ImportSettings => GetString("ImportSettings", "Import Settings");
+    public static string ExportSession => GetString("ExportSession", "Export Session");
+    public static string ImportSession => GetString("ImportSession", "Import Session");
     public static string ResetAll => GetString("ResetAll", "Reset All");
     public static string RemoveAll => GetString("RemoveAll", "Remove All");
     public static string RandomMin => GetString("RandomMin", "Random Min (s)");
@@ -45,6 +47,10 @@ public static class Strings
     public static string ClicksPerMin => GetString("ClicksPerMin", "Clicks/min");
     public static string PeakCPM => GetString("PeakCPM", "Peak");
     public static string SoundNotifications => GetString("SoundNotifications", "Sound Notifications");
+    public static string MinimizeOnStartAll => GetString("MinimizeOnStartAll", "Minimize to tray on Start All");
+    public static string DragToReorder => GetString("DragToReorder", "Drag to reorder");
+    public static string WaitUntilMatch => GetString("WaitUntilMatch", "Wait until pixel matches");
+    public static string ColorWaitTimeout => GetString("ColorWaitTimeout", "Wait timeout");
     public static string Language => GetString("Language", "Language");
     public static string Theme => GetString("Theme", "Theme");
     public static string Dark => GetString("Dark", "Dark");
@@ -188,11 +194,23 @@ public static class Strings
     public static string GameExitNotificationMessage => GetString("GameExitNotificationMessage", "{0} has exited. Success: {1}, Skipped: {2}");
 
     // Click type per point
-    public static string PickerInstruction => GetString("PickerInstruction", "Click to select. 1=Left 2=Double 3=Right. ESC=Cancel");
+    public static string PickerInstruction => GetString("PickerInstruction", "Click to select. 1=Left 2=Double 3=Right 4=Keystroke. ESC=Cancel");
+    public static string PickerInstructionKeystroke => GetString("PickerInstructionKeystroke", "Press the key to send. 1/2/3 to switch back. ESC=Cancel");
     public static string PickerCurrentType => GetString("PickerCurrentType", "Current: {0}");
     public static string ClickTypeLeft => GetString("ClickTypeLeft", "Left");
     public static string ClickTypeDouble => GetString("ClickTypeDouble", "Double");
     public static string ClickTypeRight => GetString("ClickTypeRight", "Right");
+    public static string ClickTypeKeystroke => GetString("ClickTypeKeystroke", "Keystroke");
+
+    // Click heatmap overlay
+    public static string HeatmapToggle => GetString("HeatmapToggle", "Heatmap");
+    public static string HeatmapTooltip => GetString("HeatmapTooltip", "Toggle click heatmap overlay over the game window");
+    public static string HeatmapTitle => GetString("HeatmapTitle", "Heatmap");
+
+    // Theme options
+    public static string ThemeDark => GetString("ThemeDark", "Dark");
+    public static string ThemeLight => GetString("ThemeLight", "Light");
+    public static string ThemeHighContrast => GetString("ThemeHighContrast", "High Contrast");
 
     // Dashboard extras
     public static string AutoStoppedQueueEmpty => GetString("AutoStoppedQueueEmpty", "All games have exited. Auto-stopped.");

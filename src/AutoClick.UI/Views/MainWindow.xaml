@@ -153,6 +153,7 @@
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
 
                                         <!-- Game Name & Status -->
@@ -195,6 +196,10 @@
                                             <Button Content="{x:Static res:Strings.ResetStats}" Command="{Binding ResetStatsCommand}"
                                                     Style="{StaticResource DefaultButton}" Margin="0,0,4,0"
                                                     Visibility="{Binding IsIdle, Converter={StaticResource BoolToVis}}"/>
+                                            <Button Content="{x:Static res:Strings.HeatmapToggle}" Click="OnToggleHeatmap" Tag="{Binding}"
+                                                    Style="{StaticResource DefaultButton}" Margin="0,0,4,0"
+                                                    Visibility="{Binding HasCoordinate, Converter={StaticResource BoolToVis}}"
+                                                    ToolTip="{x:Static res:Strings.HeatmapTooltip}"/>
                                             <Button Content="{x:Static res:Strings.RemoveGame}"
                                                     Command="{Binding DataContext.RemoveGameCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                     CommandParameter="{Binding}"
@@ -316,6 +321,36 @@
                                                          IsEnabled="{Binding CanEditInterval}"/>
                                             </StackPanel>
                                         </WrapPanel>
+
+                                        <!-- Reorderable Points List (drag-drop, idle only, when 2+ points) -->
+                                        <ItemsControl Grid.Row="4" Grid.ColumnSpan="2" Margin="0,8,0,0"
+                                                      ItemsSource="{Binding ClickPoints}"
+                                                      Visibility="{Binding HasMultiplePoints, Converter={StaticResource BoolToVis}}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="{DynamicResource SurfaceBrush}" CornerRadius="4"
+                                                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                                            Padding="8,3" Margin="0,0,4,4"
+                                                            Cursor="SizeAll" AllowDrop="True"
+                                                            PreviewMouseLeftButtonDown="OnPointChipMouseDown"
+                                                            Drop="OnPointChipDrop"
+                                                            ToolTip="{x:Static res:Strings.DragToReorder}">
+                                                        <TextBlock FontSize="11" Foreground="{DynamicResource TextPrimaryBrush}">
+                                                            <Run Text="("/>
+                                                            <Run Text="{Binding X, Mode=OneWay}"/>
+                                                            <Run Text=", "/>
+                                                            <Run Text="{Binding Y, Mode=OneWay}"/>
+                                                            <Run Text=")"/>
+                                                        </TextBlock>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
                                     </Grid>
                                 </Border>
                             </DataTemplate>

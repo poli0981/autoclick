@@ -60,6 +60,8 @@
   <data name="ExportLog" xml:space="preserve"><value>Export Log</value></data>
   <data name="ExportSettings" xml:space="preserve"><value>Export Settings</value></data>
   <data name="ImportSettings" xml:space="preserve"><value>Import Settings</value></data>
+  <data name="ExportSession" xml:space="preserve"><value>Export Session</value></data>
+  <data name="ImportSession" xml:space="preserve"><value>Import Session</value></data>
   <data name="ResetAll" xml:space="preserve"><value>Reset All</value></data>
   <data name="RemoveAll" xml:space="preserve"><value>Remove All</value></data>
   <data name="RandomMin" xml:space="preserve"><value>Random Min (s)</value></data>
@@ -75,6 +77,10 @@
   <data name="ClicksPerMin" xml:space="preserve"><value>Clicks/min</value></data>
   <data name="PeakCPM" xml:space="preserve"><value>Peak</value></data>
   <data name="SoundNotifications" xml:space="preserve"><value>Sound Notifications</value></data>
+  <data name="MinimizeOnStartAll" xml:space="preserve"><value>Minimize to tray on Start All</value></data>
+  <data name="DragToReorder" xml:space="preserve"><value>Drag to reorder</value></data>
+  <data name="WaitUntilMatch" xml:space="preserve"><value>Wait until pixel matches</value></data>
+  <data name="ColorWaitTimeout" xml:space="preserve"><value>Wait timeout</value></data>
   <data name="Language" xml:space="preserve"><value>Language</value></data>
   <data name="Theme" xml:space="preserve"><value>Theme</value></data>
   <data name="Dark" xml:space="preserve"><value>Dark</value></data>
@@ -194,11 +200,19 @@
   <data name="GameExitNotification" xml:space="preserve"><value>Game Exit Notification</value></data>
   <data name="GameExitNotificationTitle" xml:space="preserve"><value>Game Exited</value></data>
   <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} has exited. Success: {1}, Skipped: {2}</value></data>
-  <data name="PickerInstruction" xml:space="preserve"><value>Click to select. 1=Left 2=Double 3=Right. ESC=Cancel</value></data>
+  <data name="PickerInstruction" xml:space="preserve"><value>Click to select. 1=Left 2=Double 3=Right 4=Keystroke. ESC=Cancel</value></data>
+  <data name="PickerInstructionKeystroke" xml:space="preserve"><value>Press the key to send. 1/2/3 to switch back. ESC=Cancel</value></data>
   <data name="PickerCurrentType" xml:space="preserve"><value>Current: {0}</value></data>
   <data name="ClickTypeLeft" xml:space="preserve"><value>Left</value></data>
   <data name="ClickTypeDouble" xml:space="preserve"><value>Double</value></data>
   <data name="ClickTypeRight" xml:space="preserve"><value>Right</value></data>
+  <data name="ClickTypeKeystroke" xml:space="preserve"><value>Keystroke</value></data>
+  <data name="HeatmapToggle" xml:space="preserve"><value>Heatmap</value></data>
+  <data name="HeatmapTooltip" xml:space="preserve"><value>Toggle click heatmap overlay over the game window</value></data>
+  <data name="HeatmapTitle" xml:space="preserve"><value>Heatmap</value></data>
+  <data name="ThemeDark" xml:space="preserve"><value>Dark</value></data>
+  <data name="ThemeLight" xml:space="preserve"><value>Light</value></data>
+  <data name="ThemeHighContrast" xml:space="preserve"><value>High Contrast</value></data>
   <data name="AutoStoppedQueueEmpty" xml:space="preserve"><value>All games have exited. Auto-stopped.</value></data>
   <data name="DashboardSuccessRatio" xml:space="preserve"><value>Success / Skip Ratio</value></data>
   <data name="DashboardGameTimeline" xml:space="preserve"><value>Per-Game CPM Timeline</value></data>
