@@ -209,6 +209,9 @@
   <data name="HeatmapToggle" xml:space="preserve"><value>Bản đồ nhiệt</value></data>
   <data name="HeatmapTooltip" xml:space="preserve"><value>Bật/tắt overlay bản đồ nhiệt click trên cửa sổ game</value></data>
   <data name="HeatmapTitle" xml:space="preserve"><value>Bản đồ nhiệt</value></data>
+  <data name="ThemeDark" xml:space="preserve"><value>Tối</value></data>
+  <data name="ThemeLight" xml:space="preserve"><value>Sáng</value></data>
+  <data name="ThemeHighContrast" xml:space="preserve"><value>Tương phản cao</value></data>
   <data name="AutoStoppedQueueEmpty" xml:space="preserve"><value>Tất cả game đã thoát. Đã tự động dừng.</value></data>
   <data name="DashboardSuccessRatio" xml:space="preserve"><value>Tỷ lệ Thành công / Bỏ qua</value></data>
   <data name="DashboardGameTimeline" xml:space="preserve"><value>CPM theo Game (Timeline)</value></data>
