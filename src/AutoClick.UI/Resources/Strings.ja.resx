@@ -193,7 +193,7 @@
   <data name="GameExitNotification" xml:space="preserve"><value>ゲーム終了通知</value></data>
   <data name="GameExitNotificationTitle" xml:space="preserve"><value>ゲームが終了しました</value></data>
   <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} が終了しました。成功: {1}、スキップ: {2}</value></data>
-  <data name="PickerInstruction" xml:space="preserve"><value>クリックで選択。1=左 2=ダブル 3=右。ESC=キャンセル</value></data>
+  <data name="PickerInstruction" xml:space="preserve"><value>クリックで選択。1=左 2=ダブル 3=右 4=キーストローク。ESC=キャンセル</value></data>
   <data name="PickerCurrentType" xml:space="preserve"><value>現在: {0}</value></data>
   <data name="ClickTypeLeft" xml:space="preserve"><value>左</value></data>
   <data name="ClickTypeDouble" xml:space="preserve"><value>ダブル</value></data>
@@ -204,4 +204,19 @@
   <data name="ExportStats" xml:space="preserve"><value>統計をエクスポート</value></data>
   <data name="ResetDashboard" xml:space="preserve"><value>統計をリセット</value></data>
   <data name="ConfirmResetStats" xml:space="preserve"><value>セッション統計とダッシュボードデータをリセットしますか？元に戻せません。</value></data>
+  <!-- v1.3.0 additions -->
+  <data name="MinimizeOnStartAll" xml:space="preserve"><value>「すべて開始」時にトレイへ最小化</value></data>
+  <data name="ExportSession" xml:space="preserve"><value>セッションをエクスポート</value></data>
+  <data name="ImportSession" xml:space="preserve"><value>セッションをインポート</value></data>
+  <data name="DragToReorder" xml:space="preserve"><value>ドラッグして並べ替え</value></data>
+  <data name="WaitUntilMatch" xml:space="preserve"><value>ピクセルが一致するまで待機</value></data>
+  <data name="ColorWaitTimeout" xml:space="preserve"><value>待機タイムアウト</value></data>
+  <data name="PickerInstructionKeystroke" xml:space="preserve"><value>送信するキーを押してください。1/2/3で戻る。ESC=キャンセル</value></data>
+  <data name="ClickTypeKeystroke" xml:space="preserve"><value>キーストローク</value></data>
+  <data name="HeatmapToggle" xml:space="preserve"><value>ヒートマップ</value></data>
+  <data name="HeatmapTooltip" xml:space="preserve"><value>ゲームウィンドウ上のクリックヒートマップを切り替え</value></data>
+  <data name="HeatmapTitle" xml:space="preserve"><value>ヒートマップ</value></data>
+  <data name="ThemeDark" xml:space="preserve"><value>ダーク</value></data>
+  <data name="ThemeLight" xml:space="preserve"><value>ライト</value></data>
+  <data name="ThemeHighContrast" xml:space="preserve"><value>ハイコントラスト</value></data>
 </root>

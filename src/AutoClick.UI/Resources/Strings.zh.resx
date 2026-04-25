@@ -193,7 +193,7 @@
   <data name="GameExitNotification" xml:space="preserve"><value>游戏退出通知</value></data>
   <data name="GameExitNotificationTitle" xml:space="preserve"><value>游戏已退出</value></data>
   <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} 已退出。成功: {1}，已跳过: {2}</value></data>
-  <data name="PickerInstruction" xml:space="preserve"><value>点击选择。1=左键 2=双击 3=右键。ESC=取消</value></data>
+  <data name="PickerInstruction" xml:space="preserve"><value>点击选择。1=左键 2=双击 3=右键 4=按键。ESC=取消</value></data>
   <data name="PickerCurrentType" xml:space="preserve"><value>当前: {0}</value></data>
   <data name="ClickTypeLeft" xml:space="preserve"><value>左键</value></data>
   <data name="ClickTypeDouble" xml:space="preserve"><value>双击</value></data>
@@ -204,4 +204,19 @@
   <data name="ExportStats" xml:space="preserve"><value>导出统计</value></data>
   <data name="ResetDashboard" xml:space="preserve"><value>重置统计</value></data>
   <data name="ConfirmResetStats" xml:space="preserve"><value>重置所有会话统计和仪表板数据？此操作无法撤消。</value></data>
+  <!-- v1.3.0 additions -->
+  <data name="MinimizeOnStartAll" xml:space="preserve"><value>启动全部时最小化到托盘</value></data>
+  <data name="ExportSession" xml:space="preserve"><value>导出会话</value></data>
+  <data name="ImportSession" xml:space="preserve"><value>导入会话</value></data>
+  <data name="DragToReorder" xml:space="preserve"><value>拖动以重新排序</value></data>
+  <data name="WaitUntilMatch" xml:space="preserve"><value>等待像素颜色匹配</value></data>
+  <data name="ColorWaitTimeout" xml:space="preserve"><value>等待超时</value></data>
+  <data name="PickerInstructionKeystroke" xml:space="preserve"><value>按下要发送的按键。1/2/3 切换回去。ESC=取消</value></data>
+  <data name="ClickTypeKeystroke" xml:space="preserve"><value>按键</value></data>
+  <data name="HeatmapToggle" xml:space="preserve"><value>热力图</value></data>
+  <data name="HeatmapTooltip" xml:space="preserve"><value>切换游戏窗口上的点击热力图叠加</value></data>
+  <data name="HeatmapTitle" xml:space="preserve"><value>热力图</value></data>
+  <data name="ThemeDark" xml:space="preserve"><value>深色</value></data>
+  <data name="ThemeLight" xml:space="preserve"><value>浅色</value></data>
+  <data name="ThemeHighContrast" xml:space="preserve"><value>高对比度</value></data>
 </root>
