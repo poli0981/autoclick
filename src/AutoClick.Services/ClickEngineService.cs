@@ -75,15 +75,43 @@ public class ClickEngineService : IClickEngine
                             {
                                 var expected = PixelColorHelper.ColorToHex(point.ReferenceColor);
                                 var actual = PixelColorHelper.ColorToHex(currentColor);
-                                session.SkippedClicks++;
-                                if (session.ColorMismatchBehavior == ColorMismatchBehavior.StopSession)
+
+                                if (session.ColorMismatchBehavior == ColorMismatchBehavior.WaitUntilMatch)
                                 {
-                                    _log.Warn($"Color mismatch at ({point.X}, {point.Y}) for \"{session.ProcessName}\": expected {expected}, got {actual}. Stopping.");
-                                    outOfBounds = true;
-                                    break;
+                                    // Poll until the pixel matches, the session is paused/cancelled, or the timeout expires.
+                                    var timeoutMs = Math.Max(50, session.ColorWaitTimeoutMs);
+                                    var deadline = DateTime.UtcNow.AddMilliseconds(timeoutMs);
+                                    bool matched = false;
+                                    _log.Info($"Waiting for color match at ({point.X}, {point.Y}) for \"{session.ProcessName}\": expected {expected}, got {actual} (timeout {timeoutMs}ms).");
+                                    while (DateTime.UtcNow < deadline)
+                                    {
+                                        if (cts.Token.IsCancellationRequested) break;
+                                        pauseEvent.Wait(cts.Token);
+                                        await Task.Delay(50, cts.Token);
+                                        currentColor = PixelColorHelper.ReadPixelColor(session.WindowHandle, point.X, point.Y);
+                                        if (PixelColorHelper.IsColorMatch(currentColor, point.ReferenceColor, session.ColorTolerance))
+                                        {
+                                            matched = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!matched)
+                                    {
+                                        session.SkippedClicks++;
+                                        _log.Info($"Color wait timed out at ({point.X}, {point.Y}) for \"{session.ProcessName}\". Skipping point.");
+                                        continue;
+                                    }
+                                    // matched → fall through to click
                                 }
                                 else
                                 {
+                                    session.SkippedClicks++;
+                                    if (session.ColorMismatchBehavior == ColorMismatchBehavior.StopSession)
+                                    {
+                                        _log.Warn($"Color mismatch at ({point.X}, {point.Y}) for \"{session.ProcessName}\": expected {expected}, got {actual}. Stopping.");
+                                        outOfBounds = true;
+                                        break;
+                                    }
                                     _log.Info($"Color mismatch at ({point.X}, {point.Y}) for \"{session.ProcessName}\": expected {expected}, got {actual}. Skipping.");
                                     continue;
                                 }
