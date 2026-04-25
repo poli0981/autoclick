@@ -193,7 +193,7 @@
   <data name="GameExitNotification" xml:space="preserve"><value>게임 종료 알림</value></data>
   <data name="GameExitNotificationTitle" xml:space="preserve"><value>게임이 종료되었습니다</value></data>
   <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0}이(가) 종료되었습니다. 성공: {1}, 건너뜀: {2}</value></data>
-  <data name="PickerInstruction" xml:space="preserve"><value>클릭하여 선택. 1=왼쪽 2=더블 3=오른쪽. ESC=취소</value></data>
+  <data name="PickerInstruction" xml:space="preserve"><value>클릭하여 선택. 1=왼쪽 2=더블 3=오른쪽 4=키스트로크. ESC=취소</value></data>
   <data name="PickerCurrentType" xml:space="preserve"><value>현재: {0}</value></data>
   <data name="ClickTypeLeft" xml:space="preserve"><value>왼쪽</value></data>
   <data name="ClickTypeDouble" xml:space="preserve"><value>더블</value></data>
@@ -204,4 +204,19 @@
   <data name="ExportStats" xml:space="preserve"><value>통계 내보내기</value></data>
   <data name="ResetDashboard" xml:space="preserve"><value>통계 초기화</value></data>
   <data name="ConfirmResetStats" xml:space="preserve"><value>세션 통계와 대시보드 데이터를 초기화하시겠습니까? 되돌릴 수 없습니다.</value></data>
+  <!-- v1.3.0 additions -->
+  <data name="MinimizeOnStartAll" xml:space="preserve"><value>모두 시작 시 트레이로 최소화</value></data>
+  <data name="ExportSession" xml:space="preserve"><value>세션 내보내기</value></data>
+  <data name="ImportSession" xml:space="preserve"><value>세션 가져오기</value></data>
+  <data name="DragToReorder" xml:space="preserve"><value>드래그하여 순서 변경</value></data>
+  <data name="WaitUntilMatch" xml:space="preserve"><value>픽셀이 일치할 때까지 대기</value></data>
+  <data name="ColorWaitTimeout" xml:space="preserve"><value>대기 시간 초과</value></data>
+  <data name="PickerInstructionKeystroke" xml:space="preserve"><value>보낼 키를 누르세요. 1/2/3으로 돌아갑니다. ESC=취소</value></data>
+  <data name="ClickTypeKeystroke" xml:space="preserve"><value>키스트로크</value></data>
+  <data name="HeatmapToggle" xml:space="preserve"><value>히트맵</value></data>
+  <data name="HeatmapTooltip" xml:space="preserve"><value>게임 창 위 클릭 히트맵 오버레이 전환</value></data>
+  <data name="HeatmapTitle" xml:space="preserve"><value>히트맵</value></data>
+  <data name="ThemeDark" xml:space="preserve"><value>다크</value></data>
+  <data name="ThemeLight" xml:space="preserve"><value>라이트</value></data>
+  <data name="ThemeHighContrast" xml:space="preserve"><value>고대비</value></data>
 </root>
