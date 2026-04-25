@@ -78,6 +78,7 @@
   <data name="PeakCPM" xml:space="preserve"><value>Peak</value></data>
   <data name="SoundNotifications" xml:space="preserve"><value>Sound Notifications</value></data>
   <data name="MinimizeOnStartAll" xml:space="preserve"><value>Minimize to tray on Start All</value></data>
+  <data name="DragToReorder" xml:space="preserve"><value>Drag to reorder</value></data>
   <data name="Language" xml:space="preserve"><value>Language</value></data>
   <data name="Theme" xml:space="preserve"><value>Theme</value></data>
   <data name="Dark" xml:space="preserve"><value>Dark</value></data>

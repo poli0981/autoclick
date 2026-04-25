@@ -267,7 +267,7 @@ public class MainViewModel : ViewModelBase
             var point = CoordinateHelper.GenerateRandomCoordinate(hWnd);
 
             // Check duplicate within same session
-            bool duplicate = sessionVm.Session.ClickPoints.Exists(p => p.X == point.X && p.Y == point.Y);
+            bool duplicate = sessionVm.Session.ClickPoints.Any(p => p.X == point.X && p.Y == point.Y);
             if (!duplicate)
             {
                 sessionVm.Session.ClickPoints.Add(point);
@@ -950,9 +950,8 @@ public class MainViewModel : ViewModelBase
                 ExecutablePath = match.ExecutablePath,
                 ProcessId = match.ProcessId,
                 WindowHandle = match.Handle,
-                ClickPoints = saved.ClickPoints
-                    .Select(p => new ClickPoint(p.X, p.Y, p.ClickType, p.DelayAfterMs) { ReferenceColor = p.ReferenceColor })
-                    .ToList(),
+                ClickPoints = new System.Collections.ObjectModel.ObservableCollection<ClickPoint>(
+                    saved.ClickPoints.Select(p => new ClickPoint(p.X, p.Y, p.ClickType, p.DelayAfterMs) { ReferenceColor = p.ReferenceColor })),
                 Profile = new ClickProfile
                 {
                     Mode = saved.Profile.Mode,

@@ -11,7 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Added
 - **Minimize on Start All**: New Settings > Advanced toggle. When enabled, the main window auto-minimizes (to tray if Exit Behavior is set to Tray) on Start All — only when at least one game actually started. AFK convenience.
 - **Import/Export full session**: New `*.autoclick-session` snapshot of the entire app state — settings, all saved profiles, and the current per-game queue (process name, window title, click points, intervals, sequence delay, pixel-guard config). On import, settings are restored and queued games are re-attached to currently running windows by exact ProcessName + WindowTitle match (mismatches log a warning and are skipped). Schema version 1; refuses to import while a session is running.
-- _PR #3 — Drag-drop reorder points_
+- **Drag-drop reorder points**: Per-game card now shows each click point as a draggable chip (visible when 2+ points exist). Drag any chip onto another to swap positions. Drag is confined to a single game (cross-game drops are ignored) and disabled while the session is running. `GameSession.ClickPoints` migrated from `List` to `ObservableCollection` so the UI updates live; `ClickEngineService` snapshots the points list at the start of each cycle to keep mid-edit reorders safe.
 - _PR #4 — Conditional click (pixel-trigger wait)_
 - _PR #5 — Keyboard input simulation_
 - _PR #6 — Click heatmap overlay_

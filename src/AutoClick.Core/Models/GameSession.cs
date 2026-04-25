@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using AutoClick.Core.Enums;
 
 namespace AutoClick.Core.Models;
@@ -11,7 +12,7 @@ public class GameSession
     public int ProcessId { get; set; }
     public IntPtr WindowHandle { get; set; }
     public SessionState State { get; set; } = SessionState.Idle;
-    public List<ClickPoint> ClickPoints { get; set; } = new();
+    public ObservableCollection<ClickPoint> ClickPoints { get; set; } = new();
     public ClickProfile Profile { get; set; } = new();
     public long ClickCount { get; set; }
     public long SkippedClicks { get; set; }

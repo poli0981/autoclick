@@ -317,6 +317,53 @@ public partial class MainWindow : Window
         }
     }
 
+    // ── Drag-drop reorder of click points ──
+
+    private const string PointChipDragFormat = "AutoClick.ClickPointChip";
+
+    private void OnPointChipMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        if (sender is not FrameworkElement fe) return;
+        if (fe.DataContext is not ClickPoint point) return;
+        var vm = FindAncestorDataContext<GameSessionViewModel>(fe);
+        if (vm == null || !vm.IsIdle) return;
+
+        var srcIndex = vm.ClickPoints.IndexOf(point);
+        if (srcIndex < 0) return;
+
+        var data = new System.Windows.DataObject();
+        data.SetData(PointChipDragFormat, new PointChipDragPayload(vm, srcIndex));
+        System.Windows.DragDrop.DoDragDrop(fe, data, System.Windows.DragDropEffects.Move);
+    }
+
+    private void OnPointChipDrop(object sender, System.Windows.DragEventArgs e)
+    {
+        if (sender is not FrameworkElement fe) return;
+        if (e.Data.GetData(PointChipDragFormat) is not PointChipDragPayload payload) return;
+        if (fe.DataContext is not ClickPoint targetPoint) return;
+        var targetVm = FindAncestorDataContext<GameSessionViewModel>(fe);
+        if (targetVm == null || !ReferenceEquals(targetVm, payload.SourceVm)) return; // confine to same game
+
+        var dstIndex = targetVm.ClickPoints.IndexOf(targetPoint);
+        if (dstIndex < 0) return;
+
+        targetVm.MoveClickPoint(payload.SourceIndex, dstIndex);
+    }
+
+    private static T? FindAncestorDataContext<T>(DependencyObject start) where T : class
+    {
+        var current = start;
+        while (current != null)
+        {
+            if (current is FrameworkElement el && el.DataContext is T match)
+                return match;
+            current = System.Windows.Media.VisualTreeHelper.GetParent(current);
+        }
+        return null;
+    }
+
+    private record PointChipDragPayload(GameSessionViewModel SourceVm, int SourceIndex);
+
     private bool _forceClose;
 
     protected override void OnStateChanged(EventArgs e)
