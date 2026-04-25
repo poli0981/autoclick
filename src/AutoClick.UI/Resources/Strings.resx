@@ -207,6 +207,9 @@
   <data name="ClickTypeDouble" xml:space="preserve"><value>Double</value></data>
   <data name="ClickTypeRight" xml:space="preserve"><value>Right</value></data>
   <data name="ClickTypeKeystroke" xml:space="preserve"><value>Keystroke</value></data>
+  <data name="HeatmapToggle" xml:space="preserve"><value>Heatmap</value></data>
+  <data name="HeatmapTooltip" xml:space="preserve"><value>Toggle click heatmap overlay over the game window</value></data>
+  <data name="HeatmapTitle" xml:space="preserve"><value>Heatmap</value></data>
   <data name="AutoStoppedQueueEmpty" xml:space="preserve"><value>All games have exited. Auto-stopped.</value></data>
   <data name="DashboardSuccessRatio" xml:space="preserve"><value>Success / Skip Ratio</value></data>
   <data name="DashboardGameTimeline" xml:space="preserve"><value>Per-Game CPM Timeline</value></data>

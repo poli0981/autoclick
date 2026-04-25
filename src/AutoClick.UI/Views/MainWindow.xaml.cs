@@ -317,6 +317,27 @@ public partial class MainWindow : Window
         }
     }
 
+    // ── Click heatmap overlay (one window per game) ──
+
+    private readonly Dictionary<string, ClickHeatmapOverlay> _heatmaps = new();
+
+    private void OnToggleHeatmap(object sender, RoutedEventArgs e)
+    {
+        if (sender is not Button btn || btn.Tag is not GameSessionViewModel sessionVm) return;
+
+        if (_heatmaps.TryGetValue(sessionVm.Id, out var existing))
+        {
+            existing.Close();
+            _heatmaps.Remove(sessionVm.Id);
+            return;
+        }
+
+        var overlay = new ClickHeatmapOverlay(sessionVm.Session) { Owner = this };
+        overlay.Closed += (_, _) => _heatmaps.Remove(sessionVm.Id);
+        _heatmaps[sessionVm.Id] = overlay;
+        overlay.Show();
+    }
+
     // ── Drag-drop reorder of click points ──
 
     private const string PointChipDragFormat = "AutoClick.ClickPointChip";

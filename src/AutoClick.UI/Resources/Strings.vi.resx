@@ -206,6 +206,9 @@
   <data name="ClickTypeDouble" xml:space="preserve"><value>Đúp</value></data>
   <data name="ClickTypeRight" xml:space="preserve"><value>Phải</value></data>
   <data name="ClickTypeKeystroke" xml:space="preserve"><value>Phím</value></data>
+  <data name="HeatmapToggle" xml:space="preserve"><value>Bản đồ nhiệt</value></data>
+  <data name="HeatmapTooltip" xml:space="preserve"><value>Bật/tắt overlay bản đồ nhiệt click trên cửa sổ game</value></data>
+  <data name="HeatmapTitle" xml:space="preserve"><value>Bản đồ nhiệt</value></data>
   <data name="AutoStoppedQueueEmpty" xml:space="preserve"><value>Tất cả game đã thoát. Đã tự động dừng.</value></data>
   <data name="DashboardSuccessRatio" xml:space="preserve"><value>Tỷ lệ Thành công / Bỏ qua</value></data>
   <data name="DashboardGameTimeline" xml:space="preserve"><value>CPM theo Game (Timeline)</value></data>
