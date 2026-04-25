@@ -214,6 +214,11 @@ public class GameSessionViewModel : ViewModelBase
         CoordinateText = _session.ClickPoints.Count > 0
             ? string.Join(" → ", _session.ClickPoints.Select((p, i) =>
             {
+                if (p.ClickType == Core.Enums.ClickType.Keystroke)
+                {
+                    var keyName = ((System.Windows.Input.Key)System.Windows.Input.KeyInterop.KeyFromVirtualKey(p.VirtualKeyCode)).ToString();
+                    return $"#{i + 1}[K:{keyName}]";
+                }
                 var clickTag = p.ClickType switch
                 {
                     Core.Enums.ClickType.DoubleClick => "[D]",
