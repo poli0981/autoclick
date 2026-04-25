@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [1.2.1] - 2026-04-25
+
+### Added
+- **GitHub Actions release workflow** (`.github/workflows/release.yml`): builds, packs Velopack, and uploads artifacts to GitHub Releases automatically when a `v*` tag is pushed or the workflow is triggered manually. Produces `releases.win.json`, full and delta `.nupkg`, `AutoClick-win-Portable.zip`, and `AutoClick-win-Setup.exe`.
+- **`docs/RELEASING.md`**: short release-process guide (bump version → CHANGELOG entry → tag push).
+
+### Notes
+- Infrastructure-only release. App behavior is unchanged from 1.2.0. Updating from 1.2.0 → 1.2.1 also serves as the first end-to-end test of the automated Velopack flow.
+
+---
+
 ## [1.2.0] - 2026-04-05
 
 ### Added

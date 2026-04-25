@@ -1,0 +1,130 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version (e.g. 1.2.1)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Resolve version
+        id: ver
+        shell: pwsh
+        run: |
+          if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
+            $v = '${{ inputs.version }}'
+          } else {
+            $v = '${{ github.ref_name }}' -replace '^v',''
+          }
+          if (-not $v) { throw "Could not resolve version" }
+          "version=$v" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          Write-Host "Releasing version: $v"
+
+      - name: Extract release notes from CHANGELOG
+        shell: pwsh
+        run: |
+          $v = '${{ steps.ver.outputs.version }}'
+          $cl = Get-Content CHANGELOG.md -Raw
+          $escaped = [regex]::Escape($v)
+          $pattern = "(?ms)^## \[$escaped\][^\n]*\r?\n(.*?)(?=^## \[|\z)"
+          $m = [regex]::Match($cl, $pattern)
+          if ($m.Success) {
+            $notes = $m.Groups[1].Value.Trim()
+          } else {
+            $notes = "Release v$v"
+          }
+          $notes | Out-File -FilePath release_notes.md -Encoding utf8 -NoNewline
+          Write-Host "--- release_notes.md ---"
+          Get-Content release_notes.md
+
+      - name: Restore
+        run: dotnet restore src/AutoClick.UI/AutoClick.UI.csproj
+
+      - name: Publish (win-x64, self-contained)
+        shell: pwsh
+        run: |
+          dotnet publish src/AutoClick.UI/AutoClick.UI.csproj `
+            -c Release `
+            -r win-x64 `
+            --self-contained true `
+            /p:Version=${{ steps.ver.outputs.version }} `
+            /p:AssemblyVersion=${{ steps.ver.outputs.version }}.0 `
+            /p:FileVersion=${{ steps.ver.outputs.version }}.0 `
+            /p:InformationalVersion=${{ steps.ver.outputs.version }} `
+            /p:PublishSingleFile=false `
+            -o publish
+
+      - name: Install Velopack CLI (vpk)
+        run: dotnet tool install -g vpk
+
+      - name: Download previous releases (for delta)
+        shell: pwsh
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          vpk download github `
+            --repoUrl https://github.com/poli0981/autoclick `
+            --token $env:GITHUB_TOKEN `
+            --channel win
+
+      - name: Velopack pack
+        shell: pwsh
+        run: |
+          vpk pack `
+            -u AutoClick `
+            -v ${{ steps.ver.outputs.version }} `
+            -p publish `
+            -e AutoClick.UI.exe `
+            --packTitle AutoClick `
+            --packAuthors poli0981 `
+            --icon src/AutoClick.UI/Assets/app.ico `
+            --channel win `
+            --releaseNotes release_notes.md
+
+      - name: List release artifacts
+        shell: pwsh
+        run: |
+          Write-Host "--- Releases/ ---"
+          Get-ChildItem Releases | Format-Table Name, Length
+
+      - name: Upload artifacts to workflow run
+        uses: actions/upload-artifact@v4
+        with:
+          name: velopack-release-${{ steps.ver.outputs.version }}
+          path: Releases/
+
+      - name: Upload to GitHub Releases
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          vpk upload github `
+            --repoUrl https://github.com/poli0981/autoclick `
+            --token $env:GITHUB_TOKEN `
+            --tag v${{ steps.ver.outputs.version }} `
+            --releaseName "AutoClick v${{ steps.ver.outputs.version }}" `
+            --merge `
+            --channel win
