@@ -66,6 +66,25 @@ public class GameSessionViewModel : ViewModelBase
     public int PointCount => _session.ClickPoints.Count;
     public bool HasMultiplePoints => _session.ClickPoints.Count > 1;
 
+    public System.Collections.ObjectModel.ObservableCollection<ClickPoint> ClickPoints => _session.ClickPoints;
+
+    /// <summary>
+    /// Reorders click points by moving the item at fromIndex to toIndex. No-op if running.
+    /// </summary>
+    public void MoveClickPoint(int fromIndex, int toIndex)
+    {
+        if (!IsIdle) return;
+        if (fromIndex == toIndex) return;
+        if (fromIndex < 0 || fromIndex >= _session.ClickPoints.Count) return;
+        if (toIndex < 0 || toIndex >= _session.ClickPoints.Count) return;
+
+        _session.ClickPoints.Move(fromIndex, toIndex);
+        UpdateCoordinateText();
+        OnPropertyChanged(nameof(ColorSwatches));
+        OnPropertyChanged(nameof(HasColorSwatches));
+        _log.Info($"Reordered point #{fromIndex + 1} → #{toIndex + 1} for \"{_session.ProcessName}\"");
+    }
+
     /// <summary>
     /// Delay in ms between each click point in the sequence.
     /// Applied to all points uniformly. Editable while idle.

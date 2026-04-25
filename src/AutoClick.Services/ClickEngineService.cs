@@ -50,8 +50,9 @@ public class ClickEngineService : IClickEngine
                         break;
                     }
 
-                    // Execute click sequence: each point in order with optional per-point delay
-                    var points = session.ClickPoints;
+                    // Execute click sequence: each point in order with optional per-point delay.
+                    // Snapshot to a local list so reorder/edit on the UI thread can't disturb mid-cycle iteration.
+                    var points = session.ClickPoints.ToList();
                     bool outOfBounds = false;
                     for (int i = 0; i < points.Count; i++)
                     {
