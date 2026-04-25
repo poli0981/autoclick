@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
-## [1.3.0] - Unreleased
+## [1.3.0] - 2026-04-25
 
 ### Added
 - **Minimize on Start All**: New Settings > Advanced toggle. When enabled, the main window auto-minimizes (to tray if Exit Behavior is set to Tray) on Start All — only when at least one game actually started. AFK convenience.
