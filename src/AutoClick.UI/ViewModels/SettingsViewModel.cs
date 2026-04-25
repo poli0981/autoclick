@@ -85,6 +85,12 @@ public class SettingsViewModel : ViewModelBase
         set { _settings.ShowGameExitNotification = value; OnPropertyChanged(); }
     }
 
+    public bool MinimizeOnStartAll
+    {
+        get => _settings.MinimizeOnStartAll;
+        set { _settings.MinimizeOnStartAll = value; OnPropertyChanged(); }
+    }
+
     public bool EnablePixelColorGuard
     {
         get => _settings.EnablePixelColorGuard;
@@ -226,6 +232,7 @@ public class SettingsViewModel : ViewModelBase
         OnPropertyChanged(nameof(AutoUpdate));
         OnPropertyChanged(nameof(SoundNotifications));
         OnPropertyChanged(nameof(ShowGameExitNotification));
+        OnPropertyChanged(nameof(MinimizeOnStartAll));
         OnPropertyChanged(nameof(EnablePixelColorGuard));
         OnPropertyChanged(nameof(ColorTolerance));
         OnPropertyChanged(nameof(SelectedMismatchBehaviorIndex));

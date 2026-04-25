@@ -424,8 +424,15 @@ public class MainViewModel : ViewModelBase
         if (_sessionStartedAt == null)
             _sessionStartedAt = DateTime.Now;
 
-        foreach (var g in GameSessions.Where(g => g.IsIdle && g.HasCoordinate).ToList())
+        var startable = GameSessions.Where(g => g.IsIdle && g.HasCoordinate).ToList();
+        foreach (var g in startable)
             g.Start();
+
+        if (startable.Count > 0 && _settings.MinimizeOnStartAll
+            && Application.Current?.MainWindow is { } mainWindow)
+        {
+            mainWindow.WindowState = WindowState.Minimized;
+        }
     }
 
     private void OnStopAll()
@@ -531,6 +538,7 @@ public class MainViewModel : ViewModelBase
         _settings.AutoUpdate = defaults.AutoUpdate;
         _settings.SoundNotifications = defaults.SoundNotifications;
         _settings.ShowGameExitNotification = defaults.ShowGameExitNotification;
+        _settings.MinimizeOnStartAll = defaults.MinimizeOnStartAll;
         _settings.SettingsMode = defaults.SettingsMode;
         _settings.EnablePixelColorGuard = defaults.EnablePixelColorGuard;
         _settings.ColorTolerance = defaults.ColorTolerance;

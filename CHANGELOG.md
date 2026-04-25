@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ## [1.3.0] - Unreleased
 
 ### Added
-- _PR #1 — Minimize on Start All_
+- **Minimize on Start All**: New Settings > Advanced toggle. When enabled, the main window auto-minimizes (to tray if Exit Behavior is set to Tray) on Start All — only when at least one game actually started. AFK convenience.
 - _PR #2 — Import/Export full session_
 - _PR #3 — Drag-drop reorder points_
 - _PR #4 — Conditional click (pixel-trigger wait)_
