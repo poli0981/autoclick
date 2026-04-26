@@ -214,7 +214,7 @@
   <data name="PickerInstructionKeystroke" xml:space="preserve"><value>送信するキーを押してください。1/2/3で戻る。ESC=キャンセル</value></data>
   <data name="ClickTypeKeystroke" xml:space="preserve"><value>キーストローク</value></data>
   <data name="HeatmapToggle" xml:space="preserve"><value>ヒートマップ</value></data>
-  <data name="HeatmapTooltip" xml:space="preserve"><value>ゲームウィンドウ上のクリックヒートマップを切り替え</value></data>
+  <data name="HeatmapTooltip" xml:space="preserve"><value>クリックヒートマップオーバーレイを切り替え。ウィンドウ/ボーダーレス推奨 — フルスクリーン対応はゲームエンジン次第(docs/HEATMAP_COMPATIBILITY.md参照)。</value></data>
   <data name="HeatmapTitle" xml:space="preserve"><value>ヒートマップ</value></data>
   <data name="ThemeDark" xml:space="preserve"><value>ダーク</value></data>
   <data name="ThemeLight" xml:space="preserve"><value>ライト</value></data>

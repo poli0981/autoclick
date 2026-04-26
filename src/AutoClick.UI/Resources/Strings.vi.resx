@@ -207,7 +207,7 @@
   <data name="ClickTypeRight" xml:space="preserve"><value>Phải</value></data>
   <data name="ClickTypeKeystroke" xml:space="preserve"><value>Phím</value></data>
   <data name="HeatmapToggle" xml:space="preserve"><value>Bản đồ nhiệt</value></data>
-  <data name="HeatmapTooltip" xml:space="preserve"><value>Bật/tắt overlay bản đồ nhiệt click trên cửa sổ game</value></data>
+  <data name="HeatmapTooltip" xml:space="preserve"><value>Bật/tắt overlay bản đồ nhiệt click. Tốt nhất ở chế độ Windowed/Borderless — hỗ trợ Fullscreen tùy engine của game (xem docs/HEATMAP_COMPATIBILITY.md).</value></data>
   <data name="HeatmapTitle" xml:space="preserve"><value>Bản đồ nhiệt</value></data>
   <data name="ThemeDark" xml:space="preserve"><value>Tối</value></data>
   <data name="ThemeLight" xml:space="preserve"><value>Sáng</value></data>

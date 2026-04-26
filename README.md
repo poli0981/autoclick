@@ -38,6 +38,7 @@ AutoClick is a Windows desktop application that automates repetitive mouse click
 - **Pixel color guard** -- optionally verify pixel color before clicking; skip or stop on mismatch (configurable tolerance)
 - **Game profiles** -- save/load coordinate sets + click settings as named presets; export/import `.autoclick` files
 - **Scheduler** -- set start/stop times for automated sessions with live countdown
+- **Click heatmap overlay** -- transparent click-through layer over the game window plotting click frequency as a blue→red gradient, foreground-aware so only the active game's heatmap shows (compat: ✅ Windowed / ✅ Borderless / ⚠️ Fullscreen — engine-dependent, see [HEATMAP_COMPATIBILITY.md](docs/HEATMAP_COMPATIBILITY.md))
 - **Real-time dashboard** -- CPM line chart, per-game breakdown, success/skip ratio pie, per-game CPM timeline, session summary cards, JSON stats export
 - **Session statistics** -- live stats bar: Total Clicks, Skipped, Uptime, Clicks/min, Peak CPM
 - **Game exit notifications** -- balloon notification when a game process exits; auto-stop when queue is empty

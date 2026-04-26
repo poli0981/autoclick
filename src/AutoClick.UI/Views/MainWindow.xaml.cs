@@ -332,7 +332,10 @@ public partial class MainWindow : Window
             return;
         }
 
-        var overlay = new ClickHeatmapOverlay(sessionVm.Session) { Owner = this };
+        // No Owner: the overlay must be a top-level window so its z-order is
+        // independent of MainWindow (otherwise minimizing MainWindow drags the
+        // overlay down with it, defeating its purpose for AFK monitoring).
+        var overlay = new ClickHeatmapOverlay(sessionVm.Session);
         overlay.Closed += (_, _) => _heatmaps.Remove(sessionVm.Id);
         _heatmaps[sessionVm.Id] = overlay;
         overlay.Show();
@@ -366,7 +369,7 @@ public partial class MainWindow : Window
         if (targetVm == null || !ReferenceEquals(targetVm, payload.SourceVm)) return; // confine to same game
 
         var dstIndex = targetVm.ClickPoints.IndexOf(targetPoint);
-        if (dstIndex < 0) return;
+        if (dstIndex < 0 || dstIndex == payload.SourceIndex) return;
 
         targetVm.MoveClickPoint(payload.SourceIndex, dstIndex);
     }

@@ -12,6 +12,10 @@
     <Color x:Key="SuccessColor">#22C55E</Color>
     <Color x:Key="WarningColor">#F97316</Color>
     <Color x:Key="DangerColor">#EF4444</Color>
+    <Color x:Key="FocusColor">#60A5FA</Color>
+    <Color x:Key="DisabledColor">#1F2937</Color>
+    <Color x:Key="DisabledTextColor">#64748B</Color>
+    <Color x:Key="ErrorColor">#F87171</Color>
 
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}"/>
     <SolidColorBrush x:Key="PrimaryHoverBrush" Color="{StaticResource PrimaryHoverColor}"/>
@@ -24,5 +28,9 @@
     <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessColor}"/>
     <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningColor}"/>
     <SolidColorBrush x:Key="DangerBrush" Color="{StaticResource DangerColor}"/>
+    <SolidColorBrush x:Key="FocusBrush" Color="{StaticResource FocusColor}"/>
+    <SolidColorBrush x:Key="DisabledBrush" Color="{StaticResource DisabledColor}"/>
+    <SolidColorBrush x:Key="DisabledTextBrush" Color="{StaticResource DisabledTextColor}"/>
+    <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource ErrorColor}"/>
 
 </ResourceDictionary>

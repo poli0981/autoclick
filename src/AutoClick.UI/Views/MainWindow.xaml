@@ -3,8 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:converters="clr-namespace:AutoClick.UI.Converters"
         xmlns:res="clr-namespace:AutoClick.UI.Resources"
-        Title="AutoClick" Height="680" Width="960"
+        Title="AutoClick" Height="760" Width="1100"
         MinHeight="500" MinWidth="750"
+        MaxHeight="1100" MaxWidth="1600"
         WindowStartupLocation="CenterScreen"
         Background="{DynamicResource BackgroundBrush}">
 
@@ -75,12 +76,14 @@
                                                Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,4,0"/>
                                     <TextBox Text="{Binding ScheduledStartTimeText, UpdateSourceTrigger=LostFocus}"
                                              Width="55" FontSize="12" VerticalAlignment="Center" Margin="0,0,8,0"
-                                             IsEnabled="{Binding IsSchedulerEnabled, Converter={StaticResource InverseBool}}"/>
+                                             IsEnabled="{Binding IsSchedulerEnabled, Converter={StaticResource InverseBool}}"
+                                             AutomationProperties.Name="{x:Static res:Strings.StartTime}"/>
                                     <TextBlock Text="{x:Static res:Strings.StopTime}" FontSize="12" VerticalAlignment="Center"
                                                Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,4,0"/>
                                     <TextBox Text="{Binding ScheduledStopTimeText, UpdateSourceTrigger=LostFocus}"
                                              Width="55" FontSize="12" VerticalAlignment="Center" Margin="0,0,8,0"
-                                             IsEnabled="{Binding IsSchedulerEnabled, Converter={StaticResource InverseBool}}"/>
+                                             IsEnabled="{Binding IsSchedulerEnabled, Converter={StaticResource InverseBool}}"
+                                             AutomationProperties.Name="{x:Static res:Strings.StopTime}"/>
                                     <Button Content="{Binding ScheduleButtonText}" Command="{Binding ToggleSchedulerCommand}"
                                             Style="{StaticResource DefaultButton}" Margin="0,0,8,0"/>
                                     <TextBlock Text="{Binding SchedulerCountdown}" FontSize="12" VerticalAlignment="Center"
@@ -137,7 +140,7 @@
                 </Border>
 
                 <!-- Game List -->
-                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Padding="16">
+                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Hidden" Padding="16">
                     <ItemsControl ItemsSource="{Binding GameSessions}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
@@ -372,26 +375,27 @@
                         <ListBox Grid.Row="1" x:Name="LogList" ItemsSource="{Binding LogEntries}"
                                  Background="Transparent" BorderThickness="0" FontFamily="Consolas" FontSize="11"
                                  Foreground="{DynamicResource TextSecondaryBrush}" Margin="16,0,16,8"
-                                 ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
+                                 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                                 ScrollViewer.VerticalScrollBarVisibility="Hidden"/>
                     </Grid>
                 </Border>
             </Grid>
 
             <!-- Settings Tab -->
             <ScrollViewer Visibility="{Binding IsChecked, ElementName=TabSettings, Converter={StaticResource BoolToVis}}"
-                          VerticalScrollBarVisibility="Auto" Padding="24">
+                          VerticalScrollBarVisibility="Hidden" Padding="24">
                 <ContentControl x:Name="SettingsContent"/>
             </ScrollViewer>
 
             <!-- About Tab -->
             <ScrollViewer Visibility="{Binding IsChecked, ElementName=TabAbout, Converter={StaticResource BoolToVis}}"
-                          VerticalScrollBarVisibility="Auto" Padding="24">
+                          VerticalScrollBarVisibility="Hidden" Padding="24">
                 <ContentControl x:Name="AboutContent"/>
             </ScrollViewer>
 
             <!-- Dashboard Tab -->
             <ScrollViewer Visibility="{Binding IsChecked, ElementName=TabDashboard, Converter={StaticResource BoolToVis}}"
-                          VerticalScrollBarVisibility="Auto" Padding="24">
+                          VerticalScrollBarVisibility="Hidden" Padding="24">
                 <ContentControl x:Name="DashboardContent"/>
             </ScrollViewer>
         </Grid>
@@ -400,7 +404,7 @@
         <Border Grid.Row="2" Background="{DynamicResource SurfaceBrush}"
                 BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" Padding="16,6">
             <TextBlock Foreground="{DynamicResource TextSecondaryBrush}" FontSize="11">
-                <Run Text="AutoClick v1.2.0"/>
+                <Run Text="AutoClick v1.3.1"/>
                 <Run Text=" | "/>
                 <Run Text="{Binding GameSessions.Count, Mode=OneWay, StringFormat='{}{0} game(s)'}"/>
             </TextBlock>

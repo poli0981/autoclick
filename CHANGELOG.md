@@ -6,6 +6,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [1.3.1] - 2026-04-25
+
+### Fixed
+- **Heatmap overlay was not click-through and was anchored to the main window**: The overlay set only WPF-level `IsHitTestVisible="False"`, which suppresses hit-testing inside the WPF tree but does not stop the OS from routing mouse input to the overlay HWND — the underlying game window therefore never received clicks while the heatmap was visible. The overlay was also created with `Owner = MainWindow`, so its z-order was tied to the main window (minimizing AutoClick dragged the overlay down with it). Fixed by setting `WS_EX_TRANSPARENT | WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE` extended styles via `SetWindowLong` in `OnSourceInitialized`, re-asserting `HWND_TOPMOST` via `SetWindowPos` on every refresh tick, and removing `Owner` so the overlay is a top-level window with independent z-order.
+- **Heatmap overlay did not show on top of the foreground game in windowed mode**: Even with TOPMOST set, the 200ms refresh tick was too coarse — when the user Alt-Tabbed back into a game with its own `WS_EX_TOPMOST`, several frames could elapse before the overlay was re-promoted, leaving it stuck behind. Now hooked into `EVENT_SYSTEM_FOREGROUND` via `SetWinEventHook` so the overlay re-asserts TOPMOST at the *exact* moment the foreground swap happens — no polling lag. **Note:** true exclusive-fullscreen games (legacy DirectX) bypass the desktop compositor entirely; no overlay technology can render above them. Borderless-fullscreen and windowed are now reliably supported.
+- **Resetting per-game stats while the game was idle left the per-game card showing the pre-reset `TotalClicks`**: `GameSessionViewModel.TotalClicks` is a computed `_clickCount + _skippedClicks`; setting the backing fields to zero only fires `PropertyChanged` for the individual fields. The 500ms `_uiTimer` would normally fire `PropertyChanged(TotalClicks)` on the next tick — but the timer is stopped while idle, so the binding stayed stale until the next run. Fixed by firing `PropertyChanged(TotalClicks)` explicitly inside `ResetStats`.
+- **Drag-drop a click-point chip onto itself fired a no-op `MoveClickPoint(i, i)`**: Drop handler now early-returns when source and destination indices match.
+- **`WaitUntilMatch` pixel guard burned the full timeout when the game window closed mid-wait**: The 50ms polling loop did not re-check the window handle. Fixed to call `WindowHelper.IsWindowStillValid` each tick and stop the session promptly if the window dies.
+- **Status bar showed `AutoClick v1.2.0` after the v1.3.0 release**: Updated to `v1.3.1`.
+
+### Changed
+- **Heatmap overlays are now foreground-aware**: when multiple games are queued and have heatmap toggled on, only the overlay for the game currently in the system foreground is visible — switching between games via Alt-Tab automatically swaps which heatmap is on screen, and switching to any non-game window (e.g. AutoClick itself, a browser) hides them all. Implemented via a process-wide `ForegroundWatcher` that hooks `EVENT_SYSTEM_FOREGROUND` and is installed/torn down lazily based on subscriber count, so when no overlays are open there is zero syscall cost.
+- **Heatmap tooltip and README now disclose the Windowed/Borderless/Fullscreen compatibility nuance**: the heatmap button's tooltip points users at [docs/HEATMAP_COMPATIBILITY.md](docs/HEATMAP_COMPATIBILITY.md) (new) listing tested games per engine. Tooltip updated in all five locales (EN / VI / JA / KO / ZH).
+- **Default window size increased**: 960×680 → 1100×760, with new bounds `MaxWidth=1600, MaxHeight=1100` to prevent over-stretching on large displays. `MinWidth=750, MinHeight=500` unchanged.
+- **All scrollbars hidden** (`VerticalScrollBarVisibility="Hidden"`, `HorizontalScrollBarVisibility="Hidden"`) across the Main game list, Settings/About/Dashboard tabs, About inner ScrollViewer, and the log panel ListBox. Mouse-wheel and keyboard scrolling continue to work — only the visible track is suppressed for a cleaner UI.
+
+### Added (Accessibility)
+- **`StandardFocusVisualStyle`** in `App.xaml`: a dashed rectangle outline using the new theme-aware `FocusBrush`. Wired onto `PrimaryButton`, `DefaultButton`, `DangerButton`, `TabRadioButton` named styles plus implicit `Button`/`ComboBox`/`TextBox`/`CheckBox`/`ListBox` styles so every interactive control gets a consistent keyboard-focus indicator.
+- **State-specific brushes** in all three themes (`DarkTheme`, `LightTheme`, `HighContrastTheme`): `FocusBrush`, `DisabledBrush`, `DisabledTextBrush`, `ErrorBrush`. HighContrast uses bright cyan focus + saturated red error for maximum tonal separation against the yellow primary.
+- **`AutomationProperties.Name` + `TabIndex`** on the Settings view: every input (ComboBox + TextBox) in the Basic section now has an explicit accessible name + logical tab order matching its visual label, plus names on the Advanced color-guard inputs and the wait-timeout TextBox.
+- **`AutomationProperties.Name`** on Main view scheduler `Start time` / `Stop time` TextBoxes, GamePickerDialog SearchBox + WindowList, and ProfileNameDialog NameBox.
+- **`AutomationProperties.LiveSetting="Polite"`** on `CoordinatePickerWindow.InstructionText` so screen readers announce when the picker switches between mode 1/2/3 (click types) and mode 4 (keystroke capture).
+- **`Focusable="False"` + `AutomationProperties.IsOffscreenBehavior="Offscreen"`** on the heatmap overlay so the decorative click-through window is excluded from keyboard/screen-reader navigation.
+
+---
+
 ## [1.3.0] - 2026-04-25
 
 ### Added
