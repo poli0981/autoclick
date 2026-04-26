@@ -23,7 +23,8 @@
         <Border HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,30,0,0"
                 Background="#CC1E293B" CornerRadius="8" Padding="16,8">
             <TextBlock x:Name="InstructionText"
-                       Foreground="White" FontSize="14"/>
+                       Foreground="White" FontSize="14"
+                       AutomationProperties.LiveSetting="Polite"/>
         </Border>
     </Grid>
 </Window>

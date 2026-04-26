@@ -5,6 +5,8 @@
         Background="#01000000" Topmost="True"
         ShowInTaskbar="False" ResizeMode="NoResize"
         IsHitTestVisible="False"
+        Focusable="False"
+        AutomationProperties.IsOffscreenBehavior="Offscreen"
         Loaded="OnLoaded" Closed="OnClosed">
 
     <Grid>

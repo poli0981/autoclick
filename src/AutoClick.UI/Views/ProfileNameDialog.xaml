@@ -18,7 +18,8 @@
                    Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,12"/>
 
         <TextBox Grid.Row="1" x:Name="NameBox" FontSize="14" Padding="8,6"
-                 Loaded="NameBox_Loaded"/>
+                 Loaded="NameBox_Loaded"
+                 AutomationProperties.Name="{x:Static res:Strings.ProfileNamePrompt}"/>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
             <Button Content="OK" Click="OnOk" Style="{StaticResource PrimaryButton}" Margin="0,0,8,0"

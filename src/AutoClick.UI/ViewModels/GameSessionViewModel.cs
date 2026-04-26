@@ -207,6 +207,13 @@ public class GameSessionViewModel : ViewModelBase
         ClickCount = 0;
         SkippedClicks = 0;
         LastInterval = 0;
+        // TotalClicks is computed (_clickCount + _skippedClicks). Setting the
+        // backing fields to 0 above only fires PropertyChanged for ClickCount /
+        // SkippedClicks individually — bindings to TotalClicks won't refresh
+        // until the next _uiTimer tick. But _uiTimer.Stop() runs on session
+        // stop, so a reset while idle would leave the per-game card stuck on
+        // the pre-reset total. Fire it explicitly here.
+        OnPropertyChanged(nameof(TotalClicks));
         _log.Info($"Stats reset for \"{ProcessName}\"");
     }
 

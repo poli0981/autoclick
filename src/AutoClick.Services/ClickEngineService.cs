@@ -93,17 +93,31 @@ public class ClickEngineService : IClickEngine
                                     var deadline = DateTime.UtcNow.AddMilliseconds(timeoutMs);
                                     bool matched = false;
                                     _log.Info($"Waiting for color match at ({point.X}, {point.Y}) for \"{session.ProcessName}\": expected {expected}, got {actual} (timeout {timeoutMs}ms).");
+                                    bool windowGone = false;
                                     while (DateTime.UtcNow < deadline)
                                     {
                                         if (cts.Token.IsCancellationRequested) break;
                                         pauseEvent.Wait(cts.Token);
                                         await Task.Delay(50, cts.Token);
+                                        // Bail out fast if the game window died mid-wait — otherwise we'd
+                                        // burn the full timeout polling a dead handle.
+                                        if (!WindowHelper.IsWindowStillValid(session.WindowHandle))
+                                        {
+                                            _log.Warn($"Window for \"{session.ProcessName}\" closed during pixel wait at ({point.X}, {point.Y}). Stopping.");
+                                            windowGone = true;
+                                            break;
+                                        }
                                         currentColor = PixelColorHelper.ReadPixelColor(session.WindowHandle, point.X, point.Y);
                                         if (PixelColorHelper.IsColorMatch(currentColor, point.ReferenceColor, session.ColorTolerance))
                                         {
                                             matched = true;
                                             break;
                                         }
+                                    }
+                                    if (windowGone)
+                                    {
+                                        outOfBounds = true;
+                                        break;
                                     }
                                     if (!matched)
                                     {

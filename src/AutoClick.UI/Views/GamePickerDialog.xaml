@@ -19,13 +19,15 @@
 
         <TextBox Grid.Row="1" x:Name="SearchBox" Margin="0,0,0,12"
                  TextChanged="OnSearchTextChanged"
-                 Tag="Search by process name or title..."/>
+                 Tag="Search by process name or title..."
+                 AutomationProperties.Name="Search by process name or title"/>
 
         <ListBox Grid.Row="2" x:Name="WindowList" DisplayMemberPath="DisplayText"
                  Background="{DynamicResource SurfaceBrush}"
                  Foreground="{DynamicResource TextPrimaryBrush}"
                  BorderBrush="{DynamicResource BorderBrush}"
-                 MouseDoubleClick="OnWindowDoubleClick"/>
+                 MouseDoubleClick="OnWindowDoubleClick"
+                 AutomationProperties.Name="{x:Static res:Strings.AddGame}"/>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
             <Button Content="Refresh" Click="OnRefresh" Style="{StaticResource DefaultButton}" Margin="0,0,8,0"/>

@@ -208,7 +208,7 @@
   <data name="ClickTypeRight" xml:space="preserve"><value>Right</value></data>
   <data name="ClickTypeKeystroke" xml:space="preserve"><value>Keystroke</value></data>
   <data name="HeatmapToggle" xml:space="preserve"><value>Heatmap</value></data>
-  <data name="HeatmapTooltip" xml:space="preserve"><value>Toggle click heatmap overlay over the game window</value></data>
+  <data name="HeatmapTooltip" xml:space="preserve"><value>Toggle click heatmap overlay. Best in Windowed/Borderless — Fullscreen support varies by game engine (see docs/HEATMAP_COMPATIBILITY.md).</value></data>
   <data name="HeatmapTitle" xml:space="preserve"><value>Heatmap</value></data>
   <data name="ThemeDark" xml:space="preserve"><value>Dark</value></data>
   <data name="ThemeLight" xml:space="preserve"><value>Light</value></data>

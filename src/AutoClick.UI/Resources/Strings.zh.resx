@@ -214,7 +214,7 @@
   <data name="PickerInstructionKeystroke" xml:space="preserve"><value>按下要发送的按键。1/2/3 切换回去。ESC=取消</value></data>
   <data name="ClickTypeKeystroke" xml:space="preserve"><value>按键</value></data>
   <data name="HeatmapToggle" xml:space="preserve"><value>热力图</value></data>
-  <data name="HeatmapTooltip" xml:space="preserve"><value>切换游戏窗口上的点击热力图叠加</value></data>
+  <data name="HeatmapTooltip" xml:space="preserve"><value>切换点击热力图叠加。窗口/无边框模式效果最佳 — 全屏支持因游戏引擎而异(参见 docs/HEATMAP_COMPATIBILITY.md)。</value></data>
   <data name="HeatmapTitle" xml:space="preserve"><value>热力图</value></data>
   <data name="ThemeDark" xml:space="preserve"><value>深色</value></data>
   <data name="ThemeLight" xml:space="preserve"><value>浅色</value></data>

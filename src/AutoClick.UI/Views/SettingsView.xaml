@@ -26,7 +26,8 @@
                     <TextBlock Text="{x:Static res:Strings.SettingsMode}" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
                     <ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedSettingsModeIndex}"
-                              IsEnabled="{Binding IsSettingsEnabled}" HorizontalAlignment="Left" Width="200">
+                              IsEnabled="{Binding IsSettingsEnabled}" HorizontalAlignment="Left" Width="200"
+                              AutomationProperties.Name="{x:Static res:Strings.SettingsMode}" TabIndex="1">
                         <ComboBoxItem Content="{x:Static res:Strings.GlobalMode}"/>
                         <ComboBoxItem Content="{x:Static res:Strings.CustomMode}"/>
                     </ComboBox>
@@ -41,7 +42,8 @@
                     <TextBlock Text="{x:Static res:Strings.ClickMode}" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
                     <ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedClickModeIndex}"
-                              IsEnabled="{Binding IsGlobalParamsEnabled}" HorizontalAlignment="Left" Width="150">
+                              IsEnabled="{Binding IsGlobalParamsEnabled}" HorizontalAlignment="Left" Width="150"
+                              AutomationProperties.Name="{x:Static res:Strings.ClickMode}" TabIndex="2">
                         <ComboBoxItem Content="{x:Static res:Strings.Random}"/>
                         <ComboBoxItem Content="{x:Static res:Strings.Fixed}"/>
                     </ComboBox>
@@ -56,7 +58,8 @@
                     <TextBlock Text="{x:Static res:Strings.Interval}" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
                     <TextBox Grid.Column="1" Text="{Binding FixedInterval, UpdateSourceTrigger=LostFocus}"
-                             Width="80" HorizontalAlignment="Left" IsEnabled="{Binding IsGlobalParamsEnabled}"/>
+                             Width="80" HorizontalAlignment="Left" IsEnabled="{Binding IsGlobalParamsEnabled}"
+                             AutomationProperties.Name="{x:Static res:Strings.Interval}" TabIndex="3"/>
                 </Grid>
 
                 <!-- Random Min/Max -->
@@ -68,7 +71,8 @@
                     <TextBlock Text="{x:Static res:Strings.RandomMin}" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
                     <TextBox Grid.Column="1" Text="{Binding RandomMin, UpdateSourceTrigger=LostFocus}"
-                             Width="80" HorizontalAlignment="Left" IsEnabled="{Binding IsGlobalParamsEnabled}"/>
+                             Width="80" HorizontalAlignment="Left" IsEnabled="{Binding IsGlobalParamsEnabled}"
+                             AutomationProperties.Name="{x:Static res:Strings.RandomMin}" TabIndex="4"/>
                 </Grid>
                 <Grid Margin="0,0,0,12">
                     <Grid.ColumnDefinitions>
@@ -78,7 +82,8 @@
                     <TextBlock Text="{x:Static res:Strings.RandomMax}" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
                     <TextBox Grid.Column="1" Text="{Binding RandomMax, UpdateSourceTrigger=LostFocus}"
-                             Width="80" HorizontalAlignment="Left" IsEnabled="{Binding IsGlobalParamsEnabled}"/>
+                             Width="80" HorizontalAlignment="Left" IsEnabled="{Binding IsGlobalParamsEnabled}"
+                             AutomationProperties.Name="{x:Static res:Strings.RandomMax}" TabIndex="5"/>
                 </Grid>
 
                 <!-- Max Games -->
@@ -90,7 +95,8 @@
                     <TextBlock Text="{x:Static res:Strings.MaxGames}" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
                     <TextBox Grid.Column="1" Text="{Binding MaxGamesInQueue, UpdateSourceTrigger=LostFocus}"
-                             Width="80" HorizontalAlignment="Left" IsEnabled="{Binding IsSettingsEnabled}"/>
+                             Width="80" HorizontalAlignment="Left" IsEnabled="{Binding IsSettingsEnabled}"
+                             AutomationProperties.Name="{x:Static res:Strings.MaxGames}" TabIndex="6"/>
                 </Grid>
 
                 <!-- Theme: Dark / Light / High Contrast -->
@@ -103,7 +109,7 @@
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
                     <ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedThemeIndex}"
                               HorizontalAlignment="Left" Width="200"
-                              AutomationProperties.Name="{x:Static res:Strings.Theme}">
+                              AutomationProperties.Name="{x:Static res:Strings.Theme}" TabIndex="7">
                         <ComboBoxItem Content="{x:Static res:Strings.ThemeDark}"/>
                         <ComboBoxItem Content="{x:Static res:Strings.ThemeLight}"/>
                         <ComboBoxItem Content="{x:Static res:Strings.ThemeHighContrast}"/>
@@ -119,7 +125,8 @@
                     <TextBlock Text="{x:Static res:Strings.Language}" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
                     <ComboBox Grid.Column="1" SelectedValue="{Binding Language}" SelectedValuePath="Tag"
-                              HorizontalAlignment="Left" Width="150">
+                              HorizontalAlignment="Left" Width="150"
+                              AutomationProperties.Name="{x:Static res:Strings.Language}" TabIndex="8">
                         <ComboBoxItem Content="English" Tag="en"/>
                         <ComboBoxItem Content="Tiếng Việt" Tag="vi"/>
                         <ComboBoxItem Content="日本語" Tag="ja"/>
@@ -137,7 +144,8 @@
                     <TextBlock Text="{x:Static res:Strings.ExitBehaviorLabel}" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextPrimaryBrush}"/>
                     <ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedExitBehaviorIndex}"
-                              HorizontalAlignment="Left" Width="200">
+                              HorizontalAlignment="Left" Width="200"
+                              AutomationProperties.Name="{x:Static res:Strings.ExitBehaviorLabel}" TabIndex="9">
                         <ComboBoxItem Content="{x:Static res:Strings.MinimizeToTray}"/>
                         <ComboBoxItem Content="{x:Static res:Strings.StopAndExit}"/>
                         <ComboBoxItem Content="{x:Static res:Strings.ForceExitLabel}"/>
@@ -186,7 +194,8 @@
                     <TextBlock Text="{x:Static res:Strings.ColorTolerance}" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextSecondaryBrush}"/>
                     <TextBox Grid.Column="1" Text="{Binding ColorTolerance, UpdateSourceTrigger=LostFocus}"
-                             Width="80" HorizontalAlignment="Left"/>
+                             Width="80" HorizontalAlignment="Left"
+                             AutomationProperties.Name="{x:Static res:Strings.ColorTolerance}"/>
                 </Grid>
                 <Grid Margin="0,0,0,12">
                     <Grid.ColumnDefinitions>
@@ -196,7 +205,8 @@
                     <TextBlock Text="{x:Static res:Strings.OnColorMismatch}" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextSecondaryBrush}"/>
                     <ComboBox Grid.Column="1" SelectedIndex="{Binding SelectedMismatchBehaviorIndex}"
-                              HorizontalAlignment="Left" Width="200">
+                              HorizontalAlignment="Left" Width="200"
+                              AutomationProperties.Name="{x:Static res:Strings.OnColorMismatch}">
                         <ComboBoxItem Content="{x:Static res:Strings.SkipPoint}"/>
                         <ComboBoxItem Content="{x:Static res:Strings.StopSession}"/>
                         <ComboBoxItem Content="{x:Static res:Strings.WaitUntilMatch}"/>
@@ -213,7 +223,8 @@
                                Foreground="{DynamicResource TextSecondaryBrush}"/>
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                         <TextBox Text="{Binding ColorWaitTimeoutMs, UpdateSourceTrigger=LostFocus}"
-                                 Width="80" HorizontalAlignment="Left"/>
+                                 Width="80" HorizontalAlignment="Left"
+                                 AutomationProperties.Name="{x:Static res:Strings.ColorWaitTimeout}"/>
                         <TextBlock Text="ms" Margin="6,0,0,0" VerticalAlignment="Center"
                                    Foreground="{DynamicResource TextSecondaryBrush}"/>
                     </StackPanel>
