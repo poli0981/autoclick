@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [1.3.2] - 2026-05-08
+
+### Fixed
+- **Multiple AutoClick processes spawned on each launch**: Every time the app was opened (Start menu, desktop shortcut, or installer-launched), a brand-new `AutoClick.UI.exe` process was created — adding another tray icon, another set of registered global hotkeys, and another click engine in parallel. After a few launches the user could end up with 4–5 phantom processes still running (and still firing hotkeys) without realizing it. Root cause: there was no single-instance gate in `App.OnStartup` — the DI container, tray icon, and click engine were built unconditionally on every launch. Fixed by adding a session-scoped named Mutex (`Local\AutoClick.SingleInstance.{user-hash}`) acquired right after the Velopack hook check; if the Mutex is already held, the new process forwards a "show window" command to the running instance over a named pipe (`AutoClick.IPC.{user-hash}`) and exits cleanly. The running instance handles the IPC message by `Show()` + `Activate()` + `SetForegroundWindow` on the main window — so launching AutoClick a second time now restores the existing window (even from the tray) instead of stacking processes.
+- **Language-change restart could lose the single-instance lock momentarily**: `RestartApplication()` calls `Process.Start` on the new exe and then `Application.Current.Shutdown()` — without coordination, the new instance would fail the Mutex check (the old one hadn't released yet) and exit, breaking the restart flow. Fixed by having the old process release the Mutex synchronously *before* spawning the new one, and passing a `--restarting` flag so the new process waits up to 3 s on Mutex acquisition (covering the brief window between the old process exiting and the OS releasing kernel handles).
+
+### Notes
+- Velopack lifecycle hooks (`--veloapp-install`, `--veloapp-uninstall`, `--veloapp-firstrun`, `--veloapp-obsolete`, `--veloapp-updated`) bypass the single-instance gate so that auto-update and install/uninstall flows continue to work even while a normal AutoClick instance is running.
+- If the running instance is killed via Task Manager (no graceful exit), the OS automatically releases the abandoned Mutex on the next launch — no manual cleanup required.
+
+---
+
 ## [1.3.1] - 2026-04-25
 
 ### Fixed

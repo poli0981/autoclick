@@ -1,6 +1,8 @@
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
+using System.Windows.Interop;
 using Microsoft.Extensions.DependencyInjection;
 using AutoClick.Core.Interfaces;
 using AutoClick.Services;
@@ -8,23 +10,49 @@ using AutoClick.UI.Resources;
 using AutoClick.UI.Services;
 using AutoClick.UI.ViewModels;
 using AutoClick.UI.Views;
+using AutoClick.Win32;
 using Velopack;
 
 namespace AutoClick.UI;
 
 public partial class App : Application
 {
+    private const string RestartingArg = "--restarting";
+
     private ServiceProvider _serviceProvider = null!;
     private NotifyIcon? _trayIcon;
+    private SingleInstanceService? _singleInstance;
 
     private void OnStartup(object sender, StartupEventArgs e)
     {
-        // Velopack lifecycle — must run first for install/update hooks
+        // Velopack lifecycle — must run first for install/update hooks.
+        // Velopack hook args (--veloapp-*) cause Velopack to call Environment.Exit before returning.
         VelopackApp.Build().Run();
+
+        // Single-instance gate. Skip during Velopack hooks just in case (defensive).
+        var isVelopackHook = e.Args.Any(a => a.StartsWith("--veloapp-", StringComparison.OrdinalIgnoreCase));
+        var isRestarting = e.Args.Any(a => string.Equals(a, RestartingArg, StringComparison.OrdinalIgnoreCase));
+
+        // LogService is instantiated up-front so the gate can log; the same instance is then
+        // registered as the DI singleton so logs share the file/buffer.
+        var log = new LogService();
+
+        if (!isVelopackHook)
+        {
+            _singleInstance = new SingleInstanceService(log);
+            if (!_singleInstance.TryAcquire(isRestarting))
+            {
+                _singleInstance.SendShowToExisting();
+                _singleInstance.Dispose();
+                _singleInstance = null;
+                Environment.Exit(0);
+                return;
+            }
+        }
 
         var services = new ServiceCollection();
 
-        services.AddSingleton<ILogService, LogService>();
+        services.AddSingleton<ILogService>(log);
         services.AddSingleton<ISettingsService, SettingsService>();
         services.AddSingleton<IGameDetector, GameDetectorService>();
         services.AddSingleton<IMemoryManager, MemoryManagerService>();
@@ -114,6 +142,10 @@ public partial class App : Application
         SetupTrayIcon(mainWindow);
         MainWindow = mainWindow;
         mainWindow.Show();
+
+        // Forward "show" requests from second-launch attempts to this window.
+        _singleInstance?.StartIpcServer(() =>
+            Dispatcher.Invoke(() => BringToFront(mainWindow)));
 
         // Initialize update service + about VM
         var logService = _serviceProvider.GetRequiredService<ILogService>();
@@ -217,14 +249,36 @@ public partial class App : Application
         };
     }
 
-    private static void RestartApplication()
+    private void RestartApplication()
     {
         var exePath = Environment.ProcessPath;
         if (exePath != null)
         {
-            Process.Start(new ProcessStartInfo(exePath) { UseShellExecute = true });
+            // Release the Mutex synchronously BEFORE spawning the new process so the
+            // new instance can acquire it without racing OnExit (which fires async).
+            _singleInstance?.Release();
+            _singleInstance = null;
+
+            Process.Start(new ProcessStartInfo(exePath)
+            {
+                UseShellExecute = true,
+                Arguments = RestartingArg
+            });
         }
         Current.Shutdown();
+    }
+
+    private static void BringToFront(Window mainWindow)
+    {
+        if (!mainWindow.IsVisible)
+            mainWindow.Show();
+        if (mainWindow.WindowState == WindowState.Minimized)
+            mainWindow.WindowState = WindowState.Normal;
+        mainWindow.Activate();
+
+        var handle = new WindowInteropHelper(mainWindow).Handle;
+        if (handle != IntPtr.Zero)
+            NativeMethods.SetForegroundWindow(handle);
     }
 
     public static void ShowBalloonTip(string title, string text, ToolTipIcon icon = ToolTipIcon.Info)
@@ -235,6 +289,8 @@ public partial class App : Application
 
     protected override void OnExit(ExitEventArgs e)
     {
+        _singleInstance?.Release();
+        _singleInstance = null;
         _trayIcon?.Dispose();
         _serviceProvider?.Dispose();
         base.OnExit(e);
