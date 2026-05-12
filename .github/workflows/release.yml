@@ -77,7 +77,13 @@ jobs:
             -o publish
 
       - name: Install Velopack CLI (vpk)
-        run: dotnet tool install -g vpk
+        # Pin vpk to the same version as the Velopack library referenced in
+        # AutoClick.UI.csproj. Letting `dotnet tool install -g vpk` pick the
+        # latest (e.g. 0.0.1298) causes the delta-pack step to fail when it
+        # parses the previous release's nuspec written by an older vpk —
+        # see release-25711362379 ("An error occurred while parsing
+        # EntityName. Line 20, position 22") in the v1.3.3 attempt.
+        run: dotnet tool install -g vpk --version 0.0.1251
 
       - name: Download previous releases (for delta)
         shell: pwsh
