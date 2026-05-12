@@ -90,22 +90,33 @@ jobs:
       - name: Check for existing discussion (idempotency)
         id: dup
         if: steps.ids.outputs.skip == '0'
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          QUERY: ${{ steps.rel.outputs.title }} in:title repo:${{ github.repository }}
+          DISC_TITLE: ${{ steps.rel.outputs.title }}
+          REPO: ${{ github.repository }}
         run: |
-          # GitHub search API for discussions matching the exact title in this repo.
-          MATCHES=$(gh api -X GET search/discussions -f q="$QUERY" --jq \
-            "[.items[] | select(.title==\"${{ steps.rel.outputs.title }}\")] | length")
-          if [ "$MATCHES" -gt 0 ]; then
-            echo "::notice::Discussion '${{ steps.rel.outputs.title }}' already exists; skipping."
+          # Search via GraphQL (`gh api search/discussions` is not a real
+          # REST endpoint and returns 404). Quote the title in the query
+          # so it does a phrase match.
+          QUERY="\"$DISC_TITLE\" in:title repo:$REPO"
+          MATCHES=$(gh api graphql \
+            -f query='query($q:String!){search(query:$q,type:DISCUSSION,first:25){nodes{... on Discussion {title}}}}' \
+            -f q="$QUERY" \
+            --jq "[.data.search.nodes[] | select(.title==\"$DISC_TITLE\")] | length")
+          if [ "${MATCHES:-0}" -gt 0 ]; then
+            echo "::notice::Discussion '$DISC_TITLE' already exists; skipping."
             echo "exists=1" >> "$GITHUB_OUTPUT"
           else
             echo "exists=0" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Create discussion
-        if: steps.ids.outputs.skip == '0' && steps.dup.outputs.exists == '0'
+        # `!= '1'` (rather than `== '0'`) so that if the dup check itself
+        # fails for any reason and writes nothing to `exists`, we still
+        # attempt to create. A duplicate is recoverable; a missing
+        # release discussion is the actual bug we want to avoid.
+        if: steps.ids.outputs.skip == '0' && steps.dup.outputs.exists != '1'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO_ID: ${{ steps.ids.outputs.repo_id }}
