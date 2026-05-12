@@ -218,4 +218,19 @@
   <data name="ExportStats" xml:space="preserve"><value>Xuất Thống kê</value></data>
   <data name="ResetDashboard" xml:space="preserve"><value>Đặt lại Thống kê</value></data>
   <data name="ConfirmResetStats" xml:space="preserve"><value>Đặt lại toàn bộ thống kê phiên và dữ liệu dashboard? Không thể hoàn tác.</value></data>
+
+  <!-- About: Connect & Support card (v1.3.3) -->
+  <data name="AboutConnectHeader" xml:space="preserve"><value>Kết nối &amp; Hỗ trợ</value></data>
+  <data name="AboutSupportHeader" xml:space="preserve"><value>Ủng hộ Dự án</value></data>
+  <data name="AboutOpenX" xml:space="preserve"><value>X (Twitter)</value></data>
+  <data name="AboutOpenYouTube" xml:space="preserve"><value>YouTube</value></data>
+  <data name="AboutOpenDiscord" xml:space="preserve"><value>Discord</value></data>
+  <data name="AboutOpenPatreon" xml:space="preserve"><value>Patreon</value></data>
+  <data name="AboutOpenKofi" xml:space="preserve"><value>Ko-fi</value></data>
+  <data name="AboutOpenBluesky" xml:space="preserve"><value>Bluesky</value></data>
+  <data name="AboutOpenMastodon" xml:space="preserve"><value>Mastodon</value></data>
+  <data name="AboutOpenSteam" xml:space="preserve"><value>Steam</value></data>
+  <data name="AboutOpenEmail" xml:space="preserve"><value>Email</value></data>
+  <data name="AboutDonate" xml:space="preserve"><value>Quyên góp</value></data>
+  <data name="AboutReportBug" xml:space="preserve"><value>Báo lỗi</value></data>
 </root>

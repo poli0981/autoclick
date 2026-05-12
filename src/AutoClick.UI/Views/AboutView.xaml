@@ -135,6 +135,68 @@
             </StackPanel>
         </Border>
 
+        <!-- Connect & Support (v1.3.3) -->
+        <Border Background="{DynamicResource CardBrush}" CornerRadius="8" Padding="16" Margin="0,0,0,16"
+                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+            <StackPanel>
+                <TextBlock Text="{x:Static res:Strings.AboutConnectHeader}" FontWeight="SemiBold" FontSize="14"
+                           Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,12"/>
+
+                <WrapPanel Margin="0,0,0,8">
+                    <Button Command="{Binding OpenXCommand}" Style="{StaticResource DefaultButton}"
+                            Margin="0,0,8,8" Padding="10,6" Cursor="Hand">
+                        <TextBlock Text="{x:Static res:Strings.AboutOpenX}" FontSize="12"/>
+                    </Button>
+                    <Button Command="{Binding OpenYouTubeCommand}" Style="{StaticResource DefaultButton}"
+                            Margin="0,0,8,8" Padding="10,6" Cursor="Hand">
+                        <TextBlock Text="{x:Static res:Strings.AboutOpenYouTube}" FontSize="12"/>
+                    </Button>
+                    <Button Command="{Binding OpenDiscordCommand}" Style="{StaticResource DefaultButton}"
+                            Margin="0,0,8,8" Padding="10,6" Cursor="Hand">
+                        <TextBlock Text="{x:Static res:Strings.AboutOpenDiscord}" FontSize="12"/>
+                    </Button>
+                    <Button Command="{Binding OpenBlueskyCommand}" Style="{StaticResource DefaultButton}"
+                            Margin="0,0,8,8" Padding="10,6" Cursor="Hand">
+                        <TextBlock Text="{x:Static res:Strings.AboutOpenBluesky}" FontSize="12"/>
+                    </Button>
+                    <Button Command="{Binding OpenMastodonCommand}" Style="{StaticResource DefaultButton}"
+                            Margin="0,0,8,8" Padding="10,6" Cursor="Hand">
+                        <TextBlock Text="{x:Static res:Strings.AboutOpenMastodon}" FontSize="12"/>
+                    </Button>
+                    <Button Command="{Binding OpenSteamCommand}" Style="{StaticResource DefaultButton}"
+                            Margin="0,0,8,8" Padding="10,6" Cursor="Hand">
+                        <TextBlock Text="{x:Static res:Strings.AboutOpenSteam}" FontSize="12"/>
+                    </Button>
+                    <Button Command="{Binding OpenEmailCommand}" Style="{StaticResource DefaultButton}"
+                            Margin="0,0,8,8" Padding="10,6" Cursor="Hand">
+                        <TextBlock Text="{x:Static res:Strings.AboutOpenEmail}" FontSize="12"/>
+                    </Button>
+                </WrapPanel>
+
+                <TextBlock Text="{x:Static res:Strings.AboutSupportHeader}" FontWeight="SemiBold" FontSize="13"
+                           Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,8,0,8"/>
+
+                <WrapPanel>
+                    <Button Command="{Binding OpenDonateCommand}" Style="{StaticResource PrimaryButton}"
+                            Margin="0,0,8,8" Padding="12,6" Cursor="Hand">
+                        <TextBlock Text="{x:Static res:Strings.AboutDonate}" FontSize="12"/>
+                    </Button>
+                    <Button Command="{Binding OpenPatreonCommand}" Style="{StaticResource DefaultButton}"
+                            Margin="0,0,8,8" Padding="10,6" Cursor="Hand">
+                        <TextBlock Text="{x:Static res:Strings.AboutOpenPatreon}" FontSize="12"/>
+                    </Button>
+                    <Button Command="{Binding OpenKofiCommand}" Style="{StaticResource DefaultButton}"
+                            Margin="0,0,8,8" Padding="10,6" Cursor="Hand">
+                        <TextBlock Text="{x:Static res:Strings.AboutOpenKofi}" FontSize="12"/>
+                    </Button>
+                    <Button Command="{Binding OpenReportBugCommand}" Style="{StaticResource DefaultButton}"
+                            Margin="0,0,8,8" Padding="10,6" Cursor="Hand">
+                        <TextBlock Text="{x:Static res:Strings.AboutReportBug}" FontSize="12"/>
+                    </Button>
+                </WrapPanel>
+            </StackPanel>
+        </Border>
+
         <Border Background="{DynamicResource CardBrush}" CornerRadius="8" Padding="16" Margin="0,0,0,16"
                 BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
             <StackPanel>

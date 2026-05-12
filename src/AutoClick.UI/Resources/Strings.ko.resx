@@ -219,4 +219,19 @@
   <data name="ThemeDark" xml:space="preserve"><value>다크</value></data>
   <data name="ThemeLight" xml:space="preserve"><value>라이트</value></data>
   <data name="ThemeHighContrast" xml:space="preserve"><value>고대비</value></data>
+
+  <!-- About: Connect & Support card (v1.3.3) -->
+  <data name="AboutConnectHeader" xml:space="preserve"><value>연결 &amp; 지원</value></data>
+  <data name="AboutSupportHeader" xml:space="preserve"><value>프로젝트 후원</value></data>
+  <data name="AboutOpenX" xml:space="preserve"><value>X (Twitter)</value></data>
+  <data name="AboutOpenYouTube" xml:space="preserve"><value>YouTube</value></data>
+  <data name="AboutOpenDiscord" xml:space="preserve"><value>Discord</value></data>
+  <data name="AboutOpenPatreon" xml:space="preserve"><value>Patreon</value></data>
+  <data name="AboutOpenKofi" xml:space="preserve"><value>Ko-fi</value></data>
+  <data name="AboutOpenBluesky" xml:space="preserve"><value>Bluesky</value></data>
+  <data name="AboutOpenMastodon" xml:space="preserve"><value>Mastodon</value></data>
+  <data name="AboutOpenSteam" xml:space="preserve"><value>Steam</value></data>
+  <data name="AboutOpenEmail" xml:space="preserve"><value>이메일</value></data>
+  <data name="AboutDonate" xml:space="preserve"><value>후원하기</value></data>
+  <data name="AboutReportBug" xml:space="preserve"><value>버그 신고</value></data>
 </root>
