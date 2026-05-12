@@ -1,8 +1,12 @@
 name: Notify Release Pipeline
 
+# Listen ONLY to the Release workflow on success after a tag push. Previously
+# `workflows: ["*"]` paired with a complex reusable-side `if:` caused dozens
+# of "Skipped" notifier jobs per event. The trigger is now narrowed and the
+# top-level `if:` gates entry into the reusable workflow itself.
 on:
   workflow_run:
-    workflows: ["*"]
+    workflows: ["Release"]
     types: [completed]
 
 permissions:
@@ -11,5 +15,6 @@ permissions:
 
 jobs:
   notify:
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' }}
     uses: poli0981/.github/.github/workflows/notify-release-pipeline.yml@main
     secrets: inherit
