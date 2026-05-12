@@ -220,6 +220,21 @@ public static class Strings
     public static string ResetDashboard => GetString("ResetDashboard", "Reset All Stats");
     public static string ConfirmResetStats => GetString("ConfirmResetStats", "Reset all session statistics and dashboard data? This cannot be undone.");
 
+    // About: Connect & Support card (v1.3.3)
+    public static string AboutConnectHeader => GetString("AboutConnectHeader", "Connect & Support");
+    public static string AboutSupportHeader => GetString("AboutSupportHeader", "Support the Project");
+    public static string AboutOpenX => GetString("AboutOpenX", "X (Twitter)");
+    public static string AboutOpenYouTube => GetString("AboutOpenYouTube", "YouTube");
+    public static string AboutOpenDiscord => GetString("AboutOpenDiscord", "Discord");
+    public static string AboutOpenPatreon => GetString("AboutOpenPatreon", "Patreon");
+    public static string AboutOpenKofi => GetString("AboutOpenKofi", "Ko-fi");
+    public static string AboutOpenBluesky => GetString("AboutOpenBluesky", "Bluesky");
+    public static string AboutOpenMastodon => GetString("AboutOpenMastodon", "Mastodon");
+    public static string AboutOpenSteam => GetString("AboutOpenSteam", "Steam");
+    public static string AboutOpenEmail => GetString("AboutOpenEmail", "Email");
+    public static string AboutDonate => GetString("AboutDonate", "Donate");
+    public static string AboutReportBug => GetString("AboutReportBug", "Report a Bug");
+
     private static readonly System.Resources.ResourceManager ResourceManager =
         new("AutoClick.UI.Resources.Strings", typeof(Strings).Assembly);
 

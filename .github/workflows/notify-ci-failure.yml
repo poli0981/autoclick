@@ -1,17 +1,21 @@
 name: Notify CI Failures
 
+# Listen ONLY to the Release workflow. Listening to "*" caused notify jobs to
+# spawn for every workflow_run (including this notifier and Announce Release),
+# then skip via job-level `if:`, producing many "Skipped" entries in the
+# Actions tab. The top-level `if:` below also prevents the reusable job from
+# starting on non-failure outcomes.
 on:
   workflow_run:
-    workflows: ["*"]
+    workflows: ["Release"]
     types: [completed]
 
-# REQUIRED: declare permissions matching the reusable workflow's needs.
-# Reusable needs `actions: read` to inspect workflow_run details.
 permissions:
   contents: read
   actions: read
 
 jobs:
   notify:
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     uses: poli0981/.github/.github/workflows/notify-ci-failure.yml@main
     secrets: inherit

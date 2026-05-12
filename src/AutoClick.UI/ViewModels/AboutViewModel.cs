@@ -32,7 +32,7 @@ public class AboutViewModel : ViewModelBase
 
     public UpdateViewModel? UpdateVm { get; private set; }
 
-    // Commands
+    // Commands - documents
     public RelayCommand OpenGitHubCommand { get; }
     public RelayCommand OpenLicenseCommand { get; }
     public RelayCommand OpenPrivacyPolicyCommand { get; }
@@ -41,6 +41,19 @@ public class AboutViewModel : ViewModelBase
     public RelayCommand OpenTermsCommand { get; }
     public RelayCommand OpenEulaCommand { get; }
     public RelayCommand OpenSecurityCommand { get; }
+
+    // Commands - Connect & Support (v1.3.3)
+    public RelayCommand OpenXCommand { get; }
+    public RelayCommand OpenYouTubeCommand { get; }
+    public RelayCommand OpenDiscordCommand { get; }
+    public RelayCommand OpenPatreonCommand { get; }
+    public RelayCommand OpenKofiCommand { get; }
+    public RelayCommand OpenBlueskyCommand { get; }
+    public RelayCommand OpenMastodonCommand { get; }
+    public RelayCommand OpenSteamCommand { get; }
+    public RelayCommand OpenEmailCommand { get; }
+    public RelayCommand OpenDonateCommand { get; }
+    public RelayCommand OpenReportBugCommand { get; }
 
     public AboutViewModel()
     {
@@ -52,6 +65,18 @@ public class AboutViewModel : ViewModelBase
         OpenTermsCommand = new RelayCommand(() => OpenUrl($"{RepoBase}/blob/master/docs/TERMS_OF_SERVICE.md"));
         OpenEulaCommand = new RelayCommand(() => OpenUrl($"{RepoBase}/blob/master/docs/EULA.md"));
         OpenSecurityCommand = new RelayCommand(() => OpenUrl($"{RepoBase}/blob/master/docs/SECURITY.md"));
+
+        OpenXCommand = new RelayCommand(() => OpenUrl("https://x.com/SkullMute0011"));
+        OpenYouTubeCommand = new RelayCommand(() => OpenUrl("https://www.youtube.com/@SkullMute"));
+        OpenDiscordCommand = new RelayCommand(() => OpenUrl("https://discord.gg/2aNR3aVt"));
+        OpenPatreonCommand = new RelayCommand(() => OpenUrl("https://www.patreon.com/skullmute"));
+        OpenKofiCommand = new RelayCommand(() => OpenUrl("https://ko-fi.com/skullmute"));
+        OpenBlueskyCommand = new RelayCommand(() => OpenUrl("https://bsky.app/profile/skullmute0011.bsky.social"));
+        OpenMastodonCommand = new RelayCommand(() => OpenUrl("https://mastodon.social/@skullmute1122"));
+        OpenSteamCommand = new RelayCommand(() => OpenUrl("https://steamcommunity.com/profiles/76561199544666292/"));
+        OpenEmailCommand = new RelayCommand(() => OpenUrl("mailto:lopop05905@proton.me"));
+        OpenDonateCommand = new RelayCommand(() => OpenUrl("https://github.com/sponsors/poli0981"));
+        OpenReportBugCommand = new RelayCommand(() => OpenUrl($"{RepoBase}/issues/new?template=bug_report.yml"));
     }
 
     /// <summary>

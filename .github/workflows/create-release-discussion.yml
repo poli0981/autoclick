@@ -1,0 +1,125 @@
+name: Create Release Discussion
+
+# When a release is published, mirror it as a GitHub Discussion in the
+# "Announcements" category so the community has a thread to comment on.
+# - Skips gracefully if Discussions is disabled or the category is missing.
+# - Idempotent: re-publishing the same tag does not create a duplicate.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing release tag to mirror (e.g. v1.3.3)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  discussions: write
+
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resolve tag + release metadata
+        id: rel
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG="${{ inputs.tag }}"
+            REL_JSON=$(gh api "repos/${{ github.repository }}/releases/tags/$TAG")
+          else
+            TAG="${{ github.event.release.tag_name }}"
+            REL_JSON=$(gh api "repos/${{ github.repository }}/releases/${{ github.event.release.id }}")
+          fi
+          REL_URL=$(echo "$REL_JSON" | jq -r '.html_url')
+          REL_BODY=$(echo "$REL_JSON" | jq -r '.body // ""')
+          {
+            echo "tag=$TAG"
+            echo "url=$REL_URL"
+            echo "title=Release $TAG"
+          } >> "$GITHUB_OUTPUT"
+          {
+            echo 'body<<EOF'
+            echo "$REL_BODY"
+            echo ''
+            echo '---'
+            echo "See the full release: $REL_URL"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Resolve repository + Announcements category IDs
+        id: ids
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api graphql -f query='
+            query($owner:String!,$name:String!){
+              repository(owner:$owner,name:$name){
+                id
+                hasDiscussionsEnabled
+                discussionCategories(first:50){ nodes{ id name } }
+              }
+            }' -f owner="${{ github.repository_owner }}" -f name="${{ github.event.repository.name }}" \
+            > ids.json
+          ENABLED=$(jq -r '.data.repository.hasDiscussionsEnabled' ids.json)
+          if [ "$ENABLED" != "true" ]; then
+            echo "::notice::Discussions are not enabled on this repository; skipping."
+            echo "skip=1" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          REPO_ID=$(jq -r '.data.repository.id' ids.json)
+          CAT_ID=$(jq -r '.data.repository.discussionCategories.nodes[] | select(.name=="Announcements") | .id' ids.json)
+          if [ -z "$CAT_ID" ]; then
+            CAT_ID=$(jq -r '.data.repository.discussionCategories.nodes[] | select(.name=="Releases") | .id' ids.json)
+          fi
+          if [ -z "$CAT_ID" ]; then
+            echo "::notice::Neither 'Announcements' nor 'Releases' discussion category exists; skipping."
+            echo "skip=1" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          {
+            echo "repo_id=$REPO_ID"
+            echo "cat_id=$CAT_ID"
+            echo "skip=0"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Check for existing discussion (idempotency)
+        id: dup
+        if: steps.ids.outputs.skip == '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          QUERY: ${{ steps.rel.outputs.title }} in:title repo:${{ github.repository }}
+        run: |
+          # GitHub search API for discussions matching the exact title in this repo.
+          MATCHES=$(gh api -X GET search/discussions -f q="$QUERY" --jq \
+            "[.items[] | select(.title==\"${{ steps.rel.outputs.title }}\")] | length")
+          if [ "$MATCHES" -gt 0 ]; then
+            echo "::notice::Discussion '${{ steps.rel.outputs.title }}' already exists; skipping."
+            echo "exists=1" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=0" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create discussion
+        if: steps.ids.outputs.skip == '0' && steps.dup.outputs.exists == '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_ID: ${{ steps.ids.outputs.repo_id }}
+          CAT_ID: ${{ steps.ids.outputs.cat_id }}
+          DISC_TITLE: ${{ steps.rel.outputs.title }}
+          DISC_BODY: ${{ steps.rel.outputs.body }}
+        run: |
+          URL=$(gh api graphql \
+            -f query='mutation($repo:ID!,$cat:ID!,$title:String!,$body:String!){
+              createDiscussion(input:{repositoryId:$repo,categoryId:$cat,title:$title,body:$body}){
+                discussion{ url }
+              }
+            }' \
+            -f repo="$REPO_ID" -f cat="$CAT_ID" \
+            -f title="$DISC_TITLE" -f body="$DISC_BODY" \
+            --jq '.data.createDiscussion.discussion.url')
+          echo "::notice::Created discussion: $URL"

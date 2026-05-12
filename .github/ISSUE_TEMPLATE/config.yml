@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discussions
+    url: https://github.com/poli0981/autoclick/discussions
+    about: Questions, ideas, and general conversation belong here.
+  - name: Discord — General
+    url: https://discord.gg/2aNR3aVt
+    about: Live chat with the developer and other users.
+  - name: Security disclosure
+    url: https://github.com/poli0981/autoclick/blob/master/docs/SECURITY.md
+    about: Report security vulnerabilities privately. Do not open a public issue.

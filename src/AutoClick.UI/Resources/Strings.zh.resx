@@ -219,4 +219,19 @@
   <data name="ThemeDark" xml:space="preserve"><value>深色</value></data>
   <data name="ThemeLight" xml:space="preserve"><value>浅色</value></data>
   <data name="ThemeHighContrast" xml:space="preserve"><value>高对比度</value></data>
+
+  <!-- About: Connect & Support card (v1.3.3) -->
+  <data name="AboutConnectHeader" xml:space="preserve"><value>联系 &amp; 支持</value></data>
+  <data name="AboutSupportHeader" xml:space="preserve"><value>支持本项目</value></data>
+  <data name="AboutOpenX" xml:space="preserve"><value>X (Twitter)</value></data>
+  <data name="AboutOpenYouTube" xml:space="preserve"><value>YouTube</value></data>
+  <data name="AboutOpenDiscord" xml:space="preserve"><value>Discord</value></data>
+  <data name="AboutOpenPatreon" xml:space="preserve"><value>Patreon</value></data>
+  <data name="AboutOpenKofi" xml:space="preserve"><value>Ko-fi</value></data>
+  <data name="AboutOpenBluesky" xml:space="preserve"><value>Bluesky</value></data>
+  <data name="AboutOpenMastodon" xml:space="preserve"><value>Mastodon</value></data>
+  <data name="AboutOpenSteam" xml:space="preserve"><value>Steam</value></data>
+  <data name="AboutOpenEmail" xml:space="preserve"><value>邮件</value></data>
+  <data name="AboutDonate" xml:space="preserve"><value>捐赠</value></data>
+  <data name="AboutReportBug" xml:space="preserve"><value>报告问题</value></data>
 </root>
