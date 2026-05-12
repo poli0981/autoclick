@@ -80,6 +80,14 @@ jobs:
         run: dotnet tool install -g vpk
 
       - name: Download previous releases (for delta)
+        # TEMPORARILY DISABLED for v1.3.3. The v1.3.2 nuspec inside the
+        # uploaded nupkg contains unescaped XML entities (likely an `&`
+        # from the release-notes markdown). vpk reads it not only to
+        # build deltas but also when building the Setup.exe — so even
+        # `--delta None` doesn't help; the parse error happens earlier.
+        # Re-enable after we ship a release with sanitized release notes
+        # and re-pack a clean baseline.
+        if: false
         shell: pwsh
         continue-on-error: true
         env:
