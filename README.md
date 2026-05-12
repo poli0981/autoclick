@@ -10,6 +10,7 @@
   <a href="#features">Features</a> &bull;
   <a href="#installation">Installation</a> &bull;
   <a href="#usage">Usage</a> &bull;
+  <a href="#connect--support">Connect &amp; Support</a> &bull;
   <a href="#legal">Legal</a>
 </p>
 
@@ -143,6 +144,26 @@ Issues and PRs will be automatically ignored if they:
 Suspicious PRs will be reviewed in a sandboxed VM before merge.
 
 See [Code of Conduct](docs/CODE_OF_CONDUCT.md) for community guidelines.
+
+## Connect & Support
+
+Find the developer on social platforms, join the community, or report a bug:
+
+- **Social profiles & communities** — see [docs/social.md](docs/social.md) ([tiếng Việt](docs/i18n/vi/social.md)) for X, YouTube, Discord, Bluesky, Mastodon, Steam, and Telegram.
+- **Discord (general)** — [discord.gg/2aNR3aVt](https://discord.gg/2aNR3aVt)
+- **Report a bug** — open a [Bug Report](https://github.com/poli0981/autoclick/issues/new?template=bug_report.yml) issue.
+- **Request a feature** — open a [Feature Request](https://github.com/poli0981/autoclick/issues/new?template=feature_request.yml) issue.
+- **Questions / ideas** — start a thread in [Discussions](https://github.com/poli0981/autoclick/discussions).
+
+If AutoClick saved you time, consider sponsoring further development:
+
+[![GitHub Sponsors](https://img.shields.io/badge/Sponsor-poli0981-EA4AAA?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/poli0981)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-skullmute-FF5E5B?logo=kofi&logoColor=white)](https://ko-fi.com/skullmute)
+[![Patreon](https://img.shields.io/badge/Patreon-skullmute-F96854?logo=patreon&logoColor=white)](https://www.patreon.com/skullmute)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-skullmute-FFDD00?logo=buymeacoffee&logoColor=black)](https://www.buymeacoffee.com/skullmute)
+[![PayPal](https://img.shields.io/badge/PayPal-DungDang212-00457C?logo=paypal&logoColor=white)](https://paypal.me/DungDang212)
+
+The same handles drive the **Sponsor this project** button on GitHub (see [`.github/FUNDING.yml`](.github/FUNDING.yml)). The PC used to build and validate releases is documented in [docs/pc_spec.md](docs/pc_spec.md) ([VI](docs/i18n/vi/pc_spec.md)).
 
 ## Legal
 

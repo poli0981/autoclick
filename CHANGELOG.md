@@ -6,6 +6,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [1.3.3] - 2026-05-12
+
+### Fixed
+- **CI: workflow_run notifiers spammed "Skipped" jobs on every workflow completion**: `notify-ci-failure.yml` and `notify-release-pipeline.yml` listened to `workflows: ["*"]` and let the reusable workflows decide via job-level `if:` — meaning every push, schedule, and even the notifiers themselves spawned a notify job that then skipped, cluttering the Actions tab with "Skipped" entries. Both callers now narrow the trigger to `workflows: ["Release"]` and gate entry into the reusable workflow with a top-level `if:` (failure-only for CI failures, success-on-tag-push for the release pipeline), so notify jobs only spawn when there's actually something to notify about.
+- **Version drift across project files**: `AutoClick.Core`, `AutoClick.Services`, and `AutoClick.Win32` were still pinned to `1.3.1` while `AutoClick.UI` shipped as `1.3.2`. All four `.csproj` files now share `1.3.3` / `1.3.3.0` so assembly metadata, file properties, and `InformationalVersion` agree across the build.
+
+### Added
+- **About → Connect & Support card**: new section between Developer Info and Acknowledgements with links to X, YouTube, Discord, Patreon, Ko-fi, Bluesky, Mastodon, Steam, and Email; plus prominent **Donate** (GitHub Sponsors) and **Report a Bug** buttons. All labels localized across EN / VI / JA / KO / ZH (JA/KO/ZH machine-translated — native review welcome).
+- **`.github/ISSUE_TEMPLATE/`**: structured GitHub issue forms for `bug_report.yml` (version, install source, OS, repro, expected/actual, logs) and `feature_request.yml` (problem, solution, alternatives, scope), plus `config.yml` that disables blank issues and routes general questions to Discussions / Discord / SECURITY.md.
+- **`.github/dependabot.yml`**: weekly NuGet and GitHub Actions update PRs, grouped by family (dotnet-runtime, observability, charts, packaging, actions) to keep PR noise low. Currently zero open security alerts on the repository.
+- **`.github/workflows/create-release-discussion.yml`**: when a release is published, automatically mirrors the release notes into a GitHub Discussion under the **Announcements** category (falls back to **Releases**, no-ops if Discussions is disabled). Idempotent — re-publishing the same tag does not create a duplicate thread.
+- **Docs**: `docs/pc_spec.md` (developer hardware snapshot) and `docs/social.md` (public profiles, communities, funding links), each with a Vietnamese mirror under `docs/i18n/vi/`. Existing `docs/DEV_ENVIRONMENT.md` also gets a Vietnamese mirror.
+
+### Changed
+- **README.md**: new **Connect & Support** section linking to `docs/social.md`, Donate, and Report Bug.
+
+### Notes
+- `.github/FUNDING.yml` already matched the intended Donate configuration (GitHub Sponsors + Ko-fi + Buy Me a Coffee + Patreon + PayPal) — no edits required for this release.
+- The Discussion auto-creation workflow expects an **Announcements** discussion category to exist on the repo. If absent, the workflow logs a notice and exits 0 (release shipping is unaffected).
+
+---
+
 ## [1.3.2] - 2026-05-08
 
 ### Fixed
