@@ -62,12 +62,19 @@ jobs:
         with:
           fail-on-severity: moderate
           allow-licenses: ${{ steps.licenses.outputs.list }}
-          # OpenTK (pulled in by SkiaSharp.Views.WPF) publishes no license metadata; it is MIT
-          # (see eng/licenses/overrides.json).
+          # Skipped by the license check:
+          # - OpenTK (pulled in by SkiaSharp.Views.WPF) publishes no license metadata; it is MIT
+          #   (see eng/licenses/overrides.json).
+          # - Build and test tools that are never shipped (the licenses job checks what ships):
+          #   the Windows metadata CsWin32 generates P/Invoke code from (Windows SDK license) and
+          #   the test coverage extension (Microsoft .NET Library license).
           allow-dependencies-licenses: >-
             pkg:nuget/OpenTK.Compute, pkg:nuget/OpenTK.Core, pkg:nuget/OpenTK.Graphics,
             pkg:nuget/OpenTK.Input, pkg:nuget/OpenTK.Mathematics, pkg:nuget/OpenTK.OpenAL,
             pkg:nuget/OpenTK.Windowing.Common, pkg:nuget/OpenTK.Windowing.Desktop,
-            pkg:nuget/OpenTK.Windowing.GraphicsLibraryFramework, pkg:nuget/OpenTK.GLWpfControl
+            pkg:nuget/OpenTK.Windowing.GraphicsLibraryFramework, pkg:nuget/OpenTK.GLWpfControl,
+            pkg:nuget/Microsoft.Windows.SDK.Win32Docs, pkg:nuget/Microsoft.Windows.SDK.Win32Metadata,
+            pkg:nuget/Microsoft.Windows.WDK.Win32Metadata,
+            pkg:nuget/Microsoft.Testing.Extensions.CodeCoverage
           retry-on-snapshot-warnings: true
           retry-on-snapshot-warnings-timeout: 180

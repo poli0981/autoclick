@@ -26,7 +26,7 @@ The design is described in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md); the tes
 | **dead-code** | No unused code (ReSharper InspectCode with solution-wide analysis) and no XAML bindings to missing properties | see below |
 | **licenses** | Every shipped package has a GPL-3.0-compatible license ([`eng/licenses`](eng/licenses)) | `./eng/New-ThirdPartyNotices.ps1 -OutFile artifacts/THIRD-PARTY-NOTICES.txt` |
 | **vuln-audit** | No known vulnerability in direct or transitive packages | `./eng/Test-VulnerablePackages.ps1` |
-| **dependency-review** | The pull request adds no vulnerable package or disallowed license | GitHub only |
+| **dependency-review** | The pull request adds no vulnerable package and no disallowed license (build and test tools that are never shipped are exempt; the list is in the workflow) | GitHub only |
 | **analyze (csharp)** | CodeQL security analysis | GitHub only |
 
 Local equivalents of build-test and dead-code (PowerShell):
