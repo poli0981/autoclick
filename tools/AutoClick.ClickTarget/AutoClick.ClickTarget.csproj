@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Test-only target app (never shipped): logs the mouse and keyboard messages it receives so
+       AutoClick can be verified end to end. See Program.cs for the DPI and log switches. -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyTitle>AutoClick ClickTarget</AssemblyTitle>
+    <Description>Test target window for AutoClick end-to-end checks.</Description>
+  </PropertyGroup>
+
+</Project>

@@ -1,10 +1,18 @@
 # Build output
 bin/
 obj/
+artifacts/
+publish/
+Releases/
+TestResults/
+*.binlog
+*.nupkg
+release_notes.md
 
 # IDE
 .idea/
 .vs/
+.vscode/
 *.user
 *.suo
 *.DotSettings.user
@@ -14,5 +22,6 @@ Thumbs.db
 Desktop.ini
 .DS_Store
 
-# Claude
-.claude/
+# Claude Code: local worktrees and personal settings stay out of the repo
+.claude/worktrees/
+.claude/settings.local.json
