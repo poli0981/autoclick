@@ -1,0 +1,19 @@
+{
+  "settingsMode": "Global",
+  "defaultClickMode": "Random",
+  "defaultFixedInterval": 2.0,
+  "randomMin": 1.0,
+  "randomMax": 60.0,
+  "maxGamesInQueue": 10,
+  "showRealTimeLogs": true,
+  "darkMode": false,
+  "language": "en",
+  "exitBehavior": "MinimizeToTray",
+  "autoUpdate": true,
+  "soundNotifications": true,
+  "hotkeys": {
+    "pauseResume": "F6",
+    "stopAll": "F7",
+    "startAll": "F8"
+  }
+}

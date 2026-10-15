@@ -2,17 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <Product>AutoClick</Product>
     <AssemblyTitle>AutoClick.Core</AssemblyTitle>
-    <Description>Core models, enums, and interfaces for AutoClick.</Description>
-    <Company>poli0981</Company>
-    <Authors>poli0981</Authors>
-    <Copyright>Copyright (c) 2026 poli0981. Licensed under GPL-3.0.</Copyright>
-    <Version>1.3.4</Version>
-    <AssemblyVersion>1.3.4.0</AssemblyVersion>
-    <FileVersion>1.3.4.0</FileVersion>
+    <Description>Core models, settings contracts, scheduling and hotkey parsing for AutoClick (no Windows dependencies).</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="AutoClick.Core.Tests" />
+  </ItemGroup>
 
 </Project>

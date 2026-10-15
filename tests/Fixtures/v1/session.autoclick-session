@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "exportedAt": "2026-05-03T04:00:00Z",
+  "appVersion": "1.3.3.0",
+  "settings": {
+    "settingsMode": "Custom",
+    "defaultClickMode": "Fixed",
+    "defaultFixedInterval": 4,
+    "randomMin": 1,
+    "randomMax": 60,
+    "maxGamesInQueue": 10,
+    "showRealTimeLogs": true,
+    "theme": "HighContrast",
+    "language": "ja",
+    "exitBehavior": "MinimizeToTray",
+    "autoUpdate": true,
+    "soundNotifications": true,
+    "showGameExitNotification": true,
+    "minimizeOnStartAll": false,
+    "enablePixelColorGuard": true,
+    "colorTolerance": 10,
+    "colorMismatchBehavior": "WaitUntilMatch",
+    "colorWaitTimeoutMs": 4000,
+    "hotkeys": {
+      "pauseResume": "F6",
+      "stopAll": "F7",
+      "startAll": "F8"
+    }
+  },
+  "profiles": [
+    {
+      "id": "a1b2c3d4",
+      "name": "Fixture Profile",
+      "createdAt": "2026-05-01T10:00:00.1234567+07:00",
+      "updatedAt": "2026-05-02T11:30:00.7654321+07:00",
+      "clickPoints": [
+        {
+          "x": 120,
+          "y": 340,
+          "clickType": "LeftClick",
+          "delayAfterMs": 250,
+          "referenceColor": 4294967295,
+          "hasReferenceColor": false,
+          "virtualKeyCode": 0
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "clickType": "Keystroke",
+          "delayAfterMs": 250,
+          "referenceColor": 4294967295,
+          "hasReferenceColor": false,
+          "virtualKeyCode": 32
+        }
+      ],
+      "clickSettings": {
+        "mode": "Fixed",
+        "fixedIntervalSeconds": 5,
+        "randomMinSeconds": 1,
+        "randomMaxSeconds": 60
+      },
+      "sequenceDelayMs": 250
+    },
+    {
+      "id": "..\\..\\..\\Startup\\evil",
+      "name": "Traversal Attempt",
+      "createdAt": "2026-05-01T10:00:00+07:00",
+      "updatedAt": "2026-05-01T10:00:00+07:00",
+      "clickPoints": [],
+      "clickSettings": {
+        "mode": "Random",
+        "fixedIntervalSeconds": 2,
+        "randomMinSeconds": 1,
+        "randomMaxSeconds": 60
+      },
+      "sequenceDelayMs": 0
+    }
+  ],
+  "games": [
+    {
+      "processName": "notepad",
+      "windowTitle": "Untitled - Notepad",
+      "executablePath": "C:\\Windows\\System32\\notepad.exe",
+      "clickPoints": [
+        {
+          "x": 10,
+          "y": 20,
+          "clickType": "RightClick",
+          "delayAfterMs": 100,
+          "referenceColor": 3355443,
+          "hasReferenceColor": true,
+          "virtualKeyCode": 0
+        }
+      ],
+      "profile": {
+        "mode": "Random",
+        "fixedIntervalSeconds": 2,
+        "randomMinSeconds": 3,
+        "randomMaxSeconds": 9
+      },
+      "sequenceDelayMs": 100,
+      "enablePixelColorGuard": true,
+      "colorTolerance": 12,
+      "colorMismatchBehavior": "SkipPoint",
+      "isCustomMode": true
+    }
+  ]
+}

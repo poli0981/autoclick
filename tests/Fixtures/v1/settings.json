@@ -1,0 +1,25 @@
+{
+  "settingsMode": "Custom",
+  "defaultClickMode": "Fixed",
+  "defaultFixedInterval": 3.5,
+  "randomMin": 2,
+  "randomMax": 30,
+  "maxGamesInQueue": 7,
+  "showRealTimeLogs": false,
+  "theme": "Light",
+  "language": "vi",
+  "exitBehavior": "StopAndExit",
+  "autoUpdate": false,
+  "soundNotifications": false,
+  "showGameExitNotification": true,
+  "minimizeOnStartAll": true,
+  "enablePixelColorGuard": true,
+  "colorTolerance": 15,
+  "colorMismatchBehavior": "WaitUntilMatch",
+  "colorWaitTimeoutMs": 7000,
+  "hotkeys": {
+    "pauseResume": "Ctrl+F6",
+    "stopAll": "F7",
+    "startAll": "Ctrl+Shift+F8"
+  }
+}
