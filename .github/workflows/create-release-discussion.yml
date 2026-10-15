@@ -75,6 +75,7 @@ jobs:
           NAME: ${{ github.event.repository.name }}
         run: |
           set -euo pipefail
+          # shellcheck disable=SC2016 # $owner and $name are GraphQL variables, not shell expansions
           gh api graphql -f query='
             query($owner:String!,$name:String!){
               repository(owner:$owner,name:$name){
@@ -117,6 +118,7 @@ jobs:
           # GraphQL search (there is no REST endpoint for discussion search); the quoted title
           # makes it a phrase match, then the exact title is compared.
           QUERY="\"$DISC_TITLE\" in:title repo:$REPO"
+          # shellcheck disable=SC2016 # $q is a GraphQL variable, not a shell expansion
           MATCHES=$(gh api graphql \
             -f query='query($q:String!){search(query:$q,type:DISCUSSION,first:25){nodes{... on Discussion {title}}}}' \
             -f q="$QUERY" \
@@ -139,6 +141,7 @@ jobs:
           DISC_TITLE: ${{ steps.rel.outputs.title }}
           DISC_BODY: ${{ steps.rel.outputs.body }}
         run: |
+          # shellcheck disable=SC2016 # $repo, $cat, $title and $body are GraphQL variables
           URL=$(gh api graphql \
             -f query='mutation($repo:ID!,$cat:ID!,$title:String!,$body:String!){
               createDiscussion(input:{repositoryId:$repo,categoryId:$cat,title:$title,body:$body}){
