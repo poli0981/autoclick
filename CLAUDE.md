@@ -33,7 +33,11 @@ dotnet jb inspectcode AutoClick.slnx --no-build --properties:Configuration=Relea
 - Adding a `<Resource>` item is not picked up by an incremental build: rebuild with `--no-incremental`.
 - CommunityToolkit.Mvvm requires the Windows SDK projection at build time; the UI project removes the projection DLL from the output afterwards (`DropWindowsSdkProjection`). Do not set `IncludeWindowsSDKRefFrameworkReferences=false`.
 - WPF-UI's `NavigationView` with a `LeftFluent` pane must not have the title bar overlaid on it (the first item would sit under the title bar); the title bar has its own grid row.
-- The smoke test uses `%TEMP%\AutoClick-smoke`; a normal run creates `%LocalAppData%\AutoClick`, so clean that up after local manual tests.
+- Every page sets `Foreground="{DynamicResource TextFillColorPrimaryBrush}"` on its `<Page>`. WPF-UI's implicit `Page` style never reaches page subclasses, and the navigation frame passes the window's text color on only after a theme change, so in 2.0.0 text and icons without a color of their own were black in Dark until the theme was switched. The smoke test checks it and, like `AppCoordinator`, applies the theme before showing the window (applied afterwards, it hides the bug).
+- Theme colors come from `{DynamicResource …Brush}`. `ui:TextBlock Appearance` looks its brush up once and does not follow theme changes.
+- LiveCharts' WPF charts always use the light LiveCharts theme and clear their canvas white unless `Background` is a solid brush: keep `Background="Transparent"` and paint the text from the WPF-UI theme (`DashboardViewModel.ApplyThemeAndTexts`).
+- `ThemeService.ThemeChanged` relays WPF-UI's `ApplicationThemeManager.Changed`, so it also fires when Windows switches the theme; it is raised asynchronously, once per burst.
+- The smoke test uses `%TEMP%\AutoClick-smoke`. A normal run uses `%LocalAppData%\AutoClick`, which is also the folder of an installed AutoClick (and a running installed copy takes over through the single-instance pipe): delete it after local manual tests only if it did not exist before.
 - Commits in this repository are GPG-signed; never bypass signing.
 
 ## Releasing

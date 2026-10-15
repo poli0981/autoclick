@@ -9,6 +9,7 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:vm="clr-namespace:AutoClick.UI.ViewModels"
     d:DataContext="{d:DesignInstance vm:DashboardViewModel, IsDesignTimeCreatable=False}"
+    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
     mc:Ignorable="d">
     <StackPanel Margin="0,8,0,24">
         <Grid Margin="0,0,0,12">
@@ -70,7 +71,8 @@
             TextWrapping="Wrap"
             Visibility="{Binding HasStats, Converter={StaticResource InverseBoolToVisibility}}" />
 
-        <!--  Clicks per minute  -->
+        <!--  Clicks per minute. Every chart sets Background: LiveCharts' WPF view always uses its
+              light theme and otherwise clears the canvas white, behind text in theme colors.  -->
         <Border Style="{StaticResource SectionCard}">
             <StackPanel>
                 <ui:TextBlock
@@ -80,6 +82,7 @@
                 <lvc:CartesianChart
                     Height="240"
                     AnimationsSpeed="00:00:00.100"
+                    Background="Transparent"
                     Series="{Binding CpmSeries}"
                     TooltipPosition="Hidden"
                     XAxes="{Binding CpmXAxes}"
@@ -102,6 +105,7 @@
                     <lvc:PieChart
                         Height="220"
                         AnimationsSpeed="00:00:00.200"
+                        Background="Transparent"
                         LegendPosition="Bottom"
                         LegendTextPaint="{Binding LegendTextPaint}"
                         Series="{Binding RatioSeries}" />
@@ -116,6 +120,7 @@
                     <lvc:CartesianChart
                         Height="220"
                         AnimationsSpeed="00:00:00.200"
+                        Background="Transparent"
                         LegendPosition="Bottom"
                         LegendTextPaint="{Binding LegendTextPaint}"
                         Series="{Binding BreakdownSeries}"
@@ -134,6 +139,7 @@
                 <lvc:CartesianChart
                     Height="220"
                     AnimationsSpeed="00:00:00.100"
+                    Background="Transparent"
                     LegendPosition="Right"
                     LegendTextPaint="{Binding LegendTextPaint}"
                     Series="{Binding TimelineSeries}"

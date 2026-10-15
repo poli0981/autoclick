@@ -11,6 +11,7 @@
     xmlns:views="clr-namespace:AutoClick.UI.Views"
     xmlns:vm="clr-namespace:AutoClick.UI.ViewModels"
     d:DataContext="{d:DesignInstance vm:QueueViewModel, IsDesignTimeCreatable=False}"
+    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
     mc:Ignorable="d">
     <StackPanel Margin="0,8,0,24">
         <!--  Title and actions  -->

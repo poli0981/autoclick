@@ -29,7 +29,7 @@ AutoClick.UI         net10.0-windows10.0.19041   WPF + WPF-UI, MVVM (CommunityTo
 4. Single instance: a named mutex and a named pipe, both with an ACL for the current user. A second launch asks the first one to show its window and exits.
 5. Generic Host with dependency injection (`ValidateOnBuild`), then `App.Run()`.
 
-`--smoke-test` skips 3-4, uses `%TEMP%\AutoClick-smoke` as data folder, opens every page in every theme and language plus the dialogs and a heatmap, and exits 1 on any binding error.
+`--smoke-test` skips 3-4, uses `%TEMP%\AutoClick-smoke` as data folder, applies the theme before showing the window as a normal start does, opens every page in every theme and language plus the dialogs and a heatmap, checks that page text and chart text follow the theme, and exits 1 on any binding error or wrong text color.
 
 ## Click engine
 
@@ -56,7 +56,7 @@ Everything lives in `%LocalAppData%\AutoClick`, which is also Velopack's install
 
 ## User interface
 
-- **Shell:** WPF-UI `FluentWindow` with a title bar row, a `NavigationView` (Queue, Dashboard, Settings, About), info bars for app-wide notices, a `ContentDialogHost` and a snackbar presenter. Pages and view models are singletons from the container.
+- **Shell:** WPF-UI `FluentWindow` with a title bar row, a `NavigationView` (Queue, Dashboard, Settings, About), info bars for app-wide notices, a `ContentDialogHost` and a snackbar presenter. Pages and view models are singletons from the container. Each page sets its own themed `Foreground`, because WPF-UI's implicit `Page` style does not apply to page subclasses.
 - **MVVM:** CommunityToolkit.Mvvm source generators (`[ObservableProperty]` partial properties, `[RelayCommand]`). View models use services; dialogs and file pickers go through `DialogService`.
 - **One clock:** `UiTicker` raises a single once-per-second tick for statistics, the scheduler, window checks and the dashboard (1.x had five timers).
 - **Localization:** `LocalizationService` reads `Strings*.resx`. XAML binds through `{l:Loc Key}` (an indexer binding), so changing the language updates the whole UI without a restart.
