@@ -250,7 +250,8 @@ public sealed class ClickSession : IDisposable
             {
                 if (!DpiMath.IsInsideClient(point.X, point.Y, width, height))
                 {
-                    Finish(StopReason.OutOfBounds, string.Create(CultureInfo.InvariantCulture, $"({point.X}, {point.Y}) is outside the {width}×{height} window"));
+                    // Language-neutral detail: the UI puts it into a translated sentence.
+                    Finish(StopReason.OutOfBounds, string.Create(CultureInfo.InvariantCulture, $"({point.X}, {point.Y}) / {width}×{height}"));
                     return false;
                 }
 
@@ -313,7 +314,7 @@ public sealed class ClickSession : IDisposable
         {
             case ColorMismatchBehavior.StopSession:
                 Finish(StopReason.ColorMismatch, string.Create(CultureInfo.InvariantCulture,
-                    $"({point.X}, {point.Y}): expected {ColorRef.ToHex(point.ReferenceColor)}, got {ColorRef.ToHex(sample.Color)}"));
+                    $"({point.X}, {point.Y}) {ColorRef.ToHex(point.ReferenceColor)} → {ColorRef.ToHex(sample.Color)}"));
                 return GuardOutcome.Stop;
 
             case ColorMismatchBehavior.WaitUntilMatch:

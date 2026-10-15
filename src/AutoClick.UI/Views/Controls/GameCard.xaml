@@ -1,0 +1,390 @@
+<UserControl
+    x:Class="AutoClick.UI.Views.Controls.GameCard"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:l="clr-namespace:AutoClick.UI.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:AutoClick.Core.Models;assembly=AutoClick.Core"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:views="clr-namespace:AutoClick.UI.Views"
+    xmlns:vm="clr-namespace:AutoClick.UI.ViewModels"
+    d:DataContext="{d:DesignInstance vm:GameSessionViewModel, IsDesignTimeCreatable=False}"
+    mc:Ignorable="d">
+    <Border Style="{StaticResource SectionCard}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!--  Header: game, state and session controls  -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <ui:SymbolIcon
+                    Margin="0,0,12,0"
+                    VerticalAlignment="Center"
+                    FontSize="24"
+                    Symbol="Games24" />
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <ui:TextBlock
+                            FontTypography="BodyStrong"
+                            Text="{Binding ProcessName}"
+                            ToolTip="{Binding ExecutablePath}" />
+                        <Border
+                            Margin="8,0,0,0"
+                            Padding="8,1"
+                            VerticalAlignment="Center"
+                            Background="{DynamicResource ControlFillColorSecondaryBrush}"
+                            CornerRadius="4">
+                            <TextBlock
+                                AutomationProperties.LiveSetting="Polite"
+                                FontSize="12"
+                                Text="{Binding StateText}" />
+                        </Border>
+                        <Border
+                            Margin="8,0,0,0"
+                            Padding="8,1"
+                            VerticalAlignment="Center"
+                            Background="{DynamicResource SystemFillColorCautionBackgroundBrush}"
+                            CornerRadius="4"
+                            ToolTip="{l:Loc Picker_AdminTooltip}"
+                            Visibility="{Binding IsElevated, Converter={StaticResource BoolToVisibility}}">
+                            <TextBlock FontSize="12" Text="{l:Loc Picker_AdminBadge}" />
+                        </Border>
+                    </StackPanel>
+                    <TextBlock
+                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                        Text="{Binding WindowTitle}"
+                        TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+
+                <StackPanel
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <ui:Button
+                        Margin="4,0"
+                        Appearance="Primary"
+                        Command="{Binding StartCommand}"
+                        Content="{l:Loc Game_Start}"
+                        Icon="{ui:SymbolIcon Play24}"
+                        Visibility="{Binding IsIdle, Converter={StaticResource BoolToVisibility}}" />
+                    <ui:Button
+                        Margin="4,0"
+                        Command="{Binding PauseCommand}"
+                        Content="{l:Loc Game_Pause}"
+                        Icon="{ui:SymbolIcon Pause24}"
+                        Visibility="{Binding IsRunning, Converter={StaticResource BoolToVisibility}}" />
+                    <ui:Button
+                        Margin="4,0"
+                        Appearance="Primary"
+                        Command="{Binding ResumeCommand}"
+                        Content="{l:Loc Game_Resume}"
+                        Icon="{ui:SymbolIcon Play24}"
+                        Visibility="{Binding IsPaused, Converter={StaticResource BoolToVisibility}}" />
+                    <!--  Stop stays available while paused (v1 hid it).  -->
+                    <ui:Button
+                        Margin="4,0"
+                        Appearance="Danger"
+                        Command="{Binding StopCommand}"
+                        Content="{l:Loc Game_Stop}"
+                        Icon="{ui:SymbolIcon Stop24}"
+                        Visibility="{Binding IsActive, Converter={StaticResource BoolToVisibility}}" />
+                    <ui:Button
+                        Margin="4,0"
+                        Command="{Binding ToggleHeatmapCommand}"
+                        Content="{l:Loc Heatmap_Show}"
+                        Icon="{ui:SymbolIcon Fire24}"
+                        ToolTip="{l:Loc Heatmap_Tooltip}"
+                        Visibility="{Binding IsHeatmapOpen, Converter={StaticResource InverseBoolToVisibility}}" />
+                    <ui:Button
+                        Margin="4,0"
+                        Appearance="Secondary"
+                        Command="{Binding ToggleHeatmapCommand}"
+                        Content="{l:Loc Heatmap_Hide}"
+                        Icon="{ui:SymbolIcon EyeOff24}"
+                        Visibility="{Binding IsHeatmapOpen, Converter={StaticResource BoolToVisibility}}" />
+                    <ui:Button
+                        Margin="4,0,0,0"
+                        Appearance="Transparent"
+                        AutomationProperties.Name="{l:Loc Game_Remove}"
+                        Command="{Binding DataContext.RemoveGameCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                        CommandParameter="{Binding}"
+                        Icon="{ui:SymbolIcon Dismiss24}"
+                        ToolTip="{l:Loc Game_Remove}" />
+                </StackPanel>
+            </Grid>
+
+            <!--  Why the session stopped by itself  -->
+            <Border
+                Grid.Row="1"
+                Margin="0,12,0,0"
+                Padding="12,8"
+                Background="{DynamicResource SystemFillColorCautionBackgroundBrush}"
+                CornerRadius="6"
+                Visibility="{Binding StopMessage, Converter={StaticResource NotEmptyToVisibility}}">
+                <StackPanel Orientation="Horizontal">
+                    <ui:SymbolIcon
+                        Margin="0,0,8,0"
+                        VerticalAlignment="Center"
+                        Symbol="Warning24" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        AutomationProperties.LiveSetting="Assertive"
+                        Text="{Binding StopMessage}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <Grid Grid.Row="2" Margin="0,12,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" MinWidth="280" />
+                    <ColumnDefinition Width="16" />
+                    <ColumnDefinition Width="2*" MinWidth="240" />
+                </Grid.ColumnDefinitions>
+
+                <!--  Steps  -->
+                <StackPanel>
+                    <ui:TextBlock
+                        Margin="0,0,0,6"
+                        FontTypography="BodyStrong"
+                        Text="{l:Loc Game_Steps}" />
+                    <ListBox
+                        MaxHeight="220"
+                        views:ListReorder.Command="{Binding ReorderPointCommand}"
+                        ItemsSource="{Binding Points}"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        ToolTip="{l:Loc Game_StepsTooltip}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type models:ClickPoint}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <ui:SymbolIcon
+                                        Margin="0,0,8,0"
+                                        VerticalAlignment="Center"
+                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                        Symbol="ReOrderDotsVertical24" />
+                                    <StackPanel
+                                        Grid.Column="1"
+                                        VerticalAlignment="Center"
+                                        Orientation="Horizontal">
+                                        <Border
+                                            Width="14"
+                                            Height="14"
+                                            Margin="0,0,8,0"
+                                            Background="{Binding ReferenceColor, Converter={StaticResource ColorRefToBrush}}"
+                                            BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                            BorderThickness="1"
+                                            CornerRadius="3"
+                                            ToolTip="{Binding ReferenceColor, Converter={StaticResource ColorRefToHex}}"
+                                            Visibility="{Binding HasReferenceColor, Converter={StaticResource BoolToVisibility}}" />
+                                        <TextBlock VerticalAlignment="Center">
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource StepText}">
+                                                    <Binding />
+                                                    <Binding Path="Culture" Source="{x:Static l:LocalizationService.Instance}" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                        <ui:Button
+                                            Padding="6"
+                                            Appearance="Transparent"
+                                            AutomationProperties.Name="{l:Loc Game_MoveUp}"
+                                            Command="{Binding DataContext.MovePointUpCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                            CommandParameter="{Binding}"
+                                            Icon="{ui:SymbolIcon ArrowUp24}"
+                                            IsEnabled="{Binding DataContext.IsIdle, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                            ToolTip="{l:Loc Game_MoveUp}" />
+                                        <ui:Button
+                                            Padding="6"
+                                            Appearance="Transparent"
+                                            AutomationProperties.Name="{l:Loc Game_MoveDown}"
+                                            Command="{Binding DataContext.MovePointDownCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                            CommandParameter="{Binding}"
+                                            Icon="{ui:SymbolIcon ArrowDown24}"
+                                            IsEnabled="{Binding DataContext.IsIdle, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                            ToolTip="{l:Loc Game_MoveDown}" />
+                                        <ui:Button
+                                            Padding="6"
+                                            Appearance="Transparent"
+                                            AutomationProperties.Name="{l:Loc Game_RemoveStep}"
+                                            Command="{Binding DataContext.RemovePointCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                            CommandParameter="{Binding}"
+                                            Icon="{ui:SymbolIcon Delete24}"
+                                            ToolTip="{l:Loc Game_RemoveStep}" />
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <TextBlock
+                        Margin="0,4,0,0"
+                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                        Text="{l:Loc Game_NoSteps}"
+                        TextWrapping="Wrap"
+                        Visibility="{Binding HasPoints, Converter={StaticResource InverseBoolToVisibility}}" />
+                    <WrapPanel Margin="0,8,0,0">
+                        <ui:Button
+                            Margin="0,0,8,4"
+                            Command="{Binding AddPointCommand}"
+                            Content="{l:Loc Game_AddPoint}"
+                            Icon="{ui:SymbolIcon CursorClick24}" />
+                        <ui:Button
+                            Margin="0,0,8,4"
+                            Command="{Binding AddRandomPointCommand}"
+                            Content="{l:Loc Game_RandomPoint}"
+                            Icon="{ui:SymbolIcon TargetArrow24}" />
+                        <ui:Button
+                            Margin="0,0,8,4"
+                            Appearance="Transparent"
+                            Command="{Binding ClearPointsCommand}"
+                            Content="{l:Loc Game_ClearPoints}"
+                            Icon="{ui:SymbolIcon Delete24}" />
+                    </WrapPanel>
+                </StackPanel>
+
+                <!--  Statistics, timing and profiles  -->
+                <StackPanel Grid.Column="2">
+                    <UniformGrid Margin="0,0,0,8" Columns="2">
+                        <StackPanel Margin="0,0,0,8">
+                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{l:Loc Stats_Clicks}" />
+                            <ui:TextBlock FontTypography="Subtitle" Text="{Binding Clicks}" />
+                        </StackPanel>
+                        <StackPanel Margin="0,0,0,8">
+                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{l:Loc Stats_Skipped}" />
+                            <ui:TextBlock FontTypography="Subtitle" Text="{Binding Skipped}" />
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{l:Loc Stats_ClicksPerMinute}" />
+                            <ui:TextBlock FontTypography="Subtitle" Text="{Binding ClicksPerMinute}" />
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{l:Loc Stats_LastInterval}" />
+                            <ui:TextBlock FontTypography="Subtitle" Text="{Binding LastIntervalSeconds, StringFormat={}{0} s}" />
+                        </StackPanel>
+                    </UniformGrid>
+                    <ui:Button
+                        Margin="0,0,0,12"
+                        Appearance="Transparent"
+                        Command="{Binding ResetStatsCommand}"
+                        Content="{l:Loc Stats_Reset}"
+                        Icon="{ui:SymbolIcon ArrowReset24}" />
+
+                    <TextBlock
+                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                        Text="{l:Loc Game_GlobalTimingHint}"
+                        TextWrapping="Wrap"
+                        Visibility="{Binding IsCustomMode, Converter={StaticResource InverseBoolToVisibility}}" />
+
+                    <StackPanel IsEnabled="{Binding IsIdle}" Visibility="{Binding IsCustomMode, Converter={StaticResource BoolToVisibility}}">
+                        <ui:TextBlock
+                            Margin="0,0,0,6"
+                            FontTypography="BodyStrong"
+                            Text="{l:Loc Timing_Title}" />
+                        <ComboBox
+                            Margin="0,0,0,8"
+                            ItemTemplate="{StaticResource OptionTemplate}"
+                            AutomationProperties.Name="{l:Loc Timing_Title}"
+                            ItemsSource="{x:Static vm:GameSessionViewModel.ModeOptions}"
+                            SelectedValue="{Binding Mode}"
+                            SelectedValuePath="Value" />
+                        <Grid Margin="0,0,0,8" Visibility="{Binding IsFixedMode, Converter={StaticResource BoolToVisibility}}">
+                            <ui:NumberBox
+                                Maximum="3600"
+                                Minimum="1"
+                                AutomationProperties.Name="{l:Loc Timing_Interval}"
+                                PlaceholderText="{l:Loc Timing_Interval}"
+                                ToolTip="{l:Loc Timing_Interval}"
+                                Value="{Binding FixedInterval, Mode=TwoWay}" />
+                        </Grid>
+                        <UniformGrid
+                            Margin="0,0,0,8"
+                            Columns="2"
+                            Visibility="{Binding IsFixedMode, Converter={StaticResource InverseBoolToVisibility}}">
+                            <ui:NumberBox
+                                Margin="0,0,4,0"
+                                Maximum="3600"
+                                Minimum="1"
+                                AutomationProperties.Name="{l:Loc Timing_Min}"
+                                PlaceholderText="{l:Loc Timing_Min}"
+                                ToolTip="{l:Loc Timing_Min}"
+                                Value="{Binding RandomMin, Mode=TwoWay}" />
+                            <ui:NumberBox
+                                Margin="4,0,0,0"
+                                Maximum="3600"
+                                Minimum="1"
+                                AutomationProperties.Name="{l:Loc Timing_Max}"
+                                PlaceholderText="{l:Loc Timing_Max}"
+                                ToolTip="{l:Loc Timing_Max}"
+                                Value="{Binding RandomMax, Mode=TwoWay}" />
+                        </UniformGrid>
+                        <ui:NumberBox
+                            Margin="0,0,0,12"
+                            MaxDecimalPlaces="0"
+                            Maximum="10000"
+                            Minimum="0"
+                            AutomationProperties.Name="{l:Loc Timing_SequenceDelay}"
+                            PlaceholderText="{l:Loc Timing_SequenceDelay}"
+                            SmallChange="50"
+                            ToolTip="{l:Loc Timing_SequenceDelay}"
+                            Value="{Binding SequenceDelayMs, Mode=TwoWay}" />
+
+                        <ui:TextBlock
+                            Margin="0,0,0,6"
+                            FontTypography="BodyStrong"
+                            Text="{l:Loc Profile_Title}" />
+                        <ComboBox
+                            Margin="0,0,0,8"
+                            DisplayMemberPath="Name"
+                            AutomationProperties.Name="{l:Loc Profile_Title}"
+                            ItemsSource="{Binding Profiles}"
+                            SelectedItem="{Binding SelectedProfile, Mode=TwoWay}" />
+                        <WrapPanel>
+                            <ui:Button
+                                Margin="0,0,6,4"
+                                Command="{Binding LoadProfileCommand}"
+                                Content="{l:Loc Profile_Load}" />
+                            <ui:Button
+                                Margin="0,0,6,4"
+                                Command="{Binding SaveProfileCommand}"
+                                Content="{l:Loc Profile_Save}"
+                                Icon="{ui:SymbolIcon Save24}" />
+                            <ui:Button
+                                Margin="0,0,6,4"
+                                AutomationProperties.Name="{l:Loc Profile_Import}"
+                                Command="{Binding ImportProfileCommand}"
+                                Icon="{ui:SymbolIcon ArrowImport24}"
+                                ToolTip="{l:Loc Profile_Import}" />
+                            <ui:Button
+                                Margin="0,0,6,4"
+                                AutomationProperties.Name="{l:Loc Profile_Export}"
+                                Command="{Binding ExportProfileCommand}"
+                                Icon="{ui:SymbolIcon ArrowExport24}"
+                                ToolTip="{l:Loc Profile_Export}" />
+                            <ui:Button
+                                Margin="0,0,6,4"
+                                Appearance="Transparent"
+                                AutomationProperties.Name="{l:Loc Profile_Delete}"
+                                Command="{Binding DeleteProfileCommand}"
+                                Icon="{ui:SymbolIcon Delete24}"
+                                ToolTip="{l:Loc Profile_Delete}" />
+                        </WrapPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>

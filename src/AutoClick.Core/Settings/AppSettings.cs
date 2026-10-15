@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using AutoClick.Core.Hotkeys;
 using AutoClick.Core.Models;
 
@@ -109,6 +110,7 @@ public sealed record WindowPlacement
     public double Height { get; init; }
     public bool IsMaximized { get; init; }
 
+    [JsonIgnore]
     public bool IsUsable =>
         double.IsFinite(Left) && double.IsFinite(Top)
         && Width is >= 400 and <= 20_000 && Height is >= 300 and <= 20_000;

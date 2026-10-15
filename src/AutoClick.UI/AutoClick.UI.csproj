@@ -39,6 +39,13 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="AutoClick.Architecture.Tests" />
+    <!-- WPF leaves System.IO out of the implicit usings (Path clashes with Shapes.Path). -->
+    <Using Include="System.IO" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Window, tray and About page icon (pack://application:,,,/Assets/app.ico). -->
+    <Resource Include="Assets\app.ico" />
   </ItemGroup>
 
   <ItemGroup>

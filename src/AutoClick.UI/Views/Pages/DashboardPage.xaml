@@ -1,0 +1,145 @@
+<Page
+    x:Class="AutoClick.UI.Views.Pages.DashboardPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:l="clr-namespace:AutoClick.UI.Localization"
+    xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:vm="clr-namespace:AutoClick.UI.ViewModels"
+    d:DataContext="{d:DesignInstance vm:DashboardViewModel, IsDesignTimeCreatable=False}"
+    mc:Ignorable="d">
+    <StackPanel Margin="0,8,0,24">
+        <Grid Margin="0,0,0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <ui:TextBlock
+                VerticalAlignment="Center"
+                FontTypography="Title"
+                Text="{l:Loc Nav_Dashboard}" />
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <ui:Button
+                    Margin="4"
+                    Command="{Binding ExportStatsCommand}"
+                    Content="{l:Loc Dashboard_Export}"
+                    Icon="{ui:SymbolIcon ArrowExport24}" />
+                <ui:Button
+                    Margin="4"
+                    Appearance="Transparent"
+                    Command="{Binding ResetStatsCommand}"
+                    Content="{l:Loc Dashboard_Reset}"
+                    Icon="{ui:SymbolIcon ArrowReset24}" />
+            </StackPanel>
+        </Grid>
+
+        <!--  Summary  -->
+        <UniformGrid Margin="0,0,0,0" Columns="3">
+            <Border Margin="0,0,6,12" Style="{StaticResource SectionCard}">
+                <StackPanel>
+                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{l:Loc Stats_TotalClicks}" />
+                    <ui:TextBlock FontTypography="Title" Text="{Binding TotalClicks}" />
+                </StackPanel>
+            </Border>
+            <Border Margin="6,0,6,12" Style="{StaticResource SectionCard}">
+                <StackPanel>
+                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{l:Loc Stats_ClicksPerMinute}" />
+                    <ui:TextBlock FontTypography="Title" Text="{Binding ClicksPerMinute}" />
+                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                        <Run Text="{l:Loc Stats_Peak}" /><Run Text=": " /><Run Text="{Binding PeakClicksPerMinute, Mode=OneWay}" />
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+            <Border Margin="6,0,0,12" Style="{StaticResource SectionCard}">
+                <StackPanel>
+                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{l:Loc Stats_ActiveTime}" />
+                    <ui:TextBlock FontTypography="Title" Text="{Binding ActiveTime}" />
+                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                        <Run Text="{l:Loc Stats_RunningGames}" /><Run Text=": " /><Run Text="{Binding RunningGames, Mode=OneWay}" />
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+        </UniformGrid>
+
+        <TextBlock
+            Margin="0,0,0,12"
+            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+            Text="{l:Loc Dashboard_Empty}"
+            TextWrapping="Wrap"
+            Visibility="{Binding HasStats, Converter={StaticResource InverseBoolToVisibility}}" />
+
+        <!--  Clicks per minute  -->
+        <Border Style="{StaticResource SectionCard}">
+            <StackPanel>
+                <ui:TextBlock
+                    Margin="0,0,0,8"
+                    FontTypography="BodyStrong"
+                    Text="{l:Loc Dashboard_CpmChart}" />
+                <lvc:CartesianChart
+                    Height="240"
+                    AnimationsSpeed="00:00:00.100"
+                    Series="{Binding CpmSeries}"
+                    TooltipPosition="Hidden"
+                    XAxes="{Binding CpmXAxes}"
+                    YAxes="{Binding CpmYAxes}" />
+            </StackPanel>
+        </Border>
+
+        <Grid Visibility="{Binding HasStats, Converter={StaticResource BoolToVisibility}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="280" />
+                <ColumnDefinition Width="12" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Border Style="{StaticResource SectionCard}">
+                <StackPanel>
+                    <ui:TextBlock
+                        Margin="0,0,0,8"
+                        FontTypography="BodyStrong"
+                        Text="{l:Loc Dashboard_Ratio}" />
+                    <lvc:PieChart
+                        Height="220"
+                        AnimationsSpeed="00:00:00.200"
+                        LegendPosition="Bottom"
+                        LegendTextPaint="{Binding LegendTextPaint}"
+                        Series="{Binding RatioSeries}" />
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="2" Style="{StaticResource SectionCard}">
+                <StackPanel>
+                    <ui:TextBlock
+                        Margin="0,0,0,8"
+                        FontTypography="BodyStrong"
+                        Text="{l:Loc Dashboard_Breakdown}" />
+                    <lvc:CartesianChart
+                        Height="220"
+                        AnimationsSpeed="00:00:00.200"
+                        LegendPosition="Bottom"
+                        LegendTextPaint="{Binding LegendTextPaint}"
+                        Series="{Binding BreakdownSeries}"
+                        XAxes="{Binding BreakdownXAxes}"
+                        YAxes="{Binding BreakdownYAxes}" />
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Border Style="{StaticResource SectionCard}" Visibility="{Binding HasStats, Converter={StaticResource BoolToVisibility}}">
+            <StackPanel>
+                <ui:TextBlock
+                    Margin="0,0,0,8"
+                    FontTypography="BodyStrong"
+                    Text="{l:Loc Dashboard_Timeline}" />
+                <lvc:CartesianChart
+                    Height="220"
+                    AnimationsSpeed="00:00:00.100"
+                    LegendPosition="Right"
+                    LegendTextPaint="{Binding LegendTextPaint}"
+                    Series="{Binding TimelineSeries}"
+                    XAxes="{Binding TimelineXAxes}"
+                    YAxes="{Binding TimelineYAxes}" />
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</Page>

@@ -2,8 +2,9 @@
 .SYNOPSIS
     Runs the published app with --smoke-test and fails if it does not exit 0 in time.
 .DESCRIPTION
-    --smoke-test builds the DI graph and constructs every window (XAML parsing) without
-    showing UI, logs the result, and exits. On failure the newest AutoClick log is printed.
+    --smoke-test builds the DI graph, opens every page in every theme and language, the
+    dialogs and a heatmap overlay, and exits 1 on any exception or data-binding error. It uses
+    %TEMP%\AutoClick-smoke as its data folder; on failure the newest log from there is printed.
 #>
 [CmdletBinding()]
 param(
@@ -22,7 +23,7 @@ if (-not $process.WaitForExit($TimeoutSeconds * 1000)) {
     $code = $process.ExitCode
 }
 
-$logDir = Join-Path $env:LOCALAPPDATA 'AutoClick\logs'
+$logDir = Join-Path ([IO.Path]::GetTempPath()) 'AutoClick-smoke\logs'
 $log = Get-ChildItem -LiteralPath $logDir -Filter '*.log' -ErrorAction SilentlyContinue |
     Sort-Object LastWriteTime | Select-Object -Last 1
 

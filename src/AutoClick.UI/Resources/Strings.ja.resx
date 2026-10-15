@@ -8,6 +8,7 @@
             <xsd:complexType>
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" />
               <xsd:attribute name="type" type="xsd:string" />
@@ -30,208 +31,283 @@
   <resheader name="version"><value>2.0</value></resheader>
   <resheader name="reader"><value>System.Resources.ResXResourceReader</value></resheader>
   <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
-
-  <data name="AppTitle" xml:space="preserve"><value>AutoClick</value></data>
-  <data name="Main" xml:space="preserve"><value>メイン</value></data>
-  <data name="Settings" xml:space="preserve"><value>設定</value></data>
-  <data name="About" xml:space="preserve"><value>情報</value></data>
-  <data name="Start" xml:space="preserve"><value>開始</value></data>
-  <data name="Pause" xml:space="preserve"><value>一時停止</value></data>
-  <data name="Resume" xml:space="preserve"><value>再開</value></data>
-  <data name="Stop" xml:space="preserve"><value>停止</value></data>
-  <data name="AddGame" xml:space="preserve"><value>ゲーム追加</value></data>
-  <data name="RemoveGame" xml:space="preserve"><value>削除</value></data>
-  <data name="SelectCoordinate" xml:space="preserve"><value>座標を選択</value></data>
-  <data name="GamesRunning" xml:space="preserve"><value>実行中のゲーム</value></data>
-  <data name="ClickMode" xml:space="preserve"><value>クリックモード</value></data>
-  <data name="Random" xml:space="preserve"><value>ランダム</value></data>
-  <data name="Fixed" xml:space="preserve"><value>固定</value></data>
-  <data name="Interval" xml:space="preserve"><value>間隔 (秒)</value></data>
-  <data name="ClickCount" xml:space="preserve"><value>クリック数</value></data>
-  <data name="Status" xml:space="preserve"><value>状態</value></data>
-  <data name="Path" xml:space="preserve"><value>パス</value></data>
-  <data name="Coordinate" xml:space="preserve"><value>座標</value></data>
-  <data name="CurrentInterval" xml:space="preserve"><value>現在の間隔</value></data>
-  <data name="Basic" xml:space="preserve"><value>基本</value></data>
-  <data name="Advanced" xml:space="preserve"><value>詳細</value></data>
-  <data name="MaxGames" xml:space="preserve"><value>キュー内の最大ゲーム数</value></data>
-  <data name="ShowLogs" xml:space="preserve"><value>リアルタイムログを表示</value></data>
-  <data name="ExportLog" xml:space="preserve"><value>ログをエクスポート</value></data>
-  <data name="ExportSettings" xml:space="preserve"><value>設定をエクスポート</value></data>
-  <data name="ImportSettings" xml:space="preserve"><value>設定をインポート</value></data>
-  <data name="ResetAll" xml:space="preserve"><value>すべてリセット</value></data>
-  <data name="RemoveAll" xml:space="preserve"><value>すべて削除</value></data>
-  <data name="RandomMin" xml:space="preserve"><value>ランダム最小 (秒)</value></data>
-  <data name="RandomMax" xml:space="preserve"><value>ランダム最大 (秒)</value></data>
-  <data name="ResetStats" xml:space="preserve"><value>リセット</value></data>
-  <data name="AddPoint" xml:space="preserve"><value>ポイント追加</value></data>
-  <data name="ClearPoints" xml:space="preserve"><value>ポイント消去</value></data>
-  <data name="Points" xml:space="preserve"><value>ポイント</value></data>
-  <data name="SequenceDelay" xml:space="preserve"><value>ポイント間の遅延</value></data>
-  <data name="SessionStats" xml:space="preserve"><value>セッション統計</value></data>
-  <data name="TotalClicks" xml:space="preserve"><value>総クリック数</value></data>
-  <data name="Uptime" xml:space="preserve"><value>稼働時間</value></data>
-  <data name="ClicksPerMin" xml:space="preserve"><value>クリック/分</value></data>
-  <data name="PeakCPM" xml:space="preserve"><value>ピーク</value></data>
-  <data name="SoundNotifications" xml:space="preserve"><value>サウンド通知</value></data>
-  <data name="Language" xml:space="preserve"><value>言語</value></data>
-  <data name="Theme" xml:space="preserve"><value>テーマ</value></data>
-  <data name="Dark" xml:space="preserve"><value>ダーク</value></data>
-  <data name="Light" xml:space="preserve"><value>ライト</value></data>
-  <data name="Auto" xml:space="preserve"><value>自動</value></data>
-  <data name="Hotkeys" xml:space="preserve"><value>ホットキー</value></data>
-  <data name="Idle" xml:space="preserve"><value>待機中</value></data>
-  <data name="Running" xml:space="preserve"><value>実行中</value></data>
-  <data name="Paused" xml:space="preserve"><value>一時停止中</value></data>
-  <data name="Stopped" xml:space="preserve"><value>停止済み</value></data>
-  <data name="Logs" xml:space="preserve"><value>ログ</value></data>
-  <data name="NoGames" xml:space="preserve"><value>ゲームがまだありません。「ゲーム追加」をクリックして開始してください。</value></data>
-  <data name="ConfirmReset" xml:space="preserve"><value>すべてのゲームを停止し、アプリをリセットしますか？</value></data>
-  <data name="StartAll" xml:space="preserve"><value>すべて開始</value></data>
-  <data name="StopAll" xml:space="preserve"><value>すべて停止</value></data>
-  <data name="PauseResume" xml:space="preserve"><value>一時停止/再開</value></data>
-  <data name="ExitBehavior" xml:space="preserve"><value>終了時の動作</value></data>
-  <data name="MinimizeToTray" xml:space="preserve"><value>トレイに最小化</value></data>
-  <data name="StopAndExit" xml:space="preserve"><value>すべて停止して終了</value></data>
-  <data name="ForceExit" xml:space="preserve"><value>強制終了</value></data>
-  <data name="ConfirmExitTitle" xml:space="preserve"><value>終了の確認</value></data>
-  <data name="ConfirmExitMsg" xml:space="preserve"><value>実行中のタスクがあります。すべて停止して終了しますか？</value></data>
-  <data name="LanguageChangeTitle" xml:space="preserve"><value>言語が変更されました</value></data>
-  <data name="LanguageChangeMsg" xml:space="preserve"><value>新しい言語を適用するにはアプリの再起動が必要です。今すぐ再起動しますか？</value></data>
-  <data name="CoordinateErrorTitle" xml:space="preserve"><value>座標エラー</value></data>
-  <data name="CoordinateErrorMsg" xml:space="preserve"><value>座標が無効か、既に使用されています。もう一度お試しください。</value></data>
-  <data name="RandomCoordinateErrorTitle" xml:space="preserve"><value>ランダム座標</value></data>
-  <data name="RandomCoordinateErrorMsg" xml:space="preserve"><value>有効なランダム座標を生成できませんでした。ゲームウィンドウが小さすぎるか、すべての座標が使用中です。</value></data>
-  <data name="ConfirmResetApp" xml:space="preserve"><value>アプリを初期設定に戻しますか？すべての設定が初期値に復元されます。</value></data>
-  <data name="OpenSettingsFile" xml:space="preserve"><value>設定ファイルを開く</value></data>
-  <data name="SaveSettings" xml:space="preserve"><value>設定を保存</value></data>
-  <data name="Documents" xml:space="preserve"><value>ドキュメント</value></data>
-  <data name="PrivacyPolicy" xml:space="preserve"><value>プライバシーポリシー</value></data>
-  <data name="Disclaimer" xml:space="preserve"><value>免責事項</value></data>
-  <data name="Acknowledgements" xml:space="preserve"><value>謝辞・サードパーティ</value></data>
-  <data name="TermsOfService" xml:space="preserve"><value>利用規約</value></data>
-  <data name="EULA" xml:space="preserve"><value>エンドユーザーライセンス契約</value></data>
-  <data name="SecurityPolicy" xml:space="preserve"><value>セキュリティポリシー</value></data>
-  <data name="ViewOnGitHub" xml:space="preserve"><value>GitHubで表示</value></data>
-  <data name="AntiCheatWarning" xml:space="preserve"><value>アンチチート搭載ゲームでの使用にご注意ください。カーネルレベルのアンチチートはアカウント停止の原因になる場合があります。開発者は責任を負いません。</value></data>
-  <data name="AIDisclosure" xml:space="preserve"><value>本ソフトウェアはAIの支援を受けて開発されました。アプリ内の翻訳はAI生成のため、正確でない場合があります。</value></data>
-  <data name="Update" xml:space="preserve"><value>アップデート</value></data>
-  <data name="AutoUpdate" xml:space="preserve"><value>起動時に自動更新</value></data>
-  <data name="CheckForUpdate" xml:space="preserve"><value>更新を確認</value></data>
-  <data name="DownloadUpdate" xml:space="preserve"><value>更新をダウンロード</value></data>
-  <data name="ApplyAndRestart" xml:space="preserve"><value>適用して再起動</value></data>
-  <data name="UpdateReady" xml:space="preserve"><value>「更新を確認」をクリックして開始してください。</value></data>
-  <data name="UpdateDevMode" xml:space="preserve"><value>開発モードで実行中。更新は利用できません。</value></data>
-  <data name="UpdateChecking" xml:space="preserve"><value>更新を確認中...</value></data>
-  <data name="UpdateUpToDate" xml:space="preserve"><value>最新バージョンを実行中です。</value></data>
-  <data name="UpdateFoundMsg" xml:space="preserve"><value>更新あり: {0} → {1}</value></data>
-  <data name="UpdateDownloading" xml:space="preserve"><value>更新をダウンロード中...</value></data>
-  <data name="UpdateDownloadComplete" xml:space="preserve"><value>ダウンロード完了。「適用して再起動」をクリックしてください。</value></data>
-  <data name="UpdateApplying" xml:space="preserve"><value>更新を適用して再起動中...</value></data>
-  <data name="UpdateAvailableTitle" xml:space="preserve"><value>更新があります</value></data>
-  <data name="UpdateAutoDownloadedMsg" xml:space="preserve"><value>バージョン {0} がダウンロードされました。今すぐ再起動しますか？</value></data>
-  <data name="UpdateNoRelease" xml:space="preserve"><value>GitHubにリリースが見つかりません。</value></data>
-  <data name="UpdateRateLimited" xml:space="preserve"><value>GitHub APIのレート制限を超えました。数分後に再試行してください。</value></data>
-  <data name="UpdateForbidden" xml:space="preserve"><value>アクセスが拒否されました。リポジトリの権限を確認してください。</value></data>
-  <data name="UpdateServerError" xml:space="preserve"><value>GitHubサーバーエラー。後でもう一度お試しください。</value></data>
-  <data name="UpdateNetworkError" xml:space="preserve"><value>ネットワークエラー。インターネット接続を確認してください。</value></data>
-  <data name="UpdateChecksumFailed" xml:space="preserve"><value>ダウンロードの検証に失敗しました。もう一度お試しください。</value></data>
-  <data name="UpdateUnknownError" xml:space="preserve"><value>更新中に不明なエラーが発生しました。</value></data>
-  <data name="Dashboard" xml:space="preserve"><value>ダッシュボード</value></data>
-  <data name="DashboardCpmChart" xml:space="preserve"><value>クリック数/分 (リアルタイム)</value></data>
-  <data name="DashboardGameBreakdown" xml:space="preserve"><value>ゲーム別内訳</value></data>
-  <data name="ClickSuccess" xml:space="preserve"><value>成功</value></data>
-  <data name="ClickSkipped" xml:space="preserve"><value>スキップ</value></data>
-  <data name="ClickTotal" xml:space="preserve"><value>合計</value></data>
-  <data name="PixelColorGuard" xml:space="preserve"><value>ピクセルカラーガード</value></data>
-  <data name="EnablePixelColorGuard" xml:space="preserve"><value>ピクセルカラーガードを有効にす��</value></data>
-  <data name="ColorTolerance" xml:space="preserve"><value>色の許容差 (0-50)</value></data>
-  <data name="OnColorMismatch" xml:space="preserve"><value>色が不一致の場��</value></data>
-  <data name="SkipPoint" xml:space="preserve"><value>ポイントをスキップ</value></data>
-  <data name="StopSession" xml:space="preserve"><value>セッションを停止</value></data>
-  <data name="ColorMismatchSkipped" xml:space="preserve"><value>({0}, {1}) で色が不一致: スキップしました。</value></data>
-  <data name="ColorMismatchStopped" xml:space="preserve"><value>({0}, {1}) で色が不一致: 期待値 {2}、実際 {3}。停止しました。</value></data>
-  <data name="Schedule" xml:space="preserve"><value>スケジュー���</value></data>
-  <data name="CancelSchedule" xml:space="preserve"><value>キャンセル</value></data>
-  <data name="StartTime" xml:space="preserve"><value>開始:</value></data>
-  <data name="StopTime" xml:space="preserve"><value>停止:</value></data>
-  <data name="SchedulerStartsIn" xml:space="preserve"><value>開始まで: {0}</value></data>
-  <data name="SchedulerStopsIn" xml:space="preserve"><value>停止まで: {0}</value></data>
-  <data name="SchedulerStarted" xml:space="preserve"><value>スケジューラが開始をトリガーしました</value></data>
-  <data name="SchedulerStopped" xml:space="preserve"><value>スケジューラが停止をトリガーしました</value></data>
-  <data name="SchedulerInvalidTime" xml:space="preserve"><value>時刻形式が無効です。HH:mmを使用してください。</value></data>
-  <data name="SchedulerInvalidFormat" xml:space="preserve"><value>形式が無効です。HH:mm形式で入力してください（例: 20:00）。</value></data>
-  <data name="SchedulerInvalidHour" xml:space="preserve"><value>「{0}」: 時は00〜23の範囲で入力してください。</value></data>
-  <data name="SchedulerInvalidMinute" xml:space="preserve"><value>「{0}」: 分は00〜59の範囲で入力してください。</value></data>
-  <data name="SchedulerStopBeforeStart" xml:space="preserve"><value>停止時刻は開始時刻より後にしてください。</value></data>
-  <data name="SchedulerStartRequired" xml:space="preserve"><value>開始時刻は必須です。</value></data>
-  <data name="SchedulerNoGames" xml:space="preserve"><value>スケジュール前に座標付きのゲームを追加してください。</value></data>
-  <data name="SettingsMode" xml:space="preserve"><value>設定モード</value></data>
-  <data name="GlobalMode" xml:space="preserve"><value>グローバル（全ゲーム共通）</value></data>
-  <data name="CustomMode" xml:space="preserve"><value>カスタム（ゲームごと）</value></data>
-  <data name="PerGameMode" xml:space="preserve"><value>モード</value></data>
-  <data name="PerGameRandomMin" xml:space="preserve"><value>最小 (s)</value></data>
-  <data name="PerGameRandomMax" xml:space="preserve"><value>最大 (s)</value></data>
-  <data name="Profile" xml:space="preserve"><value>プロファイル</value></data>
-  <data name="SaveProfile" xml:space="preserve"><value>保存</value></data>
-  <data name="LoadProfile" xml:space="preserve"><value>読込</value></data>
-  <data name="DeleteProfile" xml:space="preserve"><value>削除</value></data>
-  <data name="ExportProfile" xml:space="preserve"><value>エクスポート</value></data>
-  <data name="ImportProfile" xml:space="preserve"><value>インポート</value></data>
-  <data name="ProfileNamePrompt" xml:space="preserve"><value>プロファイル名:</value></data>
-  <data name="ProfileSaved" xml:space="preserve"><value>プロファイル「{0}」を保存しました。</value></data>
-  <data name="ProfileLoaded" xml:space="preserve"><value>プロファイル「{0}」を「{1}」に読み込みました。</value></data>
-  <data name="ProfileDeleted" xml:space="preserve"><value>プロファイル「{0}」を削除しました。</value></data>
-  <data name="ProfileExported" xml:space="preserve"><value>プロファイルを{0}にエクスポートしました。</value></data>
-  <data name="ProfileImported" xml:space="preserve"><value>プロファイル「{0}」をインポートしました。</value></data>
-  <data name="ProfileImportError" xml:space="preserve"><value>プロファイルのインポートに失敗しました。</value></data>
-  <data name="ConfirmDeleteProfile" xml:space="preserve"><value>プロファイル「{0}」を削除しますか？</value></data>
-  <data name="ProfileNameEmpty" xml:space="preserve"><value>プロファイル名を入力してください。</value></data>
-  <data name="ProfileNameDuplicate" xml:space="preserve"><value>「{0}」というプロファイルが既に存在します。上書きしますか？</value></data>
-  <data name="NoCoordinatesToSave" xml:space="preserve"><value>プロファイルを保存する前に座標を追加してください。</value></data>
-  <data name="SelectProfile" xml:space="preserve"><value>プロファイルを選択...</value></data>
-  <data name="GameExitNotification" xml:space="preserve"><value>ゲーム終了通知</value></data>
-  <data name="GameExitNotificationTitle" xml:space="preserve"><value>ゲームが終了しました</value></data>
-  <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} が終了しました。成功: {1}、スキップ: {2}</value></data>
-  <data name="PickerInstruction" xml:space="preserve"><value>クリックで選択。1=左 2=ダブル 3=右 4=キーストローク。ESC=キャンセル</value></data>
-  <data name="PickerCurrentType" xml:space="preserve"><value>現在: {0}</value></data>
-  <data name="ClickTypeLeft" xml:space="preserve"><value>左</value></data>
-  <data name="ClickTypeDouble" xml:space="preserve"><value>ダブル</value></data>
-  <data name="ClickTypeRight" xml:space="preserve"><value>右</value></data>
-  <data name="AutoStoppedQueueEmpty" xml:space="preserve"><value>すべてのゲームが終了しました。自動停止しました。</value></data>
-  <data name="DashboardSuccessRatio" xml:space="preserve"><value>成功 / スキップ比率</value></data>
-  <data name="DashboardGameTimeline" xml:space="preserve"><value>ゲーム別CPMタイムライン</value></data>
-  <data name="ExportStats" xml:space="preserve"><value>統計をエクスポート</value></data>
-  <data name="ResetDashboard" xml:space="preserve"><value>統計をリセット</value></data>
-  <data name="ConfirmResetStats" xml:space="preserve"><value>セッション統計とダッシュボードデータをリセットしますか？元に戻せません。</value></data>
-  <!-- v1.3.0 additions -->
-  <data name="MinimizeOnStartAll" xml:space="preserve"><value>「すべて開始」時にトレイへ最小化</value></data>
-  <data name="ExportSession" xml:space="preserve"><value>セッションをエクスポート</value></data>
-  <data name="ImportSession" xml:space="preserve"><value>セッションをインポート</value></data>
-  <data name="DragToReorder" xml:space="preserve"><value>ドラッグして並べ替え</value></data>
-  <data name="WaitUntilMatch" xml:space="preserve"><value>ピクセルが一致するまで待機</value></data>
-  <data name="ColorWaitTimeout" xml:space="preserve"><value>待機タイムアウト</value></data>
-  <data name="PickerInstructionKeystroke" xml:space="preserve"><value>送信するキーを押してください。1/2/3で戻る。ESC=キャンセル</value></data>
-  <data name="ClickTypeKeystroke" xml:space="preserve"><value>キーストローク</value></data>
-  <data name="HeatmapToggle" xml:space="preserve"><value>ヒートマップ</value></data>
-  <data name="HeatmapTooltip" xml:space="preserve"><value>クリックヒートマップオーバーレイを切り替え。ウィンドウ/ボーダーレス推奨 — フルスクリーン対応はゲームエンジン次第(docs/HEATMAP_COMPATIBILITY.md参照)。</value></data>
-  <data name="HeatmapTitle" xml:space="preserve"><value>ヒートマップ</value></data>
-  <data name="ThemeDark" xml:space="preserve"><value>ダーク</value></data>
-  <data name="ThemeLight" xml:space="preserve"><value>ライト</value></data>
-  <data name="ThemeHighContrast" xml:space="preserve"><value>ハイコントラスト</value></data>
-
-  <!-- About: Connect & Support card (v1.3.3) -->
-  <data name="AboutConnectHeader" xml:space="preserve"><value>つながる &amp; サポート</value></data>
-  <data name="AboutSupportHeader" xml:space="preserve"><value>プロジェクトを支援</value></data>
-  <data name="AboutOpenX" xml:space="preserve"><value>X (Twitter)</value></data>
-  <data name="AboutOpenYouTube" xml:space="preserve"><value>YouTube</value></data>
-  <data name="AboutOpenDiscord" xml:space="preserve"><value>Discord</value></data>
-  <data name="AboutOpenPatreon" xml:space="preserve"><value>Patreon</value></data>
-  <data name="AboutOpenKofi" xml:space="preserve"><value>Ko-fi</value></data>
-  <data name="AboutOpenBluesky" xml:space="preserve"><value>Bluesky</value></data>
-  <data name="AboutOpenMastodon" xml:space="preserve"><value>Mastodon</value></data>
-  <data name="AboutOpenSteam" xml:space="preserve"><value>Steam</value></data>
-  <data name="AboutOpenEmail" xml:space="preserve"><value>メール</value></data>
-  <data name="AboutDonate" xml:space="preserve"><value>寄付する</value></data>
-  <data name="AboutReportBug" xml:space="preserve"><value>バグを報告</value></data>
+  <data name="About_Acknowledgements" xml:space="preserve"><value>謝辞</value></data>
+  <data name="About_Ai" xml:space="preserve"><value>AutoClick は AI の支援を受けて開発されています。アプリ内の翻訳は AI によって生成されており、誤りを含む場合があります。</value></data>
+  <data name="About_AiTitle" xml:space="preserve"><value>AI の利用について</value></data>
+  <data name="About_AntiCheat" xml:space="preserve"><value>アンチチートのあるゲームでは注意して使用してください。カーネル レベルのアンチチートによりアカウントが停止される場合があります。AutoClick の使用は自己責任です。</value></data>
+  <data name="About_AntiCheatTitle" xml:space="preserve"><value>アンチチートに関する警告</value></data>
+  <data name="About_Changelog" xml:space="preserve"><value>新機能</value></data>
+  <data name="About_Community" xml:space="preserve"><value>コミュニティ</value></data>
+  <data name="About_Disclaimer" xml:space="preserve"><value>免責事項</value></data>
+  <data name="About_Documents" xml:space="preserve"><value>ドキュメント</value></data>
+  <data name="About_Email" xml:space="preserve"><value>メール</value></data>
+  <data name="About_Eula" xml:space="preserve"><value>使用許諾契約 (EULA)</value></data>
+  <data name="About_License" xml:space="preserve"><value>GNU General Public License v3.0 に基づく無料のオープンソース ソフトウェアです。</value></data>
+  <data name="About_LicenseFile" xml:space="preserve"><value>ライセンス (GPL-3.0)</value></data>
+  <data name="About_Privacy" xml:space="preserve"><value>プライバシー ポリシー</value></data>
+  <data name="About_ReportBug" xml:space="preserve"><value>バグを報告</value></data>
+  <data name="About_Security" xml:space="preserve"><value>セキュリティ ポリシー</value></data>
+  <data name="About_Support" xml:space="preserve"><value>プロジェクトを支援</value></data>
+  <data name="About_Terms" xml:space="preserve"><value>利用規約</value></data>
+  <data name="About_ThirdParty" xml:space="preserve"><value>サードパーティ通知</value></data>
+  <data name="About_Title" xml:space="preserve"><value>情報</value></data>
+  <data name="About_Version" xml:space="preserve"><value>バージョン</value></data>
+  <data name="Admin_Always" xml:space="preserve"><value>常に管理者として実行</value></data>
+  <data name="Admin_AlwaysHint" xml:space="preserve"><value>管理者として実行されるゲームにのみ必要です。有効にすると、AutoClick の起動時に毎回 Windows が許可を求めます。</value></data>
+  <data name="Admin_Restart" xml:space="preserve"><value>管理者として再起動</value></data>
+  <data name="Admin_RestartCancelled" xml:space="preserve"><value>権限の確認がキャンセルされました。AutoClick は管理者権限なしで実行を続けます。</value></data>
+  <data name="Admin_Title" xml:space="preserve"><value>管理者</value></data>
+  <data name="ClickType_Double" xml:space="preserve"><value>ダブルクリック</value></data>
+  <data name="ClickType_Keystroke" xml:space="preserve"><value>キー入力</value></data>
+  <data name="ClickType_Left" xml:space="preserve"><value>左クリック</value></data>
+  <data name="ClickType_Right" xml:space="preserve"><value>右クリック</value></data>
+  <data name="Common_Cancel" xml:space="preserve"><value>キャンセル</value></data>
+  <data name="Common_Clear" xml:space="preserve"><value>クリア</value></data>
+  <data name="Common_Delete" xml:space="preserve"><value>削除</value></data>
+  <data name="Common_FileError" xml:space="preserve"><value>ファイルを読み書きできませんでした: {0}</value></data>
+  <data name="Common_Ok" xml:space="preserve"><value>OK</value></data>
+  <data name="Common_OpenFailed" xml:space="preserve"><value>{0} を開けませんでした。</value></data>
+  <data name="Common_OpenFolder" xml:space="preserve"><value>フォルダーを開く</value></data>
+  <data name="Common_Overwrite" xml:space="preserve"><value>上書き</value></data>
+  <data name="Common_Refresh" xml:space="preserve"><value>更新</value></data>
+  <data name="Common_Save" xml:space="preserve"><value>保存</value></data>
+  <data name="Common_SavedTo" xml:space="preserve"><value>{0} に保存しました</value></data>
+  <data name="Dashboard_Breakdown" xml:space="preserve"><value>ゲーム別</value></data>
+  <data name="Dashboard_CpmChart" xml:space="preserve"><value>1 分あたりのクリック数 (リアルタイム)</value></data>
+  <data name="Dashboard_Empty" xml:space="preserve"><value>ゲームを実行すると、ここに統計が表示されます。</value></data>
+  <data name="Dashboard_Export" xml:space="preserve"><value>統計をエクスポート</value></data>
+  <data name="Dashboard_Ratio" xml:space="preserve"><value>クリック済み / スキップ</value></data>
+  <data name="Dashboard_Reset" xml:space="preserve"><value>統計をリセット</value></data>
+  <data name="Dashboard_ResetConfirm" xml:space="preserve"><value>すべてのゲームの統計とダッシュボードの履歴をリセットしますか？元に戻すことはできません。</value></data>
+  <data name="Dashboard_Timeline" xml:space="preserve"><value>ゲーム別の 1 分あたりのクリック数</value></data>
+  <data name="Error_Title" xml:space="preserve"><value>問題が発生しました</value></data>
+  <data name="Error_Unexpected" xml:space="preserve"><value>予期しないエラーが発生しました: {0}。詳細はログを参照してください。</value></data>
+  <data name="Exit_ConfirmMessage" xml:space="preserve"><value>実行中のゲームがあります。すべて停止して終了しますか？</value></data>
+  <data name="Exit_ConfirmTitle" xml:space="preserve"><value>AutoClick を終了</value></data>
+  <data name="Exit_ForceExit" xml:space="preserve"><value>すぐに終了</value></data>
+  <data name="Exit_MinimizeToTray" xml:space="preserve"><value>通知領域に最小化</value></data>
+  <data name="Exit_StopAndExit" xml:space="preserve"><value>すべて停止して終了</value></data>
+  <data name="Filter_Csv" xml:space="preserve"><value>CSV ファイル (*.csv)|*.csv</value></data>
+  <data name="Filter_Log" xml:space="preserve"><value>テキスト ファイル (*.txt)|*.txt</value></data>
+  <data name="Filter_Profile" xml:space="preserve"><value>AutoClick プロファイル (*.autoclick)|*.autoclick|JSON (*.json)|*.json</value></data>
+  <data name="Filter_Session" xml:space="preserve"><value>AutoClick セッション (*.autoclick-session)|*.autoclick-session</value></data>
+  <data name="Filter_Settings" xml:space="preserve"><value>設定 (*.json)|*.json</value></data>
+  <data name="Game_AddPoint" xml:space="preserve"><value>ステップを追加</value></data>
+  <data name="Game_ClearPoints" xml:space="preserve"><value>ステップを消去</value></data>
+  <data name="Game_ClearPointsConfirm" xml:space="preserve"><value>{1} のステップ {0} 件をすべて削除しますか？</value></data>
+  <data name="Game_GlobalTimingHint" xml:space="preserve"><value>設定のクリック間隔を使用します。ゲームごとの間隔とプロファイルを使うには、クリックモードを「カスタム」にしてください。</value></data>
+  <data name="Game_MoveDown" xml:space="preserve"><value>下へ移動</value></data>
+  <data name="Game_MoveUp" xml:space="preserve"><value>上へ移動</value></data>
+  <data name="Game_NoSteps" xml:space="preserve"><value>ステップがありません。ステップを追加して、クリックする位置または押すキーを選んでください。</value></data>
+  <data name="Game_Pause" xml:space="preserve"><value>一時停止</value></data>
+  <data name="Game_RandomPoint" xml:space="preserve"><value>ランダムな位置</value></data>
+  <data name="Game_RandomPointFailed" xml:space="preserve"><value>ランダムな位置を選べませんでした。ゲームウィンドウが小さすぎるか最小化されています。</value></data>
+  <data name="Game_Remove" xml:space="preserve"><value>キューから削除</value></data>
+  <data name="Game_RemoveStep" xml:space="preserve"><value>ステップを削除</value></data>
+  <data name="Game_Resume" xml:space="preserve"><value>再開</value></data>
+  <data name="Game_Start" xml:space="preserve"><value>開始</value></data>
+  <data name="Game_Steps" xml:space="preserve"><value>ステップ</value></data>
+  <data name="Game_StepsTooltip" xml:space="preserve"><value>ステップは上から順に実行されます。ドラッグで並べ替えできます。</value></data>
+  <data name="Game_Stop" xml:space="preserve"><value>停止</value></data>
+  <data name="Guard_Enable" xml:space="preserve"><value>クリック前にピクセルの色を確認</value></data>
+  <data name="Guard_Hint" xml:space="preserve"><value>有効中に選んだステップはカーソル下の色を記憶し、そのピクセルが同じ色のときだけクリックされます。</value></data>
+  <data name="Guard_OnMismatch" xml:space="preserve"><value>色が一致しないとき</value></data>
+  <data name="Guard_Skip" xml:space="preserve"><value>ステップをスキップ</value></data>
+  <data name="Guard_Stop" xml:space="preserve"><value>セッションを停止</value></data>
+  <data name="Guard_Title" xml:space="preserve"><value>ピクセル カラー ガード</value></data>
+  <data name="Guard_Tolerance" xml:space="preserve"><value>色の許容差 (チャンネルごとに 0〜100)</value></data>
+  <data name="Guard_Wait" xml:space="preserve"><value>一致するまで待つ</value></data>
+  <data name="Guard_WaitTimeout" xml:space="preserve"><value>待機タイムアウト (ミリ秒)</value></data>
+  <data name="Heatmap_Hide" xml:space="preserve"><value>ヒートマップを隠す</value></data>
+  <data name="Heatmap_Legend" xml:space="preserve"><value>{0} クリック · {1} 地点 · 最大 {2}</value></data>
+  <data name="Heatmap_Show" xml:space="preserve"><value>ヒートマップ</value></data>
+  <data name="Heatmap_Tooltip" xml:space="preserve"><value>クリックした位置をゲームウィンドウ上に表示します。ウィンドウモードまたはボーダーレスで最もよく機能します。</value></data>
+  <data name="Hotkey_Change" xml:space="preserve"><value>変更</value></data>
+  <data name="Hotkey_Duplicate" xml:space="preserve"><value>{0} は既に「{1}」に使われています。</value></data>
+  <data name="Hotkey_Failed" xml:space="preserve"><value>このホットキーを登録できませんでした。</value></data>
+  <data name="Hotkey_InUse" xml:space="preserve"><value>このホットキーは別のアプリが使用しています。</value></data>
+  <data name="Hotkey_Instructions" xml:space="preserve"><value>使用するキーの組み合わせを押してください。Esc でキャンセルします。</value></data>
+  <data name="Hotkey_Invalid" xml:space="preserve"><value>Ctrl・Alt・Shift・Windows 以外のキーを選んでください。</value></data>
+  <data name="Hotkey_NoModifierHint" xml:space="preserve"><value>Ctrl・Alt・Shift なしの場合、AutoClick の実行中はこのキーが他のアプリ (ゲームを含む) に届かなくなります。</value></data>
+  <data name="Hotkey_NotAllowed" xml:space="preserve"><value>このホットキーは使用できません。</value></data>
+  <data name="Hotkey_PauseResume" xml:space="preserve"><value>すべて一時停止 / 再開</value></data>
+  <data name="Hotkey_RecordTitle" xml:space="preserve"><value>ホットキー: {0}</value></data>
+  <data name="Hotkey_RegisterFailed" xml:space="preserve"><value>次のホットキーを登録できませんでした (別のアプリが使用している可能性があります): {0}</value></data>
+  <data name="Hotkey_Reserved" xml:space="preserve"><value>F12 は Windows で予約されています。</value></data>
+  <data name="Hotkey_Reset" xml:space="preserve"><value>既定のホットキーに戻す</value></data>
+  <data name="Hotkey_StartAll" xml:space="preserve"><value>すべて開始</value></data>
+  <data name="Hotkey_StopAll" xml:space="preserve"><value>すべて停止</value></data>
+  <data name="Hotkey_Title" xml:space="preserve"><value>ホットキー</value></data>
+  <data name="Hotkey_WindowsKey" xml:space="preserve"><value>Windows キーを含む組み合わせは Windows で予約されています。</value></data>
+  <data name="Log_Clear" xml:space="preserve"><value>クリア</value></data>
+  <data name="Log_Export" xml:space="preserve"><value>ログをエクスポート</value></data>
+  <data name="Log_OpenFolder" xml:space="preserve"><value>ログ フォルダー</value></data>
+  <data name="Log_Title" xml:space="preserve"><value>ログ</value></data>
+  <data name="Mode_Custom" xml:space="preserve"><value>カスタム (ゲームごと)</value></data>
+  <data name="Mode_Global" xml:space="preserve"><value>グローバル (全ゲーム共通)</value></data>
+  <data name="Nav_About" xml:space="preserve"><value>情報</value></data>
+  <data name="Nav_Dashboard" xml:space="preserve"><value>ダッシュボード</value></data>
+  <data name="Nav_Queue" xml:space="preserve"><value>キュー</value></data>
+  <data name="Nav_Settings" xml:space="preserve"><value>設定</value></data>
+  <data name="Notice_AdminMessage" xml:space="preserve"><value>AutoClick 2 は、管理者として実行されるゲームを除き、管理者権限を必要としなくなりました。バージョン 1 から更新したため、引き続き管理者として起動しています。</value></data>
+  <data name="Notice_AdminTitle" xml:space="preserve"><value>管理者モード</value></data>
+  <data name="Notice_AdminTurnOff" xml:space="preserve"><value>管理者として実行しない</value></data>
+  <data name="Notice_AdminTurnedOff" xml:space="preserve"><value>次回から AutoClick は管理者権限なしで起動します。</value></data>
+  <data name="Notice_ElevationDeclined" xml:space="preserve"><value>AutoClick は管理者として実行するよう設定されていますが、権限の確認がキャンセルされました。管理者として実行されているゲームはクリックできません。</value></data>
+  <data name="Notice_ElevationDeclinedTitle" xml:space="preserve"><value>管理者権限なしで実行中</value></data>
+  <data name="Notice_ElevationRequired" xml:space="preserve"><value>{0} は管理者として実行されているため、Windows が AutoClick からのクリックをブロックします。クリックするには AutoClick を管理者として再起動してください。</value></data>
+  <data name="Notice_ElevationTitle" xml:space="preserve"><value>管理者権限が必要です</value></data>
+  <data name="Notice_SettingsRecovered" xml:space="preserve"><value>設定ファイルを読み込めなかったため、既定値を使用しています。古いファイルのコピーを保存しました: {0}</value></data>
+  <data name="Notice_SettingsRecoveredTitle" xml:space="preserve"><value>設定がリセットされました</value></data>
+  <data name="Notice_UpdateReady" xml:space="preserve"><value>AutoClick {0} をインストールする準備ができました。</value></data>
+  <data name="Notice_UpdateTitle" xml:space="preserve"><value>更新の準備ができました</value></data>
+  <data name="Notify_GameExited" xml:space="preserve"><value>{0} が終了しました。クリック: {1}、スキップ: {2}。</value></data>
+  <data name="Notify_GameExitedTitle" xml:space="preserve"><value>ゲームが終了しました</value></data>
+  <data name="Notify_QueueEmpty" xml:space="preserve"><value>すべてのゲームが終了しました。</value></data>
+  <data name="Picker_AdminBadge" xml:space="preserve"><value>管理者</value></data>
+  <data name="Picker_AdminTooltip" xml:space="preserve"><value>このゲームは管理者として実行されています。クリックするには AutoClick も管理者として実行する必要があります。</value></data>
+  <data name="Picker_Duplicate" xml:space="preserve"><value>({0}, {1}) には既にステップがあります。</value></data>
+  <data name="Picker_Empty" xml:space="preserve"><value>ウィンドウが見つかりません。ゲームを起動してから更新してください。</value></data>
+  <data name="Picker_GameTitle" xml:space="preserve"><value>ゲームを追加</value></data>
+  <data name="Picker_Hint" xml:space="preserve"><value>クリックするゲームのウィンドウを選んでください。ウィンドウモードまたはボーダーレスが最適です。</value></data>
+  <data name="Picker_Instruction" xml:space="preserve"><value>使用する位置をクリックします。キー: 1 左 · 2 ダブル · 3 右 · 4 キー入力 · Esc キャンセル</value></data>
+  <data name="Picker_InstructionKeystroke" xml:space="preserve"><value>送信するキーを押してください。1・2・3 でクリックに戻ります · Esc でキャンセル</value></data>
+  <data name="Picker_RestoreGame" xml:space="preserve"><value>先にゲームウィンドウを元に戻してください (最小化されているか閉じられています)。</value></data>
+  <data name="Picker_Search" xml:space="preserve"><value>名前またはタイトルで検索</value></data>
+  <data name="Picker_Select" xml:space="preserve"><value>追加</value></data>
+  <data name="Picker_Title" xml:space="preserve"><value>位置を選択</value></data>
+  <data name="Profile_Delete" xml:space="preserve"><value>プロファイルを削除</value></data>
+  <data name="Profile_DeleteConfirm" xml:space="preserve"><value>プロファイル「{0}」を削除しますか？</value></data>
+  <data name="Profile_Export" xml:space="preserve"><value>プロファイルをエクスポート</value></data>
+  <data name="Profile_Exported" xml:space="preserve"><value>プロファイルを {0} にエクスポートしました</value></data>
+  <data name="Profile_Import" xml:space="preserve"><value>プロファイルをインポート</value></data>
+  <data name="Profile_ImportFailed" xml:space="preserve"><value>プロファイルをインポートできませんでした: {0}</value></data>
+  <data name="Profile_Imported" xml:space="preserve"><value>プロファイル「{0}」をインポートしました。</value></data>
+  <data name="Profile_Load" xml:space="preserve"><value>読み込む</value></data>
+  <data name="Profile_Loaded" xml:space="preserve"><value>プロファイル「{0}」を {1} に読み込みました。</value></data>
+  <data name="Profile_NamePrompt" xml:space="preserve"><value>プロファイル名</value></data>
+  <data name="Profile_NoSteps" xml:space="preserve"><value>プロファイルを保存する前にステップを追加してください。</value></data>
+  <data name="Profile_Overwrite" xml:space="preserve"><value>「{0}」という名前のプロファイルは既に存在します。上書きしますか？</value></data>
+  <data name="Profile_Save" xml:space="preserve"><value>プロファイルを保存</value></data>
+  <data name="Profile_Saved" xml:space="preserve"><value>プロファイル「{0}」を保存しました。</value></data>
+  <data name="Profile_Title" xml:space="preserve"><value>プロファイル</value></data>
+  <data name="Queue_AddGame" xml:space="preserve"><value>ゲームを追加</value></data>
+  <data name="Queue_EmptyMessage" xml:space="preserve"><value>ゲームを追加してクリックする位置を選び、「開始」を押してください。</value></data>
+  <data name="Queue_EmptyTitle" xml:space="preserve"><value>ゲームがありません</value></data>
+  <data name="Queue_Full" xml:space="preserve"><value>キューがいっぱいです ({0} ゲーム)。上限は設定で変更できます。</value></data>
+  <data name="Queue_GamesCount" xml:space="preserve"><value>{0} / {1} ゲーム</value></data>
+  <data name="Queue_NothingToStart" xml:space="preserve"><value>開始できるゲームがありません。先にステップを追加してください。</value></data>
+  <data name="Queue_RemoveAll" xml:space="preserve"><value>すべて削除</value></data>
+  <data name="Queue_RemoveAllConfirm" xml:space="preserve"><value>キューの {0} 件のゲームをすべて停止して削除しますか？</value></data>
+  <data name="Queue_StartAll" xml:space="preserve"><value>すべて開始</value></data>
+  <data name="Queue_StopAll" xml:space="preserve"><value>すべて停止</value></data>
+  <data name="Schedule_Arm" xml:space="preserve"><value>予約</value></data>
+  <data name="Schedule_Cancel" xml:space="preserve"><value>予約を取り消す</value></data>
+  <data name="Schedule_InvalidFormat" xml:space="preserve"><value>時刻は HH:mm 形式で入力してください (例: 20:00)。</value></data>
+  <data name="Schedule_InvalidHour" xml:space="preserve"><value>時は 00〜23 で入力してください。</value></data>
+  <data name="Schedule_InvalidMinute" xml:space="preserve"><value>分は 00〜59 で入力してください。</value></data>
+  <data name="Schedule_NoGames" xml:space="preserve"><value>予約する前にステップのあるゲームを追加してください。</value></data>
+  <data name="Schedule_Start" xml:space="preserve"><value>開始時刻</value></data>
+  <data name="Schedule_StartRequired" xml:space="preserve"><value>開始時刻を入力してください。</value></data>
+  <data name="Schedule_Started" xml:space="preserve"><value>予約した時刻になったため、ゲームを開始しました。</value></data>
+  <data name="Schedule_StartsIn" xml:space="preserve"><value>開始まで {0}</value></data>
+  <data name="Schedule_Stop" xml:space="preserve"><value>停止時刻</value></data>
+  <data name="Schedule_StopEqualsStart" xml:space="preserve"><value>停止時刻は開始時刻と異なる必要があります。</value></data>
+  <data name="Schedule_StopOptional" xml:space="preserve"><value>省略可</value></data>
+  <data name="Schedule_StopsIn" xml:space="preserve"><value>停止まで {0}</value></data>
+  <data name="Schedule_Title" xml:space="preserve"><value>スケジュール</value></data>
+  <data name="Session_Export" xml:space="preserve"><value>セッションをエクスポート</value></data>
+  <data name="Session_Import" xml:space="preserve"><value>セッションをインポート</value></data>
+  <data name="Session_ImportFailed" xml:space="preserve"><value>セッションをインポートできませんでした: {0}</value></data>
+  <data name="Session_ImportSummary" xml:space="preserve"><value>インポートすると現在の設定が置き換えられ、プロファイル {0} 件が取り込まれます。実行中のウィンドウに一致する {1} 件のゲームを追加します。{2} 件は実行されていません。</value></data>
+  <data name="Session_Imported" xml:space="preserve"><value>セッションをインポートしました: {0} 件のゲームを追加。</value></data>
+  <data name="Session_NotRunning" xml:space="preserve"><value>実行されていません: {0}</value></data>
+  <data name="Settings_Appearance" xml:space="preserve"><value>外観</value></data>
+  <data name="Settings_AutoUpdate" xml:space="preserve"><value>自動的に更新</value></data>
+  <data name="Settings_AutoUpdateHint" xml:space="preserve"><value>起動時と 6 時間ごとに更新を確認してダウンロードします。再起動のタイミングは選べます。</value></data>
+  <data name="Settings_Behavior" xml:space="preserve"><value>動作</value></data>
+  <data name="Settings_Clicking" xml:space="preserve"><value>クリック</value></data>
+  <data name="Settings_Data" xml:space="preserve"><value>データ</value></data>
+  <data name="Settings_DataHint" xml:space="preserve"><value>設定、プロファイル、ログはこのフォルダーに保存されます。AutoClick をアンインストールすると削除されます。</value></data>
+  <data name="Settings_DefaultTiming" xml:space="preserve"><value>クリック間隔</value></data>
+  <data name="Settings_DefaultTimingHint" xml:space="preserve"><value>ゲームのステップを 1 巡してから次の巡回までの待ち時間 (秒)。</value></data>
+  <data name="Settings_ExitBehavior" xml:space="preserve"><value>ウィンドウを閉じたとき</value></data>
+  <data name="Settings_Export" xml:space="preserve"><value>設定をエクスポート</value></data>
+  <data name="Settings_GameExitNotification" xml:space="preserve"><value>ゲーム終了時に通知</value></data>
+  <data name="Settings_Import" xml:space="preserve"><value>設定をインポート</value></data>
+  <data name="Settings_ImportFailed" xml:space="preserve"><value>設定をインポートできませんでした: {0}</value></data>
+  <data name="Settings_Imported" xml:space="preserve"><value>設定をインポートしました。</value></data>
+  <data name="Settings_Language" xml:space="preserve"><value>言語</value></data>
+  <data name="Settings_LanguageHint" xml:space="preserve"><value>翻訳は AI によって生成されており、誤りを含む場合があります。</value></data>
+  <data name="Settings_MaxGames" xml:space="preserve"><value>キュー内の最大ゲーム数</value></data>
+  <data name="Settings_MinimizeOnStartAll" xml:space="preserve"><value>「すべて開始」時に通知領域へ最小化</value></data>
+  <data name="Settings_Mode" xml:space="preserve"><value>クリック モード</value></data>
+  <data name="Settings_ModeHint" xml:space="preserve"><value>グローバル: すべてのゲームが下の間隔を使用します。カスタム: ゲームごとに間隔とプロファイルを設定します。</value></data>
+  <data name="Settings_Reset" xml:space="preserve"><value>設定をリセット</value></data>
+  <data name="Settings_ResetConfirm" xml:space="preserve"><value>すべての設定を既定値に戻しますか？プロファイルは保持されます。</value></data>
+  <data name="Settings_SequenceDelayHint" xml:space="preserve"><value>各ステップの後、次のステップまでの待ち時間 (ミリ秒)。</value></data>
+  <data name="Settings_ShowLogs" xml:space="preserve"><value>ライブ ログを表示</value></data>
+  <data name="Settings_Sounds" xml:space="preserve"><value>サウンド</value></data>
+  <data name="Settings_Theme" xml:space="preserve"><value>テーマ</value></data>
+  <data name="Settings_VerboseLogging" xml:space="preserve"><value>詳細ログ</value></data>
+  <data name="Settings_VerboseLoggingHint" xml:space="preserve"><value>デバッグ情報をログ ファイルに書き込みます (バグ報告に役立ちます)。</value></data>
+  <data name="State_Idle" xml:space="preserve"><value>待機中</value></data>
+  <data name="State_Paused" xml:space="preserve"><value>一時停止中</value></data>
+  <data name="State_Running" xml:space="preserve"><value>実行中</value></data>
+  <data name="State_Stopped" xml:space="preserve"><value>停止済み</value></data>
+  <data name="State_WaitingMinimized" xml:space="preserve"><value>待機中 (ゲームが最小化)</value></data>
+  <data name="Stats_ActiveTime" xml:space="preserve"><value>稼働時間</value></data>
+  <data name="Stats_Clicks" xml:space="preserve"><value>クリック</value></data>
+  <data name="Stats_ClicksPerMinute" xml:space="preserve"><value>クリック/分</value></data>
+  <data name="Stats_LastInterval" xml:space="preserve"><value>直前の間隔</value></data>
+  <data name="Stats_Peak" xml:space="preserve"><value>ピーク</value></data>
+  <data name="Stats_Reset" xml:space="preserve"><value>統計をリセット</value></data>
+  <data name="Stats_RunningGames" xml:space="preserve"><value>実行中のゲーム</value></data>
+  <data name="Stats_Skipped" xml:space="preserve"><value>スキップ</value></data>
+  <data name="Stats_Success" xml:space="preserve"><value>クリック済み</value></data>
+  <data name="Stats_TotalClicks" xml:space="preserve"><value>総クリック数</value></data>
+  <data name="Status_Administrator" xml:space="preserve"><value>管理者</value></data>
+  <data name="Status_Idle" xml:space="preserve"><value>準備完了</value></data>
+  <data name="Status_Running" xml:space="preserve"><value>実行中 {0} · 一時停止 {1}</value></data>
+  <data name="Step_Double" xml:space="preserve"><value>({0}, {1}) をダブルクリック</value></data>
+  <data name="Step_Key" xml:space="preserve"><value>{0} を押す</value></data>
+  <data name="Step_Left" xml:space="preserve"><value>({0}, {1}) をクリック</value></data>
+  <data name="Step_Right" xml:space="preserve"><value>({0}, {1}) を右クリック</value></data>
+  <data name="Stop_ColorMismatch" xml:space="preserve"><value>停止: ピクセルの色が一致しませんでした: {0}。</value></data>
+  <data name="Stop_ElevationRequired" xml:space="preserve"><value>ブロック: このゲームは管理者として実行されています。</value></data>
+  <data name="Stop_Error" xml:space="preserve"><value>エラーが繰り返されたため停止しました: {0}</value></data>
+  <data name="Stop_OutOfBounds" xml:space="preserve"><value>停止: ステップがゲームウィンドウの外にあります: {0}。ウィンドウのサイズが変わった可能性があります。ステップを選び直してください。</value></data>
+  <data name="Stop_TargetNotResponding" xml:space="preserve"><value>停止: ゲームが応答していません。</value></data>
+  <data name="Stop_WindowClosed" xml:space="preserve"><value>停止: ゲームウィンドウが閉じられました。</value></data>
+  <data name="Theme_Dark" xml:space="preserve"><value>ダーク</value></data>
+  <data name="Theme_HighContrast" xml:space="preserve"><value>ハイ コントラスト</value></data>
+  <data name="Theme_Light" xml:space="preserve"><value>ライト</value></data>
+  <data name="Theme_System" xml:space="preserve"><value>Windows の設定に従う</value></data>
+  <data name="Timing_Fixed" xml:space="preserve"><value>固定</value></data>
+  <data name="Timing_Interval" xml:space="preserve"><value>間隔 (秒)</value></data>
+  <data name="Timing_Max" xml:space="preserve"><value>最大 (秒)</value></data>
+  <data name="Timing_Min" xml:space="preserve"><value>最小 (秒)</value></data>
+  <data name="Timing_Random" xml:space="preserve"><value>ランダム</value></data>
+  <data name="Timing_SequenceDelay" xml:space="preserve"><value>ステップ間の遅延 (ミリ秒)</value></data>
+  <data name="Timing_Title" xml:space="preserve"><value>間隔</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>終了</value></data>
+  <data name="Tray_Show" xml:space="preserve"><value>AutoClick を表示</value></data>
+  <data name="Tray_StillRunning" xml:space="preserve"><value>AutoClick は通知領域で実行中です。終了するにはアイコンのメニューを使用してください。</value></data>
+  <data name="Update_ApplyRestart" xml:space="preserve"><value>再起動して更新</value></data>
+  <data name="Update_Available" xml:space="preserve"><value>バージョン {0} が利用可能です。</value></data>
+  <data name="Update_Check" xml:space="preserve"><value>更新を確認</value></data>
+  <data name="Update_Checking" xml:space="preserve"><value>更新を確認しています…</value></data>
+  <data name="Update_Download" xml:space="preserve"><value>ダウンロード</value></data>
+  <data name="Update_Downloading" xml:space="preserve"><value>ダウンロード中… {0}%</value></data>
+  <data name="Update_Error_Forbidden" xml:space="preserve"><value>GitHub がリクエストを拒否しました。</value></data>
+  <data name="Update_Error_Network" xml:space="preserve"><value>ネットワーク エラーです。インターネット接続を確認してください。</value></data>
+  <data name="Update_Error_NoRelease" xml:space="preserve"><value>GitHub にリリースが見つかりませんでした。</value></data>
+  <data name="Update_Error_RateLimited" xml:space="preserve"><value>GitHub のレート制限に達しました。数分後にもう一度お試しください。</value></data>
+  <data name="Update_Error_Server" xml:space="preserve"><value>GitHub でサーバー エラーが発生しました。後でもう一度お試しください。</value></data>
+  <data name="Update_Error_Unknown" xml:space="preserve"><value>更新に失敗しました。詳細はログを参照してください。</value></data>
+  <data name="Update_Idle" xml:space="preserve"><value>AutoClick の新しいバージョンがあるか確認します。</value></data>
+  <data name="Update_NotInstalled" xml:space="preserve"><value>更新はインストール版でのみ利用できます (このコピーはセットアップでインストールされていません)。</value></data>
+  <data name="Update_Ready" xml:space="preserve"><value>バージョン {0} をダウンロードしました。インストールできます。</value></data>
+  <data name="Update_Title" xml:space="preserve"><value>更新</value></data>
+  <data name="Update_UpToDate" xml:space="preserve"><value>AutoClick は最新です。</value></data>
 </root>

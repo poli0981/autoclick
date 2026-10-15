@@ -37,16 +37,30 @@ internal sealed class TargetForm : Form
 
     protected override void WndProc(ref Message m)
     {
-        switch (m.Msg)
+        var mouse = m.Msg switch
         {
-            case WmLButtonDown: Record("LBUTTONDOWN", m); break;
-            case WmLButtonUp: Record("LBUTTONUP", m); break;
-            case WmLButtonDblClk: Record("LBUTTONDBLCLK", m); break;
-            case WmRButtonDown: Record("RBUTTONDOWN", m); break;
-            case WmRButtonUp: Record("RBUTTONUP", m); break;
-            case WmKeyDown: RecordKey("KEYDOWN", m); break;
-            case WmKeyUp: RecordKey("KEYUP", m); break;
-            case WmChar: RecordKey("CHAR", m); break;
+            WmLButtonDown => "LBUTTONDOWN",
+            WmLButtonUp => "LBUTTONUP",
+            WmLButtonDblClk => "LBUTTONDBLCLK",
+            WmRButtonDown => "RBUTTONDOWN",
+            WmRButtonUp => "RBUTTONUP",
+            _ => null,
+        };
+        var key = m.Msg switch
+        {
+            WmKeyDown => "KEYDOWN",
+            WmKeyUp => "KEYUP",
+            WmChar => "CHAR",
+            _ => null,
+        };
+
+        if (mouse is not null)
+        {
+            Record(mouse, m);
+        }
+        else if (key is not null)
+        {
+            RecordKey(key, m);
         }
 
         base.WndProc(ref m);

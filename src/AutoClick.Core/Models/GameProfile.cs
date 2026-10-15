@@ -18,6 +18,9 @@ public sealed partial record GameProfile
 
     public static string NewId() => Guid.NewGuid().ToString("N")[..8];
 
+    /// <summary>The profile name (shown by lists and read by screen readers).</summary>
+    public override string ToString() => Name;
+
     /// <summary>
     /// Profile ids become file names, so only short lowercase alphanumerics are accepted.
     /// Anything else (e.g. "..\..\x" from an imported file) is rejected.

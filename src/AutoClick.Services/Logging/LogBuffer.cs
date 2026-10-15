@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using System.Globalization;
 using Serilog.Core;
 using Serilog.Events;
+using Serilog.Formatting.Display;
 
 namespace AutoClick.Services.Logging;
 
@@ -28,6 +29,9 @@ public sealed class LogBuffer : ILogEventSink
     public const int HistoryCapacity = 2000;
     private const int PendingCapacity = 5000;
 
+    // ":lj" renders string values without quotes: AutoClick 2.0.0 rather than AutoClick "2.0.0".
+    private static readonly MessageTemplateTextFormatter Formatter = new("{Message:lj}", CultureInfo.InvariantCulture);
+
     private readonly ConcurrentQueue<LogLine> _pending = new();
     private readonly Queue<LogLine> _history = new(HistoryCapacity);
     private readonly Lock _historyLock = new();
@@ -35,7 +39,9 @@ public sealed class LogBuffer : ILogEventSink
     public void Emit(LogEvent logEvent)
     {
         ArgumentNullException.ThrowIfNull(logEvent);
-        var message = logEvent.RenderMessage(CultureInfo.InvariantCulture);
+        using var writer = new StringWriter(CultureInfo.InvariantCulture);
+        Formatter.Format(logEvent, writer);
+        var message = writer.ToString();
         if (logEvent.Exception is { } exception)
         {
             message = $"{message} ({exception.GetType().Name}: {exception.Message})";

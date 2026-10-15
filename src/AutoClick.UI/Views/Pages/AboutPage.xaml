@@ -1,0 +1,254 @@
+<Page
+    x:Class="AutoClick.UI.Views.Pages.AboutPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:app="clr-namespace:AutoClick.UI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:l="clr-namespace:AutoClick.UI.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:vm="clr-namespace:AutoClick.UI.ViewModels"
+    d:DataContext="{d:DesignInstance vm:AboutViewModel, IsDesignTimeCreatable=False}"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <Style x:Key="LinkButton" BasedOn="{StaticResource DefaultUiButtonStyle}" TargetType="ui:Button">
+            <Setter Property="Margin" Value="0,0,8,8" />
+            <Setter Property="Command" Value="{Binding OpenCommand}" />
+        </Style>
+    </Page.Resources>
+
+    <StackPanel Margin="0,8,0,24">
+        <ui:TextBlock FontTypography="Title" Text="{l:Loc Nav_About}" />
+
+        <!--  Product  -->
+        <Border Margin="0,12,0,12" Style="{StaticResource SectionCard}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image
+                    Width="56"
+                    Height="56"
+                    Margin="0,0,16,0"
+                    VerticalAlignment="Top"
+                    Source="pack://application:,,,/Assets/app.ico" />
+                <StackPanel Grid.Column="1">
+                    <ui:TextBlock FontTypography="Subtitle" Text="AutoClick" />
+                    <TextBlock>
+                        <Run Text="{l:Loc About_Version}" /><Run Text=" " /><Run Text="{Binding Version, Mode=OneWay}" />
+                    </TextBlock>
+                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding Runtime}" />
+                    <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding OperatingSystem}" />
+                    <TextBlock
+                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                        Text="{l:Loc Status_Administrator}"
+                        Visibility="{Binding IsElevated, Converter={StaticResource BoolToVisibility}}" />
+                    <TextBlock
+                        Margin="0,8,0,0"
+                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                        Text="{l:Loc About_License}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!--  Updates  -->
+        <Border Style="{StaticResource SectionCard}">
+            <StackPanel>
+                <ui:TextBlock
+                    Margin="0,0,0,8"
+                    FontTypography="BodyStrong"
+                    Text="{l:Loc Update_Title}" />
+                <StackPanel Orientation="Horizontal">
+                    <ui:ProgressRing
+                        Width="20"
+                        Height="20"
+                        Margin="0,0,8,0"
+                        IsIndeterminate="True"
+                        Visibility="{Binding IsUpdateBusy, Converter={StaticResource BoolToVisibility}}" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        AutomationProperties.LiveSetting="Polite"
+                        Text="{Binding UpdateStatus}"
+                        TextWrapping="Wrap" />
+                </StackPanel>
+                <WrapPanel Margin="0,12,0,0">
+                    <ui:Button
+                        Margin="0,0,8,4"
+                        Command="{Binding CheckForUpdatesCommand}"
+                        Content="{l:Loc Update_Check}"
+                        Icon="{ui:SymbolIcon ArrowSync24}" />
+                    <ui:Button
+                        Margin="0,0,8,4"
+                        Command="{Binding DownloadUpdateCommand}"
+                        Content="{l:Loc Update_Download}"
+                        Icon="{ui:SymbolIcon ArrowDownload24}" />
+                    <ui:Button
+                        Margin="0,0,8,4"
+                        Appearance="Primary"
+                        Command="{Binding ApplyUpdateCommand}"
+                        Content="{l:Loc Update_ApplyRestart}" />
+                    <ui:Button
+                        Margin="0,0,8,4"
+                        Appearance="Transparent"
+                        Command="{Binding OpenCommand}"
+                        CommandParameter="{x:Static app:AppLinks.Changelog}"
+                        Content="{l:Loc About_Changelog}" />
+                </WrapPanel>
+                <TextBox
+                    MaxHeight="200"
+                    Margin="0,8,0,0"
+                    FontFamily="Consolas"
+                    FontSize="12"
+                    IsReadOnly="True"
+                    Text="{Binding ReleaseNotes, Mode=OneWay}"
+                    TextWrapping="Wrap"
+                    VerticalScrollBarVisibility="Auto"
+                    Visibility="{Binding ReleaseNotes, Converter={StaticResource NotEmptyToVisibility}}" />
+            </StackPanel>
+        </Border>
+
+        <!--  Notices  -->
+        <ui:InfoBar
+            Title="{l:Loc About_AntiCheatTitle}"
+            Margin="0,0,0,12"
+            IsClosable="False"
+            IsOpen="True"
+            Message="{l:Loc About_AntiCheat}"
+            Severity="Warning" />
+        <ui:InfoBar
+            Title="{l:Loc About_AiTitle}"
+            Margin="0,0,0,12"
+            IsClosable="False"
+            IsOpen="True"
+            Message="{l:Loc About_Ai}"
+            Severity="Informational" />
+
+        <!--  Documents  -->
+        <Border Style="{StaticResource SectionCard}">
+            <StackPanel>
+                <ui:TextBlock
+                    Margin="0,0,0,8"
+                    FontTypography="BodyStrong"
+                    Text="{l:Loc About_Documents}" />
+                <WrapPanel>
+                    <ui:Button
+                        CommandParameter="{x:Static app:AppLinks.PrivacyPolicy}"
+                        Content="{l:Loc About_Privacy}"
+                        Icon="{ui:SymbolIcon ShieldKeyhole24}"
+                        Style="{StaticResource LinkButton}" />
+                    <ui:Button
+                        CommandParameter="{x:Static app:AppLinks.TermsOfService}"
+                        Content="{l:Loc About_Terms}"
+                        Icon="{ui:SymbolIcon DocumentText24}"
+                        Style="{StaticResource LinkButton}" />
+                    <ui:Button
+                        CommandParameter="{x:Static app:AppLinks.Eula}"
+                        Content="{l:Loc About_Eula}"
+                        Icon="{ui:SymbolIcon DocumentText24}"
+                        Style="{StaticResource LinkButton}" />
+                    <ui:Button
+                        CommandParameter="{x:Static app:AppLinks.Disclaimer}"
+                        Content="{l:Loc About_Disclaimer}"
+                        Icon="{ui:SymbolIcon Warning24}"
+                        Style="{StaticResource LinkButton}" />
+                    <ui:Button
+                        CommandParameter="{x:Static app:AppLinks.SecurityPolicy}"
+                        Content="{l:Loc About_Security}"
+                        Icon="{ui:SymbolIcon ShieldCheckmark24}"
+                        Style="{StaticResource LinkButton}" />
+                    <ui:Button
+                        CommandParameter="{x:Static app:AppLinks.Acknowledgements}"
+                        Content="{l:Loc About_Acknowledgements}"
+                        Icon="{ui:SymbolIcon Heart24}"
+                        Style="{StaticResource LinkButton}" />
+                    <ui:Button
+                        Margin="0,0,8,8"
+                        Command="{Binding OpenBundledFileCommand}"
+                        CommandParameter="LICENSE.txt"
+                        Content="{l:Loc About_LicenseFile}"
+                        Icon="{ui:SymbolIcon Document24}" />
+                    <ui:Button
+                        Margin="0,0,8,8"
+                        Command="{Binding OpenBundledFileCommand}"
+                        CommandParameter="THIRD-PARTY-NOTICES.txt"
+                        Content="{l:Loc About_ThirdParty}"
+                        Icon="{ui:SymbolIcon Library24}" />
+                </WrapPanel>
+            </StackPanel>
+        </Border>
+
+        <!--  Community and support  -->
+        <Border Style="{StaticResource SectionCard}">
+            <StackPanel>
+                <ui:TextBlock
+                    Margin="0,0,0,8"
+                    FontTypography="BodyStrong"
+                    Text="{l:Loc About_Community}" />
+                <WrapPanel>
+                    <ui:Button
+                        CommandParameter="{x:Static app:AppLinks.Repository}"
+                        Content="GitHub"
+                        Icon="{ui:SymbolIcon Code24}"
+                        Style="{StaticResource LinkButton}" />
+                    <ui:Button
+                        CommandParameter="{x:Static app:AppLinks.Issues}"
+                        Content="{l:Loc About_ReportBug}"
+                        Icon="{ui:SymbolIcon Bug24}"
+                        Style="{StaticResource LinkButton}" />
+                    <ui:Button
+                        CommandParameter="{x:Static app:AppLinks.Discord}"
+                        Content="Discord"
+                        Icon="{ui:SymbolIcon PeopleCommunity24}"
+                        Style="{StaticResource LinkButton}" />
+                    <ui:Button
+                        CommandParameter="{x:Static app:AppLinks.X}"
+                        Content="X"
+                        Style="{StaticResource LinkButton}" />
+                    <ui:Button
+                        CommandParameter="{x:Static app:AppLinks.YouTube}"
+                        Content="YouTube"
+                        Style="{StaticResource LinkButton}" />
+                    <ui:Button
+                        CommandParameter="{x:Static app:AppLinks.Bluesky}"
+                        Content="Bluesky"
+                        Style="{StaticResource LinkButton}" />
+                    <ui:Button
+                        CommandParameter="{x:Static app:AppLinks.Mastodon}"
+                        Content="Mastodon"
+                        Style="{StaticResource LinkButton}" />
+                    <ui:Button
+                        CommandParameter="{x:Static app:AppLinks.Steam}"
+                        Content="Steam"
+                        Style="{StaticResource LinkButton}" />
+                    <ui:Button
+                        CommandParameter="{x:Static app:AppLinks.Email}"
+                        Content="{l:Loc About_Email}"
+                        Icon="{ui:SymbolIcon Mail24}"
+                        Style="{StaticResource LinkButton}" />
+                </WrapPanel>
+                <ui:TextBlock
+                    Margin="0,8,0,8"
+                    FontTypography="BodyStrong"
+                    Text="{l:Loc About_Support}" />
+                <WrapPanel>
+                    <ui:Button
+                        Appearance="Primary"
+                        CommandParameter="{x:Static app:AppLinks.Sponsor}"
+                        Content="GitHub Sponsors"
+                        Icon="{ui:SymbolIcon Heart24}"
+                        Style="{StaticResource LinkButton}" />
+                    <ui:Button
+                        CommandParameter="{x:Static app:AppLinks.Patreon}"
+                        Content="Patreon"
+                        Style="{StaticResource LinkButton}" />
+                    <ui:Button
+                        CommandParameter="{x:Static app:AppLinks.KoFi}"
+                        Content="Ko-fi"
+                        Style="{StaticResource LinkButton}" />
+                </WrapPanel>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</Page>

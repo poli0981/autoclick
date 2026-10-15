@@ -150,7 +150,7 @@ See [Code of Conduct](docs/CODE_OF_CONDUCT.md) for community guidelines.
 Find the developer on social platforms, join the community, or report a bug:
 
 - **Social profiles & communities** — see [docs/social.md](docs/social.md) ([tiếng Việt](docs/i18n/vi/social.md)) for X, YouTube, Discord, Bluesky, Mastodon, Steam, and Telegram.
-- **Discord (general)** — [discord.gg/2aNR3aVt](https://discord.gg/2aNR3aVt)
+- **Discord** — [discord.gg/kDM9GMu5vm](https://discord.gg/kDM9GMu5vm)
 - **Report a bug** — open a [Bug Report](https://github.com/poli0981/autoclick/issues/new?template=bug_report.yml) issue.
 - **Request a feature** — open a [Feature Request](https://github.com/poli0981/autoclick/issues/new?template=feature_request.yml) issue.
 - **Questions / ideas** — start a thread in [Discussions](https://github.com/poli0981/autoclick/discussions).

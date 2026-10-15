@@ -21,6 +21,10 @@ public static class VirtualKeyNames
     public static string? GetName(int virtualKey) =>
         Maps.ByCode.TryGetValue(virtualKey, out var name) ? name : null;
 
+    /// <summary>The key name for display: the WPF name, or "VKxx" for keys without one.</summary>
+    public static string GetDisplayName(int virtualKey) =>
+        GetName(virtualKey) ?? string.Create(System.Globalization.CultureInfo.InvariantCulture, $"VK{virtualKey:X2}");
+
     /// <summary>Built on first use, after the tables below are initialized.</summary>
     private static class Maps
     {

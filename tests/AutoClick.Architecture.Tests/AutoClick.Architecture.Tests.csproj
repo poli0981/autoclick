@@ -13,4 +13,8 @@
     <PackageReference Include="TngTech.ArchUnitNET.xUnitV3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Using Include="System.IO" />
+  </ItemGroup>
+
 </Project>

@@ -117,7 +117,7 @@ public readonly record struct HotkeyGesture(HotkeyModifiers Modifiers, int Virtu
             parts.Add("Win");
         }
 
-        parts.Add(VirtualKeyNames.GetName(VirtualKey) ?? $"VK{VirtualKey:X2}");
+        parts.Add(VirtualKeyNames.GetDisplayName(VirtualKey));
         return string.Join('+', parts);
     }
 
