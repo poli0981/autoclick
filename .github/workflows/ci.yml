@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  build-test:
+    name: build-test
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          # global.json pins the 10.0.4xx band (rollForward: latestFeature); this installs the newest patch.
+          dotnet-version: '10.0.4xx'
+
+      - name: Restore tools
+        run: dotnet tool restore
+
+      - name: Restore
+        run: dotnet restore AutoClick.slnx
+
+      - name: Build (warnings as errors)
+        run: dotnet build AutoClick.slnx -c Release --no-restore -p:ContinuousIntegrationBuild=true
+
+      - name: Build info
+        id: info
+        shell: pwsh
+        run: ./eng/Get-BuildInfo.ps1
+
+      - name: Publish (win-x64, self-contained)
+        run: dotnet publish src/AutoClick.UI/AutoClick.UI.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=false -p:ContinuousIntegrationBuild=true -o artifacts/publish
+
+      - name: Smoke test
+        shell: pwsh
+        run: ./eng/Invoke-SmokeTest.ps1 -Exe artifacts/publish/AutoClick.UI.exe
+
+      - name: Velopack pack (dry run with the real release notes)
+        shell: pwsh
+        env:
+          VERSION: ${{ steps.info.outputs.version }}
+        run: |
+          ./eng/Get-ReleaseNotes.ps1 -Version $env:VERSION -OutFile artifacts/release_notes.md
+          dotnet vpk pack --packId AutoClick --packVersion $env:VERSION --packDir artifacts/publish `
+            --mainExe AutoClick.UI.exe --packTitle AutoClick --packAuthors poli0981 `
+            --icon src/AutoClick.UI/Assets/app.ico --channel win --delta None `
+            --releaseNotes artifacts/release_notes.md --outputDir artifacts/releases
+          Get-ChildItem artifacts/releases | Format-Table Name, Length

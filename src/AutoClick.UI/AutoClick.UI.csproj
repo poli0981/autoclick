@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
     <ProjectReference Include="..\AutoClick.Core\AutoClick.Core.csproj" />
@@ -7,18 +7,29 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="LiveChartsCore" Version="2.0.4" />
-    <PackageReference Include="LiveChartsCore.SkiaSharpView" Version="2.0.4" />
-    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.1721" />
-    <PackageReference Include="Serilog" Version="4.3.1" />
-    <PackageReference Include="Velopack" Version="1.2.0" />
+    <PackageReference Include="LiveChartsCore" Version="2.0.5" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView" Version="2.0.5" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.5" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.13" />
+    <PackageReference Include="Serilog" Version="4.4.0" />
+    <PackageReference Include="Velopack" Version="1.2.161" />
+  </ItemGroup>
+
+  <!-- Pin LiveCharts' transitive SkiaSharp 3.x to the latest patch (bundled libpng/libexpat fixes).
+       SkiaSharp 4.x is not yet supported by LiveCharts2 (Live-Charts/LiveCharts2#2366). -->
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp" Version="3.119.4" />
+    <PackageReference Include="SkiaSharp.HarfBuzz" Version="3.119.4" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="3.119.4" />
+    <PackageReference Include="SkiaSharp.Views.WPF" Version="3.119.4" />
   </ItemGroup>
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <!-- The 10.0.19041 platform version only selects the modern .NET assets of SkiaSharp.Views.WPF/OpenTK
+         (avoids NU1701). Nothing here uses WinRT, so skip the ~25 MB Windows SDK projection. -->
+    <IncludeWindowsSDKRefFrameworkReferences>false</IncludeWindowsSDKRefFrameworkReferences>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
@@ -34,10 +45,12 @@
     <Company>poli0981</Company>
     <Authors>poli0981</Authors>
     <Copyright>Copyright (c) 2026 poli0981. Licensed under GPL-3.0.</Copyright>
-    <Version>1.3.3</Version>
-    <AssemblyVersion>1.3.3.0</AssemblyVersion>
-    <FileVersion>1.3.3.0</FileVersion>
-    <InformationalVersion>1.3.3</InformationalVersion>
+    <Version>1.3.4</Version>
+    <AssemblyVersion>1.3.4.0</AssemblyVersion>
+    <FileVersion>1.3.4.0</FileVersion>
+    <InformationalVersion>1.3.4</InformationalVersion>
+    <!-- Keep InformationalVersion clean ("1.3.4", not "1.3.4+<commit>") so the UI shows a plain version. -->
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     <NeutralLanguage>en</NeutralLanguage>
     <RepositoryUrl>https://github.com/poli0981/autoclick</RepositoryUrl>
     <RepositoryType>git</RepositoryType>

@@ -62,6 +62,21 @@ public class MainViewModel : ViewModelBase
 
     public bool HasStats => _sessionStartedAt != null;
 
+    /// <summary>Product version for the status bar, e.g. "1.3.4" (build metadata after '+' stripped).</summary>
+    public string AppVersion { get; } = GetAppVersion();
+
+    private static string GetAppVersion()
+    {
+        var assembly = typeof(MainViewModel).Assembly;
+        var version = assembly.GetCustomAttributes(typeof(System.Reflection.AssemblyInformationalVersionAttribute), false)
+                          .OfType<System.Reflection.AssemblyInformationalVersionAttribute>()
+                          .FirstOrDefault()?.InformationalVersion
+                      ?? assembly.GetName().Version?.ToString(3)
+                      ?? "dev";
+        var plus = version.IndexOf('+');
+        return plus >= 0 ? version[..plus] : version;
+    }
+
     public bool HasAnyRunning => GameSessions.Any(g =>
         g.Session.State == SessionState.Running || g.Session.State == SessionState.Paused);
 

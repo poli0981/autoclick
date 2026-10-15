@@ -19,6 +19,12 @@ public partial class App : Application
 {
     private const string RestartingArg = "--restarting";
 
+    /// <summary>
+    /// CI-only switch: build the DI graph and construct every window (XAML parse) without
+    /// showing UI, then exit with 0 on success or 1 on failure.
+    /// </summary>
+    private const string SmokeTestArg = "--smoke-test";
+
     private ServiceProvider _serviceProvider = null!;
     private NotifyIcon? _trayIcon;
     private SingleInstanceService? _singleInstance;
@@ -32,10 +38,17 @@ public partial class App : Application
         // Single-instance gate. Skip during Velopack hooks just in case (defensive).
         var isVelopackHook = e.Args.Any(a => a.StartsWith("--veloapp-", StringComparison.OrdinalIgnoreCase));
         var isRestarting = e.Args.Any(a => string.Equals(a, RestartingArg, StringComparison.OrdinalIgnoreCase));
+        var isSmokeTest = e.Args.Any(a => string.Equals(a, SmokeTestArg, StringComparison.OrdinalIgnoreCase));
 
         // LogService is instantiated up-front so the gate can log; the same instance is then
         // registered as the DI singleton so logs share the file/buffer.
         var log = new LogService();
+
+        if (isSmokeTest)
+        {
+            RunSmokeTest(log);
+            return;
+        }
 
         if (!isVelopackHook)
         {
@@ -50,33 +63,7 @@ public partial class App : Application
             }
         }
 
-        var services = new ServiceCollection();
-
-        services.AddSingleton<ILogService>(log);
-        services.AddSingleton<ISettingsService, SettingsService>();
-        services.AddSingleton<IGameDetector, GameDetectorService>();
-        services.AddSingleton<IMemoryManager, MemoryManagerService>();
-        services.AddSingleton<IClickEngine, ClickEngineService>();
-        services.AddSingleton<IProfileService, ProfileService>();
-        services.AddSingleton<ISessionExportService, SessionExportService>();
-        services.AddSingleton<HotkeyService>();
-        services.AddSingleton<IHotkeyService>(sp => sp.GetRequiredService<HotkeyService>());
-
-        services.AddSingleton<MainViewModel>();
-        services.AddSingleton<SettingsViewModel>(sp =>
-        {
-            var mainVm = sp.GetRequiredService<MainViewModel>();
-            return new SettingsViewModel(
-                sp.GetRequiredService<ISettingsService>(),
-                sp.GetRequiredService<ILogService>(),
-                mainVm.Settings,
-                () => mainVm.HasAnyRunning);
-        });
-        services.AddSingleton<AboutViewModel>();
-        services.AddSingleton<DashboardViewModel>(sp =>
-            new DashboardViewModel(sp.GetRequiredService<MainViewModel>()));
-
-        _serviceProvider = services.BuildServiceProvider();
+        _serviceProvider = BuildServices(log);
 
         var settingsVm = _serviceProvider.GetRequiredService<SettingsViewModel>();
 
@@ -169,6 +156,70 @@ public partial class App : Application
                     logService.Warn($"Auto-update check failed: {ex.Message}");
                 }
             });
+        }
+    }
+
+    private static ServiceProvider BuildServices(LogService log)
+    {
+        var services = new ServiceCollection();
+
+        services.AddSingleton<ILogService>(log);
+        services.AddSingleton<ISettingsService, SettingsService>();
+        services.AddSingleton<IGameDetector, GameDetectorService>();
+        services.AddSingleton<IMemoryManager, MemoryManagerService>();
+        services.AddSingleton<IClickEngine, ClickEngineService>();
+        services.AddSingleton<IProfileService, ProfileService>();
+        services.AddSingleton<ISessionExportService, SessionExportService>();
+        services.AddSingleton<HotkeyService>();
+        services.AddSingleton<IHotkeyService>(sp => sp.GetRequiredService<HotkeyService>());
+
+        services.AddSingleton<MainViewModel>();
+        services.AddSingleton<SettingsViewModel>(sp =>
+        {
+            var mainVm = sp.GetRequiredService<MainViewModel>();
+            return new SettingsViewModel(
+                sp.GetRequiredService<ISettingsService>(),
+                sp.GetRequiredService<ILogService>(),
+                mainVm.Settings,
+                () => mainVm.HasAnyRunning);
+        });
+        services.AddSingleton<AboutViewModel>();
+        services.AddSingleton<DashboardViewModel>(sp =>
+            new DashboardViewModel(sp.GetRequiredService<MainViewModel>()));
+
+        return services.BuildServiceProvider();
+    }
+
+    private void RunSmokeTest(LogService log)
+    {
+        try
+        {
+            _serviceProvider = BuildServices(log);
+            var settingsVm = _serviceProvider.GetRequiredService<SettingsViewModel>();
+            ApplyTheme(settingsVm.Theme);
+            ApplyLanguage(settingsVm.Language);
+
+            // Constructing each window runs InitializeComponent, so XAML/resource errors surface here.
+            var mainWindow = new MainWindow();
+            mainWindow.Initialize(
+                _serviceProvider.GetRequiredService<MainViewModel>(),
+                settingsVm,
+                _serviceProvider.GetRequiredService<AboutViewModel>(),
+                _serviceProvider.GetRequiredService<DashboardViewModel>(),
+                _serviceProvider.GetRequiredService<HotkeyService>(),
+                new SoundService(_serviceProvider.GetRequiredService<MainViewModel>().Settings));
+            _ = new GamePickerDialog([], null);
+            _ = new ProfileNameDialog();
+            _ = new CoordinatePickerWindow(IntPtr.Zero);
+            _ = new ClickHeatmapOverlay(new AutoClick.Core.Models.GameSession());
+
+            log.Info("Smoke test passed");
+            Shutdown(0);
+        }
+        catch (Exception ex)
+        {
+            log.Error("Smoke test failed", ex);
+            Shutdown(1);
         }
     }
 

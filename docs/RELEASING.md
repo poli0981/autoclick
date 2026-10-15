@@ -52,42 +52,37 @@ git tag vX.Y.Z
 git push origin vX.Y.Z
 ```
 
-The push of a `v*` tag triggers `.github/workflows/release.yml`, which will:
+The push of a `vX.Y.Z` tag triggers `.github/workflows/release.yml`. Its **build** job (read-only token):
 
-1. Resolve the version from the tag.
-2. Extract release notes from `CHANGELOG.md`.
-3. `dotnet publish` the UI project as self-contained `win-x64`.
-4. Run `vpk download github` to fetch prior releases (so deltas can be computed).
-5. Run `vpk pack` to produce:
-   - `releases.win.json`
-   - `AutoClick-X.Y.Z-full.nupkg`
-   - `AutoClick-X.Y.Z-delta.nupkg`
-   - `AutoClick-win-Portable.zip`
-   - `AutoClick-win-Setup.exe`
-6. Run `vpk upload github` to attach the artifacts to a GitHub Release named `AutoClick vX.Y.Z`.
+1. Validates the tag format and checks it matches `<Version>` in the projects and that the `vpk` CLI pinned in `.config/dotnet-tools.json` matches the `Velopack` package version.
+2. Extracts release notes from `CHANGELOG.md` (fails if the `## [X.Y.Z]` section is missing).
+3. `dotnet publish`es the UI project as self-contained `win-x64` and runs the `--smoke-test` of the published exe.
+4. Runs `vpk pack` to produce `releases.win.json`, `assets.win.json`, `RELEASES`, `AutoClick-X.Y.Z-full.nupkg`, `AutoClick-win-Portable.zip` and `AutoClick-win-Setup.exe`. Delta packages are currently disabled (`--delta None`) because 1.3.4 changed the .NET runtime.
 
-### 5. Publish the draft
+The **upload draft release** job then runs `vpk upload github` and attaches the artifacts to a **draft** release named `AutoClick vX.Y.Z`. The same packaging step also runs as a dry run in the CI workflow on every pull request, so a broken release-notes section is caught before tagging.
 
-`vpk upload github` creates the release as a **draft** by default. After the workflow succeeds:
+### 5. Verify, then publish the draft
+
+Until it is published the release is invisible to end users and the auto-updater won't pick it up. Check the draft (see "Verifying a release"), then publish it **from your own account**:
 
 ```bash
 gh release edit vX.Y.Z --repo poli0981/autoclick --draft=false
 ```
 
-Or open the release on GitHub and click "Publish release". Until this is done the release is invisible to end users and the auto-updater won't pick it up.
+Or open the release on GitHub and click "Publish release". Publishing with a user token raises the `release: published` event, which runs the Discord announcement and the release-discussion workflows (events raised by the workflow's own `GITHUB_TOKEN` would not).
 
 ### 6. Manual trigger (alternative)
 
-If you need to re-run a release without re-tagging (e.g. transient CI failure), use **Actions → Release → Run workflow** and enter the version number (e.g. `1.2.1`). The workflow uses `--merge` on upload, so re-runs add to the existing release rather than failing.
+To rebuild an existing tag without re-tagging (e.g. a transient CI failure), use **Actions → Release → Run workflow** and enter the tag (e.g. `v1.3.4`). The workflow always checks out that tag, and `--merge` adds to the existing draft instead of failing.
 
 ## Verifying a release
 
 After the workflow finishes:
 
-1. Open https://github.com/poli0981/autoclick/releases — the new release should be there.
-2. Confirm the five Velopack artifacts are attached.
-3. Open `releases.win.json` — the new version should appear in the list with valid SHA hashes.
-4. Install the previous version locally, open AutoClick → Settings → "Check for updates" — the new version should be detected.
+1. Open https://github.com/poli0981/autoclick/releases — the new draft should be there.
+2. Confirm the Velopack artifacts listed above are attached.
+3. Open `releases.win.json` — the new version should appear with valid SHA hashes.
+4. Install the previous version (for example in Windows Sandbox), open AutoClick → About → "Check for updates" — the new version should be detected and install cleanly.
 
 ## Code signing
 
