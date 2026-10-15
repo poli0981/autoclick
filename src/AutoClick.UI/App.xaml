@@ -5,6 +5,7 @@
     xmlns:l="clr-namespace:AutoClick.UI.Localization"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:views="clr-namespace:AutoClick.UI.Views"
+    xmlns:vm="clr-namespace:AutoClick.UI.ViewModels"
     ShutdownMode="OnExplicitShutdown">
     <Application.Resources>
         <ResourceDictionary>
@@ -21,8 +22,8 @@
             <views:ColorRefToBrushConverter x:Key="ColorRefToBrush" />
             <views:ColorRefToHexConverter x:Key="ColorRefToHex" />
 
-            <!--  Combo box items are Choice<T> records: show the localized label of their key.  -->
-            <DataTemplate x:Key="OptionTemplate">
+            <!--  Combo box items are Choice records: show the localized label of their key.  -->
+            <DataTemplate x:Key="OptionTemplate" DataType="{x:Type vm:Choice}">
                 <TextBlock>
                     <TextBlock.Text>
                         <MultiBinding Converter="{StaticResource LocKey}">

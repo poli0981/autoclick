@@ -65,6 +65,8 @@ public enum SessionState
 /// <summary>Why a click session stopped.</summary>
 public enum StopReason
 {
+    /// <summary>Not stopped (the default value).</summary>
+    // ReSharper disable once UnusedMember.Global
     None,
     User,
     WindowClosed,

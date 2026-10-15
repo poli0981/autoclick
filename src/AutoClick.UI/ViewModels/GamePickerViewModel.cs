@@ -35,15 +35,15 @@ public sealed partial class GamePickerViewModel : ObservableObject
     {
         var selected = Selected?.Handle;
         _all = _source();
-        ApplyFilter();
+        ApplyFilter(Filter);
         Selected = Windows.FirstOrDefault(w => w.Handle == selected);
     }
 
-    partial void OnFilterChanged(string value) => ApplyFilter();
+    partial void OnFilterChanged(string value) => ApplyFilter(value);
 
-    private void ApplyFilter()
+    private void ApplyFilter(string text)
     {
-        var filter = Filter.Trim();
+        var filter = text.Trim();
         Windows.Clear();
         foreach (var window in _all.Where(w => filter.Length == 0
             || w.ProcessName.Contains(filter, StringComparison.OrdinalIgnoreCase)

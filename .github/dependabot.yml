@@ -1,4 +1,9 @@
 version: 2
+
+# NuGet covers Directory.Packages.props and the tools in .config/dotnet-tools.json. Patch and
+# minor updates merge automatically once CI passes (dependabot-auto-merge.yml); majors get the
+# needs-review label.
+
 updates:
   - package-ecosystem: "nuget"
     directory: "/"
@@ -7,26 +12,77 @@ updates:
       day: "monday"
       time: "06:00"
       timezone: "Asia/Ho_Chi_Minh"
-    open-pull-requests-limit: 5
+    # Let new releases age a week before they are proposed (time for yanks and advisories).
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
+    open-pull-requests-limit: 10
     commit-message:
       prefix: "chore(deps)"
     labels:
       - "dependencies"
       - "nuget"
+    ignore:
+      # LiveCharts2 is built against SkiaSharp 3; a SkiaSharp major needs a LiveCharts release.
+      - dependency-name: "SkiaSharp*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "HarfBuzzSharp*"
+        update-types: ["version-update:semver-major"]
     groups:
-      dotnet-runtime:
+      runtime:
         patterns:
           - "Microsoft.Extensions.*"
-          - "Microsoft.Windows.SDK.*"
-      observability:
+        exclude-patterns:
+          - "Microsoft.Extensions.TimeProvider.Testing"
+      ui:
+        patterns:
+          - "WPF-UI*"
+          - "CommunityToolkit.*"
+          - "H.NotifyIcon*"
+          - "LiveChartsCore*"
+          - "SkiaSharp*"
+          - "HarfBuzzSharp*"
+      logging:
         patterns:
           - "Serilog*"
-      charts:
+      # The vpk CLI must match the Velopack library (eng/Get-BuildInfo.ps1 checks it).
+      velopack:
         patterns:
-          - "LiveChartsCore*"
-      packaging:
+          - "Velopack"
+          - "vpk"
+      testing:
         patterns:
-          - "Velopack*"
+          - "xunit*"
+          - "Microsoft.Testing.*"
+          - "Microsoft.Extensions.TimeProvider.Testing"
+          - "TngTech.ArchUnitNET*"
+      tools:
+        patterns:
+          - "jetbrains.resharper.globaltools"
+          - "nuget-license"
+          - "microsoft.sbom.dotnettool"
+          - "dotnet-reportgenerator-globaltool"
+          - "Microsoft.Windows.CsWin32"
+          - "JetBrains.Annotations"
+
+  - package-ecosystem: "dotnet-sdk"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Asia/Ho_Chi_Minh"
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "chore(sdk)"
+    labels:
+      - "dependencies"
+      - "dotnet-sdk"
+    ignore:
+      # Stay on the .NET 10 LTS line; moving to a new major is a planned change.
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -35,6 +91,8 @@ updates:
       day: "monday"
       time: "06:00"
       timezone: "Asia/Ho_Chi_Minh"
+    cooldown:
+      default-days: 7
     open-pull-requests-limit: 5
     commit-message:
       prefix: "chore(actions)"

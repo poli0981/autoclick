@@ -4,7 +4,6 @@ namespace AutoClick.UI;
 public static class AppLinks
 {
     public const string Repository = "https://github.com/poli0981/autoclick";
-    public const string Releases = Repository + "/releases";
     public const string Issues = Repository + "/issues/new/choose";
     public const string Changelog = Repository + "/blob/master/CHANGELOG.md";
 
@@ -15,7 +14,6 @@ public static class AppLinks
     public const string TermsOfService = Repository + "/blob/master/docs/TERMS_OF_SERVICE.md";
     public const string Eula = Repository + "/blob/master/docs/EULA.md";
     public const string SecurityPolicy = Repository + "/blob/master/docs/SECURITY.md";
-    public const string HeatmapCompatibility = Repository + "/blob/master/docs/HEATMAP_COMPATIBILITY.md";
 
     public const string Discord = "https://discord.gg/kDM9GMu5vm";
     public const string X = "https://x.com/SkullMute0011";

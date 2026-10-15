@@ -115,8 +115,7 @@
                         Margin="4,0,0,0"
                         Appearance="Transparent"
                         AutomationProperties.Name="{l:Loc Game_Remove}"
-                        Command="{Binding DataContext.RemoveGameCommand, RelativeSource={RelativeSource AncestorType=Page}}"
-                        CommandParameter="{Binding}"
+                        Command="{Binding RemoveCommand}"
                         Icon="{ui:SymbolIcon Dismiss24}"
                         ToolTip="{l:Loc Game_Remove}" />
                 </StackPanel>

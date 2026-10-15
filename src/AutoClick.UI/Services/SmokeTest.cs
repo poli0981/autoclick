@@ -80,7 +80,7 @@ public sealed class SmokeTest(
             await RenderAsync();
             overlays.CloseAll();
 
-            queue.RemoveGame(game);
+            game.Remove();
             await RenderAsync();
 
             foreach (var error in bindingErrors.Errors)

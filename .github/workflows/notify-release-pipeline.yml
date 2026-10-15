@@ -1,11 +1,12 @@
 name: Notify Release Pipeline
 
-# Listen ONLY to the Release workflow on success after a tag push. Previously
-# `workflows: ["*"]` paired with a complex reusable-side `if:` caused dozens
-# of "Skipped" notifier jobs per event. The trigger is now narrowed and the
-# top-level `if:` gates entry into the reusable workflow itself.
+# Reports every finished Release run (success, failure or cancelled) for tag pushes and manual
+# rebuilds to Discord.
+
+# workflow_run runs with secrets: only Release runs of this repository are reported (tag pushes
+# and manual rebuilds by maintainers), and no code is checked out here.
 on:
-  workflow_run:
+  workflow_run: # zizmor: ignore[dangerous-triggers]
     workflows: ["Release"]
     types: [completed]
 
@@ -15,6 +16,10 @@ permissions:
 
 jobs:
   notify:
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' }}
+    if: >-
+      contains(fromJSON('["success", "failure", "cancelled"]'), github.event.workflow_run.conclusion) &&
+      contains(fromJSON('["push", "workflow_dispatch"]'), github.event.workflow_run.event) &&
+      github.event.workflow_run.head_repository.full_name == github.repository
     uses: poli0981/.github/.github/workflows/notify-release-pipeline.yml@main
-    secrets: inherit
+    secrets:
+      DISCORD_RELEASE_PIPELINE_WEBHOOK: ${{ secrets.DISCORD_RELEASE_PIPELINE_WEBHOOK }}

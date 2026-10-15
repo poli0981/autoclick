@@ -23,8 +23,6 @@ public sealed class SessionStats
     /// <summary>Points skipped by the pixel color guard.</summary>
     public long Skipped => Interlocked.Read(ref _skipped);
 
-    public long Total => Clicks + Skipped;
-
     public TimeSpan LastInterval => TimeSpan.FromTicks(Interlocked.Read(ref _lastIntervalTicks));
 
     /// <summary>Changes whenever the heatmap changes, so readers can skip redundant redraws.</summary>

@@ -1,0 +1,8 @@
+# zizmor configuration (https://docs.zizmor.sh/configuration/).
+rules:
+  unpinned-uses:
+    config:
+      policies:
+        # Shared notification workflows maintained by the repository owner.
+        "poli0981/*": ref-pin
+        "*": hash-pin

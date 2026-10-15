@@ -3,7 +3,7 @@ using AutoClick.UI.Localization;
 namespace AutoClick.UI.ViewModels;
 
 /// <summary>A combo box choice: its value and the resource key of its (localized) label.</summary>
-public sealed record Choice<T>(T Value, string LabelKey)
+public sealed record Choice(object Value, string LabelKey)
 {
     /// <summary>The localized label (also what screen readers announce).</summary>
     public override string ToString() => L.Get(LabelKey);

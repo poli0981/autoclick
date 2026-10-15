@@ -1,0 +1,54 @@
+name: Security Audit
+
+# Daily: new advisories can affect packages that have not changed. Also submits the full
+# dependency graph (including transitive packages) for master, which Dependabot alerts and
+# dependency review compare against. Failures are reported to Discord (notify-ci-failure.yml).
+
+on:
+  schedule:
+    - cron: '17 2 * * *'
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-audit
+  cancel-in-progress: false
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  audit:
+    name: audit
+    runs-on: windows-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write # dependency snapshot submission
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore AutoClick.slnx
+
+      - name: Submit dependency snapshot
+        if: github.ref == 'refs/heads/master'
+        uses: advanced-security/component-detection-dependency-submission-action@a02aeda7a175ad4dd38a13c4d3ff2df9da8f2cf0 # v0.2.0
+        with:
+          detectorsCategories: NuGet
+
+      - name: Known vulnerabilities (direct and transitive)
+        shell: pwsh
+        run: ./eng/Test-VulnerablePackages.ps1

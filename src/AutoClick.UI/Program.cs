@@ -29,7 +29,7 @@ internal static class Program
         // The smoke test never touches the user's settings, profiles or logs.
         var paths = options.SmokeTest ? new AppPaths(Path.Combine(Path.GetTempPath(), "AutoClick-smoke")) : new AppPaths();
         var logBuffer = new LogBuffer();
-        var levelSwitch = new LoggingLevelSwitch(LogEventLevel.Information);
+        var levelSwitch = new LoggingLevelSwitch();
         Log.Logger = AppLogging.Create(paths, logBuffer, levelSwitch);
 
         using var loggerFactory = new SerilogLoggerFactory(Log.Logger);

@@ -30,7 +30,6 @@
         <!--  The title bar has its own row: overlaid (as in the WPF-UI gallery) it covers the
               first item of a LeftFluent pane.  -->
         <ui:TitleBar
-            x:Name="TitleBar"
             Title="{Binding Title}"
             Grid.Row="0"
             CloseWindowByDoubleClickOnIcon="False">

@@ -1,0 +1,24 @@
+{
+  // Markdown style for README, CHANGELOG and docs/ (checked by .github/workflows/docs.yml).
+  "config": {
+    "default": true,
+    // Long lines are fine in prose and tables.
+    "MD013": false,
+    // Inline HTML is used for badges, <details> and centered headers.
+    "MD033": false,
+    // Several documents start with a badge row or front matter instead of a heading.
+    "MD041": false,
+    // Repeated headings such as "Added"/"Fixed" per CHANGELOG version.
+    "MD024": { "siblings_only": true },
+    // Emphasis used as a caption is acceptable.
+    "MD036": false
+  },
+  "ignores": [
+    "**/node_modules/**",
+    "**/bin/**",
+    "**/obj/**",
+    "artifacts/**",
+    ".claude/**",
+    "**/TestResults/**"
+  ]
+}

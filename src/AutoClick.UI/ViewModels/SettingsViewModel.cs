@@ -62,7 +62,7 @@ public sealed partial class SettingsViewModel : ObservableObject
         new("zh", "中文（简体）"),
     ];
 
-    public static IReadOnlyList<Choice<AppTheme>> Themes { get; } =
+    public static IReadOnlyList<Choice> Themes { get; } =
     [
         new(AppTheme.System, "Theme_System"),
         new(AppTheme.Light, "Theme_Light"),
@@ -70,22 +70,22 @@ public sealed partial class SettingsViewModel : ObservableObject
         new(AppTheme.HighContrast, "Theme_HighContrast"),
     ];
 
-    public static IReadOnlyList<Choice<ExitBehavior>> ExitBehaviors { get; } =
+    public static IReadOnlyList<Choice> ExitBehaviors { get; } =
     [
         new(ExitBehavior.MinimizeToTray, "Exit_MinimizeToTray"),
         new(ExitBehavior.StopAndExit, "Exit_StopAndExit"),
         new(ExitBehavior.ForceExit, "Exit_ForceExit"),
     ];
 
-    public static IReadOnlyList<Choice<SettingsMode>> SettingsModes { get; } =
+    public static IReadOnlyList<Choice> SettingsModes { get; } =
     [
         new(SettingsMode.Global, "Mode_Global"),
         new(SettingsMode.Custom, "Mode_Custom"),
     ];
 
-    public static IReadOnlyList<Choice<ClickMode>> TimingModes => GameSessionViewModel.ModeOptions;
+    public static IReadOnlyList<Choice> TimingModes => GameSessionViewModel.ModeOptions;
 
-    public static IReadOnlyList<Choice<ColorMismatchBehavior>> MismatchBehaviors { get; } =
+    public static IReadOnlyList<Choice> MismatchBehaviors { get; } =
     [
         new(ColorMismatchBehavior.SkipPoint, "Guard_Skip"),
         new(ColorMismatchBehavior.StopSession, "Guard_Stop"),

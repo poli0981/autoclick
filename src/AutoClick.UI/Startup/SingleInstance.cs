@@ -79,7 +79,7 @@ public sealed class SingleInstance : IDisposable
     }
 
     /// <summary>Asks the running instance to show its window.</summary>
-    public static bool SignalExisting(ILogger logger)
+    public static void SignalExisting(ILogger logger)
     {
         try
         {
@@ -87,12 +87,10 @@ public sealed class SingleInstance : IDisposable
             client.Connect(1500);
             client.WriteByte(ShowCommand);
             client.Flush();
-            return true;
         }
         catch (Exception ex) when (ex is TimeoutException or IOException or UnauthorizedAccessException)
         {
             logger.LogWarning(ex, "Could not reach the running AutoClick instance");
-            return false;
         }
     }
 

@@ -31,8 +31,6 @@ public sealed class WinEventWatcher : IDisposable
         _hook = PInvoke.SetWinEventHook(eventId, eventId, null, _callback, processId, 0, WinEventOutOfContext);
     }
 
-    public bool IsActive => !_hook.IsInvalid;
-
     /// <summary>Raised whenever any window becomes the foreground window.</summary>
     public static WinEventWatcher Foreground(Action<nint> onForegroundChanged) =>
         new(PInvoke.EVENT_SYSTEM_FOREGROUND, 0, onForegroundChanged, 0);

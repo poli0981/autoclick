@@ -50,7 +50,7 @@ public sealed partial class GameSessionViewModel : ObservableObject, IDisposable
         deps.Overlays.HeatmapClosed += OnHeatmapClosed;
     }
 
-    public static IReadOnlyList<Choice<ClickMode>> ModeOptions { get; } =
+    public static IReadOnlyList<Choice> ModeOptions { get; } =
     [
         new(ClickMode.Random, "Timing_Random"),
         new(ClickMode.Fixed, "Timing_Fixed"),
@@ -76,6 +76,9 @@ public sealed partial class GameSessionViewModel : ObservableObject, IDisposable
 
     /// <summary>Raised (on the UI thread) when the game blocks input because it runs as administrator.</summary>
     public event EventHandler? ElevationRequired;
+
+    /// <summary>The user asked to remove this game from the queue.</summary>
+    public event EventHandler? RemoveRequested;
 
     /// <summary>Raised after a profile was saved, imported (the profile) or deleted (null).</summary>
     public event EventHandler<GameProfile?>? ProfilesChanged;
@@ -201,6 +204,9 @@ public sealed partial class GameSessionViewModel : ObservableObject, IDisposable
         Apply(_session.State, _session.StopReason, _session.StopDetail, _session.IsWaitingForWindow);
         _deps.Sound.Start();
     }
+
+    [RelayCommand]
+    public void Remove() => RemoveRequested?.Invoke(this, EventArgs.Empty);
 
     [RelayCommand(CanExecute = nameof(IsRunning))]
     public void Pause()
@@ -515,7 +521,7 @@ public sealed partial class GameSessionViewModel : ObservableObject, IDisposable
         if (_session is { } session)
         {
             session.StateChanged -= OnSessionStateChanged;
-            _ = session.StopAsync(StopReason.User);
+            _ = session.StopAsync();
         }
     }
 

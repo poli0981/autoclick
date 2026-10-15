@@ -153,6 +153,23 @@ public class ClickEngineTests
     }
 
     [Fact]
+    public async Task TransientFailures_AreRetried_OnlyARunOfFailuresStops()
+    {
+        _input.Script(InputResult.Failed, InputResult.Failed, InputResult.Failed, InputResult.Failed);
+        var stats = new SessionStats();
+        using var session = CreateEngine().Start(Info(new ClickPoint { X = 1, Y = 1 }), stats);
+
+        // Four failures, then a success that resets the count: still running.
+        await RunUntil(() => stats.Clicks == 1, TimeSpan.FromSeconds(1));
+        Assert.Equal(SessionState.Running, session.State);
+
+        _input.DefaultResult = InputResult.Failed;
+        await RunUntil(() => session.State == SessionState.Stopped, TimeSpan.FromSeconds(1));
+        Assert.Equal(StopReason.Error, session.StopReason);
+        Assert.Equal(1, stats.Clicks);
+    }
+
+    [Fact]
     public async Task PointOutsideTheWindow_StopsWithOutOfBounds()
     {
         _window.Width = 100;
@@ -275,7 +292,7 @@ public class ClickEngineTests
         Assert.Throws<InvalidOperationException>(() => engine.Start(info, new SessionStats()));
 
         await first.StopAsync();
-        await WaitFor(() => !engine.TryGet(info.SessionId, out _));
+        await WaitFor(() => !engine.IsRunning(info.SessionId));
         using var second = engine.Start(info, new SessionStats());
         await second.StopAsync();
     }

@@ -60,14 +60,10 @@ public static class L
 [MarkupExtensionReturnType(typeof(object))]
 public sealed class LocExtension : MarkupExtension
 {
-    public LocExtension()
-    {
-    }
-
     public LocExtension(string key) => Key = key;
 
     [ConstructorArgument("key")]
-    public string Key { get; set; } = string.Empty;
+    public string Key { get; }
 
     public override object ProvideValue(IServiceProvider serviceProvider) =>
         new Binding($"[{Key}]") { Source = LocalizationService.Instance, Mode = BindingMode.OneWay }.ProvideValue(serviceProvider);

@@ -68,22 +68,8 @@ public sealed class DialogService(IContentDialogService dialogs, ISnackbarServic
         };
 
         var result = await dialogs.ShowAsync(dialog, CancellationToken.None);
-        var text = box.Text?.Trim();
+        var text = box.Text.Trim();
         return result == ContentDialogResult.Primary && !string.IsNullOrEmpty(text) ? text : null;
-    }
-
-    /// <summary>Shows custom content; returns true when the primary button was pressed.</summary>
-    public async Task<bool> ShowAsync(string title, object content, string primaryText)
-    {
-        var dialog = new ContentDialog
-        {
-            Title = title,
-            Content = content,
-            PrimaryButtonText = primaryText,
-            CloseButtonText = L.Get("Common_Cancel"),
-            DefaultButton = ContentDialogButton.Primary,
-        };
-        return await dialogs.ShowAsync(dialog, CancellationToken.None) == ContentDialogResult.Primary;
     }
 
     /// <summary>"Add game": lets the user pick one of the windows from <paramref name="source"/>.</summary>

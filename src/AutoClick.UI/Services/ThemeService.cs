@@ -1,7 +1,6 @@
 using System.Windows;
 using AutoClick.Core.Models;
 using Wpf.Ui.Appearance;
-using Wpf.Ui.Controls;
 
 namespace AutoClick.UI.Services;
 
@@ -31,7 +30,7 @@ public sealed class ThemeService
             ApplicationThemeManager.ApplySystemTheme(true);
             if (window is not null && new System.Windows.Interop.WindowInteropHelper(window).Handle != 0)
             {
-                SystemThemeWatcher.Watch(window, WindowBackdropType.Mica, true);
+                SystemThemeWatcher.Watch(window);
                 _watchedWindow = window;
             }
         }
@@ -43,12 +42,9 @@ public sealed class ThemeService
                 AppTheme.HighContrast => ApplicationTheme.HighContrast,
                 _ => ApplicationTheme.Dark,
             };
-            ApplicationThemeManager.Apply(wpfTheme, WindowBackdropType.Mica, true);
+            ApplicationThemeManager.Apply(wpfTheme);
         }
 
         ThemeChanged?.Invoke(this, EventArgs.Empty);
     }
-
-    /// <summary>True when the effective theme is light (used for chart colors).</summary>
-    public static bool IsLight => ApplicationThemeManager.GetAppTheme() == ApplicationTheme.Light;
 }

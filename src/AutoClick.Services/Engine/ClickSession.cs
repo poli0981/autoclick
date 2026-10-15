@@ -391,7 +391,7 @@ public sealed class ClickSession : IDisposable
                 if (++_consecutiveFailures >= MaxConsecutiveFailures)
                 {
                     Finish(result == InputResult.TargetNotResponding ? StopReason.TargetNotResponding : StopReason.Error,
-                        $"{_consecutiveFailures} failed sends in a row");
+                        $"{_consecutiveFailures} × {result}");
                     return false;
                 }
 

@@ -20,8 +20,6 @@ public sealed class TrayService : IDisposable
 
     public event EventHandler? ExitRequested;
 
-    public bool IsCreated => _icon is not null;
-
     public void Create()
     {
         if (_icon is not null)

@@ -38,7 +38,7 @@ public sealed class ClickEngine(
         return session;
     }
 
-    public bool TryGet(string sessionId, out ClickSession? session) => _sessions.TryGetValue(sessionId, out session);
+    public bool IsRunning(string sessionId) => _sessions.ContainsKey(sessionId);
 
     /// <summary>Stops every running session (e.g. before exit or applying an update).</summary>
     public Task StopAllAsync(StopReason reason) =>

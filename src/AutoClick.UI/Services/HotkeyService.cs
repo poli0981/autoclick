@@ -33,15 +33,13 @@ public sealed class HotkeyService(ILogger<HotkeyService> logger) : IDisposable
 
     public IReadOnlyDictionary<HotkeyAction, HotkeyRegistrationResult> Results => _results;
 
-    public IReadOnlyDictionary<HotkeyAction, HotkeyRegistrationResult> Apply(HotkeySettings settings)
+    public void Apply(HotkeySettings settings)
     {
         _applied = settings;
         if (!_suspended)
         {
             RegisterAll();
         }
-
-        return _results;
     }
 
     /// <summary>Releases every hotkey (while the user records a new one in Settings).</summary>

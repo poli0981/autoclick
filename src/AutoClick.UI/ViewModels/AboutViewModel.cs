@@ -1,7 +1,6 @@
 using System.Runtime.InteropServices;
 using System.Windows.Threading;
 using AutoClick.Core.Abstractions;
-using AutoClick.Services;
 using AutoClick.Services.Updates;
 using AutoClick.UI.Localization;
 using AutoClick.UI.Services;
@@ -21,14 +20,13 @@ public sealed partial class AboutViewModel : ObservableObject
     private readonly DialogService _dialogs;
     private readonly Dispatcher _dispatcher = Dispatcher.CurrentDispatcher;
 
-    public AboutViewModel(UpdateService updates, AppLifetime lifetime, ShellLauncher shell, DialogService dialogs, IElevationService elevation, AppPaths paths)
+    public AboutViewModel(UpdateService updates, AppLifetime lifetime, ShellLauncher shell, DialogService dialogs, IElevationService elevation)
     {
         _updates = updates;
         _lifetime = lifetime;
         _shell = shell;
         _dialogs = dialogs;
         IsElevated = elevation.IsCurrentProcessElevated;
-        DataFolder = paths.DataDirectory;
         updates.Changed += (_, _) => _dispatcher.BeginInvoke(RefreshUpdate);
         LocalizationService.Instance.LanguageChanged += (_, _) => RefreshUpdate();
         RefreshUpdate();
@@ -42,16 +40,11 @@ public sealed partial class AboutViewModel : ObservableObject
 
     public bool IsElevated { get; }
 
-    public string DataFolder { get; }
-
     [ObservableProperty]
     public partial string UpdateStatus { get; set; } = string.Empty;
 
     [ObservableProperty]
     public partial bool IsUpdateBusy { get; set; }
-
-    [ObservableProperty]
-    public partial int DownloadProgress { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CheckForUpdatesCommand))]
@@ -111,7 +104,6 @@ public sealed partial class AboutViewModel : ObservableObject
     {
         var state = _updates.State;
         IsUpdateBusy = state is UpdateState.Checking or UpdateState.Downloading;
-        DownloadProgress = _updates.DownloadProgress;
         CanCheck = state is UpdateState.Idle or UpdateState.UpToDate or UpdateState.Failed;
         CanDownload = state == UpdateState.Available;
         CanApply = state == UpdateState.ReadyToApply;

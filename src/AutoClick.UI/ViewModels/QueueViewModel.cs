@@ -170,15 +170,6 @@ public sealed partial class QueueViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public void RemoveGame(GameSessionViewModel? game)
-    {
-        if (game is not null)
-        {
-            Remove(game);
-        }
-    }
-
-    [RelayCommand]
     public async Task RemoveAllAsync()
     {
         if (Games.Count == 0
@@ -393,6 +384,7 @@ public sealed partial class QueueViewModel : ObservableObject
         var game = new GameSessionViewModel(window, _deps, Profiles);
         game.ElevationRequired += OnGameElevationRequired;
         game.ProfilesChanged += OnProfilesChanged;
+        game.RemoveRequested += OnGameRemoveRequested;
         game.PropertyChanged += (_, e) =>
         {
             if (e.PropertyName is nameof(GameSessionViewModel.State) or nameof(GameSessionViewModel.HasPoints))
@@ -409,6 +401,7 @@ public sealed partial class QueueViewModel : ObservableObject
     {
         game.ElevationRequired -= OnGameElevationRequired;
         game.ProfilesChanged -= OnProfilesChanged;
+        game.RemoveRequested -= OnGameRemoveRequested;
         game.Dispose();
         Games.Remove(game);
         if (game.Clicks + game.Skipped > 0)
@@ -560,6 +553,14 @@ public sealed partial class QueueViewModel : ObservableObject
         if (sender is GameSessionViewModel game)
         {
             ElevationRequired?.Invoke(this, game);
+        }
+    }
+
+    private void OnGameRemoveRequested(object? sender, EventArgs e)
+    {
+        if (sender is GameSessionViewModel game)
+        {
+            Remove(game);
         }
     }
 

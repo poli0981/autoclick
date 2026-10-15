@@ -1,5 +1,8 @@
 name: CI
 
+# Required checks for master: build-test, dead-code, licenses, vuln-audit.
+# No path filters: a required check that does not run would block every pull request.
+
 on:
   push:
     branches: [master]
@@ -22,7 +25,7 @@ jobs:
   build-test:
     name: build-test
     runs-on: windows-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -32,17 +35,42 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
-          # global.json pins the 10.0.4xx band (rollForward: latestFeature); this installs the newest patch.
-          dotnet-version: '10.0.4xx'
-
-      - name: Restore tools
-        run: dotnet tool restore
+          global-json-file: global.json
 
       - name: Restore
-        run: dotnet restore AutoClick.slnx
+        run: |
+          dotnet tool restore
+          dotnet restore AutoClick.slnx
+
+      - name: Check formatting
+        run: |
+          dotnet format whitespace AutoClick.slnx --verify-no-changes --no-restore
+          dotnet format style AutoClick.slnx --verify-no-changes --no-restore
 
       - name: Build (warnings as errors)
         run: dotnet build AutoClick.slnx -c Release --no-restore -p:ContinuousIntegrationBuild=true
+
+      - name: Test
+        run: >-
+          dotnet test --solution AutoClick.slnx -c Release --no-build
+          --results-directory artifacts/test-results --minimum-expected-tests 10
+          --coverage --coverage-output-format cobertura
+
+      - name: Coverage
+        shell: pwsh
+        run: |
+          dotnet reportgenerator "-reports:artifacts/test-results/**/*.cobertura.xml" -targetdir:artifacts/coverage `
+            "-reporttypes:Cobertura;MarkdownSummaryGithub" "-assemblyfilters:+AutoClick.*;-AutoClick.*.Tests;-AutoClick.ClickTarget"
+          Get-Content artifacts/coverage/SummaryGithub.md | Add-Content -LiteralPath $env:GITHUB_STEP_SUMMARY
+          ./eng/Test-Coverage.ps1 -Cobertura artifacts/coverage/Cobertura.xml
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: test-results
+          path: artifacts/test-results/
+          retention-days: 7
 
       - name: Build info
         id: info
@@ -51,6 +79,10 @@ jobs:
 
       - name: Publish (win-x64, self-contained)
         run: dotnet publish src/AutoClick.UI/AutoClick.UI.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=false -p:ContinuousIntegrationBuild=true -o artifacts/publish
+
+      - name: Third-party notices
+        shell: pwsh
+        run: ./eng/New-ThirdPartyNotices.ps1 -OutFile artifacts/publish/THIRD-PARTY-NOTICES.txt
 
       - name: Smoke test
         shell: pwsh
@@ -67,3 +99,94 @@ jobs:
             --icon src/AutoClick.UI/Assets/app.ico --channel win --delta None `
             --releaseNotes artifacts/release_notes.md --outputDir artifacts/releases
           Get-ChildItem artifacts/releases | Format-Table Name, Length
+
+  dead-code:
+    name: dead-code
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Build
+        run: |
+          dotnet tool restore
+          dotnet build AutoClick.slnx -c Release -p:ContinuousIntegrationBuild=true
+
+      - name: InspectCode (solution-wide analysis)
+        run: >-
+          dotnet jb inspectcode AutoClick.slnx --no-build --properties:Configuration=Release --swea
+          --format=Sarif --output=artifacts/inspectcode.sarif --no-updates --verbosity=WARN
+
+      - name: Unused-code gate
+        shell: pwsh
+        run: ./eng/Test-InspectCode.ps1 -Sarif artifacts/inspectcode.sarif
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: inspectcode
+          path: artifacts/inspectcode.sarif
+          if-no-files-found: ignore
+          retention-days: 14
+
+  licenses:
+    name: licenses
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: |
+          dotnet tool restore
+          dotnet restore src/AutoClick.UI/AutoClick.UI.csproj
+
+      - name: License policy and notices
+        shell: pwsh
+        run: ./eng/New-ThirdPartyNotices.ps1 -OutFile artifacts/THIRD-PARTY-NOTICES.txt
+
+      - name: Upload notices
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: third-party-notices
+          path: artifacts/THIRD-PARTY-NOTICES.txt
+          retention-days: 14
+
+  vuln-audit:
+    name: vuln-audit
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore AutoClick.slnx
+
+      - name: Known vulnerabilities (direct and transitive)
+        shell: pwsh
+        run: ./eng/Test-VulnerablePackages.ps1
