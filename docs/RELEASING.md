@@ -28,10 +28,10 @@ The tag starts [`release.yml`](../.github/workflows/release.yml). Its **build** 
 1. Checks that the tag is `vX.Y.Z`, matches the project version, and that the `vpk` CLI pinned in `.config/dotnet-tools.json` matches the Velopack library.
 2. Extracts the release notes from `CHANGELOG.md`.
 3. Publishes the app (self-contained `win-x64`), writes `THIRD-PARTY-NOTICES.txt` into it (failing on any license outside the policy) and runs the `--smoke-test` of the published exe.
-4. Packs with `vpk pack` (full package only): `AutoClick-win-Setup.exe`, `AutoClick-win-Portable.zip`, `AutoClick-X.Y.Z-full.nupkg`, `releases.win.json`, `assets.win.json`, `RELEASES`.
+4. Packs with `vpk pack` (full package only): `AutoClick-win-Setup.exe`, `AutoClick-win-Portable.zip`, `AutoClick-X.Y.Z-full.nupkg`, and the update feed `releases.win.json` plus `RELEASES` (read by older clients).
 5. Generates an SPDX SBOM and creates build provenance and SBOM attestations for the installer, the portable zip and the package.
 
-The **upload draft release** job then uploads everything (plus `AutoClick-X.Y.Z.spdx.json`) to a draft release named `AutoClick vX.Y.Z`.
+The **upload draft release** job then uploads these files (plus `AutoClick-X.Y.Z.spdx.json`) to a draft release named `AutoClick vX.Y.Z`.
 
 To rebuild an existing tag after a transient failure, use **Actions → Release → Run workflow** with the tag; it builds that tag and merges into the existing draft.
 
@@ -46,7 +46,15 @@ Until it is published, the release is invisible to users and to the updater.
    gh attestation verify AutoClick-win-Setup.exe -R poli0981/autoclick
    ```
 
-3. In **Windows Sandbox**: install the previous release, add some settings and profiles, update to the draft's package with the installed `Update.exe`, and check that the new version starts, the data is still there, and a fresh install and an uninstall work too.
+3. Test the update in **Windows Sandbox** (nothing is installed on your machine), from the previous release and from older ones users may still have. In PowerShell 7:
+
+   ```powershell
+   gh release download v1.3.4 -p AutoClick-win-Setup.exe -D artifacts/upgrade-test/old
+   gh release download vX.Y.Z -p 'AutoClick-*-full.nupkg' -p AutoClick-win-Setup.exe -D artifacts/upgrade-test/new
+   ./eng/Invoke-UpgradeTest.ps1 -OldSetup artifacts/upgrade-test/old/AutoClick-win-Setup.exe -NewDir artifacts/upgrade-test/new
+   ```
+
+   The script installs the old release, adds 1.x settings and a profile, updates with the installed `Update.exe` (as the in-app updater does), starts the new version once (data migration) and runs its smoke test, then uninstalls and checks a fresh install. It prints PASS or FAIL for each check and keeps the logs in `artifacts/upgrade-test/runs`.
 
 ## 4. Publish
 
