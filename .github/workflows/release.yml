@@ -1,147 +1,146 @@
 name: Release
 
+# Builds the tagged commit and uploads a DRAFT GitHub release. Verify the draft (see
+# docs/RELEASING.md), then publish it from your own account: publishing with a user token
+# raises `release: published`, which runs the announcement and discussion workflows.
+
 on:
   push:
-    tags:
-      - 'v*'
+    tags: ['v*.*.*']
   workflow_dispatch:
     inputs:
-      version:
-        description: 'Version (e.g. 1.2.1)'
+      tag:
+        description: 'Existing tag to rebuild and upload as a draft (e.g. v1.3.4)'
         required: true
         type: string
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: release-${{ inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
 
 jobs:
-  release:
+  build:
+    name: build
     runs-on: windows-latest
-
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+      version: ${{ steps.tag.outputs.version }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-
-      - name: Setup .NET 8
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Resolve version
-        id: ver
+      - name: Resolve and validate tag
+        id: tag
         shell: pwsh
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_TAG: ${{ inputs.tag }}
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
-            $v = '${{ inputs.version }}'
-          } else {
-            $v = '${{ github.ref_name }}' -replace '^v',''
-          }
-          if (-not $v) { throw "Could not resolve version" }
-          "version=$v" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
-          Write-Host "Releasing version: $v"
+          $tag = if ($env:EVENT_NAME -eq 'workflow_dispatch') { $env:INPUT_TAG } else { $env:REF_NAME }
+          if ($tag -notmatch '^v\d+\.\d+\.\d+$') { throw "Tag '$tag' is not of the form vX.Y.Z." }
+          "tag=$tag" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "version=$($tag.Substring(1))" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
 
-      - name: Extract release notes from CHANGELOG
+      - name: Checkout tag
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: refs/tags/${{ steps.tag.outputs.tag }}
+          persist-credentials: false
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: '10.0.4xx'
+
+      - name: Restore tools
+        run: dotnet tool restore
+
+      - name: Check version and vpk
         shell: pwsh
-        run: |
-          $v = '${{ steps.ver.outputs.version }}'
-          $cl = Get-Content CHANGELOG.md -Raw
-          $escaped = [regex]::Escape($v)
-          $pattern = "(?ms)^## \[$escaped\][^\n]*\r?\n(.*?)(?=^## \[|\z)"
-          $m = [regex]::Match($cl, $pattern)
-          if ($m.Success) {
-            $notes = $m.Groups[1].Value.Trim()
-          } else {
-            $notes = "Release v$v"
-          }
-          $notes | Out-File -FilePath release_notes.md -Encoding utf8 -NoNewline
-          Write-Host "--- release_notes.md ---"
-          Get-Content release_notes.md
+        env:
+          VERSION: ${{ steps.tag.outputs.version }}
+        run: ./eng/Get-BuildInfo.ps1 -ExpectedVersion $env:VERSION
 
-      - name: Restore
-        run: dotnet restore src/AutoClick.UI/AutoClick.UI.csproj
+      - name: Release notes from CHANGELOG
+        shell: pwsh
+        env:
+          VERSION: ${{ steps.tag.outputs.version }}
+        run: |
+          New-Item -ItemType Directory -Force artifacts | Out-Null
+          ./eng/Get-ReleaseNotes.ps1 -Version $env:VERSION -OutFile artifacts/release_notes.md
 
       - name: Publish (win-x64, self-contained)
-        shell: pwsh
-        run: |
-          dotnet publish src/AutoClick.UI/AutoClick.UI.csproj `
-            -c Release `
-            -r win-x64 `
-            --self-contained true `
-            /p:Version=${{ steps.ver.outputs.version }} `
-            /p:AssemblyVersion=${{ steps.ver.outputs.version }}.0 `
-            /p:FileVersion=${{ steps.ver.outputs.version }}.0 `
-            /p:InformationalVersion=${{ steps.ver.outputs.version }} `
-            /p:PublishSingleFile=false `
-            -o publish
+        run: dotnet publish src/AutoClick.UI/AutoClick.UI.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=false -p:ContinuousIntegrationBuild=true -o artifacts/publish
 
-      - name: Install Velopack CLI (vpk)
-        run: dotnet tool install -g vpk
-
-      - name: Download previous releases (for delta)
-        # TEMPORARILY DISABLED for v1.3.3. The v1.3.2 nuspec inside the
-        # uploaded nupkg contains unescaped XML entities (likely an `&`
-        # from the release-notes markdown). vpk reads it not only to
-        # build deltas but also when building the Setup.exe — so even
-        # `--delta None` doesn't help; the parse error happens earlier.
-        # Re-enable after we ship a release with sanitized release notes
-        # and re-pack a clean baseline.
-        if: false
+      - name: Smoke test
         shell: pwsh
-        continue-on-error: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          vpk download github `
-            --repoUrl https://github.com/poli0981/autoclick `
-            --token $env:GITHUB_TOKEN `
-            --channel win
+        run: ./eng/Invoke-SmokeTest.ps1 -Exe artifacts/publish/AutoClick.UI.exe
 
       - name: Velopack pack
-        # `--delta None` disables delta-package generation. The previous
-        # release's nuspec (downloaded above) currently fails XML parse on
-        # `vpk` >= 0.0.1251 with "An error occurred while parsing
-        # EntityName. Line 20, position 22" — see release runs
-        # 25711362379 and 25711587719. Until we re-pack a clean baseline
-        # release with sanitized release notes, ship full packages only.
-        # Users still get updates, just at full package size instead of
-        # delta size.
-        shell: pwsh
-        run: |
-          vpk pack `
-            -u AutoClick `
-            -v ${{ steps.ver.outputs.version }} `
-            -p publish `
-            -e AutoClick.UI.exe `
-            --packTitle AutoClick `
-            --packAuthors poli0981 `
-            --icon src/AutoClick.UI/Assets/app.ico `
-            --channel win `
-            --delta None `
-            --releaseNotes release_notes.md
-
-      - name: List release artifacts
-        shell: pwsh
-        run: |
-          Write-Host "--- Releases/ ---"
-          Get-ChildItem Releases | Format-Table Name, Length
-
-      - name: Upload artifacts to workflow run
-        uses: actions/upload-artifact@v7
-        with:
-          name: velopack-release-${{ steps.ver.outputs.version }}
-          path: Releases/
-
-      - name: Upload to GitHub Releases
         shell: pwsh
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.tag.outputs.version }}
+        # Full package only: this release changes the .NET runtime, so a delta would be
+        # nearly as large as the full package.
         run: |
-          vpk upload github `
-            --repoUrl https://github.com/poli0981/autoclick `
-            --token $env:GITHUB_TOKEN `
-            --tag v${{ steps.ver.outputs.version }} `
-            --releaseName "AutoClick v${{ steps.ver.outputs.version }}" `
-            --merge `
-            --channel win
+          dotnet vpk pack --packId AutoClick --packVersion $env:VERSION --packDir artifacts/publish `
+            --mainExe AutoClick.UI.exe --packTitle AutoClick --packAuthors poli0981 `
+            --icon src/AutoClick.UI/Assets/app.ico --channel win --delta None `
+            --releaseNotes artifacts/release_notes.md --outputDir artifacts/releases
+          Get-ChildItem artifacts/releases | Format-Table Name, Length
+
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: velopack-release
+          path: artifacts/releases/
+          if-no-files-found: error
+          retention-days: 30
+
+  publish:
+    name: upload draft release
+    needs: build
+    runs-on: windows-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout tag
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: refs/tags/${{ needs.build.outputs.tag }}
+          persist-credentials: false
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: '10.0.4xx'
+
+      - name: Restore tools
+        run: dotnet tool restore
+
+      - name: Download release artifacts
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: velopack-release
+          path: artifacts/releases
+
+      - name: Upload draft to GitHub Releases
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ needs.build.outputs.tag }}
+          VERSION: ${{ needs.build.outputs.version }}
+        run: |
+          $commit = git rev-parse HEAD
+          dotnet vpk upload github --repoUrl "https://github.com/$env:GITHUB_REPOSITORY" --token $env:GH_TOKEN `
+            --tag $env:TAG --targetCommitish $commit --releaseName "AutoClick v$env:VERSION" `
+            --merge --channel win --outputDir artifacts/releases
