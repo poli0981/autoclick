@@ -32,6 +32,38 @@ body:
       required: true
 
   - type: input
+    id: version
+    attributes:
+      label: AutoClick Version
+      description: Shown on the About page (for example 2.0.0).
+      placeholder: "2.0.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: install-source
+    attributes:
+      label: Installed From
+      options:
+        - Installer (AutoClick-win-Setup.exe)
+        - Portable zip (AutoClick-win-Portable.zip)
+        - Built from source
+    validations:
+      required: true
+
+  - type: dropdown
+    id: elevation
+    attributes:
+      label: Does the game run as administrator?
+      description: Windows blocks clicks into games that run as administrator unless AutoClick does too.
+      options:
+        - "No"
+        - "Yes"
+        - "Don't know"
+    validations:
+      required: false
+
+  - type: input
     id: os-version
     attributes:
       label: OS Version
@@ -50,7 +82,9 @@ body:
         - label: Click not working on game window
         - label: Hotkeys not registering
         - label: Coordinate picker not accurate
-        - label: Settings not saving or loading
+        - label: Heatmap overlay misplaced or missing
+        - label: Pixel color guard or scheduler
+        - label: Settings, profiles or sessions not saving or loading
         - label: Auto-update error
         - label: UI display or theme issue
         - label: Language / translation issue
@@ -89,7 +123,7 @@ body:
     id: log
     attributes:
       label: Log Output
-      description: Paste relevant log entries from the app's log panel or exported log file (optional).
+      description: Paste relevant lines from the log panel, an exported log, or %LocalAppData%\AutoClick\logs (optional). Window titles in the log can contain personal text; remove it before posting.
       render: shell
       placeholder: |
         2026-04-03 12:00:00 [ERR] ...
@@ -101,6 +135,6 @@ body:
     attributes:
       label: IDE / Build Environment
       description: If you built from source, which IDE and .NET SDK version? (optional)
-      placeholder: "JetBrains Rider 2026.1 / .NET SDK 8.0.400"
+      placeholder: "JetBrains Rider 2026.2 / .NET SDK 10.0.401"
     validations:
       required: false

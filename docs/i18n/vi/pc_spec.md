@@ -1,6 +1,6 @@
 # Cấu Hình Máy Phát Triển
 
-Bản tiếng Việt của [docs/pc_spec.md](../../pc_spec.md). Tài liệu mô tả công khai máy chính của developer — dùng làm tham chiếu "dự án được build và kiểm thử trên máy nào". Kết quả test game/build cụ thể nằm trong [DEV_ENVIRONMENT.md](DEV_ENVIRONMENT.md).
+Bản tiếng Việt của [docs/pc_spec.md](../../pc_spec.md). Tài liệu mô tả công khai máy chính của developer — máy dùng để build và kiểm thử dự án. Kết quả kiểm thử game nằm trong [DEV_ENVIRONMENT.md](DEV_ENVIRONMENT.md).
 
 > Áp dụng cho **toàn bộ** các dự án đang triển khai của developer, không chỉ riêng AutoClick.
 
@@ -8,8 +8,8 @@ Bản tiếng Việt của [docs/pc_spec.md](../../pc_spec.md). Tài liệu mô 
 
 | Thành phần | Chi tiết |
 |------------|----------|
-| **OS** | Windows 11 Pro 25H2 Insider Preview (Dev Channel) |
-| **Build** | 26300.8376 |
+| **OS** | Windows 11 Pro Insider Preview (kênh Dev) |
+| **Build** | 29648.1000 |
 | **CPU** | Intel Core i7-14700KF |
 | **GPU** | NVIDIA GeForce RTX 5080 (16 GB VRAM) |
 | **RAM** | 32 GB DDR5 |
@@ -25,18 +25,18 @@ Dùng cho kiểm tra web đa trình duyệt:
 
 ## Phiên Bản Toolchain
 
-Chỉ liệt kê các toolchain đang dùng trong các dự án hiện hành. Mỗi dự án có thể pin mức tối thiểu chặt hơn trong README riêng.
+Chỉ liệt kê các toolchain đang cài cho các dự án hiện hành. Mỗi dự án có thể pin phiên bản chặt hơn (AutoClick pin .NET SDK trong [`global.json`](../../../global.json)).
 
-- **Python** — 3.12.x, 3.14.x
-- **Node.js** — `>= 25.8.1`
+- **.NET** — SDK 10.0.4xx; runtime 8.0 và 10.0
+- **Python** — 3.14.x
+- **Node.js** — 24.x
 - **Rust** — stable (cài qua `rustup`)
-- **Git** — bản gần đây; bật GPG ký commit (`commit.gpgsign=true`)
-- **.NET** — 8.x, 9.x, 10.x, 11.x (PREVIEW)
+- **Git** — 2.56; bật GPG ký commit (`commit.gpgsign=true`)
 
-Phiên bản mới sẽ được bổ sung khi xuất hiện trong dự án đã ship.
+Phiên bản mới sẽ được bổ sung khi xuất hiện trong dự án đã phát hành.
 
 ## Tài Liệu Liên Quan
 
-- [DEV_ENVIRONMENT.md](DEV_ENVIRONMENT.md) — IDE + toolchain ngôn ngữ + quy trình dev (tiếng Việt)
+- [DEV_ENVIRONMENT.md](DEV_ENVIRONMENT.md) — build, công cụ kiểm thử và các game đã thử (tiếng Việt)
 - [../../SYSTEM_REQUIREMENTS.md](../../SYSTEM_REQUIREMENTS.md) — yêu cầu hệ thống cho người dùng cuối
 - [../../pc_spec.md](../../pc_spec.md) — bản gốc tiếng Anh

@@ -1,50 +1,44 @@
 # Privacy Policy
 
-**Last updated:** April 2026
+**Last updated:** October 2026 (AutoClick 2.0)
 
-## Overview
+## Summary
 
-AutoClick is a desktop application that runs entirely on your local machine. We are committed to protecting your privacy.
+AutoClick runs entirely on your PC. It has no accounts, no telemetry, no analytics and no crash reporting. The only network traffic is the update check against this project's GitHub Releases, which you can turn off.
 
-## Data Collection
+## Data stored on your PC
 
-AutoClick does **NOT** collect, transmit, or store any personal data on external servers. Specifically:
+Everything is kept in `%LocalAppData%\AutoClick` (for example `C:\Users\<you>\AppData\Local\AutoClick`):
 
-- **No telemetry**: The application does not send usage data, crash reports, or analytics to any server.
-- **No account required**: No registration, login, or personal information is needed to use the software.
-- **No network requests**: The only outbound network requests are for checking application updates via the GitHub Releases API (`api.github.com`). This is optional and can be disabled in Settings.
+| Data | Location | Contents |
+|------|----------|----------|
+| Settings | `settings.v2.json` | Your preferences: timing, pixel color guard, hotkeys, theme, language, window position |
+| 1.x settings | `settings.json`, `backup\settings.v1.json` | Left from AutoClick 1.x (kept so 1.x keeps working, and a backup made during the upgrade) |
+| Profiles | `profiles\*.json` | The steps and timing you saved |
+| Logs | `logs\autoclick-YYYYMMDD.log` | Application events for troubleshooting, in daily files of at most 10 MB; the 14 most recent files are kept |
+| Damaged files | `settings.v2.json.corrupt-*` | A settings file that could not be read, kept instead of being deleted |
 
-## Local Data Storage
+The logs contain the process names and window titles of the games you add, click coordinates, file paths you import from or export to, and error details. A window title can contain personal text if you add a window such as a browser or a chat app; check a log before sharing it in a bug report.
 
-AutoClick stores the following data **locally** on your machine:
+Files you export (settings, profiles, sessions, statistics, logs) are written only where you choose.
 
-| Data | Location | Purpose |
-|------|----------|---------|
-| Settings | `%LocalAppData%\AutoClick\settings.json` | User preferences (click mode, intervals, theme, language, hotkeys) |
-| Logs | `%LocalAppData%\AutoClick\logs\` | Application debug logs for troubleshooting |
+**Uninstalling AutoClick deletes the whole `%LocalAppData%\AutoClick` folder**, including profiles and logs. The portable version keeps its data in the same folder; delete it yourself if you no longer need it.
 
-No game credentials, personal identifiers, or sensitive information is stored.
+## Network access
 
-## Update Mechanism
+- **Update check:** when *Update automatically* is on (the default), AutoClick asks GitHub for the latest release at startup and every 6 hours, and downloads an update when there is one. With the setting off, this only happens when you press *Check for updates*. The requests go to GitHub (`api.github.com`, `github.com` and its release download hosts) and carry the information any web request does, such as your IP address. They do not identify you to the developer. See [GitHub's Privacy Statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement).
+- **Links:** buttons on the About page open web pages in your browser. Nothing is sent until you click them.
 
-When auto-update is enabled, AutoClick contacts the GitHub Releases API to check for new versions. This request includes:
-- Your IP address (standard HTTP request, handled by GitHub's privacy policy)
-- No authentication tokens for public repositories
+AutoClick sends nothing else: no usage data, no settings, no logs.
 
-You may disable auto-update in Settings at any time.
+## Children's privacy
 
-## Third-Party Services
+AutoClick collects no data from anyone, including children.
 
-- **GitHub API**: Used solely for update checking. Subject to [GitHub's Privacy Statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement).
+## Changes to this policy
 
-## Children's Privacy
-
-AutoClick does not knowingly collect any data from children or any other users.
-
-## Changes to This Policy
-
-We may update this Privacy Policy from time to time. Changes will be posted in the GitHub repository.
+Changes are published in the [GitHub repository](https://github.com/poli0981/autoclick) and noted in the [CHANGELOG](../CHANGELOG.md).
 
 ## Contact
 
-For privacy-related questions, please open an issue on the [GitHub repository](https://github.com/poli0981/autoclick).
+Open an issue on the [GitHub repository](https://github.com/poli0981/autoclick/issues) for privacy questions.

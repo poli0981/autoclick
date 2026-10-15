@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" PrivateAssets="all" />
-  </ItemGroup>
-
-  <ItemGroup>
     <InternalsVisibleTo Include="AutoClick.Core.Tests" />
   </ItemGroup>
 

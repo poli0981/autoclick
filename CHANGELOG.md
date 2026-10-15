@@ -6,21 +6,79 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [Unreleased]
+
+## [2.0.0] - 2026-10-15
+
+AutoClick rebuilt: a new Fluent interface, no administrator rights needed for most games, and fixes for every known 1.x bug. Settings, profiles and hotkeys from 1.x carry over automatically.
+
+### Highlights
+
+- **New interface** (WPF-UI Fluent): Queue, Dashboard, Settings and About pages; Light, Dark, High contrast or follow Windows. Settings apply as you change them, and switching the language no longer restarts the app.
+- **Administrator rights only when a game needs them.** Windows blocks clicks into games that run as administrator; AutoClick now detects this, says so, and offers *Restart as administrator* (or *Always run as administrator* in Settings). If you are upgrading from 1.x, AutoClick keeps starting as administrator until you turn it off; a one-time notice explains how.
+- **Keystroke steps keep their key** when profiles are saved or loaded and when sessions are exported or imported (1.x lost it).
+- **The coordinate picker works on every monitor and at any display scaling.** Points are read in the game's own DPI context, so games that are not DPI aware are clicked at the right spot on scaled monitors.
+- **Minimizing a game no longer stops its session**: it waits and continues when the game is restored.
+- **Stop is available while a game is paused.** Steps can be removed one by one and reordered with the arrow buttons or by dragging.
+- **The heatmap follows the game window**, appears only while the game (or one of its dialogs) is in front, and redraws only when something changed.
+- **Pixel color guard** can also wait until the pixel matches (with a timeout), besides skipping the step or stopping.
+- **Global hotkeys** take effect as soon as they are changed and report combinations already used by another app. Pause/Resume now pauses or resumes all games together.
+- **Updates** are checked at startup and every 6 hours and downloaded in the background. Install with *Restart and update*, or let AutoClick install the update when you exit.
+
+### Fixed
+
+- Importing a session file could write files outside the profiles folder through a crafted profile id. Profile ids are now validated.
+- Settings and profiles are written atomically. An unreadable settings file is kept as a backup and reported, instead of being silently reset.
+- Importing settings copied only 9 of 19 values and accepted invalid ones (a negative interval or missing hotkeys crashed 1.x).
+- Starting a game twice quickly could cancel the new session. New points used no delay although 200 ms was shown.
+- The interval field stayed locked after a session stopped by itself.
+- Hotkeys typed as digits registered the wrong key, changing a hotkey needed a restart, and a hotkey used by another app was ignored without a message.
+- Two copies could run at once when one of them ran as administrator.
+- Applying an update restarted AutoClick without stopping sessions or saving settings.
+- A crash left nothing in the log. Unhandled errors are now logged, and the log is written asynchronously, flushed on exit and rotated daily (the 14 most recent files are kept).
+- Heatmap: wrong position on monitors with another scale, all markers redrawn every 200 ms, hidden when the game opened a dialog, left open after the game was removed.
+- Input: clicks blocked by Windows were counted as successful; keystrokes now include the scan code; the random jitter could leave the window; handles to game processes leaked every 2 seconds.
+- Interface: the log did not scroll to new lines, scrollbars were hidden, maximizing was limited, keystroke steps showed "(0, 0)", the game picker's Select button was always enabled, and about 25 texts were untranslated.
+
+### Changed
+
+- Requires Windows 10 version 2004 (build 19041) or later, or Windows 11, 64-bit. The .NET 10 runtime is included.
+- Settings are stored in `settings.v2.json`. The 1.x `settings.json` is left untouched (and backed up), so 1.x still works if you go back. Profiles keep the 1.x format.
+- Session files use format 2; 1.x session files can still be imported.
+- The periodic memory "cleanup" that froze the interface was removed, and the dashboard only draws while it is visible.
+- Tray icon based on H.NotifyIcon: notifications as balloons, and the icon comes back after Explorer restarts.
+
+### Security and project
+
+- Every pull request runs a warnings-as-errors build, 200+ tests with coverage minimums, a format check, a smoke test of the published app in every theme and language, unused-code analysis (ReSharper InspectCode), a license policy check (GPL-3.0 compatible licenses only) and a known-vulnerability audit, plus CodeQL, dependency review, OpenSSF Scorecard and workflow linting.
+- Releases ship with THIRD-PARTY-NOTICES.txt, an SPDX software bill of materials and GitHub build attestations. To check a download: `gh attestation verify AutoClick-win-Setup.exe -R poli0981/autoclick`.
+- Dependencies: WPF-UI 4.3.0, CommunityToolkit.Mvvm 8.4.2, H.NotifyIcon.Wpf 2.4.1, Microsoft.Extensions.Hosting 10.0.13, Serilog 4.4.0 with Sinks.File 7.0.0, Sinks.Async 2.1.0 and Extensions.Hosting 10.0.0, Velopack 1.2.161, LiveCharts2 2.0.5, SkiaSharp 3.119.4.
+
+### Upgrading from 1.x
+
+- Update from inside AutoClick or run the new installer; settings, profiles and hotkeys are migrated.
+- Uninstalling AutoClick deletes its data folder (`%LocalAppData%\AutoClick`), profiles included. Export the profiles you want to keep first.
+
+---
+
 ## [1.3.4] - 2026-10-15
 
 Platform bridge release: no feature or data-format changes, so it is safe to update from 1.3.3 and keeps working after .NET 8 reaches end of support (2026-11-10).
 
 ### Changed
+
 - **Runtime: .NET 8 → .NET 10 (LTS, supported until 2028-11)**. AutoClick ships its own runtime (self-contained), so nothing extra needs to be installed. Requires Windows 10 or Windows 11 (x64).
 - **Updater: Velopack 1.2.0 → 1.2.161.** The release tool `vpk` is now pinned to the same version through `.config/dotnet-tools.json` (it was previously installed unpinned).
 - **Dependencies**: LiveCharts2 2.0.5 (all three packages aligned; the WPF package was stuck at 2.0.0), SkiaSharp 3.119.4 (bundled libpng/libexpat security fixes), Serilog 4.4.0, Microsoft.Extensions.DependencyInjection 10.0.13.
 - Removed unused package references from `AutoClick.Core`, `AutoClick.Win32` and `AutoClick.Services` (LiveCharts and `Microsoft.Windows.SDK.BuildTools`). They dragged .NET Framework-only OpenTK/SkiaSharp assemblies into the libraries and produced 29 NU1701 build warnings; the build is now warning-free.
 
 ### Fixed
+
 - **The status bar always said "AutoClick v1.3.1"** (hard-coded since 1.3.1). It now shows the real version.
 - The About page version no longer carries git commit metadata (`1.3.4` instead of `1.3.4+<hash>`).
 
 ### CI / Release
+
 - New **CI** workflow on every push and pull request to `master`: Release build with warnings as errors, a headless smoke test of the published app (`AutoClick.UI.exe --smoke-test` builds the DI graph and every window, then exits), and a dry run of the Velopack packaging step with the real release notes.
 - **Release workflow hardened**: validates the tag (`vX.Y.Z`) and checks it matches the project version, always builds the tagged commit (also on manual runs), splits a read-only build job from the publishing job, keeps workflow inputs out of inline scripts, and uploads the release as a **draft** so it can be verified before it is published.
 - The 1.3.3 packaging failure was caused by a bare ampersand in the release notes (fixed in `vpk` since 0.0.1440), not by the previous package. This release ships a full package only (about 80 MB) because the runtime changed; small delta updates will be re-enabled in a later release.
@@ -30,10 +88,12 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 ## [1.3.3] - 2026-05-12
 
 ### Fixed
+
 - **CI: workflow_run notifiers spammed "Skipped" jobs on every workflow completion**: `notify-ci-failure.yml` and `notify-release-pipeline.yml` listened to `workflows: ["*"]` and let the reusable workflows decide via job-level `if:` — meaning every push, schedule, and even the notifiers themselves spawned a notify job that then skipped, cluttering the Actions tab with "Skipped" entries. Both callers now narrow the trigger to `workflows: ["Release"]` and gate entry into the reusable workflow with a top-level `if:` (failure-only for CI failures, success-on-tag-push for the release pipeline), so notify jobs only spawn when there's actually something to notify about.
 - **Version drift across project files**: `AutoClick.Core`, `AutoClick.Services`, and `AutoClick.Win32` were still pinned to `1.3.1` while `AutoClick.UI` shipped as `1.3.2`. All four `.csproj` files now share `1.3.3` / `1.3.3.0` so assembly metadata, file properties, and `InformationalVersion` agree across the build.
 
 ### Added
+
 - **About → Connect and Support card**: new section between Developer Info and Acknowledgements with links to X, YouTube, Discord, Patreon, Ko-fi, Bluesky, Mastodon, Steam, and Email; plus prominent **Donate** (GitHub Sponsors) and **Report a Bug** buttons. All labels localized across EN / VI / JA / KO / ZH (JA/KO/ZH machine-translated — native review welcome).
 - **`.github/ISSUE_TEMPLATE/`**: structured GitHub issue forms for `bug_report.yml` (version, install source, OS, repro, expected/actual, logs) and `feature_request.yml` (problem, solution, alternatives, scope), plus `config.yml` that disables blank issues and routes general questions to Discussions / Discord / SECURITY.md.
 - **`.github/dependabot.yml`**: weekly NuGet and GitHub Actions update PRs, grouped by family (dotnet-runtime, observability, charts, packaging, actions) to keep PR noise low. Currently zero open security alerts on the repository.
@@ -41,9 +101,11 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 - **Docs**: `docs/pc_spec.md` (developer hardware snapshot) and `docs/social.md` (public profiles, communities, funding links), each with a Vietnamese mirror under `docs/i18n/vi/`. Existing `docs/DEV_ENVIRONMENT.md` also gets a Vietnamese mirror.
 
 ### Changed
+
 - **README.md**: new **Connect and Support** section linking to `docs/social.md`, Donate, and Report Bug.
 
 ### Notes
+
 - `.github/FUNDING.yml` already matched the intended Donate configuration (GitHub Sponsors + Ko-fi + Buy Me a Coffee + Patreon + PayPal) — no edits required for this release.
 - The Discussion auto-creation workflow expects an **Announcements** discussion category to exist on the repo. If absent, the workflow logs a notice and exits 0 (release shipping is unaffected).
 
@@ -52,10 +114,12 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 ## [1.3.2] - 2026-05-08
 
 ### Fixed
+
 - **Multiple AutoClick processes spawned on each launch**: Every time the app was opened (Start menu, desktop shortcut, or installer-launched), a brand-new `AutoClick.UI.exe` process was created — adding another tray icon, another set of registered global hotkeys, and another click engine in parallel. After a few launches the user could end up with 4–5 phantom processes still running (and still firing hotkeys) without realizing it. Root cause: there was no single-instance gate in `App.OnStartup` — the DI container, tray icon, and click engine were built unconditionally on every launch. Fixed by adding a session-scoped named Mutex (`Local\AutoClick.SingleInstance.{user-hash}`) acquired right after the Velopack hook check; if the Mutex is already held, the new process forwards a "show window" command to the running instance over a named pipe (`AutoClick.IPC.{user-hash}`) and exits cleanly. The running instance handles the IPC message by `Show()` + `Activate()` + `SetForegroundWindow` on the main window — so launching AutoClick a second time now restores the existing window (even from the tray) instead of stacking processes.
 - **Language-change restart could lose the single-instance lock momentarily**: `RestartApplication()` calls `Process.Start` on the new exe and then `Application.Current.Shutdown()` — without coordination, the new instance would fail the Mutex check (the old one hadn't released yet) and exit, breaking the restart flow. Fixed by having the old process release the Mutex synchronously *before* spawning the new one, and passing a `--restarting` flag so the new process waits up to 3 s on Mutex acquisition (covering the brief window between the old process exiting and the OS releasing kernel handles).
 
 ### Notes
+
 - Velopack lifecycle hooks (`--veloapp-install`, `--veloapp-uninstall`, `--veloapp-firstrun`, `--veloapp-obsolete`, `--veloapp-updated`) bypass the single-instance gate so that auto-update and install/uninstall flows continue to work even while a normal AutoClick instance is running.
 - If the running instance is killed via Task Manager (no graceful exit), the OS automatically releases the abandoned Mutex on the next launch — no manual cleanup required.
 
@@ -64,6 +128,7 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 ## [1.3.1] - 2026-04-25
 
 ### Fixed
+
 - **Heatmap overlay was not click-through and was anchored to the main window**: The overlay set only WPF-level `IsHitTestVisible="False"`, which suppresses hit-testing inside the WPF tree but does not stop the OS from routing mouse input to the overlay HWND — the underlying game window therefore never received clicks while the heatmap was visible. The overlay was also created with `Owner = MainWindow`, so its z-order was tied to the main window (minimizing AutoClick dragged the overlay down with it). Fixed by setting `WS_EX_TRANSPARENT | WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE` extended styles via `SetWindowLong` in `OnSourceInitialized`, re-asserting `HWND_TOPMOST` via `SetWindowPos` on every refresh tick, and removing `Owner` so the overlay is a top-level window with independent z-order.
 - **Heatmap overlay did not show on top of the foreground game in windowed mode**: Even with TOPMOST set, the 200ms refresh tick was too coarse — when the user Alt-Tabbed back into a game with its own `WS_EX_TOPMOST`, several frames could elapse before the overlay was re-promoted, leaving it stuck behind. Now hooked into `EVENT_SYSTEM_FOREGROUND` via `SetWinEventHook` so the overlay re-asserts TOPMOST at the *exact* moment the foreground swap happens — no polling lag. **Note:** true exclusive-fullscreen games (legacy DirectX) bypass the desktop compositor entirely; no overlay technology can render above them. Borderless-fullscreen and windowed are now reliably supported.
 - **Resetting per-game stats while the game was idle left the per-game card showing the pre-reset `TotalClicks`**: `GameSessionViewModel.TotalClicks` is a computed `_clickCount + _skippedClicks`; setting the backing fields to zero only fires `PropertyChanged` for the individual fields. The 500ms `_uiTimer` would normally fire `PropertyChanged(TotalClicks)` on the next tick — but the timer is stopped while idle, so the binding stayed stale until the next run. Fixed by firing `PropertyChanged(TotalClicks)` explicitly inside `ResetStats`.
@@ -72,12 +137,14 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 - **Status bar showed `AutoClick v1.2.0` after the v1.3.0 release**: Updated to `v1.3.1`.
 
 ### Changed
+
 - **Heatmap overlays are now foreground-aware**: when multiple games are queued and have heatmap toggled on, only the overlay for the game currently in the system foreground is visible — switching between games via Alt-Tab automatically swaps which heatmap is on screen, and switching to any non-game window (e.g. AutoClick itself, a browser) hides them all. Implemented via a process-wide `ForegroundWatcher` that hooks `EVENT_SYSTEM_FOREGROUND` and is installed/torn down lazily based on subscriber count, so when no overlays are open there is zero syscall cost.
 - **Heatmap tooltip and README now disclose the Windowed/Borderless/Fullscreen compatibility nuance**: the heatmap button's tooltip points users at [docs/HEATMAP_COMPATIBILITY.md](docs/HEATMAP_COMPATIBILITY.md) (new) listing tested games per engine. Tooltip updated in all five locales (EN / VI / JA / KO / ZH).
 - **Default window size increased**: 960×680 → 1100×760, with new bounds `MaxWidth=1600, MaxHeight=1100` to prevent over-stretching on large displays. `MinWidth=750, MinHeight=500` unchanged.
 - **All scrollbars hidden** (`VerticalScrollBarVisibility="Hidden"`, `HorizontalScrollBarVisibility="Hidden"`) across the Main game list, Settings/About/Dashboard tabs, About inner ScrollViewer, and the log panel ListBox. Mouse-wheel and keyboard scrolling continue to work — only the visible track is suppressed for a cleaner UI.
 
 ### Added (Accessibility)
+
 - **`StandardFocusVisualStyle`** in `App.xaml`: a dashed rectangle outline using the new theme-aware `FocusBrush`. Wired onto `PrimaryButton`, `DefaultButton`, `DangerButton`, `TabRadioButton` named styles plus implicit `Button`/`ComboBox`/`TextBox`/`CheckBox`/`ListBox` styles so every interactive control gets a consistent keyboard-focus indicator.
 - **State-specific brushes** in all three themes (`DarkTheme`, `LightTheme`, `HighContrastTheme`): `FocusBrush`, `DisabledBrush`, `DisabledTextBrush`, `ErrorBrush`. HighContrast uses bright cyan focus + saturated red error for maximum tonal separation against the yellow primary.
 - **`AutomationProperties.Name` + `TabIndex`** on the Settings view: every input (ComboBox + TextBox) in the Basic section now has an explicit accessible name + logical tab order matching its visual label, plus names on the Advanced color-guard inputs and the wait-timeout TextBox.
@@ -90,6 +157,7 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 ## [1.3.0] - 2026-04-25
 
 ### Added
+
 - **Minimize on Start All**: New Settings > Advanced toggle. When enabled, the main window auto-minimizes (to tray if Exit Behavior is set to Tray) on Start All — only when at least one game actually started. AFK convenience.
 - **Import/Export full session**: New `*.autoclick-session` snapshot of the entire app state — settings, all saved profiles, and the current per-game queue (process name, window title, click points, intervals, sequence delay, pixel-guard config). On import, settings are restored and queued games are re-attached to currently running windows by exact ProcessName + WindowTitle match (mismatches log a warning and are skipped). Schema version 1; refuses to import while a session is running.
 - **Drag-drop reorder points**: Per-game card now shows each click point as a draggable chip (visible when 2+ points exist). Drag any chip onto another to swap positions. Drag is confined to a single game (cross-game drops are ignored) and disabled while the session is running. `GameSession.ClickPoints` migrated from `List` to `ObservableCollection` so the UI updates live; `ClickEngineService` snapshots the points list at the start of each cycle to keep mid-edit reorders safe.
@@ -101,6 +169,7 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 - **JA/KO/ZH translations** for every new v1.3.0 string (Minimize on Start All, Export/Import Session, Drag to reorder, Wait until pixel matches, Wait timeout, Picker keystroke instructions, Click type Keystroke, Heatmap toggle/tooltip/title, Theme Dark/Light/High Contrast). Existing `PickerInstruction` updated to include the new `4=Keystroke` mode in all five locales. AI-generated, mirroring the v1.1.0 disclosure pattern.
 
 ### Changed
+
 - **Settings schema migration**: `DarkMode: bool` → `Theme: enum { Dark, Light, HighContrast }`. `SettingsService.Load` reads legacy `darkMode` JSON values and seeds `Theme = darkMode ? Dark : Light` automatically — no user action required when upgrading from v1.2.x. New settings are emitted as `"theme": "Dark|Light|HighContrast"` (string enum).
 
 ---
@@ -108,10 +177,12 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 ## [1.2.1] - 2026-04-25
 
 ### Added
+
 - **GitHub Actions release workflow** (`.github/workflows/release.yml`): builds, packs Velopack, and uploads artifacts to GitHub Releases automatically when a `v*` tag is pushed or the workflow is triggered manually. Produces `releases.win.json`, full and delta `.nupkg`, `AutoClick-win-Portable.zip`, and `AutoClick-win-Setup.exe`.
 - **`docs/RELEASING.md`**: short release-process guide (bump version → CHANGELOG entry → tag push).
 
 ### Notes
+
 - Infrastructure-only release. App behavior is unchanged from 1.2.0. Updating from 1.2.0 → 1.2.1 also serves as the first end-to-end test of the automated Velopack flow.
 
 ---
@@ -119,6 +190,7 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 ## [1.2.0] - 2026-04-05
 
 ### Added
+
 - **Click type per point**: Each coordinate in a sequence can independently be Left Click, Double Click, or Right Click. Press `1`/`2`/`3` in the coordinate picker to switch type. Coordinate text shows `[D]` or `[R]` suffix for non-default types.
 - **Game profile save/load**: Save coordinates + intervals + click types + delay as named presets. Load, export (`.autoclick`), import, and delete profiles per game. Profiles persist across sessions.
 - **Pixel color guard**: Before each click, optionally verify the pixel color at the coordinate matches a reference color (captured at pick time). On mismatch: skip point or stop session. Configurable tolerance (0–50).
@@ -140,6 +212,7 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 - **Per-game click stats**: Each game card shows Success, Skipped, and Total click counts separately
 
 ### Fixed
+
 - **Pixel color guard not syncing on settings change**: Toggling the guard in Settings and saving now correctly propagates `EnablePixelColorGuard`, `ColorTolerance`, and `ColorMismatchBehavior` to all existing sessions (previously only applied to newly created sessions)
 - **Color swatches shown when guard disabled**: Coordinate picker no longer captures reference colors when pixel color guard is off
 - **Per-game chart showing only one process name**: Added `MinStep`/`ForceStepToMin` to Y-axis and increased per-game row height to ensure all labels render
@@ -150,6 +223,7 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 ## [1.1.0] - 2026-04-04
 
 ### Added
+
 - **Multi-point click sequence**: Add multiple coordinates per game, executed in order each cycle (`#1 → #2 → #3 → [interval] → repeat`). "Add Point" button replaces old "Select Coordinate"; "Clear Points" to reset. Click count now tracks individual clicks, not cycles.
 - **Configurable sequence delay**: User-editable "Delay between points" (0-10000ms) input on each game card, visible when >1 point exists.
 - **WM_MOUSEMOVE for game dialog compatibility**: InputSimulator now sends mouse-move + delay before clicks, fixing issues where game choice/dialog buttons ignored PostMessage clicks.
@@ -158,6 +232,7 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 - **Sound notifications**: System sounds for Start (Asterisk), Stop (Hand), Pause/Resume (Question), coordinate pick success (Beep), errors (Exclamation). Toggle in Settings > Advanced > "Sound Notifications". Uses `System.Media.SystemSounds` — no external files.
 
 ### Fixed
+
 - Peak clicks/min no longer shows absurd values on first tick (was dividing by near-zero elapsed time)
 
 ---
@@ -165,6 +240,7 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 ## [1.0.3] - 2026-04-03
 
 ### Fixed
+
 - **Critical:** Update manager still pointed to wrong repository (`autoclick/autoclick`) on installed builds. Root cause: the repo URL was stored in `AppSettings.GitHubRepo` and read from `settings.json` at runtime — stale values from older installs persisted even after reinstall. Additionally, builds prior to v1.0.3 may have shipped with old cached binaries due to file-lock issues during compilation.
 - Repo URL is now a **compile-time constant** in `UpdateService` (`https://github.com/poli0981/autoclick`). The `GitHubRepo` property has been completely removed from `AppSettings` and `settings.json`. No runtime value can override it.
 - Removed the v1.0.2 migration code (no longer necessary since the URL is hardcoded).
@@ -178,9 +254,11 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 ## [1.0.2] - 2026-04-03
 
 ### Fixed
+
 - **Critical:** Update manager pointed to wrong GitHub repository for users who installed v1.0.0 or v1.0.1. Existing `settings.json` files retained the old `autoclick/autoclick` URL even after the code default was corrected. Added automatic migration in `SettingsService.Load()` to detect and fix stale values on startup.
 
 ### Important
+>
 > **Users on v1.0.0 or v1.0.1 should upgrade to v1.0.2 or later.** Earlier versions may fail to check for updates due to the incorrect repository URL stored in local settings. v1.0.2 includes an auto-migration that fixes this permanently on first launch.
 
 ---
@@ -188,6 +266,7 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 ## [1.0.1] - 2026-04-03
 
 ### Fixed
+
 - Vietnamese translations now use proper Unicode diacritics across all `.resx` entries
 - GitHub repository URL in `AppSettings.GitHubRepo` default corrected (`autoclick/autoclick` -> `poli0981/autoclick`)
 - Document links in About view updated from `blob/main` to `blob/master` to match actual branch
@@ -195,6 +274,7 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 - Removed unused string resources `MaxRAM` and `FreeRAM` from all locale files
 
 ### Changed
+
 - Hardcoded English strings in XAML replaced with localized bindings:
   - "Remove All" -> `Strings.RemoveAll`
   - "Random" button -> `Strings.Random`
@@ -203,6 +283,7 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
   - "Random Max (s)" -> `Strings.RandomMax`
 
 ### Added
+
 - New string resources: `RemoveAll`, `RandomMin`, `RandomMax`, `ResetStats` (EN + VI)
 - README, CHANGELOG, Code of Conduct, Developer Environment documentation
 - GitHub Issue templates (Bug Report, Feature Request) and PR template
@@ -215,6 +296,7 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 ### Added
 
 #### Core
+
 - Multi-game queue with per-game click profiles (Random / Fixed interval modes)
 - Background clicking via Win32 `PostMessage` API with anti-detection jitter (+/-2px)
 - Coordinate picking: manual crosshair overlay and random generation within game window bounds
@@ -223,6 +305,7 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 - Duplicate game detection (prevents adding the same PID twice)
 
 #### UI
+
 - WPF application with MVVM architecture on .NET 8
 - Dark / Light theme toggle (defaults to system preference)
 - Multi-language support: English and Vietnamese via `.resx` resource files
@@ -231,6 +314,7 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 - System tray integration with double-click restore and context menu
 
 #### Settings
+
 - Configurable click mode, intervals, max games in queue
 - Global hotkeys: Start All (F8), Stop All (F7), Pause/Resume (F6) with live capture
 - Exit behavior setting: Minimize to Tray / Stop All & Exit / Force Exit
@@ -242,21 +326,39 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 - Reset App to factory defaults
 
 #### Update
+
 - Velopack auto-update via GitHub Releases API
 - Manual check / download / apply workflow in About tab
 - Auto-update on startup (optional, configurable)
 - Comprehensive GitHub API error handling: 200, 304, 403 (rate limit), 404 (no release), 429, 5xx, network errors, checksum failures
 
 #### Legal & Documentation
+
 - GPL-3.0 License
 - Privacy Policy, Disclaimer, Terms of Service, EULA, Acknowledgements, Security Policy
 - Anti-cheat warning banners in About view
 - AI-assisted development disclosure
 
 #### Architecture
+
 - 4-project solution: `AutoClick.Core`, `AutoClick.Win32`, `AutoClick.Services`, `AutoClick.UI`
 - Dependency Injection via `Microsoft.Extensions.DependencyInjection`
 - Serilog structured logging with file sink
 - Win32 P/Invoke: `PostMessage`, `EnumWindows`, `RegisterHotKey`, `GetClientRect`, `SetForegroundWindow`
 - `ManualResetEventSlim` for pause/resume, `CancellationToken` for stop
 - `DispatcherTimer` for UI refresh and process monitoring
+
+[Unreleased]: https://github.com/poli0981/autoclick/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/poli0981/autoclick/compare/v1.3.4...v2.0.0
+[1.3.4]: https://github.com/poli0981/autoclick/compare/v1.3.3...v1.3.4
+[1.3.3]: https://github.com/poli0981/autoclick/compare/v1.3.2...v1.3.3
+[1.3.2]: https://github.com/poli0981/autoclick/compare/v1.3.1...v1.3.2
+[1.3.1]: https://github.com/poli0981/autoclick/compare/v1.3.0...v1.3.1
+[1.3.0]: https://github.com/poli0981/autoclick/compare/v1.2.1...v1.3.0
+[1.2.1]: https://github.com/poli0981/autoclick/compare/v1.2.0...v1.2.1
+[1.2.0]: https://github.com/poli0981/autoclick/compare/v1.1.0...v1.2.0
+[1.1.0]: https://github.com/poli0981/autoclick/compare/v1.0.3...v1.1.0
+[1.0.3]: https://github.com/poli0981/autoclick/compare/v1.0.2...v1.0.3
+[1.0.2]: https://github.com/poli0981/autoclick/compare/v1.0.1...v1.0.2
+[1.0.1]: https://github.com/poli0981/autoclick/compare/v1.0.0...v1.0.1
+[1.0.0]: https://github.com/poli0981/autoclick/releases/tag/v1.0.0

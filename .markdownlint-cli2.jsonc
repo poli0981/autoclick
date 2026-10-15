@@ -11,7 +11,9 @@
     // Repeated headings such as "Added"/"Fixed" per CHANGELOG version.
     "MD024": { "siblings_only": true },
     // Emphasis used as a caption is acceptable.
-    "MD036": false
+    "MD036": false,
+    // Table pipes do not need to line up.
+    "MD060": false
   },
   "ignores": [
     "**/node_modules/**",

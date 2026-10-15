@@ -1,6 +1,6 @@
 # Terms of Service
 
-**Last updated:** April 2026
+**Last updated:** October 2026
 
 ## 1. Acceptance of Terms
 
@@ -8,11 +8,12 @@ By downloading, installing, or using AutoClick ("the Software"), you agree to be
 
 ## 2. License
 
-AutoClick is licensed under the **GNU General Public License v3.0 (GPL-3.0)**. You may use, modify, and distribute the Software in accordance with the terms of this license. See the [LICENSE](https://github.com/poli0981/autoclick/blob/main/LICENSE) file for full details.
+AutoClick is licensed under the **GNU General Public License v3.0 (GPL-3.0)**. You may use, modify, and distribute the Software in accordance with the terms of this license. See the [LICENSE](https://github.com/poli0981/autoclick/blob/master/LICENSE) file for full details. These Terms do not limit the rights the GPL-3.0 gives you; where they conflict, the GPL-3.0 prevails.
 
 ## 3. Permitted Use
 
 The Software is intended for:
+
 - Automating repetitive mouse clicks in games and applications
 - Personal, non-commercial use
 - Educational purposes (learning about Win32 API, WPF, MVVM architecture)
@@ -20,6 +21,7 @@ The Software is intended for:
 ## 4. Prohibited Use
 
 You agree NOT to use the Software to:
+
 - Violate any game's Terms of Service or End User License Agreement
 - Gain unfair competitive advantages in multiplayer or ranked games
 - Engage in any activity that is illegal under applicable laws
@@ -49,8 +51,8 @@ You agree NOT to use the Software to:
 
 ## 8. Updates
 
-- The Software may check for updates via the GitHub Releases API.
-- Updates are optional and can be disabled in Settings.
+- When automatic updates are on (the default), the Software checks this project's GitHub Releases at startup and every 6 hours and downloads new versions; it installs them when you choose or when you exit.
+- Automatic updates can be turned off in Settings.
 - Updated versions may include changes to these Terms; continued use constitutes acceptance.
 
 ## 9. Disclaimer of Warranties
@@ -62,6 +64,7 @@ THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. THE DEVELOPER MAK
 IN NO EVENT SHALL THE DEVELOPER BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 This includes but is not limited to:
+
 - Game account bans or suspensions
 - Loss of in-game items, currency, or progress
 - Hardware damage, overheating, or component failure

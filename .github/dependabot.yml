@@ -63,7 +63,6 @@ updates:
           - "microsoft.sbom.dotnettool"
           - "dotnet-reportgenerator-globaltool"
           - "Microsoft.Windows.CsWin32"
-          - "JetBrains.Annotations"
 
   - package-ecosystem: "dotnet-sdk"
     directory: "/"

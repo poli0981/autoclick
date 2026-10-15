@@ -8,11 +8,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AutoClick.Core\AutoClick.Core.csproj" />
-    <ProjectReference Include="..\AutoClick.Win32\AutoClick.Win32.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="Serilog" />
     <PackageReference Include="Velopack" />

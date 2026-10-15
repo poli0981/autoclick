@@ -9,7 +9,6 @@
   <ItemGroup Label="Application">
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageVersion Include="H.NotifyIcon.Wpf" Version="2.4.1" />
-    <PackageVersion Include="JetBrains.Annotations" Version="2026.2.0" />
     <PackageVersion Include="LiveChartsCore" Version="2.0.5" />
     <PackageVersion Include="LiveChartsCore.SkiaSharpView" Version="2.0.5" />
     <PackageVersion Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.5" />

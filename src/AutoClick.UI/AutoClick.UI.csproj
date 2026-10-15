@@ -27,7 +27,6 @@
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="H.NotifyIcon.Wpf" />
-    <PackageReference Include="JetBrains.Annotations" PrivateAssets="all" />
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
     <PackageReference Include="Serilog.Extensions.Hosting" />
@@ -42,6 +41,25 @@
     <!-- WPF leaves System.IO out of the implicit usings (Path clashes with Shapes.Path). -->
     <Using Include="System.IO" />
   </ItemGroup>
+
+  <!--
+    Files nothing loads at run time:
+    - Microsoft.Windows.SDK.NET.dll, the 24 MB WinRT projection. The 10.0.19041 target framework
+      (needed for the modern assets of SkiaSharp.Views.WPF and OpenTK) and CommunityToolkit.Mvvm
+      bring it in, but no assembly of the app references it; WinRT.Runtime.dll stays.
+    - libSkiaSharp.pdb and libHarfBuzzSharp.pdb, about 100 MB of native debug symbols.
+  -->
+  <Target Name="DropWindowsSdkProjection" AfterTargets="ResolveRuntimePackAssets">
+    <ItemGroup>
+      <RuntimePackAsset Remove="@(RuntimePackAsset)" Condition="'%(Filename)%(Extension)' == 'Microsoft.Windows.SDK.NET.dll'" />
+      <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)" Condition="'%(Filename)%(Extension)' == 'Microsoft.Windows.SDK.NET.dll'" />
+    </ItemGroup>
+  </Target>
+  <Target Name="RemoveNativeSymbolsFromPublish" AfterTargets="ComputeResolvedFilesToPublishList">
+    <ItemGroup>
+      <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)" Condition="'%(Filename)%(Extension)' == 'libSkiaSharp.pdb' or '%(Filename)%(Extension)' == 'libHarfBuzzSharp.pdb'" />
+    </ItemGroup>
+  </Target>
 
   <ItemGroup>
     <!-- Window, tray and About page icon (pack://application:,,,/Assets/app.ico). -->

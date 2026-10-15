@@ -1,39 +1,42 @@
 # Developer Environment
 
-Configuration of the machine used to develop, debug, and test AutoClick. Provided as reference for contributors who want to reproduce the build and test environment.
+How AutoClick is built and tested, for contributors who want to reproduce the environment. The machine itself is described in [pc_spec.md](pc_spec.md). The Vietnamese mirror is at [i18n/vi/DEV_ENVIRONMENT.md](i18n/vi/DEV_ENVIRONMENT.md).
 
-## Machine Specifications
+## Toolchain
 
-| Component | Details |
-|-----------|---------|
-| **OS** | Windows 11 Pro Insider Preview (Dev Channel) |
-| **Build** | 26300.8142.ge_prerelease_im.260321-1005 |
-| **CPU** | Intel Core i7-14700KF |
-| **GPU** | NVIDIA GeForce RTX 5080 (16 GB VRAM) |
-| **RAM** | 32 GB DDR5 |
-| **Storage** | 1 TB SSD |
-| **IDE** | JetBrains Rider 2026.1 |
-| **.NET SDK** | 11.0.100-preview.2 (targets `net8.0-windows`) |
+| Tool | Version | Notes |
+|------|---------|-------|
+| **.NET SDK** | 10.0.4xx | Pinned in [`global.json`](../global.json) (`rollForward: latestFeature`) |
+| **Target frameworks** | `net10.0` (Core), `net10.0-windows10.0.19041.0` (everything else) | |
+| **Local tools** | [`.config/dotnet-tools.json`](../.config/dotnet-tools.json) | `vpk` (Velopack), ReSharper InspectCode, nuget-license, sbom-tool, ReportGenerator |
+| **IDE** | JetBrains Rider 2026.x or Visual Studio Code | Any editor that honors `.editorconfig` |
 
-## Build Instructions
+## Build and test
 
 ```bash
 git clone https://github.com/poli0981/autoclick.git
 cd autoclick
-dotnet restore
-dotnet build
-```
-
-Run the application:
-```bash
+dotnet tool restore
+dotnet build AutoClick.slnx
+dotnet test --solution AutoClick.slnx
 dotnet run --project src/AutoClick.UI
 ```
 
-> **Note:** The app requires administrator privileges. When running from IDE, ensure the IDE is launched as Administrator, or right-click the built `.exe` and select "Run as administrator".
+AutoClick runs as a normal user; administrator rights are only needed to click games that themselves run as administrator.
+
+The checks CI runs on every pull request, and how to run them locally, are listed in [CONTRIBUTING.md](../CONTRIBUTING.md).
+
+## Test tools
+
+| Tool | Purpose |
+|------|---------|
+| **`tools/AutoClick.ClickTarget`** | A window that logs every mouse and keyboard message it receives (client coordinates, virtual-key and scan codes). `--dpi unaware\|system\|pmv2` changes its DPI awareness to test coordinate mapping, `--log <file>` writes the log to a file. |
+| **`AutoClick.UI.exe --smoke-test`** | Opens every page in every theme and language, the dialogs and a heatmap overlay, and fails on any binding error. Uses `%TEMP%\AutoClick-smoke` instead of the real data folder. |
+| **Windows Sandbox** | Install and update tests from an older release (for example 1.3.3 → 2.0.0), without touching the development machine. |
 
 ## Tested Games
 
-The following games were tested during development. Results are specific to the developer's machine and may vary depending on your system, game version, and anti-cheat configuration.
+Results with AutoClick 1.x on the developer's machine; they can differ with your system, game version and anti-cheat configuration.
 
 ### Passed
 
@@ -47,7 +50,7 @@ The following games were tested during development. Results are specific to the 
 
 | Game | Store Link | Anti-Cheat | Notes |
 |------|------------|------------|-------|
-| **Wuthering Waves** | [Steam](https://store.steampowered.com/app/3513350/Wuthering_Waves/) | ACE (Kernel) | Temporarily passed during testing. **Kernel-level anti-cheat is present** -- use at your own risk. Detection behavior may change with game updates. |
+| **Wuthering Waves** | [Steam](https://store.steampowered.com/app/3513350/Wuthering_Waves/) | ACE (Kernel) | Temporarily passed during testing. **Kernel-level anti-cheat is present**: use at your own risk. Detection behavior may change with game updates. |
 
 ### Failed
 
@@ -55,26 +58,9 @@ The following games were tested during development. Results are specific to the 
 |------|------------|-------|
 | **Mercury Elopement Syndrome** | [Steam](https://store.steampowered.com/app/4417890/Mercury_Elopement_Syndrome/) | PostMessage clicks not recognized by the game. Likely uses DirectInput or Raw Input, which does not respond to `WM_LBUTTONDOWN` messages. |
 
-## VM Testing Environment
-
-OS compatibility was tested using virtual machines. See [System Requirements](SYSTEM_REQUIREMENTS.md) for the full compatibility matrix.
-
-| Tool | Version | Notes |
-|------|---------|-------|
-| **Oracle VirtualBox** | 7.2.6 r172322 (Qt 6.8.0 on Windows) | Primary VM platform |
-| **Windows Sandbox** | Windows 10/11 built-in | Quick isolated testing |
-
-### VM Test Results
-
-| OS | RAM | CPU | Result |
-|----|-----|-----|--------|
-| Windows 10 22H2 (Build 19045.3803) | 4 GB | 2 cores | **Pass** — all features including dashboard |
-| Windows 8.1 / 8.1 Pro (Build 9600) | 8 GB | 2 cores | **Partial** — v1.1.0 only; requires [VC++ 2015 Redistributable](https://www.microsoft.com/en-us/download/details.aspx?id=48145); dashboard (LiveChartsCore/SkiaSharp) not compatible |
-| Windows 7 | — | — | **Failed** — .NET 8 not supported |
-
 ## Compatibility Notes
 
-- **PostMessage-based clicking** works with games that process standard Windows messages (`WM_LBUTTONDOWN` / `WM_LBUTTONUP`). Games using DirectInput, Raw Input, or custom input pipelines may not respond.
-- **Fullscreen exclusive mode** may prevent message delivery. Borderless Windowed or Windowed mode is recommended.
-- **Kernel-level anti-cheat** (EasyAntiCheat, BattlEye, Vanguard, ACE) can detect and flag automation tools regardless of the method used. Always check the game's Terms of Service before use.
-- **Results may vary** across different hardware configurations, driver versions, and game patches.
+- **PostMessage-based clicking** works with games that process standard window messages (`WM_LBUTTONDOWN` / `WM_LBUTTONUP`, `WM_KEYDOWN` / `WM_KEYUP`). Games that read DirectInput, Raw Input or their own input pipeline may not respond.
+- **Games that run as administrator** only accept input from a program with the same rights; AutoClick detects this and offers to restart as administrator.
+- **Fullscreen exclusive mode** may prevent message delivery and overlays. Windowed or borderless mode is recommended.
+- **Kernel-level anti-cheat** (EasyAntiCheat, BattlEye, Vanguard, ACE) can detect and flag automation tools regardless of the method used. Check the game's terms of service before use.

@@ -50,6 +50,21 @@ public sealed class LayeringTests
         Assert.DoesNotContain(references, r => WpfAssemblies.Contains(r));
     }
 
+    [Theory]
+    [InlineData("AutoClick.Core")]
+    [InlineData("AutoClick.Services", "AutoClick.Core")]
+    [InlineData("AutoClick.Win32", "AutoClick.Core")]
+    public void ProjectReferences_FollowTheLayers(string project, params string[] allowed)
+    {
+        // The compiled assemblies only show references that are used; the project files show
+        // the ones that make an accidental dependency possible.
+        var path = Path.Combine(RepositoryFiles.Root, "src", project, project + ".csproj");
+        var references = System.Xml.Linq.XDocument.Load(path).Descendants("ProjectReference")
+            .Select(e => Path.GetFileNameWithoutExtension((string?)e.Attribute("Include") ?? string.Empty))
+            .ToArray();
+        Assert.Empty(references.Except(allowed));
+    }
+
     [Fact]
     public void ViewModels_DoNotDependOnViewsOrOverlays() =>
         Types().That().ResideInNamespace("AutoClick.UI.ViewModels")

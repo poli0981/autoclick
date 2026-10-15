@@ -6,7 +6,7 @@ We as contributors and maintainers pledge to make participation in our project a
 
 ## Our Standards
 
-### Positive behavior includes:
+### Positive behavior includes
 
 - Using welcoming and inclusive language
 - Being respectful of differing viewpoints and experiences
@@ -14,7 +14,7 @@ We as contributors and maintainers pledge to make participation in our project a
 - Focusing on what is best for the community and the project
 - Showing empathy toward other community members
 
-### Unacceptable behavior includes:
+### Unacceptable behavior includes
 
 - Trolling, insulting/derogatory comments, and personal or political attacks
 - Public or private harassment
