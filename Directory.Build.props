@@ -1,0 +1,13 @@
+<Project>
+
+  <!--
+    CI builds pass -p:ContinuousIntegrationBuild=true. They treat every warning as an error,
+    except NuGet audit advisories (NU1900-NU1905): a newly published advisory must not break
+    unrelated builds, it is reported by the dedicated vulnerability scan instead.
+  -->
+  <PropertyGroup Condition="'$(ContinuousIntegrationBuild)' == 'true'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>$(WarningsNotAsErrors);NU1900;NU1901;NU1902;NU1903;NU1904;NU1905</WarningsNotAsErrors>
+  </PropertyGroup>
+
+</Project>
