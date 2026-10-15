@@ -15,8 +15,7 @@ Hồ sơ công khai, kênh cộng đồng và các đường link ủng hộ dev
 
 | Kênh | Lời mời |
 |------|---------|
-| **Discord — General (repo)** | [discord.gg/2aNR3aVt](https://discord.gg/2aNR3aVt) |
-| **Discord — Game (`#general`)** | [discord.gg/kDM9GMu5vm](https://discord.gg/kDM9GMu5vm) |
+| **Discord** | [discord.gg/kDM9GMu5vm](https://discord.gg/kDM9GMu5vm) |
 
 ## Mạng Liên Bang
 

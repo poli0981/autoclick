@@ -1,80 +1,66 @@
 # Môi Trường Phát Triển
 
-Cấu hình máy được dùng để phát triển, debug và kiểm thử AutoClick. Cung cấp làm tham chiếu cho cộng tác viên muốn tái lập môi trường build và test. Bản tiếng Anh ở [docs/DEV_ENVIRONMENT.md](../../DEV_ENVIRONMENT.md).
+Cách AutoClick được build và kiểm thử, dành cho cộng tác viên muốn tái lập môi trường. Thông số máy nằm trong [pc_spec.md](pc_spec.md). Bản tiếng Anh ở [docs/DEV_ENVIRONMENT.md](../../DEV_ENVIRONMENT.md).
 
-## Thông Số Máy
+## Toolchain
 
-| Thành phần | Chi tiết |
-|------------|----------|
-| **OS** | Windows 11 Pro Insider Preview (Dev Channel) |
-| **Build** | 26300.8142.ge_prerelease_im.260321-1005 |
-| **CPU** | Intel Core i7-14700KF |
-| **GPU** | NVIDIA GeForce RTX 5080 (16 GB VRAM) |
-| **RAM** | 32 GB DDR5 |
-| **Lưu trữ** | SSD 1 TB |
-| **IDE** | JetBrains Rider 2026.1 |
-| **.NET SDK** | 11.0.100-preview.2 (target `net8.0-windows`) |
+| Công cụ | Phiên bản | Ghi chú |
+|---------|-----------|---------|
+| **.NET SDK** | 10.0.4xx | Pin trong [`global.json`](../../../global.json) (`rollForward: latestFeature`) |
+| **Target framework** | `net10.0` (Core), `net10.0-windows10.0.19041.0` (các project còn lại) | |
+| **Tool cục bộ** | [`.config/dotnet-tools.json`](../../../.config/dotnet-tools.json) | `vpk` (Velopack), ReSharper InspectCode, nuget-license, sbom-tool, ReportGenerator |
+| **IDE** | JetBrains Rider 2026.x hoặc Visual Studio Code | Trình soạn thảo nào hỗ trợ `.editorconfig` đều được |
 
-## Hướng Dẫn Build
+## Build và kiểm thử
 
 ```bash
 git clone https://github.com/poli0981/autoclick.git
 cd autoclick
-dotnet restore
-dotnet build
-```
-
-Chạy ứng dụng:
-```bash
+dotnet tool restore
+dotnet build AutoClick.slnx
+dotnet test --solution AutoClick.slnx
 dotnet run --project src/AutoClick.UI
 ```
 
-> **Lưu ý:** Ứng dụng cần quyền administrator. Khi chạy từ IDE, hãy mở IDE bằng "Run as administrator", hoặc nhấp phải vào `.exe` đã build và chọn "Run as administrator".
+AutoClick chạy với quyền người dùng thường; chỉ cần quyền quản trị khi click vào game cũng chạy với quyền quản trị.
+
+Các bước kiểm tra CI chạy cho mỗi pull request, và cách chạy chúng trên máy, nằm trong [CONTRIBUTING.md](../../../CONTRIBUTING.md).
+
+## Công cụ kiểm thử
+
+| Công cụ | Mục đích |
+|---------|----------|
+| **`tools/AutoClick.ClickTarget`** | Cửa sổ ghi lại mọi message chuột và bàn phím nhận được (toạ độ client, mã phím ảo và scan code). `--dpi unaware\|system\|pmv2` đổi chế độ DPI để kiểm tra quy đổi toạ độ, `--log <file>` ghi log ra file. |
+| **`AutoClick.UI.exe --smoke-test`** | Mở mọi trang ở mọi theme và ngôn ngữ, các hộp thoại và lớp heatmap, báo lỗi nếu có binding hỏng. Dùng `%TEMP%\AutoClick-smoke` thay cho thư mục dữ liệu thật. |
+| **Windows Sandbox** | Kiểm thử cài đặt và cập nhật từ bản cũ (ví dụ 1.3.3 → 2.0.0) mà không ảnh hưởng máy phát triển. |
 
 ## Game Đã Kiểm Thử
 
-Các game sau đã được kiểm thử trong quá trình phát triển. Kết quả phụ thuộc vào máy của developer và có thể khác với máy của bạn tùy hệ thống, phiên bản game, và cấu hình anti-cheat.
+Kết quả với AutoClick 1.x trên máy của developer; có thể khác tuỳ hệ thống, phiên bản game và cấu hình anti-cheat của bạn.
 
-### Hoạt Động
+### Đạt
 
-| Game | Cửa hàng | Ghi chú |
+| Game | Liên kết | Ghi chú |
 |------|----------|---------|
-| **Bound Between Desks** | [Steam](https://store.steampowered.com/app/3790060/Bound_Between_Desks/) | PostMessage click được nhận đúng |
-| **Myosotis: My Life Is Not Yours to Take** | [Steam](https://store.steampowered.com/app/4220830/Myosotis_My_Life_Is_Not_Yours_to_Take/) | Tất cả chế độ click hoạt động |
-| **Man in a Suit in a Building in a City** | [Steam](https://store.steampowered.com/app/3292090/Man_in_a_suit_in_a_building_in_a_city/) | Background click ổn định |
+| **Bound Between Desks** | [Steam](https://store.steampowered.com/app/3790060/Bound_Between_Desks/) | Click PostMessage được nhận đúng |
+| **Myosotis: My Life Is Not Yours to Take** | [Steam](https://store.steampowered.com/app/4220830/Myosotis_My_Life_Is_Not_Yours_to_Take/) | Mọi chế độ click đều hoạt động |
+| **Man in a Suit in a Building in a City** | [Steam](https://store.steampowered.com/app/3292090/Man_in_a_suit_in_a_building_in_a_city/) | Click nền ổn định |
 
-### Hoạt Động (với lưu ý)
+### Đạt (có lưu ý)
 
-| Game | Cửa hàng | Anti-Cheat | Ghi chú |
+| Game | Liên kết | Anti-Cheat | Ghi chú |
 |------|----------|------------|---------|
-| **Wuthering Waves** | [Steam](https://store.steampowered.com/app/3513350/Wuthering_Waves/) | ACE (Kernel) | Tạm thời pass trong test. **Anti-cheat kernel-level đang hiện diện** — dùng với rủi ro của bạn. Hành vi phát hiện có thể thay đổi theo bản cập nhật game. |
+| **Wuthering Waves** | [Steam](https://store.steampowered.com/app/3513350/Wuthering_Waves/) | ACE (Kernel) | Tạm thời đạt khi thử. **Có anti-cheat cấp kernel**: tự chịu rủi ro khi dùng. Cách phát hiện có thể thay đổi theo bản cập nhật game. |
 
-### Không Hoạt Động
+### Không đạt
 
-| Game | Cửa hàng | Ghi chú |
+| Game | Liên kết | Ghi chú |
 |------|----------|---------|
-| **Mercury Elopement Syndrome** | [Steam](https://store.steampowered.com/app/4417890/Mercury_Elopement_Syndrome/) | Click PostMessage không được game ghi nhận. Có thể game dùng DirectInput hoặc Raw Input, không phản hồi với message `WM_LBUTTONDOWN`. |
+| **Mercury Elopement Syndrome** | [Steam](https://store.steampowered.com/app/4417890/Mercury_Elopement_Syndrome/) | Game không nhận click PostMessage. Có thể game dùng DirectInput hoặc Raw Input, không phản hồi message `WM_LBUTTONDOWN`. |
 
-## Môi Trường VM Để Kiểm Thử
+## Lưu Ý Tương Thích
 
-Khả năng tương thích OS được kiểm thử bằng máy ảo. Xem [System Requirements](../../SYSTEM_REQUIREMENTS.md) để biết ma trận tương thích đầy đủ.
-
-| Công cụ | Phiên bản | Ghi chú |
-|---------|-----------|---------|
-| **Oracle VirtualBox** | 7.2.6 r172322 (Qt 6.8.0 trên Windows) | Nền tảng VM chính |
-| **Windows Sandbox** | Tích hợp sẵn Windows 10/11 | Test cô lập nhanh |
-
-### Kết Quả Test VM
-
-| OS | RAM | CPU | Kết quả |
-|----|-----|-----|---------|
-| Windows 10 22H2 (Build 19045.3803) | 4 GB | 2 cores | **Pass** — đầy đủ tính năng kể cả dashboard |
-| Windows 8.1 / 8.1 Pro (Build 9600) | 8 GB | 2 cores | **Một phần** — chỉ v1.1.0; yêu cầu [VC++ 2015 Redistributable](https://www.microsoft.com/en-us/download/details.aspx?id=48145); dashboard (LiveChartsCore/SkiaSharp) không tương thích |
-| Windows 7 | — | — | **Failed** — .NET 8 không hỗ trợ |
-
-## Ghi Chú Tương Thích
-
-- **Click qua PostMessage** hoạt động với game xử lý message Windows tiêu chuẩn (`WM_LBUTTONDOWN` / `WM_LBUTTONUP`). Game dùng DirectInput, Raw Input, hoặc pipeline input tùy biến có thể không phản hồi.
-- **Fullscreen exclusive mode** có thể chặn việc nhận message. Khuyến nghị dùng Borderless Windowed hoặc Windowed.
-- **Anti-cheat kernel-level** (EasyAntiCheat, BattlEye, Vanguard, ACE) có thể phát hiện và đánh dấu công cụ automation bất kể phương thức nào. Luôn kiểm tra Terms of Service của game trước khi sử dụng.
-- **Kết quả có thể khác nhau** giữa các cấu hình phần cứng, phiên bản driver, và bản vá game.
+- **Click bằng PostMessage** hoạt động với game xử lý message cửa sổ chuẩn (`WM_LBUTTONDOWN` / `WM_LBUTTONUP`, `WM_KEYDOWN` / `WM_KEYUP`). Game đọc DirectInput, Raw Input hoặc luồng input riêng có thể không phản hồi.
+- **Game chạy với quyền quản trị** chỉ nhận input từ chương trình có cùng quyền; AutoClick phát hiện điều này và đề nghị khởi động lại với quyền quản trị.
+- **Chế độ toàn màn hình độc quyền (fullscreen exclusive)** có thể chặn message và lớp phủ. Nên dùng chế độ cửa sổ hoặc không viền.
+- **Anti-cheat cấp kernel** (EasyAntiCheat, BattlEye, Vanguard, ACE) có thể phát hiện công cụ tự động bất kể cách làm. Hãy đọc điều khoản của game trước khi dùng.

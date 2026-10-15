@@ -8,6 +8,7 @@
             <xsd:complexType>
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" />
               <xsd:attribute name="type" type="xsd:string" />
@@ -30,207 +31,283 @@
   <resheader name="version"><value>2.0</value></resheader>
   <resheader name="reader"><value>System.Resources.ResXResourceReader</value></resheader>
   <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
-
-  <data name="AppTitle" xml:space="preserve"><value>AutoClick</value></data>
-  <data name="Main" xml:space="preserve"><value>Chính</value></data>
-  <data name="Settings" xml:space="preserve"><value>Cài đặt</value></data>
-  <data name="About" xml:space="preserve"><value>Giới thiệu</value></data>
-  <data name="Start" xml:space="preserve"><value>Bắt đầu</value></data>
-  <data name="Pause" xml:space="preserve"><value>Tạm dừng</value></data>
-  <data name="Resume" xml:space="preserve"><value>Tiếp tục</value></data>
-  <data name="Stop" xml:space="preserve"><value>Dừng</value></data>
-  <data name="AddGame" xml:space="preserve"><value>Thêm game</value></data>
-  <data name="RemoveGame" xml:space="preserve"><value>Xóa</value></data>
-  <data name="SelectCoordinate" xml:space="preserve"><value>Chọn tọa độ</value></data>
-  <data name="GamesRunning" xml:space="preserve"><value>Game đang chạy</value></data>
-  <data name="ClickMode" xml:space="preserve"><value>Chế độ click</value></data>
-  <data name="Random" xml:space="preserve"><value>Ngẫu nhiên</value></data>
-  <data name="Fixed" xml:space="preserve"><value>Cố định</value></data>
-  <data name="Interval" xml:space="preserve"><value>Nhịp (giây)</value></data>
-  <data name="ClickCount" xml:space="preserve"><value>Số lần click</value></data>
-  <data name="Status" xml:space="preserve"><value>Trạng thái</value></data>
-  <data name="Path" xml:space="preserve"><value>Đường dẫn</value></data>
-  <data name="Coordinate" xml:space="preserve"><value>Tọa độ</value></data>
-  <data name="CurrentInterval" xml:space="preserve"><value>Nhịp hiện tại</value></data>
-  <data name="Basic" xml:space="preserve"><value>Cơ bản</value></data>
-  <data name="Advanced" xml:space="preserve"><value>Nâng cao</value></data>
-  <data name="MaxGames" xml:space="preserve"><value>Số game tối đa trong hàng chờ</value></data>
-  <data name="ShowLogs" xml:space="preserve"><value>Hiển thị log real-time</value></data>
-  <data name="ExportLog" xml:space="preserve"><value>Xuất log</value></data>
-  <data name="ExportSettings" xml:space="preserve"><value>Xuất cài đặt</value></data>
-  <data name="ImportSettings" xml:space="preserve"><value>Nhập cài đặt</value></data>
-  <data name="ExportSession" xml:space="preserve"><value>Xuất phiên</value></data>
-  <data name="ImportSession" xml:space="preserve"><value>Nhập phiên</value></data>
-  <data name="ResetAll" xml:space="preserve"><value>Reset tất cả</value></data>
-  <data name="RemoveAll" xml:space="preserve"><value>Xóa tất cả</value></data>
-  <data name="RandomMin" xml:space="preserve"><value>Ngẫu nhiên tối thiểu (giây)</value></data>
-  <data name="RandomMax" xml:space="preserve"><value>Ngẫu nhiên tối đa (giây)</value></data>
-  <data name="ResetStats" xml:space="preserve"><value>Đặt lại</value></data>
-  <data name="AddPoint" xml:space="preserve"><value>Thêm điểm</value></data>
-  <data name="ClearPoints" xml:space="preserve"><value>Xóa tất cả điểm</value></data>
-  <data name="Points" xml:space="preserve"><value>điểm</value></data>
-  <data name="SequenceDelay" xml:space="preserve"><value>Độ trễ giữa các điểm</value></data>
-  <data name="SessionStats" xml:space="preserve"><value>Thống kê phiên</value></data>
-  <data name="TotalClicks" xml:space="preserve"><value>Tổng click</value></data>
-  <data name="Uptime" xml:space="preserve"><value>Thời gian chạy</value></data>
-  <data name="ClicksPerMin" xml:space="preserve"><value>Click/phút</value></data>
-  <data name="PeakCPM" xml:space="preserve"><value>Cao nhất</value></data>
-  <data name="SoundNotifications" xml:space="preserve"><value>Âm thanh thông báo</value></data>
-  <data name="MinimizeOnStartAll" xml:space="preserve"><value>Thu nhỏ về tray khi Start All</value></data>
-  <data name="DragToReorder" xml:space="preserve"><value>Kéo để đổi thứ tự</value></data>
-  <data name="WaitUntilMatch" xml:space="preserve"><value>Đợi đến khi pixel khớp màu</value></data>
-  <data name="ColorWaitTimeout" xml:space="preserve"><value>Thời gian chờ</value></data>
-  <data name="Language" xml:space="preserve"><value>Ngôn ngữ</value></data>
-  <data name="Theme" xml:space="preserve"><value>Giao diện</value></data>
-  <data name="Dark" xml:space="preserve"><value>Tối</value></data>
-  <data name="Light" xml:space="preserve"><value>Sáng</value></data>
-  <data name="Auto" xml:space="preserve"><value>Tự động</value></data>
-  <data name="Hotkeys" xml:space="preserve"><value>Phím tắt</value></data>
-  <data name="Idle" xml:space="preserve"><value>Chờ</value></data>
-  <data name="Running" xml:space="preserve"><value>Đang chạy</value></data>
-  <data name="Paused" xml:space="preserve"><value>Tạm dừng</value></data>
-  <data name="Stopped" xml:space="preserve"><value>Đã dừng</value></data>
-  <data name="Logs" xml:space="preserve"><value>Nhật ký</value></data>
-  <data name="NoGames" xml:space="preserve"><value>Chưa có game nào. Bấm "Thêm game" để bắt đầu.</value></data>
-  <data name="ConfirmReset" xml:space="preserve"><value>Thao tác này sẽ dừng tất cả game và reset ứng dụng. Tiếp tục?</value></data>
-  <data name="StartAll" xml:space="preserve"><value>Bắt đầu tất cả</value></data>
-  <data name="StopAll" xml:space="preserve"><value>Dừng tất cả</value></data>
-  <data name="PauseResume" xml:space="preserve"><value>Tạm dừng/Tiếp tục</value></data>
-  <data name="ExitBehavior" xml:space="preserve"><value>Khi thoát</value></data>
-  <data name="MinimizeToTray" xml:space="preserve"><value>Thu nhỏ vào khay</value></data>
-  <data name="StopAndExit" xml:space="preserve"><value>Dừng tất cả và thoát</value></data>
-  <data name="ForceExit" xml:space="preserve"><value>Thoát hẳn</value></data>
-  <data name="ConfirmExitTitle" xml:space="preserve"><value>Xác nhận thoát</value></data>
-  <data name="ConfirmExitMsg" xml:space="preserve"><value>Có tác vụ đang chạy. Dừng tất cả và thoát?</value></data>
-  <data name="LanguageChangeTitle" xml:space="preserve"><value>Đổi ngôn ngữ</value></data>
-  <data name="LanguageChangeMsg" xml:space="preserve"><value>Ứng dụng cần khởi động lại để áp dụng ngôn ngữ mới. Khởi động lại ngay?</value></data>
-  <data name="CoordinateErrorTitle" xml:space="preserve"><value>Lỗi tọa độ</value></data>
-  <data name="CoordinateErrorMsg" xml:space="preserve"><value>Tọa độ không hợp lệ hoặc đã được sử dụng. Vui lòng thử lại.</value></data>
-  <data name="RandomCoordinateErrorTitle" xml:space="preserve"><value>Tọa độ ngẫu nhiên</value></data>
-  <data name="RandomCoordinateErrorMsg" xml:space="preserve"><value>Không thể tạo tọa độ ngẫu nhiên hợp lệ. Cửa sổ game có thể quá nhỏ hoặc tất cả tọa độ đã được sử dụng.</value></data>
-  <data name="ConfirmResetApp" xml:space="preserve"><value>Đặt lại ứng dụng về mặc định? Tất cả cài đặt sẽ được khôi phục về giá trị ban đầu.</value></data>
-  <data name="OpenSettingsFile" xml:space="preserve"><value>Mở file cài đặt</value></data>
-  <data name="SaveSettings" xml:space="preserve"><value>Lưu cài đặt</value></data>
-  <data name="Documents" xml:space="preserve"><value>Tài liệu</value></data>
-  <data name="PrivacyPolicy" xml:space="preserve"><value>Chính sách bảo mật</value></data>
-  <data name="Disclaimer" xml:space="preserve"><value>Miễn trừ trách nhiệm</value></data>
-  <data name="Acknowledgements" xml:space="preserve"><value>Ghi nhận và thư viện bên thứ ba</value></data>
-  <data name="TermsOfService" xml:space="preserve"><value>Điều khoản sử dụng</value></data>
-  <data name="EULA" xml:space="preserve"><value>Thỏa thuận người dùng cuối</value></data>
-  <data name="SecurityPolicy" xml:space="preserve"><value>Chính sách bảo mật ứng dụng</value></data>
-  <data name="ViewOnGitHub" xml:space="preserve"><value>Xem trên GitHub</value></data>
-  <data name="AntiCheatWarning" xml:space="preserve"><value>Thận trọng khi sử dụng với game có anti-cheat. Anti-cheat kernel có thể dẫn đến khóa tài khoản. Nhà phát triển không chịu trách nhiệm.</value></data>
-  <data name="AIDisclosure" xml:space="preserve"><value>Phần mềm này được xây dựng với sự hỗ trợ của AI. Bản dịch trong ứng dụng do AI tạo và có thể không hoàn toàn chính xác.</value></data>
-  <data name="Update" xml:space="preserve"><value>Cập nhật</value></data>
-  <data name="AutoUpdate" xml:space="preserve"><value>Tự động cập nhật khi khởi động</value></data>
-  <data name="CheckForUpdate" xml:space="preserve"><value>Kiểm tra cập nhật</value></data>
-  <data name="DownloadUpdate" xml:space="preserve"><value>Tải cập nhật</value></data>
-  <data name="ApplyAndRestart" xml:space="preserve"><value>Áp dụng và khởi động lại</value></data>
-  <data name="UpdateReady" xml:space="preserve"><value>Nhấn 'Kiểm tra cập nhật' để bắt đầu.</value></data>
-  <data name="UpdateDevMode" xml:space="preserve"><value>Đang chạy ở chế độ phát triển. Không thể cập nhật.</value></data>
-  <data name="UpdateChecking" xml:space="preserve"><value>Đang kiểm tra cập nhật...</value></data>
-  <data name="UpdateUpToDate" xml:space="preserve"><value>Bạn đang sử dụng phiên bản mới nhất.</value></data>
-  <data name="UpdateFoundMsg" xml:space="preserve"><value>Có bản cập nhật: {0} → {1}</value></data>
-  <data name="UpdateDownloading" xml:space="preserve"><value>Đang tải cập nhật...</value></data>
-  <data name="UpdateDownloadComplete" xml:space="preserve"><value>Tải xong. Nhấn 'Áp dụng và khởi động lại' để cập nhật.</value></data>
-  <data name="UpdateApplying" xml:space="preserve"><value>Đang áp dụng cập nhật và khởi động lại...</value></data>
-  <data name="UpdateAvailableTitle" xml:space="preserve"><value>Có bản cập nhật</value></data>
-  <data name="UpdateAutoDownloadedMsg" xml:space="preserve"><value>Phiên bản {0} đã tải xong. Khởi động lại ngay?</value></data>
-  <data name="UpdateNoRelease" xml:space="preserve"><value>Không tìm thấy bản phát hành trên GitHub.</value></data>
-  <data name="UpdateRateLimited" xml:space="preserve"><value>Vượt giới hạn API GitHub. Vui lòng đợi vài phút.</value></data>
-  <data name="UpdateForbidden" xml:space="preserve"><value>Truy cập bị từ chối. Kiểm tra quyền truy cập.</value></data>
-  <data name="UpdateServerError" xml:space="preserve"><value>Lỗi máy chủ GitHub. Vui lòng thử lại sau.</value></data>
-  <data name="UpdateNetworkError" xml:space="preserve"><value>Lỗi mạng. Kiểm tra kết nối internet.</value></data>
-  <data name="UpdateChecksumFailed" xml:space="preserve"><value>Xác minh tải xuống thất bại. Vui lòng thử lại.</value></data>
-  <data name="UpdateUnknownError" xml:space="preserve"><value>Lỗi không xác định khi cập nhật.</value></data>
-  <data name="Dashboard" xml:space="preserve"><value>Bảng điều khiển</value></data>
-  <data name="DashboardCpmChart" xml:space="preserve"><value>Nhấp/phút (Trực tiếp)</value></data>
-  <data name="DashboardGameBreakdown" xml:space="preserve"><value>Phân tích theo game</value></data>
-  <data name="ClickSuccess" xml:space="preserve"><value>Thành công</value></data>
-  <data name="ClickSkipped" xml:space="preserve"><value>Bỏ qua</value></data>
-  <data name="ClickTotal" xml:space="preserve"><value>Tổng</value></data>
-  <data name="PixelColorGuard" xml:space="preserve"><value>Bảo vệ màu pixel</value></data>
-  <data name="EnablePixelColorGuard" xml:space="preserve"><value>Bật bảo vệ màu pixel</value></data>
-  <data name="ColorTolerance" xml:space="preserve"><value>Dung sai màu (0-50)</value></data>
-  <data name="OnColorMismatch" xml:space="preserve"><value>Khi màu không khớp</value></data>
-  <data name="SkipPoint" xml:space="preserve"><value>B��� qua điểm</value></data>
-  <data name="StopSession" xml:space="preserve"><value>Dừng phiên</value></data>
-  <data name="ColorMismatchSkipped" xml:space="preserve"><value>Màu không khớp tại ({0}, {1}): đã bỏ qua.</value></data>
-  <data name="ColorMismatchStopped" xml:space="preserve"><value>Màu không khớp tại ({0}, {1}): mong đợi {2}, nhận {3}. Đã dừng.</value></data>
-  <data name="Schedule" xml:space="preserve"><value>Hẹn giờ</value></data>
-  <data name="CancelSchedule" xml:space="preserve"><value>Hủy</value></data>
-  <data name="StartTime" xml:space="preserve"><value>Bắt đầu:</value></data>
-  <data name="StopTime" xml:space="preserve"><value>Dừng:</value></data>
-  <data name="SchedulerStartsIn" xml:space="preserve"><value>Bắt đầu sau: {0}</value></data>
-  <data name="SchedulerStopsIn" xml:space="preserve"><value>Dừng sau: {0}</value></data>
-  <data name="SchedulerStarted" xml:space="preserve"><value>Hẹn giờ đã kích hoạt bắt đầu</value></data>
-  <data name="SchedulerStopped" xml:space="preserve"><value>Hẹn giờ đã kích hoạt dừng</value></data>
-  <data name="SchedulerInvalidTime" xml:space="preserve"><value>Định dạng giờ không hợp lệ. Dùng HH:mm.</value></data>
-  <data name="SchedulerInvalidFormat" xml:space="preserve"><value>Định dạng không hợp lệ. Nhập giờ dạng HH:mm (ví dụ: 20:00).</value></data>
-  <data name="SchedulerInvalidHour" xml:space="preserve"><value>"{0}": giờ phải từ 00–23.</value></data>
-  <data name="SchedulerInvalidMinute" xml:space="preserve"><value>"{0}": phút phải từ 00–59.</value></data>
-  <data name="SchedulerStopBeforeStart" xml:space="preserve"><value>Giờ dừng phải sau giờ bắt đầu.</value></data>
-  <data name="SchedulerStartRequired" xml:space="preserve"><value>Giờ bắt đầu là bắt buộc.</value></data>
-  <data name="SchedulerNoGames" xml:space="preserve"><value>Thêm game có toạ độ trước khi hẹn giờ.</value></data>
-  <data name="SettingsMode" xml:space="preserve"><value>Chế độ cài đặt</value></data>
-  <data name="GlobalMode" xml:space="preserve"><value>Chung (Giống nhau cho tất cả)</value></data>
-  <data name="CustomMode" xml:space="preserve"><value>Tùy chỉnh (Theo từng game)</value></data>
-  <data name="PerGameMode" xml:space="preserve"><value>Chế độ</value></data>
-  <data name="PerGameRandomMin" xml:space="preserve"><value>Tối thiểu (s)</value></data>
-  <data name="PerGameRandomMax" xml:space="preserve"><value>Tối đa (s)</value></data>
-  <data name="Profile" xml:space="preserve"><value>Hồ sơ</value></data>
-  <data name="SaveProfile" xml:space="preserve"><value>Lưu hồ sơ</value></data>
-  <data name="LoadProfile" xml:space="preserve"><value>Tải</value></data>
-  <data name="DeleteProfile" xml:space="preserve"><value>Xóa</value></data>
-  <data name="ExportProfile" xml:space="preserve"><value>Xuất</value></data>
-  <data name="ImportProfile" xml:space="preserve"><value>Nhập</value></data>
-  <data name="ProfileNamePrompt" xml:space="preserve"><value>Tên hồ sơ:</value></data>
-  <data name="ProfileSaved" xml:space="preserve"><value>Đã lưu hồ sơ "{0}".</value></data>
-  <data name="ProfileLoaded" xml:space="preserve"><value>Đã tải hồ sơ "{0}" vào "{1}".</value></data>
-  <data name="ProfileDeleted" xml:space="preserve"><value>Đã xóa hồ sơ "{0}".</value></data>
-  <data name="ProfileExported" xml:space="preserve"><value>Đã xuất hồ sơ ra {0}.</value></data>
-  <data name="ProfileImported" xml:space="preserve"><value>Đã nhập hồ sơ "{0}".</value></data>
-  <data name="ProfileImportError" xml:space="preserve"><value>Không thể nhập hồ sơ.</value></data>
-  <data name="ConfirmDeleteProfile" xml:space="preserve"><value>Xóa hồ sơ "{0}"?</value></data>
-  <data name="ProfileNameEmpty" xml:space="preserve"><value>Tên hồ sơ không được để trống.</value></data>
-  <data name="ProfileNameDuplicate" xml:space="preserve"><value>Đã có hồ sơ tên "{0}". Ghi đè?</value></data>
-  <data name="NoCoordinatesToSave" xml:space="preserve"><value>Thêm tọa độ trước khi lưu hồ sơ.</value></data>
-  <data name="SelectProfile" xml:space="preserve"><value>Chọn hồ sơ...</value></data>
-  <data name="GameExitNotification" xml:space="preserve"><value>Thông báo game thoát</value></data>
-  <data name="GameExitNotificationTitle" xml:space="preserve"><value>Game đã thoát</value></data>
-  <data name="GameExitNotificationMessage" xml:space="preserve"><value>{0} đã thoát. Thành công: {1}, Bỏ qua: {2}</value></data>
-  <data name="PickerInstruction" xml:space="preserve"><value>Nhấp để chọn. 1=Trái 2=Đúp 3=Phải 4=Phím. ESC=Hủy</value></data>
-  <data name="PickerInstructionKeystroke" xml:space="preserve"><value>Nhấn phím cần gửi. 1/2/3 để chuyển lại. ESC=Hủy</value></data>
-  <data name="PickerCurrentType" xml:space="preserve"><value>Hiện tại: {0}</value></data>
-  <data name="ClickTypeLeft" xml:space="preserve"><value>Trái</value></data>
-  <data name="ClickTypeDouble" xml:space="preserve"><value>Đúp</value></data>
-  <data name="ClickTypeRight" xml:space="preserve"><value>Phải</value></data>
-  <data name="ClickTypeKeystroke" xml:space="preserve"><value>Phím</value></data>
-  <data name="HeatmapToggle" xml:space="preserve"><value>Bản đồ nhiệt</value></data>
-  <data name="HeatmapTooltip" xml:space="preserve"><value>Bật/tắt overlay bản đồ nhiệt click. Tốt nhất ở chế độ Windowed/Borderless — hỗ trợ Fullscreen tùy engine của game (xem docs/HEATMAP_COMPATIBILITY.md).</value></data>
-  <data name="HeatmapTitle" xml:space="preserve"><value>Bản đồ nhiệt</value></data>
-  <data name="ThemeDark" xml:space="preserve"><value>Tối</value></data>
-  <data name="ThemeLight" xml:space="preserve"><value>Sáng</value></data>
-  <data name="ThemeHighContrast" xml:space="preserve"><value>Tương phản cao</value></data>
-  <data name="AutoStoppedQueueEmpty" xml:space="preserve"><value>Tất cả game đã thoát. Đã tự động dừng.</value></data>
-  <data name="DashboardSuccessRatio" xml:space="preserve"><value>Tỷ lệ Thành công / Bỏ qua</value></data>
-  <data name="DashboardGameTimeline" xml:space="preserve"><value>CPM theo Game (Timeline)</value></data>
-  <data name="ExportStats" xml:space="preserve"><value>Xuất Thống kê</value></data>
-  <data name="ResetDashboard" xml:space="preserve"><value>Đặt lại Thống kê</value></data>
-  <data name="ConfirmResetStats" xml:space="preserve"><value>Đặt lại toàn bộ thống kê phiên và dữ liệu dashboard? Không thể hoàn tác.</value></data>
-
-  <!-- About: Connect & Support card (v1.3.3) -->
-  <data name="AboutConnectHeader" xml:space="preserve"><value>Kết nối &amp; Hỗ trợ</value></data>
-  <data name="AboutSupportHeader" xml:space="preserve"><value>Ủng hộ Dự án</value></data>
-  <data name="AboutOpenX" xml:space="preserve"><value>X (Twitter)</value></data>
-  <data name="AboutOpenYouTube" xml:space="preserve"><value>YouTube</value></data>
-  <data name="AboutOpenDiscord" xml:space="preserve"><value>Discord</value></data>
-  <data name="AboutOpenPatreon" xml:space="preserve"><value>Patreon</value></data>
-  <data name="AboutOpenKofi" xml:space="preserve"><value>Ko-fi</value></data>
-  <data name="AboutOpenBluesky" xml:space="preserve"><value>Bluesky</value></data>
-  <data name="AboutOpenMastodon" xml:space="preserve"><value>Mastodon</value></data>
-  <data name="AboutOpenSteam" xml:space="preserve"><value>Steam</value></data>
-  <data name="AboutOpenEmail" xml:space="preserve"><value>Email</value></data>
-  <data name="AboutDonate" xml:space="preserve"><value>Quyên góp</value></data>
-  <data name="AboutReportBug" xml:space="preserve"><value>Báo lỗi</value></data>
+  <data name="About_Acknowledgements" xml:space="preserve"><value>Ghi nhận</value></data>
+  <data name="About_Ai" xml:space="preserve"><value>AutoClick được xây dựng với sự hỗ trợ của AI. Bản dịch trong ứng dụng do AI tạo và có thể có sai sót.</value></data>
+  <data name="About_AiTitle" xml:space="preserve"><value>Công bố về AI</value></data>
+  <data name="About_AntiCheat" xml:space="preserve"><value>Hãy thận trọng với game có anti-cheat. Anti-cheat cấp kernel có thể khóa tài khoản của bạn. Bạn tự chịu rủi ro khi dùng AutoClick.</value></data>
+  <data name="About_AntiCheatTitle" xml:space="preserve"><value>Cảnh báo anti-cheat</value></data>
+  <data name="About_Changelog" xml:space="preserve"><value>Có gì mới</value></data>
+  <data name="About_Community" xml:space="preserve"><value>Cộng đồng</value></data>
+  <data name="About_Disclaimer" xml:space="preserve"><value>Miễn trừ trách nhiệm</value></data>
+  <data name="About_Documents" xml:space="preserve"><value>Tài liệu</value></data>
+  <data name="About_Email" xml:space="preserve"><value>Email</value></data>
+  <data name="About_Eula" xml:space="preserve"><value>Thỏa thuận cấp phép (EULA)</value></data>
+  <data name="About_License" xml:space="preserve"><value>Miễn phí và mã nguồn mở theo giấy phép GNU General Public License v3.0.</value></data>
+  <data name="About_LicenseFile" xml:space="preserve"><value>Giấy phép (GPL-3.0)</value></data>
+  <data name="About_Privacy" xml:space="preserve"><value>Chính sách quyền riêng tư</value></data>
+  <data name="About_ReportBug" xml:space="preserve"><value>Báo lỗi</value></data>
+  <data name="About_Security" xml:space="preserve"><value>Chính sách bảo mật</value></data>
+  <data name="About_Support" xml:space="preserve"><value>Ủng hộ dự án</value></data>
+  <data name="About_Terms" xml:space="preserve"><value>Điều khoản sử dụng</value></data>
+  <data name="About_ThirdParty" xml:space="preserve"><value>Thông báo bên thứ ba</value></data>
+  <data name="About_Title" xml:space="preserve"><value>Giới thiệu</value></data>
+  <data name="About_Version" xml:space="preserve"><value>Phiên bản</value></data>
+  <data name="Admin_Always" xml:space="preserve"><value>Luôn chạy với quyền quản trị</value></data>
+  <data name="Admin_AlwaysHint" xml:space="preserve"><value>Chỉ cần cho game chạy với quyền quản trị. Khi bật, Windows sẽ hỏi quyền mỗi lần AutoClick khởi động.</value></data>
+  <data name="Admin_Restart" xml:space="preserve"><value>Khởi động lại với quyền quản trị</value></data>
+  <data name="Admin_RestartCancelled" xml:space="preserve"><value>Yêu cầu cấp quyền đã bị hủy. AutoClick tiếp tục chạy không có quyền quản trị.</value></data>
+  <data name="Admin_Title" xml:space="preserve"><value>Quyền quản trị</value></data>
+  <data name="ClickType_Double" xml:space="preserve"><value>Click đúp</value></data>
+  <data name="ClickType_Keystroke" xml:space="preserve"><value>Nhấn phím</value></data>
+  <data name="ClickType_Left" xml:space="preserve"><value>Click trái</value></data>
+  <data name="ClickType_Right" xml:space="preserve"><value>Click phải</value></data>
+  <data name="Common_Cancel" xml:space="preserve"><value>Hủy</value></data>
+  <data name="Common_Clear" xml:space="preserve"><value>Xóa</value></data>
+  <data name="Common_Delete" xml:space="preserve"><value>Xóa</value></data>
+  <data name="Common_FileError" xml:space="preserve"><value>Không thể đọc hoặc lưu tệp: {0}</value></data>
+  <data name="Common_Ok" xml:space="preserve"><value>OK</value></data>
+  <data name="Common_OpenFailed" xml:space="preserve"><value>Không thể mở {0}.</value></data>
+  <data name="Common_OpenFolder" xml:space="preserve"><value>Mở thư mục</value></data>
+  <data name="Common_Overwrite" xml:space="preserve"><value>Ghi đè</value></data>
+  <data name="Common_Refresh" xml:space="preserve"><value>Làm mới</value></data>
+  <data name="Common_Save" xml:space="preserve"><value>Lưu</value></data>
+  <data name="Common_SavedTo" xml:space="preserve"><value>Đã lưu vào {0}</value></data>
+  <data name="Dashboard_Breakdown" xml:space="preserve"><value>Theo game</value></data>
+  <data name="Dashboard_CpmChart" xml:space="preserve"><value>Click mỗi phút (trực tiếp)</value></data>
+  <data name="Dashboard_Empty" xml:space="preserve"><value>Thống kê sẽ hiện ở đây khi có game đang chạy.</value></data>
+  <data name="Dashboard_Export" xml:space="preserve"><value>Xuất thống kê</value></data>
+  <data name="Dashboard_Ratio" xml:space="preserve"><value>Đã click / bỏ qua</value></data>
+  <data name="Dashboard_Reset" xml:space="preserve"><value>Đặt lại thống kê</value></data>
+  <data name="Dashboard_ResetConfirm" xml:space="preserve"><value>Đặt lại thống kê của mọi game và lịch sử bảng thống kê? Không thể hoàn tác.</value></data>
+  <data name="Dashboard_Timeline" xml:space="preserve"><value>Click mỗi phút theo game</value></data>
+  <data name="Error_Title" xml:space="preserve"><value>Đã xảy ra lỗi</value></data>
+  <data name="Error_Unexpected" xml:space="preserve"><value>Đã xảy ra lỗi không mong muốn: {0}. Chi tiết có trong log.</value></data>
+  <data name="Exit_ConfirmMessage" xml:space="preserve"><value>Vẫn còn game đang chạy. Dừng tất cả và thoát?</value></data>
+  <data name="Exit_ConfirmTitle" xml:space="preserve"><value>Thoát AutoClick</value></data>
+  <data name="Exit_ForceExit" xml:space="preserve"><value>Thoát ngay</value></data>
+  <data name="Exit_MinimizeToTray" xml:space="preserve"><value>Thu nhỏ xuống khay hệ thống</value></data>
+  <data name="Exit_StopAndExit" xml:space="preserve"><value>Dừng tất cả và thoát</value></data>
+  <data name="Filter_Csv" xml:space="preserve"><value>Tệp CSV (*.csv)|*.csv</value></data>
+  <data name="Filter_Log" xml:space="preserve"><value>Tệp văn bản (*.txt)|*.txt</value></data>
+  <data name="Filter_Profile" xml:space="preserve"><value>Hồ sơ AutoClick (*.autoclick)|*.autoclick|JSON (*.json)|*.json</value></data>
+  <data name="Filter_Session" xml:space="preserve"><value>Phiên AutoClick (*.autoclick-session)|*.autoclick-session</value></data>
+  <data name="Filter_Settings" xml:space="preserve"><value>Cài đặt (*.json)|*.json</value></data>
+  <data name="Game_AddPoint" xml:space="preserve"><value>Thêm bước</value></data>
+  <data name="Game_ClearPoints" xml:space="preserve"><value>Xóa các bước</value></data>
+  <data name="Game_ClearPointsConfirm" xml:space="preserve"><value>Xóa cả {0} bước của {1}?</value></data>
+  <data name="Game_GlobalTimingHint" xml:space="preserve"><value>Dùng nhịp click trong Cài đặt. Chuyển chế độ click sang “Tùy chỉnh” để đặt nhịp và hồ sơ riêng cho từng game.</value></data>
+  <data name="Game_MoveDown" xml:space="preserve"><value>Xuống dưới</value></data>
+  <data name="Game_MoveUp" xml:space="preserve"><value>Lên trên</value></data>
+  <data name="Game_NoSteps" xml:space="preserve"><value>Chưa có bước nào. Thêm bước để chọn vị trí click hoặc phím cần nhấn.</value></data>
+  <data name="Game_Pause" xml:space="preserve"><value>Tạm dừng</value></data>
+  <data name="Game_RandomPoint" xml:space="preserve"><value>Điểm ngẫu nhiên</value></data>
+  <data name="Game_RandomPointFailed" xml:space="preserve"><value>Không thể chọn điểm ngẫu nhiên: cửa sổ game quá nhỏ hoặc đang thu nhỏ.</value></data>
+  <data name="Game_Remove" xml:space="preserve"><value>Xóa khỏi hàng đợi</value></data>
+  <data name="Game_RemoveStep" xml:space="preserve"><value>Xóa bước</value></data>
+  <data name="Game_Resume" xml:space="preserve"><value>Tiếp tục</value></data>
+  <data name="Game_Start" xml:space="preserve"><value>Bắt đầu</value></data>
+  <data name="Game_Steps" xml:space="preserve"><value>Các bước</value></data>
+  <data name="Game_StepsTooltip" xml:space="preserve"><value>Các bước chạy từ trên xuống. Kéo để đổi thứ tự.</value></data>
+  <data name="Game_Stop" xml:space="preserve"><value>Dừng</value></data>
+  <data name="Guard_Enable" xml:space="preserve"><value>Kiểm tra màu pixel trước khi click</value></data>
+  <data name="Guard_Hint" xml:space="preserve"><value>Các bước chọn khi bật tính năng này sẽ ghi nhớ màu dưới con trỏ; bước chỉ được click khi pixel đó vẫn còn màu này.</value></data>
+  <data name="Guard_OnMismatch" xml:space="preserve"><value>Khi màu không khớp</value></data>
+  <data name="Guard_Skip" xml:space="preserve"><value>Bỏ qua bước</value></data>
+  <data name="Guard_Stop" xml:space="preserve"><value>Dừng phiên</value></data>
+  <data name="Guard_Title" xml:space="preserve"><value>Bảo vệ màu pixel</value></data>
+  <data name="Guard_Tolerance" xml:space="preserve"><value>Độ lệch màu cho phép (0–100 mỗi kênh)</value></data>
+  <data name="Guard_Wait" xml:space="preserve"><value>Chờ đến khi khớp</value></data>
+  <data name="Guard_WaitTimeout" xml:space="preserve"><value>Thời gian chờ tối đa (ms)</value></data>
+  <data name="Heatmap_Hide" xml:space="preserve"><value>Ẩn bản đồ nhiệt</value></data>
+  <data name="Heatmap_Legend" xml:space="preserve"><value>{0} click · {1} điểm · tối đa {2}</value></data>
+  <data name="Heatmap_Show" xml:space="preserve"><value>Bản đồ nhiệt</value></data>
+  <data name="Heatmap_Tooltip" xml:space="preserve"><value>Hiển thị vị trí các click ngay trên cửa sổ game. Hoạt động tốt nhất ở chế độ cửa sổ hoặc không viền.</value></data>
+  <data name="Hotkey_Change" xml:space="preserve"><value>Đổi</value></data>
+  <data name="Hotkey_Duplicate" xml:space="preserve"><value>{0} đã được dùng cho “{1}”.</value></data>
+  <data name="Hotkey_Failed" xml:space="preserve"><value>Không đăng ký được phím tắt này.</value></data>
+  <data name="Hotkey_InUse" xml:space="preserve"><value>Ứng dụng khác đang dùng phím tắt này.</value></data>
+  <data name="Hotkey_Instructions" xml:space="preserve"><value>Nhấn tổ hợp phím muốn dùng. Esc để hủy.</value></data>
+  <data name="Hotkey_Invalid" xml:space="preserve"><value>Hãy chọn phím khác Ctrl, Alt, Shift hoặc Windows.</value></data>
+  <data name="Hotkey_NoModifierHint" xml:space="preserve"><value>Nếu không kèm Ctrl, Alt hoặc Shift, phím này sẽ không đến được ứng dụng khác (kể cả game) khi AutoClick đang chạy.</value></data>
+  <data name="Hotkey_NotAllowed" xml:space="preserve"><value>Không được dùng phím tắt này.</value></data>
+  <data name="Hotkey_PauseResume" xml:space="preserve"><value>Tạm dừng / tiếp tục tất cả</value></data>
+  <data name="Hotkey_RecordTitle" xml:space="preserve"><value>Phím tắt: {0}</value></data>
+  <data name="Hotkey_RegisterFailed" xml:space="preserve"><value>Không đăng ký được các phím tắt sau (có thể ứng dụng khác đang dùng): {0}</value></data>
+  <data name="Hotkey_Reserved" xml:space="preserve"><value>F12 được Windows dành riêng.</value></data>
+  <data name="Hotkey_Reset" xml:space="preserve"><value>Khôi phục phím tắt mặc định</value></data>
+  <data name="Hotkey_StartAll" xml:space="preserve"><value>Bắt đầu tất cả</value></data>
+  <data name="Hotkey_StopAll" xml:space="preserve"><value>Dừng tất cả</value></data>
+  <data name="Hotkey_Title" xml:space="preserve"><value>Phím tắt</value></data>
+  <data name="Hotkey_WindowsKey" xml:space="preserve"><value>Tổ hợp có phím Windows được Windows dành riêng.</value></data>
+  <data name="Log_Clear" xml:space="preserve"><value>Xóa</value></data>
+  <data name="Log_Export" xml:space="preserve"><value>Xuất nhật ký</value></data>
+  <data name="Log_OpenFolder" xml:space="preserve"><value>Thư mục log</value></data>
+  <data name="Log_Title" xml:space="preserve"><value>Nhật ký</value></data>
+  <data name="Mode_Custom" xml:space="preserve"><value>Tùy chỉnh (theo từng game)</value></data>
+  <data name="Mode_Global" xml:space="preserve"><value>Chung (giống nhau cho mọi game)</value></data>
+  <data name="Nav_About" xml:space="preserve"><value>Giới thiệu</value></data>
+  <data name="Nav_Dashboard" xml:space="preserve"><value>Bảng thống kê</value></data>
+  <data name="Nav_Queue" xml:space="preserve"><value>Hàng đợi</value></data>
+  <data name="Nav_Settings" xml:space="preserve"><value>Cài đặt</value></data>
+  <data name="Notice_AdminMessage" xml:space="preserve"><value>AutoClick 2 không còn cần quyền quản trị, trừ khi game chạy với quyền quản trị. Vì bạn nâng cấp từ phiên bản 1 nên ứng dụng vẫn khởi động với quyền quản trị.</value></data>
+  <data name="Notice_AdminTitle" xml:space="preserve"><value>Chế độ quản trị</value></data>
+  <data name="Notice_AdminTurnOff" xml:space="preserve"><value>Không chạy với quyền quản trị nữa</value></data>
+  <data name="Notice_AdminTurnedOff" xml:space="preserve"><value>Lần sau AutoClick sẽ khởi động không cần quyền quản trị.</value></data>
+  <data name="Notice_ElevationDeclined" xml:space="preserve"><value>AutoClick được đặt để chạy với quyền quản trị nhưng yêu cầu cấp quyền đã bị hủy. Không thể click vào game chạy với quyền quản trị.</value></data>
+  <data name="Notice_ElevationDeclinedTitle" xml:space="preserve"><value>Đang chạy không có quyền quản trị</value></data>
+  <data name="Notice_ElevationRequired" xml:space="preserve"><value>{0} chạy với quyền quản trị nên Windows chặn click từ AutoClick. Hãy khởi động lại AutoClick với quyền quản trị để click được.</value></data>
+  <data name="Notice_ElevationTitle" xml:space="preserve"><value>Cần quyền quản trị</value></data>
+  <data name="Notice_SettingsRecovered" xml:space="preserve"><value>Không đọc được tệp cài đặt nên đang dùng giá trị mặc định. Bản sao của tệp cũ được giữ tại: {0}</value></data>
+  <data name="Notice_SettingsRecoveredTitle" xml:space="preserve"><value>Cài đặt đã được đặt lại</value></data>
+  <data name="Notice_UpdateReady" xml:space="preserve"><value>AutoClick {0} đã sẵn sàng để cài đặt.</value></data>
+  <data name="Notice_UpdateTitle" xml:space="preserve"><value>Bản cập nhật đã sẵn sàng</value></data>
+  <data name="Notify_GameExited" xml:space="preserve"><value>{0} đã thoát. Click: {1}, bỏ qua: {2}.</value></data>
+  <data name="Notify_GameExitedTitle" xml:space="preserve"><value>Game đã thoát</value></data>
+  <data name="Notify_QueueEmpty" xml:space="preserve"><value>Tất cả game đã thoát.</value></data>
+  <data name="Picker_AdminBadge" xml:space="preserve"><value>Admin</value></data>
+  <data name="Picker_AdminTooltip" xml:space="preserve"><value>Game này chạy với quyền quản trị. AutoClick cũng phải chạy với quyền quản trị mới click được.</value></data>
+  <data name="Picker_Duplicate" xml:space="preserve"><value>Đã có bước tại ({0}, {1}).</value></data>
+  <data name="Picker_Empty" xml:space="preserve"><value>Không tìm thấy cửa sổ nào. Hãy mở game rồi làm mới.</value></data>
+  <data name="Picker_GameTitle" xml:space="preserve"><value>Thêm game</value></data>
+  <data name="Picker_Hint" xml:space="preserve"><value>Chọn cửa sổ của game cần click. Chế độ cửa sổ hoặc không viền hoạt động tốt nhất.</value></data>
+  <data name="Picker_Instruction" xml:space="preserve"><value>Click vào điểm cần dùng. Phím: 1 trái · 2 đúp · 3 phải · 4 nhấn phím · Esc hủy</value></data>
+  <data name="Picker_InstructionKeystroke" xml:space="preserve"><value>Nhấn phím cần gửi. 1, 2 hoặc 3 để quay lại click · Esc để hủy</value></data>
+  <data name="Picker_RestoreGame" xml:space="preserve"><value>Hãy mở lại cửa sổ game trước (đang thu nhỏ hoặc đã đóng).</value></data>
+  <data name="Picker_Search" xml:space="preserve"><value>Tìm theo tên hoặc tiêu đề</value></data>
+  <data name="Picker_Select" xml:space="preserve"><value>Thêm</value></data>
+  <data name="Picker_Title" xml:space="preserve"><value>Chọn điểm</value></data>
+  <data name="Profile_Delete" xml:space="preserve"><value>Xóa hồ sơ</value></data>
+  <data name="Profile_DeleteConfirm" xml:space="preserve"><value>Xóa hồ sơ “{0}”?</value></data>
+  <data name="Profile_Export" xml:space="preserve"><value>Xuất hồ sơ</value></data>
+  <data name="Profile_Exported" xml:space="preserve"><value>Đã xuất hồ sơ ra {0}</value></data>
+  <data name="Profile_Import" xml:space="preserve"><value>Nhập hồ sơ</value></data>
+  <data name="Profile_ImportFailed" xml:space="preserve"><value>Không thể nhập hồ sơ: {0}</value></data>
+  <data name="Profile_Imported" xml:space="preserve"><value>Đã nhập hồ sơ “{0}”.</value></data>
+  <data name="Profile_Load" xml:space="preserve"><value>Tải</value></data>
+  <data name="Profile_Loaded" xml:space="preserve"><value>Đã tải hồ sơ “{0}” vào {1}.</value></data>
+  <data name="Profile_NamePrompt" xml:space="preserve"><value>Tên hồ sơ</value></data>
+  <data name="Profile_NoSteps" xml:space="preserve"><value>Hãy thêm bước trước khi lưu hồ sơ.</value></data>
+  <data name="Profile_Overwrite" xml:space="preserve"><value>Đã có hồ sơ tên “{0}”. Ghi đè?</value></data>
+  <data name="Profile_Save" xml:space="preserve"><value>Lưu hồ sơ</value></data>
+  <data name="Profile_Saved" xml:space="preserve"><value>Đã lưu hồ sơ “{0}”.</value></data>
+  <data name="Profile_Title" xml:space="preserve"><value>Hồ sơ</value></data>
+  <data name="Queue_AddGame" xml:space="preserve"><value>Thêm game</value></data>
+  <data name="Queue_EmptyMessage" xml:space="preserve"><value>Thêm game, chọn các điểm cần click rồi bấm Bắt đầu.</value></data>
+  <data name="Queue_EmptyTitle" xml:space="preserve"><value>Chưa có game nào</value></data>
+  <data name="Queue_Full" xml:space="preserve"><value>Hàng đợi đã đầy ({0} game). Có thể tăng giới hạn trong Cài đặt.</value></data>
+  <data name="Queue_GamesCount" xml:space="preserve"><value>{0}/{1} game</value></data>
+  <data name="Queue_NothingToStart" xml:space="preserve"><value>Không có gì để bắt đầu: hãy thêm bước cho game trước.</value></data>
+  <data name="Queue_RemoveAll" xml:space="preserve"><value>Xóa tất cả</value></data>
+  <data name="Queue_RemoveAllConfirm" xml:space="preserve"><value>Dừng và xóa cả {0} game khỏi hàng đợi?</value></data>
+  <data name="Queue_StartAll" xml:space="preserve"><value>Bắt đầu tất cả</value></data>
+  <data name="Queue_StopAll" xml:space="preserve"><value>Dừng tất cả</value></data>
+  <data name="Schedule_Arm" xml:space="preserve"><value>Hẹn giờ</value></data>
+  <data name="Schedule_Cancel" xml:space="preserve"><value>Hủy hẹn giờ</value></data>
+  <data name="Schedule_InvalidFormat" xml:space="preserve"><value>Nhập giờ theo dạng HH:mm (ví dụ 20:00).</value></data>
+  <data name="Schedule_InvalidHour" xml:space="preserve"><value>Giờ phải từ 00 đến 23.</value></data>
+  <data name="Schedule_InvalidMinute" xml:space="preserve"><value>Phút phải từ 00 đến 59.</value></data>
+  <data name="Schedule_NoGames" xml:space="preserve"><value>Hãy thêm game có bước trước khi hẹn giờ.</value></data>
+  <data name="Schedule_Start" xml:space="preserve"><value>Bắt đầu lúc</value></data>
+  <data name="Schedule_StartRequired" xml:space="preserve"><value>Hãy nhập giờ bắt đầu.</value></data>
+  <data name="Schedule_Started" xml:space="preserve"><value>Đến giờ hẹn: đã bắt đầu các game.</value></data>
+  <data name="Schedule_StartsIn" xml:space="preserve"><value>Bắt đầu sau {0}</value></data>
+  <data name="Schedule_Stop" xml:space="preserve"><value>Dừng lúc</value></data>
+  <data name="Schedule_StopEqualsStart" xml:space="preserve"><value>Giờ dừng phải khác giờ bắt đầu.</value></data>
+  <data name="Schedule_StopOptional" xml:space="preserve"><value>không bắt buộc</value></data>
+  <data name="Schedule_StopsIn" xml:space="preserve"><value>Dừng sau {0}</value></data>
+  <data name="Schedule_Title" xml:space="preserve"><value>Hẹn giờ</value></data>
+  <data name="Session_Export" xml:space="preserve"><value>Xuất phiên</value></data>
+  <data name="Session_Import" xml:space="preserve"><value>Nhập phiên</value></data>
+  <data name="Session_ImportFailed" xml:space="preserve"><value>Không thể nhập phiên: {0}</value></data>
+  <data name="Session_ImportSummary" xml:space="preserve"><value>Nhập phiên sẽ thay thế cài đặt hiện tại và nhập {0} hồ sơ. {1} game khớp với cửa sổ đang chạy sẽ được thêm; {2} game không chạy.</value></data>
+  <data name="Session_Imported" xml:space="preserve"><value>Đã nhập phiên: thêm {0} game.</value></data>
+  <data name="Session_NotRunning" xml:space="preserve"><value>Không chạy: {0}</value></data>
+  <data name="Settings_Appearance" xml:space="preserve"><value>Giao diện</value></data>
+  <data name="Settings_AutoUpdate" xml:space="preserve"><value>Tự động cập nhật</value></data>
+  <data name="Settings_AutoUpdateHint" xml:space="preserve"><value>Kiểm tra cập nhật khi khởi động và mỗi 6 giờ rồi tải về. Bạn chọn lúc khởi động lại.</value></data>
+  <data name="Settings_Behavior" xml:space="preserve"><value>Hành vi</value></data>
+  <data name="Settings_Clicking" xml:space="preserve"><value>Click</value></data>
+  <data name="Settings_Data" xml:space="preserve"><value>Dữ liệu</value></data>
+  <data name="Settings_DataHint" xml:space="preserve"><value>Cài đặt, hồ sơ và log được lưu trong thư mục này. Gỡ cài đặt AutoClick sẽ xóa thư mục này.</value></data>
+  <data name="Settings_DefaultTiming" xml:space="preserve"><value>Nhịp click</value></data>
+  <data name="Settings_DefaultTimingHint" xml:space="preserve"><value>Thời gian chờ giữa hai lượt chạy các bước của game, tính bằng giây.</value></data>
+  <data name="Settings_ExitBehavior" xml:space="preserve"><value>Khi đóng cửa sổ</value></data>
+  <data name="Settings_Export" xml:space="preserve"><value>Xuất cài đặt</value></data>
+  <data name="Settings_GameExitNotification" xml:space="preserve"><value>Thông báo khi game thoát</value></data>
+  <data name="Settings_Import" xml:space="preserve"><value>Nhập cài đặt</value></data>
+  <data name="Settings_ImportFailed" xml:space="preserve"><value>Không thể nhập cài đặt: {0}</value></data>
+  <data name="Settings_Imported" xml:space="preserve"><value>Đã nhập cài đặt.</value></data>
+  <data name="Settings_Language" xml:space="preserve"><value>Ngôn ngữ</value></data>
+  <data name="Settings_LanguageHint" xml:space="preserve"><value>Bản dịch do AI tạo và có thể có sai sót.</value></data>
+  <data name="Settings_MaxGames" xml:space="preserve"><value>Số game tối đa trong hàng đợi</value></data>
+  <data name="Settings_MinimizeOnStartAll" xml:space="preserve"><value>Thu nhỏ xuống khay hệ thống khi “Bắt đầu tất cả”</value></data>
+  <data name="Settings_Mode" xml:space="preserve"><value>Chế độ click</value></data>
+  <data name="Settings_ModeHint" xml:space="preserve"><value>Chung: mọi game dùng nhịp bên dưới. Tùy chỉnh: mỗi game có nhịp và hồ sơ riêng.</value></data>
+  <data name="Settings_Reset" xml:space="preserve"><value>Đặt lại cài đặt</value></data>
+  <data name="Settings_ResetConfirm" xml:space="preserve"><value>Khôi phục mọi cài đặt về mặc định? Hồ sơ vẫn được giữ.</value></data>
+  <data name="Settings_SequenceDelayHint" xml:space="preserve"><value>Thời gian nghỉ sau mỗi bước trước bước tiếp theo, tính bằng mili giây.</value></data>
+  <data name="Settings_ShowLogs" xml:space="preserve"><value>Hiện nhật ký trực tiếp</value></data>
+  <data name="Settings_Sounds" xml:space="preserve"><value>Âm thanh</value></data>
+  <data name="Settings_Theme" xml:space="preserve"><value>Chủ đề</value></data>
+  <data name="Settings_VerboseLogging" xml:space="preserve"><value>Ghi nhật ký chi tiết</value></data>
+  <data name="Settings_VerboseLoggingHint" xml:space="preserve"><value>Ghi thông tin gỡ lỗi vào tệp log (hữu ích khi báo lỗi).</value></data>
+  <data name="State_Idle" xml:space="preserve"><value>Chờ</value></data>
+  <data name="State_Paused" xml:space="preserve"><value>Tạm dừng</value></data>
+  <data name="State_Running" xml:space="preserve"><value>Đang chạy</value></data>
+  <data name="State_Stopped" xml:space="preserve"><value>Đã dừng</value></data>
+  <data name="State_WaitingMinimized" xml:space="preserve"><value>Đang chờ (game đang thu nhỏ)</value></data>
+  <data name="Stats_ActiveTime" xml:space="preserve"><value>Thời gian chạy</value></data>
+  <data name="Stats_Clicks" xml:space="preserve"><value>Lượt click</value></data>
+  <data name="Stats_ClicksPerMinute" xml:space="preserve"><value>Click/phút</value></data>
+  <data name="Stats_LastInterval" xml:space="preserve"><value>Nhịp gần nhất</value></data>
+  <data name="Stats_Peak" xml:space="preserve"><value>Cao nhất</value></data>
+  <data name="Stats_Reset" xml:space="preserve"><value>Đặt lại thống kê</value></data>
+  <data name="Stats_RunningGames" xml:space="preserve"><value>Game đang chạy</value></data>
+  <data name="Stats_Skipped" xml:space="preserve"><value>Bỏ qua</value></data>
+  <data name="Stats_Success" xml:space="preserve"><value>Đã click</value></data>
+  <data name="Stats_TotalClicks" xml:space="preserve"><value>Tổng lượt click</value></data>
+  <data name="Status_Administrator" xml:space="preserve"><value>Quản trị viên</value></data>
+  <data name="Status_Idle" xml:space="preserve"><value>Sẵn sàng</value></data>
+  <data name="Status_Running" xml:space="preserve"><value>{0} đang chạy · {1} tạm dừng</value></data>
+  <data name="Step_Double" xml:space="preserve"><value>Click đúp tại ({0}, {1})</value></data>
+  <data name="Step_Key" xml:space="preserve"><value>Nhấn {0}</value></data>
+  <data name="Step_Left" xml:space="preserve"><value>Click tại ({0}, {1})</value></data>
+  <data name="Step_Right" xml:space="preserve"><value>Click phải tại ({0}, {1})</value></data>
+  <data name="Stop_ColorMismatch" xml:space="preserve"><value>Đã dừng: màu pixel không khớp: {0}.</value></data>
+  <data name="Stop_ElevationRequired" xml:space="preserve"><value>Bị chặn: game này chạy với quyền quản trị.</value></data>
+  <data name="Stop_Error" xml:space="preserve"><value>Đã dừng sau nhiều lỗi liên tiếp: {0}</value></data>
+  <data name="Stop_OutOfBounds" xml:space="preserve"><value>Đã dừng: có bước nằm ngoài cửa sổ game: {0}. Có thể cửa sổ đã đổi kích thước; hãy chọn lại bước đó.</value></data>
+  <data name="Stop_TargetNotResponding" xml:space="preserve"><value>Đã dừng: game không phản hồi.</value></data>
+  <data name="Stop_WindowClosed" xml:space="preserve"><value>Đã dừng: cửa sổ game đã đóng.</value></data>
+  <data name="Theme_Dark" xml:space="preserve"><value>Tối</value></data>
+  <data name="Theme_HighContrast" xml:space="preserve"><value>Tương phản cao</value></data>
+  <data name="Theme_Light" xml:space="preserve"><value>Sáng</value></data>
+  <data name="Theme_System" xml:space="preserve"><value>Theo Windows</value></data>
+  <data name="Timing_Fixed" xml:space="preserve"><value>Cố định</value></data>
+  <data name="Timing_Interval" xml:space="preserve"><value>Nhịp (giây)</value></data>
+  <data name="Timing_Max" xml:space="preserve"><value>Tối đa (giây)</value></data>
+  <data name="Timing_Min" xml:space="preserve"><value>Tối thiểu (giây)</value></data>
+  <data name="Timing_Random" xml:space="preserve"><value>Ngẫu nhiên</value></data>
+  <data name="Timing_SequenceDelay" xml:space="preserve"><value>Độ trễ giữa các bước (ms)</value></data>
+  <data name="Timing_Title" xml:space="preserve"><value>Nhịp click</value></data>
+  <data name="Tray_Exit" xml:space="preserve"><value>Thoát</value></data>
+  <data name="Tray_Show" xml:space="preserve"><value>Hiện AutoClick</value></data>
+  <data name="Tray_StillRunning" xml:space="preserve"><value>AutoClick vẫn đang chạy ở khay hệ thống. Dùng menu của biểu tượng để thoát.</value></data>
+  <data name="Update_ApplyRestart" xml:space="preserve"><value>Khởi động lại và cập nhật</value></data>
+  <data name="Update_Available" xml:space="preserve"><value>Đã có phiên bản {0}.</value></data>
+  <data name="Update_Check" xml:space="preserve"><value>Kiểm tra cập nhật</value></data>
+  <data name="Update_Checking" xml:space="preserve"><value>Đang kiểm tra cập nhật…</value></data>
+  <data name="Update_Download" xml:space="preserve"><value>Tải về</value></data>
+  <data name="Update_Downloading" xml:space="preserve"><value>Đang tải… {0}%</value></data>
+  <data name="Update_Error_Forbidden" xml:space="preserve"><value>GitHub đã từ chối yêu cầu.</value></data>
+  <data name="Update_Error_Network" xml:space="preserve"><value>Lỗi mạng. Hãy kiểm tra kết nối internet.</value></data>
+  <data name="Update_Error_NoRelease" xml:space="preserve"><value>Không tìm thấy bản phát hành trên GitHub.</value></data>
+  <data name="Update_Error_RateLimited" xml:space="preserve"><value>Đã chạm giới hạn truy cập của GitHub. Hãy thử lại sau vài phút.</value></data>
+  <data name="Update_Error_Server" xml:space="preserve"><value>Máy chủ GitHub gặp lỗi. Hãy thử lại sau.</value></data>
+  <data name="Update_Error_Unknown" xml:space="preserve"><value>Cập nhật thất bại. Chi tiết có trong log.</value></data>
+  <data name="Update_Idle" xml:space="preserve"><value>Kiểm tra xem có phiên bản AutoClick mới không.</value></data>
+  <data name="Update_NotInstalled" xml:space="preserve"><value>Chỉ bản đã cài đặt mới cập nhật được (bản này không được cài bằng trình cài đặt).</value></data>
+  <data name="Update_Ready" xml:space="preserve"><value>Phiên bản {0} đã tải xong và sẵn sàng cài đặt.</value></data>
+  <data name="Update_Title" xml:space="preserve"><value>Cập nhật</value></data>
+  <data name="Update_UpToDate" xml:space="preserve"><value>AutoClick đã là bản mới nhất.</value></data>
 </root>

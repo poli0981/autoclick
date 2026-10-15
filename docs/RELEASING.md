@@ -1,95 +1,67 @@
 # Release Process
 
-AutoClick uses [Velopack](https://velopack.io/) for packaging and updates, with GitHub Actions handling build & release automation. This doc describes the steps to cut a new release.
+AutoClick is packaged and updated with [Velopack](https://velopack.io/); GitHub Actions builds every release. A release is uploaded as a **draft**, verified, and only then published.
 
 ## Prerequisites
 
-- You can push to `master` and create tags on `github.com/poli0981/autoclick`.
-- `.github/workflows/release.yml` is present (the workflow we lean on).
-- The repo's default `GITHUB_TOKEN` has write access to releases (already granted by `permissions: contents: write` in the workflow).
+- You can merge to `master` (through a pull request: the branch is protected) and push tags.
+- Tags matching `v*` are protected by a ruleset: they cannot be moved or deleted. A mistake after tagging is fixed with a new patch version, never by re-tagging.
 
-## Steps
+## 1. Prepare the version (pull request)
 
-### 1. Bump version in source
+1. Set the version once in [`Directory.Build.props`](../Directory.Build.props) (`<Version>X.Y.Z</Version>`); every project and the file/assembly versions derive from it.
+2. Add a `## [X.Y.Z] - YYYY-MM-DD` section to [`CHANGELOG.md`](../CHANGELOG.md) (move the items from `[Unreleased]`) and add its compare link at the bottom. The section becomes the release notes shown on GitHub, in the in-app update notice and on Discord; CI fails if it is missing.
+3. Open a pull request. CI runs the full release packaging as a dry run with the real notes, so problems show up before tagging.
+4. Merge when every required check is green.
 
-Edit the `<Version>`, `<AssemblyVersion>`, `<FileVersion>`, `<InformationalVersion>` (UI only) entries in all four `.csproj` files:
-
-- `src/AutoClick.UI/AutoClick.UI.csproj`
-- `src/AutoClick.Services/AutoClick.Services.csproj`
-- `src/AutoClick.Win32/AutoClick.Win32.csproj`
-- `src/AutoClick.Core/AutoClick.Core.csproj`
-
-All four must match (e.g. `1.2.1` and `1.2.1.0`).
-
-### 2. Update CHANGELOG.md
-
-Add a section at the top following the existing format:
-
-```markdown
-## [X.Y.Z] - YYYY-MM-DD
-
-### Added
-- ...
-
-### Fixed
-- ...
-```
-
-The release workflow extracts the body of this section verbatim into the GitHub Release notes.
-
-### 3. Commit and push
+## 2. Tag
 
 ```bash
-git add -A
-git commit -m "chore: bump version to X.Y.Z"
-git push origin master
-```
-
-### 4. Tag the release
-
-```bash
-git tag vX.Y.Z
+git switch master
+git pull
+git tag -s vX.Y.Z -m "AutoClick X.Y.Z"
 git push origin vX.Y.Z
 ```
 
-The push of a `vX.Y.Z` tag triggers `.github/workflows/release.yml`. Its **build** job (read-only token):
+The tag starts [`release.yml`](../.github/workflows/release.yml). Its **build** job (read-only token plus attestation permissions):
 
-1. Validates the tag format and checks it matches `<Version>` in the projects and that the `vpk` CLI pinned in `.config/dotnet-tools.json` matches the `Velopack` package version.
-2. Extracts release notes from `CHANGELOG.md` (fails if the `## [X.Y.Z]` section is missing).
-3. `dotnet publish`es the UI project as self-contained `win-x64` and runs the `--smoke-test` of the published exe.
-4. Runs `vpk pack` to produce `releases.win.json`, `assets.win.json`, `RELEASES`, `AutoClick-X.Y.Z-full.nupkg`, `AutoClick-win-Portable.zip` and `AutoClick-win-Setup.exe`. Delta packages are currently disabled (`--delta None`) because 1.3.4 changed the .NET runtime.
+1. Checks that the tag is `vX.Y.Z`, matches the project version, and that the `vpk` CLI pinned in `.config/dotnet-tools.json` matches the Velopack library.
+2. Extracts the release notes from `CHANGELOG.md`.
+3. Publishes the app (self-contained `win-x64`), writes `THIRD-PARTY-NOTICES.txt` into it (failing on any license outside the policy) and runs the `--smoke-test` of the published exe.
+4. Packs with `vpk pack` (full package only): `AutoClick-win-Setup.exe`, `AutoClick-win-Portable.zip`, `AutoClick-X.Y.Z-full.nupkg`, `releases.win.json`, `assets.win.json`, `RELEASES`.
+5. Generates an SPDX SBOM and creates build provenance and SBOM attestations for the installer, the portable zip and the package.
 
-The **upload draft release** job then runs `vpk upload github` and attaches the artifacts to a **draft** release named `AutoClick vX.Y.Z`. The same packaging step also runs as a dry run in the CI workflow on every pull request, so a broken release-notes section is caught before tagging.
+The **upload draft release** job then uploads everything (plus `AutoClick-X.Y.Z.spdx.json`) to a draft release named `AutoClick vX.Y.Z`.
 
-### 5. Verify, then publish the draft
+To rebuild an existing tag after a transient failure, use **Actions → Release → Run workflow** with the tag; it builds that tag and merges into the existing draft.
 
-Until it is published the release is invisible to end users and the auto-updater won't pick it up. Check the draft (see "Verifying a release"), then publish it **from your own account**:
+## 3. Verify the draft
+
+Until it is published, the release is invisible to users and to the updater.
+
+1. The draft lists the files above, and `releases.win.json` contains the new version.
+2. Verify the attestation of the downloaded installer:
+
+   ```bash
+   gh attestation verify AutoClick-win-Setup.exe -R poli0981/autoclick
+   ```
+
+3. In **Windows Sandbox**: install the previous release, add some settings and profiles, update to the draft's package with the installed `Update.exe`, and check that the new version starts, the data is still there, and a fresh install and an uninstall work too.
+
+## 4. Publish
+
+Publish from **your own account** (events raised by the workflow token would not start other workflows):
 
 ```bash
-gh release edit vX.Y.Z --repo poli0981/autoclick --draft=false
+gh release edit vX.Y.Z --repo poli0981/autoclick --draft=false --latest
 ```
 
-Or open the release on GitHub and click "Publish release". Publishing with a user token raises the `release: published` event, which runs the Discord announcement and the release-discussion workflows (events raised by the workflow's own `GITHUB_TOKEN` would not).
+Publishing raises `release: published`, which posts the Discord announcement and creates the release discussion. Check both, and that **About → Check for updates** in an older install now finds the release.
 
-### 6. Manual trigger (alternative)
+## Runtime security updates
 
-To rebuild an existing tag without re-tagging (e.g. a transient CI failure), use **Actions → Release → Run workflow** and enter the tag (e.g. `v1.3.4`). The workflow always checks out that tag, and `--merge` adds to the existing draft instead of failing.
-
-## Verifying a release
-
-After the workflow finishes:
-
-1. Open https://github.com/poli0981/autoclick/releases — the new draft should be there.
-2. Confirm the Velopack artifacts listed above are attached.
-3. Open `releases.win.json` — the new version should appear with valid SHA hashes.
-4. Install the previous version (for example in Windows Sandbox), open AutoClick → About → "Check for updates" — the new version should be detected and install cleanly.
+AutoClick ships its own .NET runtime. When Microsoft releases a .NET 10 servicing update with security fixes, Dependabot proposes the new SDK in `global.json`; merge it and ship a patch release so installed copies get the fixed runtime.
 
 ## Code signing
 
-Currently disabled. To enable:
-
-1. Add the `.pfx` certificate as a GitHub repo secret (e.g. `SIGNING_CERT_PFX_BASE64`) and the password as `SIGNING_CERT_PASSWORD`.
-2. Decode the cert into a file in the workflow before `vpk pack`.
-3. Pass `--signParams "/f cert.pfx /p $env:SIGNING_CERT_PASSWORD /tr http://timestamp.digicert.com /td sha256 /fd sha256"` to `vpk pack`.
-
-Until that's in place, Windows SmartScreen may show a warning on first install for new users. Existing installs auto-update without prompting.
+Releases are not code-signed (Windows SmartScreen may warn new users on first install; updates of existing installs are not affected). Build provenance attestations let anyone check that a file was built by this repository's workflow. Free signing for open-source projects is available from [SignPath Foundation](https://signpath.org/); `vpk pack` accepts `--signParams` or `--azureTrustedSignFile` once a certificate is available.

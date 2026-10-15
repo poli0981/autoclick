@@ -1,0 +1,80 @@
+name: Dependency Review
+
+# Blocks pull requests that add a vulnerable package (moderate or worse) or a license outside
+# eng/licenses/allowed-licenses.json (the list the licenses CI job enforces too).
+# Required check for master: dependency-review.
+
+on:
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dependency-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  dependency-review:
+    name: dependency-review
+    runs-on: windows-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write # dependency snapshot submission
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore AutoClick.slnx
+
+      # GitHub's static dependency graph cannot read central package management or transitive
+      # packages; Component Detection reads the restored project.assets.json files.
+      - name: Submit dependency snapshot
+        uses: advanced-security/component-detection-dependency-submission-action@a02aeda7a175ad4dd38a13c4d3ff2df9da8f2cf0 # v0.2.0
+        continue-on-error: true # pull requests from forks cannot write snapshots
+        with:
+          detectorsCategories: NuGet
+          snapshot-sha: ${{ github.event.pull_request.head.sha }}
+          snapshot-ref: refs/heads/${{ github.head_ref }}
+
+      - name: Allowed licenses
+        id: licenses
+        shell: pwsh
+        run: |
+          $list = (Get-Content -LiteralPath eng/licenses/allowed-licenses.json -Raw | ConvertFrom-Json) -join ','
+          "list=$list" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+
+      - name: Dependency review
+        uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+        with:
+          fail-on-severity: moderate
+          allow-licenses: ${{ steps.licenses.outputs.list }}
+          # Skipped by the license check:
+          # - OpenTK (pulled in by SkiaSharp.Views.WPF) publishes no license metadata; it is MIT
+          #   (see eng/licenses/overrides.json).
+          # - Build and test tools that are never shipped (the licenses job checks what ships):
+          #   the Windows metadata CsWin32 generates P/Invoke code from (Windows SDK license) and
+          #   the test coverage extension (Microsoft .NET Library license).
+          allow-dependencies-licenses: >-
+            pkg:nuget/OpenTK.Compute, pkg:nuget/OpenTK.Core, pkg:nuget/OpenTK.Graphics,
+            pkg:nuget/OpenTK.Input, pkg:nuget/OpenTK.Mathematics, pkg:nuget/OpenTK.OpenAL,
+            pkg:nuget/OpenTK.Windowing.Common, pkg:nuget/OpenTK.Windowing.Desktop,
+            pkg:nuget/OpenTK.Windowing.GraphicsLibraryFramework, pkg:nuget/OpenTK.GLWpfControl,
+            pkg:nuget/Microsoft.Windows.SDK.Win32Docs, pkg:nuget/Microsoft.Windows.SDK.Win32Metadata,
+            pkg:nuget/Microsoft.Windows.WDK.Win32Metadata,
+            pkg:nuget/Microsoft.Testing.Extensions.CodeCoverage
+          retry-on-snapshot-warnings: true
+          retry-on-snapshot-warnings-timeout: 180

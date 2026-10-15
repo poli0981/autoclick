@@ -1,22 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyTitle>AutoClick.Win32</AssemblyTitle>
+    <Description>Win32 interop for AutoClick: input, windows, pixels, DPI, hotkeys and elevation.</Description>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\AutoClick.Core\AutoClick.Core.csproj" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <TargetFramework>net10.0-windows</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <Product>AutoClick</Product>
-    <AssemblyTitle>AutoClick.Win32</AssemblyTitle>
-    <Description>Win32 P/Invoke wrappers for AutoClick (PostMessage, EnumWindows, Hotkeys).</Description>
-    <Company>poli0981</Company>
-    <Authors>poli0981</Authors>
-    <Copyright>Copyright (c) 2026 poli0981. Licensed under GPL-3.0.</Copyright>
-    <Version>1.3.4</Version>
-    <AssemblyVersion>1.3.4.0</AssemblyVersion>
-    <FileVersion>1.3.4.0</FileVersion>
-  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Microsoft.Windows.CsWin32" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="AutoClick.Win32.Tests" />
+  </ItemGroup>
 
 </Project>

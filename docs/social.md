@@ -15,8 +15,7 @@ Public profiles, community channels, and support links for the AutoClick develop
 
 | Channel | Invite |
 |---------|--------|
-| **Discord — General (repo)** | [discord.gg/2aNR3aVt](https://discord.gg/2aNR3aVt) |
-| **Discord — Games (`#general`)** | [discord.gg/kDM9GMu5vm](https://discord.gg/kDM9GMu5vm) |
+| **Discord** | [discord.gg/kDM9GMu5vm](https://discord.gg/kDM9GMu5vm) |
 
 ## Federated
 

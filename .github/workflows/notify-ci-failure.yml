@@ -1,13 +1,15 @@
 name: Notify CI Failures
 
-# Listen ONLY to the Release workflow. Listening to "*" caused notify jobs to
-# spawn for every workflow_run (including this notifier and Announce Release),
-# then skip via job-level `if:`, producing many "Skipped" entries in the
-# Actions tab. The top-level `if:` below also prevents the reusable job from
-# starting on non-failure outcomes.
+# Posts failures of CI and Security Audit on master to Discord. The shared workflow ignores
+# workflows whose name contains "Release" (the release pipeline has its own notifier) and runs
+# only for the default branch, so pull request failures stay quiet.
+
+# workflow_run runs with secrets: only runs of this repository's own pushes and schedules are
+# reported (never pull requests, whose branch names and commits are not trusted), and no code is
+# checked out here.
 on:
-  workflow_run:
-    workflows: ["Release"]
+  workflow_run: # zizmor: ignore[dangerous-triggers]
+    workflows: ["CI", "Security Audit"]
     types: [completed]
 
 permissions:
@@ -16,6 +18,10 @@ permissions:
 
 jobs:
   notify:
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    if: >-
+      github.event.workflow_run.conclusion == 'failure' &&
+      github.event.workflow_run.event != 'pull_request' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
     uses: poli0981/.github/.github/workflows/notify-ci-failure.yml@main
-    secrets: inherit
+    secrets:
+      DISCORD_CI_WEBHOOK: ${{ secrets.DISCORD_CI_WEBHOOK }}

@@ -1,0 +1,18 @@
+# Link checker settings (https://lychee.cli.rs). Used by .github/workflows/docs.yml.
+max_retries = 3
+retry_wait_time = 5
+timeout = 20
+accept = ["200..=299", "429"]
+exclude_path = ["CHANGELOG.md", ".claude", "artifacts"]
+exclude = [
+  # Sites that block automated requests.
+  "^https://(www\\.)?x\\.com/",
+  "^https://discord\\.gg/",
+  "^https://(www\\.)?patreon\\.com/",
+  "^https://ko-fi\\.com/",
+  "^https://steamcommunity\\.com/",
+  "^https://(www\\.)?youtube\\.com/",
+  "^mailto:",
+  # Version comparison and tag links exist only once the release is published.
+  "^https://github\\.com/poli0981/autoclick/(compare|releases/tag)/",
+]

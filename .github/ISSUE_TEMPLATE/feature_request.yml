@@ -57,7 +57,7 @@ body:
     attributes:
       label: Other Category
       description: If your request doesn't fit the categories above, describe it briefly.
-      placeholder: "e.g., Support for multi-monitor setups"
+      placeholder: "e.g., Stop after a number of clicks"
     validations:
       required: false
 
@@ -107,6 +107,6 @@ body:
     attributes:
       label: IDE / Build Environment
       description: If relevant, your IDE and .NET SDK version (optional).
-      placeholder: "Visual Studio 2022 / .NET SDK 8.0.400"
+      placeholder: "JetBrains Rider 2026.2 / .NET SDK 10.0.401"
     validations:
       required: false

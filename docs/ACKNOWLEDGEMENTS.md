@@ -1,78 +1,53 @@
 # Acknowledgements & Third-Party Licenses
 
-**Last updated:** April 2026
+**Last updated:** October 2026 (AutoClick 2.0)
 
-## Third-Party Libraries
+AutoClick is free software under the [GNU General Public License v3.0](../LICENSE). It is built on the open-source projects below. The complete list of every package in a release, with its license and copyright notice and the full license texts, is in `THIRD-PARTY-NOTICES.txt` next to `AutoClick.UI.exe` (also on **About → Third-party notices**). Every license is checked against a GPL-3.0-compatible allow list on each change.
 
-AutoClick uses the following open-source libraries:
+## Runtime and interface
 
-### LiveChartsCore
-- **License:** MIT License
-- **Website:** https://livecharts.dev/
-- **Repository:** https://github.com/beto-rodriguez/LiveCharts2
-- **Usage:** Real-time dashboard charts (CPM line chart, per-game breakdown, pie chart, timeline)
+| Project | License | Used for |
+|---------|---------|----------|
+| [.NET and WPF](https://github.com/dotnet/wpf) | MIT | Runtime (included in the app) and UI framework |
+| [WPF UI](https://github.com/lepoco/wpfui) (lepo.co) | MIT | Fluent controls, navigation, dialogs, themes |
+| [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) | MIT | MVVM: observable properties and commands |
+| [H.NotifyIcon](https://github.com/HavenDV/H.NotifyIcon) | MIT | Notification-area (tray) icon and balloon messages |
+| [LiveCharts2](https://github.com/beto-rodriguez/LiveCharts2) | MIT | Dashboard charts |
+| [SkiaSharp](https://github.com/mono/SkiaSharp) and HarfBuzzSharp | MIT | Chart rendering and text shaping |
+| [OpenTK](https://github.com/opentk/opentk) and GLWpfControl | MIT | Pulled in by SkiaSharp's WPF views (not used for drawing) |
+| [GLFW](https://www.glfw.org/) (via OpenTK.redist.glfw) | Zlib | Pulled in by OpenTK |
 
-### SkiaSharp
-- **License:** MIT License
-- **Repository:** https://github.com/mono/SkiaSharp
-- **Usage:** 2D graphics rendering backend for LiveChartsCore
+## Services
 
-### Serilog
-- **License:** Apache License 2.0
-- **Website:** https://serilog.net/
-- **Repository:** https://github.com/serilog/serilog
-- **Usage:** Structured logging framework for application diagnostics
+| Project | License | Used for |
+|---------|---------|----------|
+| [Microsoft.Extensions.Hosting](https://github.com/dotnet/runtime) | MIT | Startup, dependency injection, logging abstractions |
+| [Serilog](https://serilog.net/) with Sinks.File, Sinks.Async and Extensions.Hosting | Apache-2.0 | Log files and the in-app log |
+| [Velopack](https://velopack.io/) | MIT | Installer and updates from GitHub Releases |
+| [CsWin32](https://github.com/microsoft/CsWin32) | MIT | Generates the Win32 interop code at build time (not shipped) |
 
-### Serilog.Sinks.File
-- **License:** Apache License 2.0
-- **Repository:** https://github.com/serilog/serilog-sinks-file
-- **Usage:** File-based log output sink
+## Development and testing (not shipped)
 
-### Microsoft.Extensions.DependencyInjection
-- **License:** MIT License
-- **Repository:** https://github.com/dotnet/runtime
-- **Usage:** Dependency injection container for service management
+xUnit v3, Microsoft.Testing.Platform and its code coverage extension, Microsoft.Extensions.TimeProvider.Testing, ArchUnitNET, ReSharper Command Line Tools (JetBrains), nuget-license, Microsoft SBOM Tool, ReportGenerator, CodeQL, actionlint and zizmor.
 
-### Velopack
-- **License:** MIT License
-- **Website:** https://velopack.io/
-- **Repository:** https://github.com/velopack/velopack
-- **Usage:** Application update mechanism via GitHub Releases
+## AI assistance
 
-### .NET 8 / WPF
-- **License:** MIT License
-- **Repository:** https://github.com/dotnet/wpf
-- **Usage:** UI framework and runtime platform
+AutoClick is developed with the assistance of **Claude** (Anthropic) for code, architecture, reviews, documentation and translations. The developer reviews and tests the results.
 
-## Development Tools
+## Translations
 
-### AI Assistance
-This software was developed with the assistance of **Claude** (by Anthropic), an AI language model. AI was used for:
-- Code generation and architecture design
-- Bug fixing and code review
-- UI/UX suggestions
-- Documentation drafting
-- Language translations (Vietnamese, Japanese, Korean, Chinese Simplified)
-
-All AI-generated code was reviewed and validated by the developer.
-
-## Translation
-
-In-app translations were generated with AI assistance and may contain inaccuracies. Community contributions for translation improvements are welcome via GitHub Pull Requests.
+The in-app translations are AI-generated and may contain mistakes; corrections are welcome as pull requests to `src/AutoClick.UI/Resources/Strings.<language>.resx`.
 
 | Language | Status |
 |----------|--------|
-| English | Primary (manually written) |
+| English | Primary |
 | Tiếng Việt | AI-generated, developer-reviewed |
 | 日本語 (Japanese) | AI-generated |
 | 한국어 (Korean) | AI-generated |
-| 中文 (Chinese Simplified) | AI-generated |
+| 中文 (Chinese, Simplified) | AI-generated |
 
-## Special Thanks
+## Special thanks
 
-- The .NET and WPF open-source community
-- LiveCharts2 contributors for the excellent charting library
-- SkiaSharp maintainers for the cross-platform graphics engine
-- Velopack contributors for the modern update framework
-- Serilog maintainers for the excellent logging library
-- All users who report bugs and suggest features
+- The .NET, WPF and WPF UI communities
+- The maintainers of every library listed above
+- Everyone who reports bugs and suggests features

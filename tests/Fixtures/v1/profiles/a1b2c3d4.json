@@ -1,0 +1,42 @@
+{
+  "id": "a1b2c3d4",
+  "name": "Fixture Profile",
+  "createdAt": "2026-05-01T10:00:00.1234567+07:00",
+  "updatedAt": "2026-05-02T11:30:00.7654321+07:00",
+  "clickPoints": [
+    {
+      "x": 120,
+      "y": 340,
+      "clickType": 0,
+      "delayAfterMs": 250,
+      "referenceColor": 4294967295,
+      "hasReferenceColor": false,
+      "virtualKeyCode": 0
+    },
+    {
+      "x": 640,
+      "y": 360,
+      "clickType": 2,
+      "delayAfterMs": 250,
+      "referenceColor": 3355443,
+      "hasReferenceColor": true,
+      "virtualKeyCode": 0
+    },
+    {
+      "x": 0,
+      "y": 0,
+      "clickType": 3,
+      "delayAfterMs": 250,
+      "referenceColor": 4294967295,
+      "hasReferenceColor": false,
+      "virtualKeyCode": 32
+    }
+  ],
+  "clickSettings": {
+    "mode": 1,
+    "fixedIntervalSeconds": 5,
+    "randomMinSeconds": 1,
+    "randomMaxSeconds": 60
+  },
+  "sequenceDelayMs": 250
+}

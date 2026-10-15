@@ -1,0 +1,22 @@
+<Project>
+
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <PropertyGroup>
+    <!-- xUnit v3 test projects are executables run by Microsoft.Testing.Platform. -->
+    <OutputType>Exe</OutputType>
+    <IsTestProject>true</IsTestProject>
+    <!-- Test naming (Method_Scenario_Result), public test classes and inline arrays are intentional. -->
+    <NoWarn>$(NoWarn);CA1707;CA1515;CA1861</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+</Project>

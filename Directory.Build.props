@@ -1,5 +1,42 @@
 <Project>
 
+  <!-- Single source of truth for the product version (release tags must match it). -->
+  <PropertyGroup>
+    <Version>2.0.0</Version>
+    <AssemblyVersion>$(Version).0</AssemblyVersion>
+    <FileVersion>$(Version).0</FileVersion>
+    <InformationalVersion>$(Version)</InformationalVersion>
+    <!-- Keep InformationalVersion as "X.Y.Z" (no "+<commit>" suffix) so the UI shows a clean version. -->
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Product>AutoClick</Product>
+    <Company>poli0981</Company>
+    <Authors>poli0981</Authors>
+    <Copyright>Copyright (c) 2026 poli0981. Licensed under GPL-3.0.</Copyright>
+    <NeutralLanguage>en</NeutralLanguage>
+    <RepositoryUrl>https://github.com/poli0981/autoclick</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+    <IsPackable>false</IsPackable>
+
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Deterministic>true</Deterministic>
+
+    <!-- Analyzers: SDK rules at the recommended level, code style enforced at build time.
+         GenerateDocumentationFile is required for IDE0005 (unnecessary usings) to run in builds. -->
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+
+    <!-- Only ship satellite resources for the languages the app supports. -->
+    <SatelliteResourceLanguages>en;vi;ja;ko;zh;zh-Hans</SatelliteResourceLanguages>
+  </PropertyGroup>
+
   <!--
     CI builds pass -p:ContinuousIntegrationBuild=true. They treat every warning as an error,
     except NuGet audit advisories (NU1900-NU1905): a newly published advisory must not break

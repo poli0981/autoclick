@@ -1,349 +1,73 @@
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
 using System.Windows;
-using System.Windows.Interop;
-using Microsoft.Extensions.DependencyInjection;
-using AutoClick.Core.Interfaces;
-using AutoClick.Services;
-using AutoClick.UI.Resources;
+using System.Windows.Threading;
+using AutoClick.UI.Localization;
 using AutoClick.UI.Services;
-using AutoClick.UI.ViewModels;
-using AutoClick.UI.Views;
-using AutoClick.Win32;
-using Velopack;
+using AutoClick.UI.Startup;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace AutoClick.UI;
 
-public partial class App : Application
+public partial class App
 {
-    private const string RestartingArg = "--restarting";
+    private readonly IServiceProvider _services;
+    private readonly ILogger<App> _logger;
+    private readonly bool _smokeTest;
 
-    /// <summary>
-    /// CI-only switch: build the DI graph and construct every window (XAML parse) without
-    /// showing UI, then exit with 0 on success or 1 on failure.
-    /// </summary>
-    private const string SmokeTestArg = "--smoke-test";
-
-    private ServiceProvider _serviceProvider = null!;
-    private NotifyIcon? _trayIcon;
-    private SingleInstanceService? _singleInstance;
-
-    private void OnStartup(object sender, StartupEventArgs e)
+    public App(IServiceProvider services)
     {
-        // Velopack lifecycle — must run first for install/update hooks.
-        // Velopack hook args (--veloapp-*) cause Velopack to call Environment.Exit before returning.
-        VelopackApp.Build().Run();
+        _services = services;
+        _logger = services.GetRequiredService<ILogger<App>>();
+        _smokeTest = services.GetRequiredService<StartupOptions>().SmokeTest;
 
-        // Single-instance gate. Skip during Velopack hooks just in case (defensive).
-        var isVelopackHook = e.Args.Any(a => a.StartsWith("--veloapp-", StringComparison.OrdinalIgnoreCase));
-        var isRestarting = e.Args.Any(a => string.Equals(a, RestartingArg, StringComparison.OrdinalIgnoreCase));
-        var isSmokeTest = e.Args.Any(a => string.Equals(a, SmokeTestArg, StringComparison.OrdinalIgnoreCase));
+        // v1 had no global handlers: a crash left nothing in the log.
+        DispatcherUnhandledException += OnDispatcherUnhandledException;
+        AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+        TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
+    }
 
-        // LogService is instantiated up-front so the gate can log; the same instance is then
-        // registered as the DI singleton so logs share the file/buffer.
-        var log = new LogService();
-
-        if (isSmokeTest)
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        base.OnStartup(e);
+        if (_smokeTest)
         {
-            RunSmokeTest(log);
+            _ = _services.GetRequiredService<SmokeTest>().RunAsync();
             return;
         }
 
-        if (!isVelopackHook)
-        {
-            _singleInstance = new SingleInstanceService(log);
-            if (!_singleInstance.TryAcquire(isRestarting))
-            {
-                _singleInstance.SendShowToExisting();
-                _singleInstance.Dispose();
-                _singleInstance = null;
-                Environment.Exit(0);
-                return;
-            }
-        }
-
-        _serviceProvider = BuildServices(log);
-
-        var settingsVm = _serviceProvider.GetRequiredService<SettingsViewModel>();
-
-        // On first launch, detect system theme
-        var settingsService = _serviceProvider.GetRequiredService<ISettingsService>();
-        var loaded = settingsService.Load();
-        // Apply: if settings file didn't exist yet, default to system theme
-        ApplyTheme(loaded.Theme);
-        ApplyLanguage(settingsVm.Language);
-
-        settingsVm.ThemeChanged += () => ApplyTheme(settingsVm.Theme);
-        settingsVm.LanguageChanged += ApplyLanguage;
-
-        var mainVm = _serviceProvider.GetRequiredService<MainViewModel>();
-
-        settingsVm.ResetAppRequested += () => mainVm.ResetAppCommand.Execute(null);
-        settingsVm.SessionExportRequested += filePath => mainVm.ExportSessionToFile(filePath);
-        settingsVm.SessionImportRequested += filePath =>
-        {
-            mainVm.ImportSessionFromFile(filePath);
-            settingsVm.RefreshAllBindings();
-            ApplyTheme(settingsVm.Theme);
-            ApplyLanguage(settingsVm.Language);
-        };
-        mainVm.SettingsReloaded += () =>
-        {
-            settingsVm.RefreshAllBindings();
-            ApplyTheme(settingsVm.Theme);
-            ApplyLanguage(settingsVm.Language);
-        };
-
-        // Language change → save & prompt restart
-        settingsVm.RestartRequested += () =>
-        {
-            mainVm.SaveSettings();
-            var result = MessageBox.Show(
-                Strings.LanguageChangeMsg,
-                Strings.LanguageChangeTitle,
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question);
-
-            if (result == MessageBoxResult.Yes)
-            {
-                mainVm.StopAllCommand.Execute(null);
-                RestartApplication();
-            }
-        };
-
-        var settingsRefreshTimer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-        settingsRefreshTimer.Tick += (_, _) => settingsVm.RefreshRunningState();
-        settingsRefreshTimer.Start();
-
-        var soundService = new SoundService(mainVm.Settings);
-        mainVm.SetSoundService(soundService);
-
-        var mainWindow = new MainWindow();
-        mainWindow.Initialize(mainVm, settingsVm,
-            _serviceProvider.GetRequiredService<AboutViewModel>(),
-            _serviceProvider.GetRequiredService<DashboardViewModel>(),
-            _serviceProvider.GetRequiredService<HotkeyService>(),
-            soundService);
-
-        SetupTrayIcon(mainWindow);
-        MainWindow = mainWindow;
-        mainWindow.Show();
-
-        // Forward "show" requests from second-launch attempts to this window.
-        _singleInstance?.StartIpcServer(() =>
-            Dispatcher.Invoke(() => BringToFront(mainWindow)));
-
-        // Initialize update service + about VM
-        var logService = _serviceProvider.GetRequiredService<ILogService>();
-        var updateService = new UpdateService(logService);
-        var aboutVm = _serviceProvider.GetRequiredService<AboutViewModel>();
-        aboutVm.InitializeUpdate(updateService, logService);
-
-        logService.Info("AutoClick started");
-
-        // Auto-update on startup (fire-and-forget, non-blocking)
-        if (mainVm.Settings.AutoUpdate)
-        {
-            _ = Task.Run(async () =>
-            {
-                try
-                {
-                    await aboutVm.UpdateVm!.AutoCheckOnStartupAsync();
-                }
-                catch (Exception ex)
-                {
-                    logService.Warn($"Auto-update check failed: {ex.Message}");
-                }
-            });
-        }
+        _services.GetRequiredService<AppCoordinator>().Start();
     }
 
-    private static ServiceProvider BuildServices(LogService log)
+    private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
-        var services = new ServiceCollection();
-
-        services.AddSingleton<ILogService>(log);
-        services.AddSingleton<ISettingsService, SettingsService>();
-        services.AddSingleton<IGameDetector, GameDetectorService>();
-        services.AddSingleton<IMemoryManager, MemoryManagerService>();
-        services.AddSingleton<IClickEngine, ClickEngineService>();
-        services.AddSingleton<IProfileService, ProfileService>();
-        services.AddSingleton<ISessionExportService, SessionExportService>();
-        services.AddSingleton<HotkeyService>();
-        services.AddSingleton<IHotkeyService>(sp => sp.GetRequiredService<HotkeyService>());
-
-        services.AddSingleton<MainViewModel>();
-        services.AddSingleton<SettingsViewModel>(sp =>
+        _logger.LogError(e.Exception, "Unhandled exception on the UI thread");
+        if (_smokeTest)
         {
-            var mainVm = sp.GetRequiredService<MainViewModel>();
-            return new SettingsViewModel(
-                sp.GetRequiredService<ISettingsService>(),
-                sp.GetRequiredService<ILogService>(),
-                mainVm.Settings,
-                () => mainVm.HasAnyRunning);
-        });
-        services.AddSingleton<AboutViewModel>();
-        services.AddSingleton<DashboardViewModel>(sp =>
-            new DashboardViewModel(sp.GetRequiredService<MainViewModel>()));
-
-        return services.BuildServiceProvider();
-    }
-
-    private void RunSmokeTest(LogService log)
-    {
-        try
-        {
-            _serviceProvider = BuildServices(log);
-            var settingsVm = _serviceProvider.GetRequiredService<SettingsViewModel>();
-            ApplyTheme(settingsVm.Theme);
-            ApplyLanguage(settingsVm.Language);
-
-            // Constructing each window runs InitializeComponent, so XAML/resource errors surface here.
-            var mainWindow = new MainWindow();
-            mainWindow.Initialize(
-                _serviceProvider.GetRequiredService<MainViewModel>(),
-                settingsVm,
-                _serviceProvider.GetRequiredService<AboutViewModel>(),
-                _serviceProvider.GetRequiredService<DashboardViewModel>(),
-                _serviceProvider.GetRequiredService<HotkeyService>(),
-                new SoundService(_serviceProvider.GetRequiredService<MainViewModel>().Settings));
-            _ = new GamePickerDialog([], null);
-            _ = new ProfileNameDialog();
-            _ = new CoordinatePickerWindow(IntPtr.Zero);
-            _ = new ClickHeatmapOverlay(new AutoClick.Core.Models.GameSession());
-
-            log.Info("Smoke test passed");
-            Shutdown(0);
-        }
-        catch (Exception ex)
-        {
-            log.Error("Smoke test failed", ex);
             Shutdown(1);
+            return;
         }
-    }
 
-    private void ApplyTheme(AutoClick.Core.Enums.ThemeMode theme)
-    {
-        var path = theme switch
-        {
-            AutoClick.Core.Enums.ThemeMode.Light => "Themes/LightTheme.xaml",
-            AutoClick.Core.Enums.ThemeMode.HighContrast => "Themes/HighContrastTheme.xaml",
-            _ => "Themes/DarkTheme.xaml"
-        };
-        var dict = new ResourceDictionary { Source = new Uri(path, UriKind.Relative) };
-        var merged = Resources.MergedDictionaries;
-        if (merged.Count > 0) merged[0] = dict;
-        else merged.Insert(0, dict);
-    }
-
-    private static void ApplyLanguage(string culture)
-    {
-        try { Thread.CurrentThread.CurrentUICulture = new CultureInfo(culture); }
-        catch { Thread.CurrentThread.CurrentUICulture = new CultureInfo("en"); }
-    }
-
-    public static bool IsSystemDarkMode()
-    {
+        // Keep running: one failed command should not end the click sessions of every game.
+        e.Handled = true;
         try
         {
-            using var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(
-                @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
-            var value = key?.GetValue("AppsUseLightTheme");
-            return value is int i && i == 0;
+            _services.GetRequiredService<NotificationService>().Show(L.Get("Error_Title"), L.Format("Error_Unexpected", e.Exception.Message), ToastKind.Error);
         }
-        catch { return true; }
-    }
-
-    private void SetupTrayIcon(Window mainWindow)
-    {
-        // Use the embedded app icon for tray; fall back to system default
-        Icon? appIcon = null;
-        try
+        catch (Exception notifyError)
         {
-            var exePath = Environment.ProcessPath;
-            if (exePath != null)
-                appIcon = Icon.ExtractAssociatedIcon(exePath);
+            _logger.LogError(notifyError, "Could not show the error notification");
         }
-        catch { /* ignore */ }
-
-        _trayIcon = new NotifyIcon
-        {
-            Text = "AutoClick — Auto-click utility for games",
-            Icon = appIcon ?? SystemIcons.Application,
-            Visible = true
-        };
-
-        var menu = new ContextMenuStrip();
-        menu.Items.Add("Show", null, (_, _) =>
-        {
-            mainWindow.Show();
-            mainWindow.WindowState = WindowState.Normal;
-            mainWindow.Activate();
-        });
-        menu.Items.Add("-");
-        menu.Items.Add("Exit", null, (_, _) =>
-        {
-            _trayIcon.Visible = false;
-            if (mainWindow is MainWindow mw)
-                mw.ForceClose();
-            else
-                Current.Shutdown();
-        });
-
-        _trayIcon.ContextMenuStrip = menu;
-        _trayIcon.DoubleClick += (_, _) =>
-        {
-            mainWindow.Show();
-            mainWindow.WindowState = WindowState.Normal;
-            mainWindow.Activate();
-        };
     }
 
-    private void RestartApplication()
+    private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
-        var exePath = Environment.ProcessPath;
-        if (exePath != null)
-        {
-            // Release the Mutex synchronously BEFORE spawning the new process so the
-            // new instance can acquire it without racing OnExit (which fires async).
-            _singleInstance?.Release();
-            _singleInstance = null;
-
-            Process.Start(new ProcessStartInfo(exePath)
-            {
-                UseShellExecute = true,
-                Arguments = RestartingArg
-            });
-        }
-        Current.Shutdown();
+        _logger.LogCritical(e.ExceptionObject as Exception, "Unhandled exception; AutoClick is terminating");
+        Serilog.Log.CloseAndFlush();
     }
 
-    private static void BringToFront(Window mainWindow)
+    private void OnUnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
     {
-        if (!mainWindow.IsVisible)
-            mainWindow.Show();
-        if (mainWindow.WindowState == WindowState.Minimized)
-            mainWindow.WindowState = WindowState.Normal;
-        mainWindow.Activate();
-
-        var handle = new WindowInteropHelper(mainWindow).Handle;
-        if (handle != IntPtr.Zero)
-            NativeMethods.SetForegroundWindow(handle);
-    }
-
-    public static void ShowBalloonTip(string title, string text, ToolTipIcon icon = ToolTipIcon.Info)
-    {
-        if (Current is App app)
-            app._trayIcon?.ShowBalloonTip(3000, title, text, icon);
-    }
-
-    protected override void OnExit(ExitEventArgs e)
-    {
-        _singleInstance?.Release();
-        _singleInstance = null;
-        _trayIcon?.Dispose();
-        _serviceProvider?.Dispose();
-        base.OnExit(e);
+        _logger.LogError(e.Exception, "Unobserved task exception");
+        e.SetObserved();
     }
 }

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <!-- WPF's KeyInterop is the reference for the hotkey strings written by v1. -->
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\AutoClick.Win32\AutoClick.Win32.csproj" />
+  </ItemGroup>
+
+</Project>

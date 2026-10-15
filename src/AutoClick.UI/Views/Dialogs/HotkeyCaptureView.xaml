@@ -1,0 +1,35 @@
+<UserControl
+    x:Class="AutoClick.UI.Views.Dialogs.HotkeyCaptureView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="clr-namespace:AutoClick.UI.Localization"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    MinWidth="380"
+    Focusable="True">
+    <StackPanel>
+        <ui:TextBlock
+            Margin="0,0,0,12"
+            Text="{l:Loc Hotkey_Instructions}"
+            TextWrapping="Wrap" />
+        <Border
+            Padding="16,12"
+            Background="{DynamicResource ControlFillColorDefaultBrush}"
+            BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+            BorderThickness="1"
+            CornerRadius="6">
+            <TextBlock
+                x:Name="GestureText"
+                HorizontalAlignment="Center"
+                AutomationProperties.LiveSetting="Assertive"
+                FontFamily="Consolas"
+                FontSize="20"
+                FontWeight="SemiBold"
+                Text="…" />
+        </Border>
+        <ui:TextBlock
+            x:Name="ValidationText"
+            Margin="0,8,0,0"
+            Foreground="{DynamicResource SystemFillColorCriticalBrush}"
+            TextWrapping="Wrap" />
+    </StackPanel>
+</UserControl>

@@ -2,8 +2,6 @@
 
 <!-- Required: Clearly describe what this PR does and why. -->
 
-
-
 ## Reason
 
 <!-- Required: Check all that apply. -->
@@ -21,45 +19,38 @@
 
 <!-- Required: Your Windows version and build. -->
 
-
-
 ## Game Tested
 
-<!-- Required: Steam/store link of the game you tested against. -->
+<!-- Required: Steam/store link of the game you tested against, or "ClickTarget" if you used tools/AutoClick.ClickTarget. -->
 <!-- Use a legitimate link. Suspicious links will cause this PR to be auto-ignored. -->
-
-
 
 ## Screenshots
 
 <!-- Optional: Before/after screenshots or GIFs. -->
 
-
-
 ## Log Output
 
 <!-- Optional: Relevant log entries from the app. -->
 
-```
+```text
 ```
 
 ## IDE / Build Environment
 
 <!-- Optional: IDE and .NET SDK version used. -->
 
-
-
 ## Checklist
 
-- [ ] Code compiles with `dotnet build` (0 errors)
-- [ ] Tested manually on at least one game
-- [ ] No hardcoded English strings (use `Strings.cs` / `.resx`)
-- [ ] New strings added to both `Strings.resx` (EN) and `Strings.vi.resx` (VI)
+- [ ] `dotnet build AutoClick.slnx` and `dotnet test --solution AutoClick.slnx` pass (see [CONTRIBUTING](../CONTRIBUTING.md) for the other CI checks)
+- [ ] Tested manually on a game or with `tools/AutoClick.ClickTarget`
+- [ ] New UI text is in `Strings.resx` and in all four translations (`vi`, `ja`, `ko`, `zh`); no hard-coded text in XAML
+- [ ] User-visible changes are listed under `[Unreleased]` in `CHANGELOG.md`
 - [ ] No secrets, credentials, or suspicious code
 
 ---
 
 > **Auto-Ignore Policy:** PRs will be automatically ignored if they:
+>
 > - Contain suspicious code or embedded malware (will be reviewed in a sandboxed VM)
 > - Include links suspected of data theft or phishing
 > - Discuss topics unrelated to this project

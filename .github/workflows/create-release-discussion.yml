@@ -1,9 +1,11 @@
 name: Create Release Discussion
 
-# When a release is published, mirror it as a GitHub Discussion in the
-# "Announcements" category so the community has a thread to comment on.
+# When a release is published, mirror it as a GitHub Discussion in the "Announcements"
+# (or "Releases") category so the community has a thread to comment on.
 # - Skips gracefully if Discussions is disabled or the category is missing.
 # - Idempotent: re-publishing the same tag does not create a duplicate.
+# - Event data reaches the scripts only through environment variables (no template expansion
+#   inside `run:`), and the multi-line release body uses a random output delimiter.
 
 on:
   release:
@@ -11,51 +13,69 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Existing release tag to mirror (e.g. v1.3.3)"
+        description: "Existing release tag to mirror (e.g. v2.0.0)"
         required: true
         type: string
 
 permissions:
   contents: read
-  discussions: write
 
 jobs:
   create:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      discussions: write
     steps:
-      - name: Resolve tag + release metadata
+      - name: Resolve tag and release metadata
         id: rel
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_TAG: ${{ inputs.tag }}
+          RELEASE_ID: ${{ github.event.release.id }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          REPO: ${{ github.repository }}
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            TAG="${{ inputs.tag }}"
-            REL_JSON=$(gh api "repos/${{ github.repository }}/releases/tags/$TAG")
+          set -euo pipefail
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            if ! [[ "$INPUT_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              echo "::error::Tag '$INPUT_TAG' is not of the form vX.Y.Z."
+              exit 1
+            fi
+            TAG="$INPUT_TAG"
+            REL_JSON=$(gh api "repos/$REPO/releases/tags/$TAG")
           else
-            TAG="${{ github.event.release.tag_name }}"
-            REL_JSON=$(gh api "repos/${{ github.repository }}/releases/${{ github.event.release.id }}")
+            TAG="$RELEASE_TAG"
+            REL_JSON=$(gh api "repos/$REPO/releases/$RELEASE_ID")
           fi
-          REL_URL=$(echo "$REL_JSON" | jq -r '.html_url')
-          REL_BODY=$(echo "$REL_JSON" | jq -r '.body // ""')
+          REL_URL=$(jq -r '.html_url' <<< "$REL_JSON")
+          REL_BODY=$(jq -r '.body // ""' <<< "$REL_JSON")
           {
             echo "tag=$TAG"
             echo "url=$REL_URL"
             echo "title=Release $TAG"
           } >> "$GITHUB_OUTPUT"
+          DELIMITER="BODY_$(openssl rand -hex 16)"
           {
-            echo 'body<<EOF'
+            echo "body<<$DELIMITER"
             echo "$REL_BODY"
             echo ''
             echo '---'
             echo "See the full release: $REL_URL"
-            echo 'EOF'
+            echo "$DELIMITER"
           } >> "$GITHUB_OUTPUT"
 
-      - name: Resolve repository + Announcements category IDs
+      - name: Resolve repository and category IDs
         id: ids
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+          OWNER: ${{ github.repository_owner }}
+          NAME: ${{ github.event.repository.name }}
         run: |
+          set -euo pipefail
+          # shellcheck disable=SC2016 # $owner and $name are GraphQL variables, not shell expansions
           gh api graphql -f query='
             query($owner:String!,$name:String!){
               repository(owner:$owner,name:$name){
@@ -63,8 +83,7 @@ jobs:
                 hasDiscussionsEnabled
                 discussionCategories(first:50){ nodes{ id name } }
               }
-            }' -f owner="${{ github.repository_owner }}" -f name="${{ github.event.repository.name }}" \
-            > ids.json
+            }' -f owner="$OWNER" -f name="$NAME" > ids.json
           ENABLED=$(jq -r '.data.repository.hasDiscussionsEnabled' ids.json)
           if [ "$ENABLED" != "true" ]; then
             echo "::notice::Discussions are not enabled on this repository; skipping."
@@ -87,19 +106,19 @@ jobs:
             echo "skip=0"
           } >> "$GITHUB_OUTPUT"
 
-      - name: Check for existing discussion (idempotency)
+      - name: Check for an existing discussion
         id: dup
         if: steps.ids.outputs.skip == '0'
         continue-on-error: true
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
           DISC_TITLE: ${{ steps.rel.outputs.title }}
           REPO: ${{ github.repository }}
         run: |
-          # Search via GraphQL (`gh api search/discussions` is not a real
-          # REST endpoint and returns 404). Quote the title in the query
-          # so it does a phrase match.
+          # GraphQL search (there is no REST endpoint for discussion search); the quoted title
+          # makes it a phrase match, then the exact title is compared.
           QUERY="\"$DISC_TITLE\" in:title repo:$REPO"
+          # shellcheck disable=SC2016 # $q is a GraphQL variable, not a shell expansion
           MATCHES=$(gh api graphql \
             -f query='query($q:String!){search(query:$q,type:DISCUSSION,first:25){nodes{... on Discussion {title}}}}' \
             -f q="$QUERY" \
@@ -112,18 +131,17 @@ jobs:
           fi
 
       - name: Create discussion
-        # `!= '1'` (rather than `== '0'`) so that if the dup check itself
-        # fails for any reason and writes nothing to `exists`, we still
-        # attempt to create. A duplicate is recoverable; a missing
-        # release discussion is the actual bug we want to avoid.
+        # "!= '1'" rather than "== '0'": if the duplicate check fails and writes nothing, still
+        # create. A duplicate is recoverable; a missing release discussion is the actual bug.
         if: steps.ids.outputs.skip == '0' && steps.dup.outputs.exists != '1'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
           REPO_ID: ${{ steps.ids.outputs.repo_id }}
           CAT_ID: ${{ steps.ids.outputs.cat_id }}
           DISC_TITLE: ${{ steps.rel.outputs.title }}
           DISC_BODY: ${{ steps.rel.outputs.body }}
         run: |
+          # shellcheck disable=SC2016 # $repo, $cat, $title and $body are GraphQL variables
           URL=$(gh api graphql \
             -f query='mutation($repo:ID!,$cat:ID!,$title:String!,$body:String!){
               createDiscussion(input:{repositoryId:$repo,categoryId:$cat,title:$title,body:$body}){

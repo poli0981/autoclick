@@ -1,51 +1,45 @@
 # Security Policy
 
-**Last updated:** April 2026
+**Last updated:** October 2026 (AutoClick 2.0)
 
-## Supported Versions
+## Supported versions
 
 | Version | Supported |
 |---------|-----------|
-| Latest release | Yes |
-| Previous releases | Security fixes only |
+| 2.x (latest release) | Yes |
+| 1.x | No: update to 2.x (it migrates your settings and profiles) |
 
-## Application Security
+AutoClick includes its own .NET runtime. When Microsoft publishes a .NET security update, a patch release of AutoClick is built with the updated runtime; installed copies receive it through the normal update.
 
-### Administrator Privileges
-AutoClick requests administrator privileges (`requireAdministrator` in app manifest) for the following reasons:
-- **RegisterHotKey**: Global hotkey registration requires elevated privileges
-- **PostMessage to elevated processes**: Some games run as administrator; to send messages to them, AutoClick must also be elevated
+## Reporting a vulnerability
 
-### No Remote Code Execution
-- The Software does not execute any remote code
-- Updates are downloaded as complete packages from GitHub Releases and verified before installation
-- Velopack handles update verification with checksum validation
+Please **do not open a public issue** for security problems.
 
-### No Data Exfiltration
-- The Software does not transmit any user data, game data, or system information to external servers
-- The only network activity is optional update checking via GitHub API
+1. Report it privately through GitHub: [**Security → Report a vulnerability**](https://github.com/poli0981/autoclick/security/advisories/new).
+2. If that is not possible, email the developer (address on the developer's [GitHub profile](https://github.com/poli0981) and in [social.md](social.md)).
+3. Include the AutoClick version, steps to reproduce and the impact you expect.
 
-### Local Storage
-- Settings are stored in plain JSON at `%LocalAppData%\AutoClick\`
-- No encryption is used because no sensitive data is stored
-- Log files contain only application events, no personal data
+You will get an answer as soon as possible. Please allow time for a fix before disclosing the problem publicly; you will be credited in the advisory unless you prefer otherwise.
 
-## Reporting Vulnerabilities
+## How AutoClick is built and shipped
 
-If you discover a security vulnerability, please:
+- Every change goes through pull requests that must pass CodeQL, dependency review (no known-vulnerable or non-GPL-compatible packages), a daily audit of all direct and transitive packages, and OpenSSF Scorecard checks. GitHub Actions are pinned to commit hashes.
+- Releases are built by the repository's release workflow from a protected `vX.Y.Z` tag. Each release includes an SPDX software bill of materials and a GitHub build provenance attestation. Releases are not code-signed; verify a download with:
 
-1. **Do NOT** open a public GitHub Issue
-2. Contact the developer privately via GitHub ([@poli0981](https://github.com/poli0981))
-3. Include a detailed description and steps to reproduce
-4. Allow reasonable time for a fix before public disclosure
+  ```bash
+  gh attestation verify AutoClick-win-Setup.exe -R poli0981/autoclick
+  ```
 
-## Known Security Considerations
+- Updates come only from this repository's GitHub Releases over HTTPS, and Velopack checks each package against the hash in the release feed before applying it.
 
-### Win32 API Usage
-- `PostMessage` is used to send synthetic mouse events to game windows
-- `EnumWindows` enumerates visible windows to detect running games
-- `SetForegroundWindow` brings game windows to the front for coordinate picking
-- These are standard Win32 APIs and do not bypass security boundaries
+## Design notes
 
-### Anti-Virus False Positives
-Auto-clicker software may be flagged by antivirus programs as potentially unwanted software (PUP). This is a common false positive for automation tools. The source code is fully open for inspection.
+- **Privileges:** AutoClick runs as a standard user. Windows blocks input from a normal program into a program that runs as administrator (User Interface Privilege Isolation), so AutoClick only asks for administrator rights when you choose to click such a game. While it is elevated, links open through Explorer, so your browser does not inherit administrator rights.
+- **Input:** clicks and keys are sent with `PostMessage` to the window you picked. AutoClick does not inject code, read game memory, or install hooks into other processes; it watches window focus and position with out-of-process accessibility events (`SetWinEventHook`).
+- **Single instance:** the lock and the named pipe used to bring an existing window to the front are restricted to your Windows account.
+- **Files:** settings and profiles are plain JSON in `%LocalAppData%\AutoClick` and are written atomically. Imported profile and session files are validated; a profile id can never be used to write outside the profiles folder.
+- **No network** besides the update check (see the [Privacy Policy](PRIVACY_POLICY.md)).
+
+## Antivirus false positives
+
+Automation tools are sometimes flagged as potentially unwanted software. AutoClick's source code is public, and the attestation above proves that a download was built from it. If your antivirus flags an official release, please report it to the antivirus vendor as a false positive.

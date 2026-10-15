@@ -1,0 +1,74 @@
+[
+  {
+    "Id": "OpenTK.Compute",
+    "Version": "4.3.0",
+    "License": "MIT",
+    "LicenseUrl": "https://github.com/opentk/opentk/blob/master/LICENSE.md",
+    "Authors": "Team OpenTK",
+    "Copyright": "Copyright (c) 2006-2020 Stefanos Apostolopoulos for the Open Toolkit project"
+  },
+  {
+    "Id": "OpenTK.Core",
+    "Version": "4.3.0",
+    "License": "MIT",
+    "LicenseUrl": "https://github.com/opentk/opentk/blob/master/LICENSE.md",
+    "Authors": "Team OpenTK",
+    "Copyright": "Copyright (c) 2006-2020 Stefanos Apostolopoulos for the Open Toolkit project"
+  },
+  {
+    "Id": "OpenTK.Graphics",
+    "Version": "4.3.0",
+    "License": "MIT",
+    "LicenseUrl": "https://github.com/opentk/opentk/blob/master/LICENSE.md",
+    "Authors": "Team OpenTK",
+    "Copyright": "Copyright (c) 2006-2020 Stefanos Apostolopoulos for the Open Toolkit project"
+  },
+  {
+    "Id": "OpenTK.Input",
+    "Version": "4.3.0",
+    "License": "MIT",
+    "LicenseUrl": "https://github.com/opentk/opentk/blob/master/LICENSE.md",
+    "Authors": "Team OpenTK",
+    "Copyright": "Copyright (c) 2006-2020 Stefanos Apostolopoulos for the Open Toolkit project"
+  },
+  {
+    "Id": "OpenTK.Mathematics",
+    "Version": "4.3.0",
+    "License": "MIT",
+    "LicenseUrl": "https://github.com/opentk/opentk/blob/master/LICENSE.md",
+    "Authors": "Team OpenTK",
+    "Copyright": "Copyright (c) 2006-2020 Stefanos Apostolopoulos for the Open Toolkit project"
+  },
+  {
+    "Id": "OpenTK.OpenAL",
+    "Version": "4.3.0",
+    "License": "MIT",
+    "LicenseUrl": "https://github.com/opentk/opentk/blob/master/LICENSE.md",
+    "Authors": "Team OpenTK",
+    "Copyright": "Copyright (c) 2006-2020 Stefanos Apostolopoulos for the Open Toolkit project"
+  },
+  {
+    "Id": "OpenTK.Windowing.Common",
+    "Version": "4.3.0",
+    "License": "MIT",
+    "LicenseUrl": "https://github.com/opentk/opentk/blob/master/LICENSE.md",
+    "Authors": "Team OpenTK",
+    "Copyright": "Copyright (c) 2006-2020 Stefanos Apostolopoulos for the Open Toolkit project"
+  },
+  {
+    "Id": "OpenTK.Windowing.Desktop",
+    "Version": "4.3.0",
+    "License": "MIT",
+    "LicenseUrl": "https://github.com/opentk/opentk/blob/master/LICENSE.md",
+    "Authors": "Team OpenTK",
+    "Copyright": "Copyright (c) 2006-2020 Stefanos Apostolopoulos for the Open Toolkit project"
+  },
+  {
+    "Id": "OpenTK.Windowing.GraphicsLibraryFramework",
+    "Version": "4.3.0",
+    "License": "MIT",
+    "LicenseUrl": "https://github.com/opentk/opentk/blob/master/LICENSE.md",
+    "Authors": "Team OpenTK",
+    "Copyright": "Copyright (c) 2006-2020 Stefanos Apostolopoulos for the Open Toolkit project"
+  }
+]

@@ -1,571 +1,417 @@
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Text.Json;
+using System.Globalization;
+using System.Text;
+using System.Windows;
 using System.Windows.Media;
-using System.Windows.Threading;
+using AutoClick.UI.Localization;
+using AutoClick.UI.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using LiveChartsCore;
 using LiveChartsCore.Defaults;
+using LiveChartsCore.Kernel.Sketches;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
+using Microsoft.Extensions.Logging;
 using SkiaSharp;
+using Wpf.Ui.Abstractions.Controls;
 
 namespace AutoClick.UI.ViewModels;
 
-public class DashboardViewModel : ViewModelBase
+/// <summary>
+/// Live statistics. Samples are collected every two seconds in plain lists; the charts are
+/// fed only while the page is visible (v1 rebuilt every chart every two seconds, even hidden).
+/// </summary>
+public sealed partial class DashboardViewModel : ObservableObject, INavigationAware
 {
-    private readonly MainViewModel _mainVm;
-    private readonly DispatcherTimer _timer;
+    private const int HistoryLength = 150; // five minutes at one sample every two seconds
+    private const int SampleEveryTicks = 2;
 
-    // CPM history (circular buffer, max 150 points = 5 min at 2s intervals)
-    private const int MaxHistory = 150;
-    private readonly ObservableCollection<ObservablePoint> _cpmPoints = new();
-    private int _historyIndex;
-    private long _lastChartClicks;
+    private readonly QueueViewModel _queue;
+    private readonly DialogService _dialogs;
+    private readonly TimeProvider _time;
+    private readonly ILogger<DashboardViewModel> _logger;
+    private readonly List<(int Index, double Cpm)> _history = [];
+    private readonly Dictionary<string, List<(int Index, double Cpm)>> _gameHistory = [];
+    private readonly ObservableCollection<ObservablePoint> _cpmPoints = [];
+    private readonly ObservableValue _successValue = new(0);
+    private readonly ObservableValue _skippedValue = new(0);
+    private int _sampleIndex;
+    private int _ticks;
+    private bool _isVisible;
+    private bool _recording;
 
-    // Per-game timeline history
-    private const int MaxTimelineHistory = 150;
-    private readonly Dictionary<string, ObservableCollection<ObservablePoint>> _gameTimelinePoints = new();
-    private readonly Dictionary<string, long> _gameLastClicks = new();
-    private int _timelineIndex;
+    public DashboardViewModel(QueueViewModel queue, DialogService dialogs, ThemeService theme, TimeProvider time, ILogger<DashboardViewModel> logger)
+    {
+        _queue = queue;
+        _dialogs = dialogs;
+        _time = time;
+        _logger = logger;
 
-    // Archived stats for exited games (preserved until reset)
-    private readonly List<ArchivedGameStats> _archivedGames = new();
+        CpmSeries = [new LineSeries<ObservablePoint> { Values = _cpmPoints, GeometrySize = 0, LineSmoothness = 0.3 }];
+        RatioSeries =
+        [
+            new PieSeries<ObservableValue> { Values = [_successValue], InnerRadius = 50, MaxRadialColumnWidth = 30 },
+            new PieSeries<ObservableValue> { Values = [_skippedValue], InnerRadius = 50, MaxRadialColumnWidth = 30 },
+        ];
+        CpmXAxes = [new Axis { Labeler = FormatSampleTime, TextSize = 11 }];
+        CpmYAxes = [new Axis { MinLimit = 0, TextSize = 11 }];
+        TimelineXAxes = [new Axis { Labeler = FormatSampleTime, TextSize = 11 }];
+        TimelineYAxes = [new Axis { MinLimit = 0, TextSize = 11 }];
+        BreakdownXAxes = [new Axis { TextSize = 11, LabelsRotation = 0 }];
+        BreakdownYAxes = [new Axis { MinLimit = 0, TextSize = 11 }];
+        ApplyThemeAndTexts();
 
-    // ── CPM Line Chart ──
+        theme.ThemeChanged += (_, _) => ApplyThemeAndTexts();
+        LocalizationService.Instance.LanguageChanged += (_, _) => ApplyThemeAndTexts();
+    }
 
     public ISeries[] CpmSeries { get; }
 
-    public Axis[] CpmXAxes { get; }
-    public Axis[] CpmYAxes { get; }
+    public ISeries[] RatioSeries { get; }
 
-    // ── Per-Game Breakdown ──
+    public ICartesianAxis[] CpmXAxes { get; }
 
-    private ISeries[] _gameBreakdownSeries = [];
-    public ISeries[] GameBreakdownSeries
+    public ICartesianAxis[] CpmYAxes { get; }
+
+    public ICartesianAxis[] TimelineXAxes { get; }
+
+    public ICartesianAxis[] TimelineYAxes { get; }
+
+    public ICartesianAxis[] BreakdownXAxes { get; }
+
+    public ICartesianAxis[] BreakdownYAxes { get; }
+
+    [ObservableProperty]
+    public partial ISeries[] BreakdownSeries { get; set; } = [];
+
+    [ObservableProperty]
+    public partial ISeries[] TimelineSeries { get; set; } = [];
+
+    [ObservableProperty]
+    public partial SolidColorPaint LegendTextPaint { get; set; } = new(SKColors.Gray);
+
+    [ObservableProperty]
+    public partial long TotalClicks { get; set; }
+
+    [ObservableProperty]
+    public partial long TotalSkipped { get; set; }
+
+    [ObservableProperty]
+    public partial double ClicksPerMinute { get; set; }
+
+    [ObservableProperty]
+    public partial double PeakClicksPerMinute { get; set; }
+
+    [ObservableProperty]
+    public partial string ActiveTime { get; set; } = "0:00:00";
+
+    [ObservableProperty]
+    public partial int RunningGames { get; set; }
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(ExportStatsCommand))]
+    public partial bool HasStats { get; set; }
+
+    /// <summary>
+    /// Starts sampling the queue. Called at startup, so the history and the peak also cover the
+    /// time before the dashboard is first opened.
+    /// </summary>
+    public void StartRecording()
     {
-        get => _gameBreakdownSeries;
-        set => SetProperty(ref _gameBreakdownSeries, value);
-    }
-
-    private Axis[] _gameXAxes = [new Axis { MinLimit = 0 }];
-    public Axis[] GameXAxes
-    {
-        get => _gameXAxes;
-        set => SetProperty(ref _gameXAxes, value);
-    }
-
-    private Axis[] _gameYAxes = [new Axis()];
-    public Axis[] GameYAxes
-    {
-        get => _gameYAxes;
-        set => SetProperty(ref _gameYAxes, value);
-    }
-
-    private int _gameChartHeight = 80;
-    public int GameChartHeight
-    {
-        get => _gameChartHeight;
-        set => SetProperty(ref _gameChartHeight, value);
-    }
-
-    // ── Success/Skip Ratio Pie Chart ──
-
-    private ISeries[] _ratioSeries = [];
-    public ISeries[] RatioSeries
-    {
-        get => _ratioSeries;
-        set => SetProperty(ref _ratioSeries, value);
-    }
-
-    private bool _hasRatioData;
-    public bool HasRatioData
-    {
-        get => _hasRatioData;
-        set => SetProperty(ref _hasRatioData, value);
-    }
-
-    // ── Per-Game CPM Timeline ──
-
-    private ISeries[] _timelineSeries = [];
-    public ISeries[] TimelineSeries
-    {
-        get => _timelineSeries;
-        set => SetProperty(ref _timelineSeries, value);
-    }
-
-    public Axis[] TimelineXAxes { get; }
-    public Axis[] TimelineYAxes { get; }
-
-    // ── Summary Cards (forwarded from MainViewModel) ──
-
-    public long TotalClicks => _mainVm.TotalClicks;
-    public long TotalSkipped => _mainVm.TotalSkipped;
-    public string SessionUptime => _mainVm.SessionUptime;
-    public double ClicksPerMinute => _mainVm.ClicksPerMinute;
-    public long PeakClicksPerMinute => _mainVm.PeakClicksPerMinute;
-    public bool HasStats => _mainVm.HasStats;
-
-    public bool HasAnyRunning => _mainVm.HasAnyRunning;
-
-    // ── Commands ──
-
-    public RelayCommand ExportStatsCommand { get; }
-    public RelayCommand ResetDashboardCommand { get; }
-
-    public DashboardViewModel(MainViewModel mainVm)
-    {
-        _mainVm = mainVm;
-
-        ExportStatsCommand = new RelayCommand(OnExportStats, () => HasStats);
-        ResetDashboardCommand = new RelayCommand(OnResetDashboard, () => !HasAnyRunning);
-
-        // Forward property changes from MainViewModel
-        _mainVm.PropertyChanged += (_, args) =>
+        if (_recording)
         {
-            switch (args.PropertyName)
-            {
-                case nameof(MainViewModel.TotalClicks): OnPropertyChanged(nameof(TotalClicks)); break;
-                case nameof(MainViewModel.TotalSkipped): OnPropertyChanged(nameof(TotalSkipped)); break;
-                case nameof(MainViewModel.SessionUptime): OnPropertyChanged(nameof(SessionUptime)); break;
-                case nameof(MainViewModel.ClicksPerMinute): OnPropertyChanged(nameof(ClicksPerMinute)); break;
-                case nameof(MainViewModel.PeakClicksPerMinute): OnPropertyChanged(nameof(PeakClicksPerMinute)); break;
-                case nameof(MainViewModel.HasStats): OnPropertyChanged(nameof(HasStats)); break;
-                case nameof(MainViewModel.HasAnyRunning): OnPropertyChanged(nameof(HasAnyRunning)); break;
-            }
-        };
-
-        // Listen for game exits to archive stats
-        _mainVm.GameExited += OnGameExited;
-
-        // CPM line series
-        var primaryColor = GetSkColor("PrimaryBrush", SKColors.CornflowerBlue);
-        CpmSeries =
-        [
-            new LineSeries<ObservablePoint>
-            {
-                Values = _cpmPoints,
-                GeometrySize = 0,
-                LineSmoothness = 0.3,
-                Stroke = new SolidColorPaint(primaryColor, 2),
-                Fill = new SolidColorPaint(primaryColor.WithAlpha(40)),
-                AnimationsSpeed = TimeSpan.FromMilliseconds(100)
-            }
-        ];
-
-        var axisTextColor = GetSkColor("TextSecondaryBrush", SKColors.Gray);
-        var separatorColor = GetSkColor("BorderBrush", new SKColor(51, 65, 85));
-
-        CpmXAxes =
-        [
-            new Axis
-            {
-                Labeler = val => TimeSpan.FromSeconds(val * 2).ToString(@"m\:ss"),
-                LabelsPaint = new SolidColorPaint(axisTextColor),
-                SeparatorsPaint = new SolidColorPaint(separatorColor),
-                TextSize = 11
-            }
-        ];
-
-        CpmYAxes =
-        [
-            new Axis
-            {
-                MinLimit = 0,
-                LabelsPaint = new SolidColorPaint(axisTextColor),
-                SeparatorsPaint = new SolidColorPaint(separatorColor),
-                TextSize = 11
-            }
-        ];
-
-        // Timeline axes
-        TimelineXAxes =
-        [
-            new Axis
-            {
-                Labeler = val => TimeSpan.FromSeconds(val * 2).ToString(@"m\:ss"),
-                LabelsPaint = new SolidColorPaint(axisTextColor),
-                SeparatorsPaint = new SolidColorPaint(separatorColor),
-                TextSize = 11
-            }
-        ];
-
-        TimelineYAxes =
-        [
-            new Axis
-            {
-                MinLimit = 0,
-                Name = Resources.Strings.ClicksPerMin,
-                NamePaint = new SolidColorPaint(axisTextColor),
-                LabelsPaint = new SolidColorPaint(axisTextColor),
-                SeparatorsPaint = new SolidColorPaint(separatorColor),
-                TextSize = 11
-            }
-        ];
-
-        // Timer for chart updates
-        _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
-        _timer.Tick += (_, _) => UpdateCharts();
-        _timer.Start();
-    }
-
-    private void OnGameExited(string processName, long clicks, long skipped)
-    {
-        _archivedGames.Add(new ArchivedGameStats
-        {
-            ProcessName = processName,
-            ClickCount = clicks,
-            SkippedClicks = skipped,
-            ExitedAt = DateTime.Now
-        });
-    }
-
-    private bool _wasRunning;
-
-    private void UpdateCharts()
-    {
-        bool isRunning = _mainVm.HasAnyRunning;
-
-        // Always update static charts (breakdown, ratio) so archived data shows
-        UpdateGameBreakdown();
-        UpdateRatioChart();
-
-        // Only update live time-series charts while tasks are running
-        if (isRunning)
-        {
-            // ── CPM History ──
-            long currentTotal = _mainVm.TotalClicks;
-            double instantCpm = (currentTotal - _lastChartClicks) / 2.0 * 60.0;
-            _lastChartClicks = currentTotal;
-
-            _cpmPoints.Add(new ObservablePoint(_historyIndex, Math.Round(instantCpm, 1)));
-            _historyIndex++;
-
-            if (_cpmPoints.Count > MaxHistory)
-                _cpmPoints.RemoveAt(0);
-
-            // Slide X axis window
-            if (_historyIndex > MaxHistory)
-            {
-                CpmXAxes[0].MinLimit = _historyIndex - MaxHistory;
-                CpmXAxes[0].MaxLimit = _historyIndex;
-            }
-
-            // ── Per-Game Timeline ──
-            UpdateTimeline();
-
-            _wasRunning = true;
-        }
-        else if (_wasRunning)
-        {
-            // Just stopped: sync _lastChartClicks so next start doesn't show a spike
-            _lastChartClicks = _mainVm.TotalClicks;
-            _wasRunning = false;
-        }
-    }
-
-    private void UpdateGameBreakdown()
-    {
-        var sessions = _mainVm.GameSessions;
-
-        // Combine active sessions + archived
-        var allGames = new List<(string Name, long Clicks, long Skipped)>();
-
-        foreach (var s in sessions)
-            allGames.Add((s.ProcessName, s.Session.ClickCount, s.Session.SkippedClicks));
-
-        foreach (var a in _archivedGames)
-            allGames.Add(($"{a.ProcessName} ✕", a.ClickCount, a.SkippedClicks));
-
-        if (allGames.Count == 0)
-        {
-            GameBreakdownSeries = [];
             return;
         }
 
-        var successColor = GetSkColor("SuccessBrush", SKColors.LimeGreen);
-        var skippedColor = GetSkColor("WarningBrush", SKColors.Orange);
-
-        var successValues = new ObservableValue[allGames.Count];
-        var skippedValues = new ObservableValue[allGames.Count];
-        var labels = new string[allGames.Count];
-
-        for (int i = 0; i < allGames.Count; i++)
-        {
-            successValues[i] = new ObservableValue(allGames[i].Clicks);
-            skippedValues[i] = new ObservableValue(allGames[i].Skipped);
-            labels[i] = allGames[i].Name;
-        }
-
-        GameBreakdownSeries =
-        [
-            new RowSeries<ObservableValue>
-            {
-                Values = successValues,
-                Name = Resources.Strings.ClickSuccess,
-                Stroke = null,
-                Fill = new SolidColorPaint(successColor),
-                MaxBarWidth = 25
-            },
-            new RowSeries<ObservableValue>
-            {
-                Values = skippedValues,
-                Name = Resources.Strings.ClickSkipped,
-                Stroke = null,
-                Fill = new SolidColorPaint(skippedColor),
-                MaxBarWidth = 25
-            }
-        ];
-
-        var axisTextColor = GetSkColor("TextSecondaryBrush", SKColors.Gray);
-        var separatorColor = GetSkColor("BorderBrush", new SKColor(51, 65, 85));
-
-        GameYAxes =
-        [
-            new Axis
-            {
-                Labels = labels,
-                LabelsPaint = new SolidColorPaint(axisTextColor),
-                TextSize = 12,
-                MinStep = 1,
-                ForceStepToMin = true
-            }
-        ];
-
-        GameXAxes =
-        [
-            new Axis
-            {
-                MinLimit = 0,
-                LabelsPaint = new SolidColorPaint(axisTextColor),
-                SeparatorsPaint = new SolidColorPaint(separatorColor),
-                TextSize = 11
-            }
-        ];
-
-        GameChartHeight = Math.Max(80, allGames.Count * 60);
+        _recording = true;
+        _queue.Refreshed += (_, _) => OnQueueRefreshed();
+        _queue.StatsReset += (_, _) => ClearHistory();
     }
 
-    private void UpdateRatioChart()
+    public Task OnNavigatedToAsync()
     {
-        long totalSuccess = _mainVm.TotalClicks + _archivedGames.Sum(a => a.ClickCount);
-        long totalSkipped = _mainVm.TotalSkipped + _archivedGames.Sum(a => a.SkippedClicks);
-        long total = totalSuccess + totalSkipped;
+        _isVisible = true;
+        RebuildCharts();
+        UpdateSummary();
+        return Task.CompletedTask;
+    }
 
-        if (total == 0)
+    public Task OnNavigatedFromAsync()
+    {
+        _isVisible = false;
+        return Task.CompletedTask;
+    }
+
+    [RelayCommand(CanExecute = nameof(HasStats))]
+    public void ExportStats()
+    {
+        var path = DialogService.PickSaveFile(L.Get("Filter_Csv"), $"autoclick-stats-{_time.GetLocalNow():yyyyMMdd-HHmm}.csv");
+        if (path is null)
         {
-            HasRatioData = false;
             return;
         }
 
-        HasRatioData = true;
-        var successColor = GetSkColor("SuccessBrush", SKColors.LimeGreen);
-        var skippedColor = GetSkColor("WarningBrush", SKColors.Orange);
-
-        RatioSeries =
-        [
-            new PieSeries<double>
-            {
-                Values = [totalSuccess],
-                Name = $"{Resources.Strings.ClickSuccess} ({totalSuccess})",
-                Fill = new SolidColorPaint(successColor),
-                MaxRadialColumnWidth = 30
-            },
-            new PieSeries<double>
-            {
-                Values = [totalSkipped],
-                Name = $"{Resources.Strings.ClickSkipped} ({totalSkipped})",
-                Fill = new SolidColorPaint(skippedColor),
-                MaxRadialColumnWidth = 30
-            }
-        ];
-    }
-
-    private static readonly SKColor[] GameColors =
-    [
-        new(100, 181, 246), // blue
-        new(129, 199, 132), // green
-        new(255, 183, 77),  // orange
-        new(206, 147, 216), // purple
-        new(255, 138, 128), // red
-        new(128, 222, 234), // cyan
-        new(255, 213, 79),  // yellow
-        new(176, 190, 197)  // grey
-    ];
-
-    private void UpdateTimeline()
-    {
-        var sessions = _mainVm.GameSessions;
-        if (sessions.Count == 0 && _gameTimelinePoints.Count == 0)
+        var csv = new StringBuilder("game,status,clicks,skipped,clicks_per_minute\n");
+        foreach (var game in _queue.Games)
         {
-            TimelineSeries = [];
-            return;
+            csv.AppendLine(CultureInfo.InvariantCulture, $"{Csv(game.ProcessName)},{game.State},{game.Clicks},{game.Skipped},{game.ClicksPerMinute}");
         }
 
-        bool seriesChanged = false;
-
-        // Track which games we've seen
-        var activeIds = new HashSet<string>();
-
-        foreach (var s in sessions)
+        foreach (var game in _queue.FinishedGames)
         {
-            activeIds.Add(s.Id);
-            if (!_gameTimelinePoints.ContainsKey(s.Id))
-            {
-                _gameTimelinePoints[s.Id] = new ObservableCollection<ObservablePoint>();
-                _gameLastClicks[s.Id] = 0;
-                seriesChanged = true;
-            }
-
-            long currentClicks = s.Session.ClickCount;
-            long delta = currentClicks - _gameLastClicks[s.Id];
-            double cpm = delta / 2.0 * 60.0;
-            _gameLastClicks[s.Id] = currentClicks;
-
-            var points = _gameTimelinePoints[s.Id];
-            points.Add(new ObservablePoint(_timelineIndex, Math.Round(cpm, 1)));
-            if (points.Count > MaxTimelineHistory)
-                points.RemoveAt(0);
+            csv.AppendLine(CultureInfo.InvariantCulture, $"{Csv(game.ProcessName)},Exited,{game.Clicks},{game.Skipped},");
         }
 
-        _timelineIndex++;
-
-        // Slide timeline X axis
-        if (_timelineIndex > MaxTimelineHistory)
-        {
-            TimelineXAxes[0].MinLimit = _timelineIndex - MaxTimelineHistory;
-            TimelineXAxes[0].MaxLimit = _timelineIndex;
-        }
-
-        // Rebuild series if games were added
-        if (seriesChanged)
-        {
-            var newSeries = new List<ISeries>();
-            int colorIdx = 0;
-            foreach (var s in sessions)
-            {
-                var color = GameColors[colorIdx % GameColors.Length];
-                newSeries.Add(new LineSeries<ObservablePoint>
-                {
-                    Values = _gameTimelinePoints[s.Id],
-                    Name = s.ProcessName,
-                    GeometrySize = 0,
-                    LineSmoothness = 0.3,
-                    Stroke = new SolidColorPaint(color, 2),
-                    Fill = new SolidColorPaint(color.WithAlpha(30)),
-                    AnimationsSpeed = TimeSpan.FromMilliseconds(100)
-                });
-                colorIdx++;
-            }
-            TimelineSeries = newSeries.ToArray();
-        }
-    }
-
-    private void OnExportStats()
-    {
-        var sessions = _mainVm.GameSessions;
-        var statsData = new
-        {
-            ExportedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-            Session = new
-            {
-                TotalClicks = _mainVm.TotalClicks + _archivedGames.Sum(a => a.ClickCount),
-                TotalSkipped = _mainVm.TotalSkipped + _archivedGames.Sum(a => a.SkippedClicks),
-                _mainVm.SessionUptime,
-                ClicksPerMinute = Math.Round(_mainVm.ClicksPerMinute, 2),
-                _mainVm.PeakClicksPerMinute
-            },
-            ActiveGames = sessions.Select(g => new
-            {
-                g.ProcessName,
-                g.Session.ProcessId,
-                ClickCount = g.Session.ClickCount,
-                SkippedClicks = g.Session.SkippedClicks,
-                Total = g.Session.ClickCount + g.Session.SkippedClicks,
-                State = g.CurrentState.ToString(),
-                ClickPoints = g.Session.ClickPoints.Select(p => new { p.X, p.Y, ClickType = p.ClickType.ToString() })
-            }),
-            ExitedGames = _archivedGames.Select(a => new
-            {
-                a.ProcessName,
-                a.ClickCount,
-                a.SkippedClicks,
-                Total = a.ClickCount + a.SkippedClicks,
-                ExitedAt = a.ExitedAt.ToString("yyyy-MM-dd HH:mm:ss")
-            })
-        };
-
-        var dlg = new SaveFileDialog
-        {
-            Filter = "JSON files (*.json)|*.json",
-            FileName = $"AutoClick_Session_{DateTime.Now:yyyyMMdd_HHmmss}.json"
-        };
-
-        if (dlg.ShowDialog() == true)
-        {
-            var json = JsonSerializer.Serialize(statsData, new JsonSerializerOptions
-            {
-                WriteIndented = true,
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            });
-            File.WriteAllText(dlg.FileName, json);
-        }
-    }
-
-    private void OnResetDashboard()
-    {
-        if (MessageBox.Show(
-            Resources.Strings.ConfirmResetStats,
-            Resources.Strings.AppTitle,
-            MessageBoxButton.YesNo,
-            MessageBoxImage.Warning) != MessageBoxResult.Yes)
-            return;
-
-        // Reset CPM chart
-        _cpmPoints.Clear();
-        _historyIndex = 0;
-        _lastChartClicks = 0;
-        CpmXAxes[0].MinLimit = null;
-        CpmXAxes[0].MaxLimit = null;
-
-        // Reset game breakdown
-        GameBreakdownSeries = [];
-        _archivedGames.Clear();
-
-        // Reset ratio
-        RatioSeries = [];
-        HasRatioData = false;
-
-        // Reset timeline
-        _gameTimelinePoints.Clear();
-        _gameLastClicks.Clear();
-        _timelineIndex = 0;
-        TimelineSeries = [];
-        TimelineXAxes[0].MinLimit = null;
-        TimelineXAxes[0].MaxLimit = null;
-
-        // Reset main stats
-        _mainVm.ResetSessionStats();
-    }
-
-    private static SKColor GetSkColor(string resourceKey, SKColor fallback)
-    {
         try
         {
-            if (Application.Current?.Resources[resourceKey] is SolidColorBrush brush)
+            File.WriteAllText(path, csv.ToString(), new UTF8Encoding(encoderShouldEmitUTF8Identifier: true));
+            _dialogs.Toast(L.Get("Dashboard_Export"), L.Format("Common_SavedTo", path), ToastKind.Success);
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            _logger.LogWarning(ex, "Statistics export failed");
+            _dialogs.Toast(L.Get("Dashboard_Export"), L.Format("Common_FileError", ex.Message), ToastKind.Error);
+        }
+    }
+
+    [RelayCommand]
+    public async Task ResetStatsAsync()
+    {
+        if (await _dialogs.ConfirmAsync(L.Get("Dashboard_Reset"), L.Get("Dashboard_ResetConfirm"), L.Get("Dashboard_Reset")))
+        {
+            _queue.ResetAllStats();
+        }
+    }
+
+    private void OnQueueRefreshed()
+    {
+        if (++_ticks % SampleEveryTicks == 0)
+        {
+            Sample();
+        }
+
+        if (_isVisible)
+        {
+            UpdateSummary();
+        }
+    }
+
+    private void Sample()
+    {
+        var active = _queue.Games.Where(g => g.IsActive).ToList();
+        if (active.Count == 0 && _history.Count == 0)
+        {
+            return;
+        }
+
+        var index = _sampleIndex++;
+        var total = Math.Round(active.Sum(g => g.ClicksPerMinute), 1);
+        PeakClicksPerMinute = Math.Max(PeakClicksPerMinute, total);
+        Append(_history, index, total);
+
+        var liveIds = _queue.Games.Select(g => g.Id).ToHashSet();
+        foreach (var gone in _gameHistory.Keys.Where(id => !liveIds.Contains(id)).ToList())
+        {
+            _gameHistory.Remove(gone);
+        }
+
+        foreach (var game in _queue.Games)
+        {
+            if (!_gameHistory.TryGetValue(game.Id, out var points))
             {
-                var c = brush.Color;
-                return new SKColor(c.R, c.G, c.B, c.A);
+                _gameHistory[game.Id] = points = [];
+            }
+
+            Append(points, index, game.ClicksPerMinute);
+        }
+
+        if (!_isVisible)
+        {
+            return;
+        }
+
+        _cpmPoints.Add(new ObservablePoint(index, total));
+        if (_cpmPoints.Count > HistoryLength)
+        {
+            _cpmPoints.RemoveAt(0);
+        }
+
+        // Timeline and breakdown are rebuilt only when games came or went.
+        if (TimelineSeries.Length != _queue.Games.Count)
+        {
+            RebuildTimeline();
+        }
+        else
+        {
+            for (var i = 0; i < _queue.Games.Count; i++)
+            {
+                if (TimelineSeries[i].Values is ObservableCollection<ObservablePoint> values)
+                {
+                    values.Add(new ObservablePoint(index, _queue.Games[i].ClicksPerMinute));
+                    if (values.Count > HistoryLength)
+                    {
+                        values.RemoveAt(0);
+                    }
+                }
             }
         }
-        catch { }
-        return fallback;
     }
-}
 
-public class ArchivedGameStats
-{
-    public string ProcessName { get; set; } = "";
-    public long ClickCount { get; set; }
-    public long SkippedClicks { get; set; }
-    public DateTime ExitedAt { get; set; }
+    private void UpdateSummary()
+    {
+        TotalClicks = _queue.TotalClicks;
+        TotalSkipped = _queue.TotalSkipped;
+        RunningGames = _queue.RunningCount;
+        ClicksPerMinute = Math.Round(_queue.Games.Where(g => g.IsActive).Sum(g => g.ClicksPerMinute), 1);
+        ActiveTime = _queue.ActiveTime.ToString(@"h\:mm\:ss", CultureInfo.InvariantCulture);
+        HasStats = TotalClicks + TotalSkipped > 0;
+        _successValue.Value = TotalClicks;
+        _skippedValue.Value = TotalSkipped;
+        RebuildBreakdown();
+    }
+
+    private void RebuildCharts()
+    {
+        _cpmPoints.Clear();
+        foreach (var (index, cpm) in _history)
+        {
+            _cpmPoints.Add(new ObservablePoint(index, cpm));
+        }
+
+        RebuildTimeline();
+        RebuildBreakdown();
+    }
+
+    private void RebuildTimeline()
+    {
+        var palette = SeriesPalette();
+        TimelineSeries = _queue.Games.Select((game, i) =>
+        {
+            var color = palette[i % palette.Length];
+            var values = new ObservableCollection<ObservablePoint>(
+                (_gameHistory.TryGetValue(game.Id, out var points) ? points : []).Select(p => new ObservablePoint(p.Index, p.Cpm)));
+            return (ISeries)new LineSeries<ObservablePoint>
+            {
+                Name = game.ProcessName,
+                Values = values,
+                GeometrySize = 0,
+                LineSmoothness = 0.3,
+                Stroke = new SolidColorPaint(color, 2),
+                Fill = null,
+            };
+        }).ToArray();
+    }
+
+    private void RebuildBreakdown()
+    {
+        var rows = _queue.Games.Select(g => (Name: g.ProcessName, g.Clicks, g.Skipped))
+            .Concat(_queue.FinishedGames.Select(g => (Name: g.ProcessName, g.Clicks, g.Skipped)))
+            .ToList();
+        var labels = rows.Select(r => r.Name).ToArray();
+        var axis = (Axis)BreakdownXAxes[0];
+        if (BreakdownSeries.Length == 2
+            && axis.Labels is { } current && current.SequenceEqual(labels)
+            && BreakdownSeries[0].Values is long[] success && success.SequenceEqual(rows.Select(r => r.Clicks))
+            && BreakdownSeries[1].Values is long[] skipped && skipped.SequenceEqual(rows.Select(r => r.Skipped)))
+        {
+            return;
+        }
+
+        axis.Labels = labels;
+        var (successColor, skippedColor) = StatusColors();
+        BreakdownSeries =
+        [
+            new ColumnSeries<long> { Name = L.Get("Stats_Success"), Values = rows.Select(r => r.Clicks).ToArray(), Fill = new SolidColorPaint(successColor) },
+            new ColumnSeries<long> { Name = L.Get("Stats_Skipped"), Values = rows.Select(r => r.Skipped).ToArray(), Fill = new SolidColorPaint(skippedColor) },
+        ];
+    }
+
+    private void ClearHistory()
+    {
+        _history.Clear();
+        _gameHistory.Clear();
+        _cpmPoints.Clear();
+        _sampleIndex = 0;
+        PeakClicksPerMinute = 0;
+        if (_isVisible)
+        {
+            RebuildCharts();
+            UpdateSummary();
+        }
+    }
+
+    private void ApplyThemeAndTexts()
+    {
+        var text = ResourceColor("TextFillColorSecondaryBrush", new SKColor(0x9E, 0x9E, 0x9E));
+        var separator = ResourceColor("ControlStrokeColorDefaultBrush", new SKColor(0x40, 0x40, 0x40));
+        var accent = ResourceColor("AccentFillColorDefaultBrush", SKColors.CornflowerBlue);
+
+        foreach (var axis in CpmXAxes.Concat(CpmYAxes).Concat(TimelineXAxes).Concat(TimelineYAxes).Concat(BreakdownXAxes).Concat(BreakdownYAxes).OfType<Axis>())
+        {
+            axis.LabelsPaint = new SolidColorPaint(text);
+            axis.SeparatorsPaint = new SolidColorPaint(separator.WithAlpha(90));
+            axis.NamePaint = new SolidColorPaint(text);
+        }
+
+        ((Axis)CpmYAxes[0]).Name = L.Get("Stats_ClicksPerMinute");
+        ((Axis)TimelineYAxes[0]).Name = L.Get("Stats_ClicksPerMinute");
+        ((Axis)CpmYAxes[0]).NameTextSize = 12;
+        ((Axis)TimelineYAxes[0]).NameTextSize = 12;
+
+        var cpm = (LineSeries<ObservablePoint>)CpmSeries[0];
+        cpm.Name = L.Get("Stats_ClicksPerMinute");
+        cpm.Stroke = new SolidColorPaint(accent, 2);
+        cpm.Fill = new SolidColorPaint(accent.WithAlpha(40));
+
+        var (successColor, skippedColor) = StatusColors();
+        var success = (PieSeries<ObservableValue>)RatioSeries[0];
+        success.Name = L.Get("Stats_Success");
+        success.Fill = new SolidColorPaint(successColor);
+        var skipped = (PieSeries<ObservableValue>)RatioSeries[1];
+        skipped.Name = L.Get("Stats_Skipped");
+        skipped.Fill = new SolidColorPaint(skippedColor);
+
+        LegendTextPaint = new SolidColorPaint(text);
+        BreakdownSeries = [];
+        if (_isVisible)
+        {
+            RebuildTimeline();
+            RebuildBreakdown();
+        }
+    }
+
+    private static (SKColor Success, SKColor Skipped) StatusColors() =>
+        (ResourceColor("SystemFillColorSuccessBrush", new SKColor(0x6C, 0xCB, 0x5F)),
+         ResourceColor("SystemFillColorCautionBrush", new SKColor(0xFC, 0xE1, 0x00)));
+
+    private static SKColor[] SeriesPalette() =>
+    [
+        ResourceColor("AccentFillColorDefaultBrush", SKColors.CornflowerBlue),
+        new SKColor(0x6C, 0xCB, 0x5F),
+        new SKColor(0xFF, 0x99, 0x33),
+        new SKColor(0xE0, 0x5C, 0xB5),
+        new SKColor(0x4F, 0xC3, 0xF7),
+        new SKColor(0xFF, 0xD5, 0x4F),
+        new SKColor(0x9C, 0x8C, 0xFF),
+        new SKColor(0xF4, 0x43, 0x36),
+    ];
+
+    private static SKColor ResourceColor(string key, SKColor fallback) =>
+        Application.Current?.TryFindResource(key) is SolidColorBrush { Color: var c } ? new SKColor(c.R, c.G, c.B, c.A) : fallback;
+
+    private static string FormatSampleTime(double index) =>
+        TimeSpan.FromSeconds(Math.Max(0, index) * SampleEveryTicks).ToString(@"m\:ss", CultureInfo.InvariantCulture);
+
+    private static void Append(List<(int Index, double Cpm)> list, int index, double cpm)
+    {
+        list.Add((index, cpm));
+        if (list.Count > HistoryLength)
+        {
+            list.RemoveAt(0);
+        }
+    }
+
+    private static string Csv(string value) =>
+        value.IndexOfAny([',', '"', '\n']) >= 0 ? $"\"{value.Replace("\"", "\"\"", StringComparison.Ordinal)}\"" : value;
 }

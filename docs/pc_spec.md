@@ -1,6 +1,6 @@
 # PC Specification
 
-Public-facing snapshot of the primary developer workstation. Use this as a reference for "what the project was built and validated on." Specific game/build test results live in [DEV_ENVIRONMENT.md](DEV_ENVIRONMENT.md). The Vietnamese mirror is at [i18n/vi/pc_spec.md](i18n/vi/pc_spec.md).
+Public-facing snapshot of the primary developer workstation: what the project is built and tested on. Game and test results live in [DEV_ENVIRONMENT.md](DEV_ENVIRONMENT.md). The Vietnamese mirror is at [i18n/vi/pc_spec.md](i18n/vi/pc_spec.md).
 
 > Applies to **all** of the developer's active projects, not only AutoClick.
 
@@ -8,8 +8,8 @@ Public-facing snapshot of the primary developer workstation. Use this as a refer
 
 | Component | Details |
 |-----------|---------|
-| **OS** | Windows 11 Pro 25H2 Insider Preview (Dev Channel) |
-| **Build** | 26300.8376 |
+| **OS** | Windows 11 Pro Insider Preview (Dev Channel) |
+| **Build** | 29648.1000 |
 | **CPU** | Intel Core i7-14700KF |
 | **GPU** | NVIDIA GeForce RTX 5080 (16 GB VRAM) |
 | **RAM** | 32 GB DDR5 |
@@ -25,19 +25,19 @@ Used for cross-browser web verification:
 
 ## Toolchain Versions
 
-Only the toolchains currently in use across active projects are listed. Each project may pin stricter minimums in its own README.
+Only the toolchains currently installed for active projects are listed. Each project may pin stricter versions (AutoClick pins its .NET SDK in [`global.json`](../global.json)).
 
-- **Python** — 3.12.x, 3.14.x
-- **Node.js** — `>= 25.8.1`
+- **.NET** — SDK 10.0.4xx; runtimes 8.0 and 10.0
+- **Python** — 3.14.x
+- **Node.js** — 24.x
 - **Rust** — stable (via `rustup`)
-- **Git** — recent; GPG commit signing enabled (`commit.gpgsign=true`)
-- **.NET** — 8.x, 9.x, 10.x, 11.x (PREVIEW)
+- **Git** — 2.56; GPG commit signing enabled (`commit.gpgsign=true`)
 
-Newer versions will be appended as they appear in shipped projects.
+Newer versions are added as they appear in shipped projects.
 
 ## Related Documents
 
-- [DEV_ENVIRONMENT.md](DEV_ENVIRONMENT.md) — IDE + language toolchains + dev workflow (EN)
+- [DEV_ENVIRONMENT.md](DEV_ENVIRONMENT.md) — build, test tools and tested games
 - [SYSTEM_REQUIREMENTS.md](SYSTEM_REQUIREMENTS.md) — end-user system requirements
 - [i18n/vi/pc_spec.md](i18n/vi/pc_spec.md) — Vietnamese mirror of this document
-- [i18n/vi/DEV_ENVIRONMENT.md](i18n/vi/DEV_ENVIRONMENT.md) — Vietnamese mirror of the dev environment doc
+- [i18n/vi/DEV_ENVIRONMENT.md](i18n/vi/DEV_ENVIRONMENT.md) — Vietnamese mirror of the development environment document

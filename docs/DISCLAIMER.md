@@ -1,6 +1,6 @@
 # Disclaimer
 
-**Last updated:** April 2026
+**Last updated:** October 2026
 
 ## General Disclaimer
 
@@ -14,9 +14,10 @@ AutoClick has been tested on the following configurations (see [System Requireme
 
 | OS | Status |
 |----|--------|
-| Windows 10 22H2+ / Windows 11 | **Full support** (all features) |
-| Windows 8.1 | **Partial support** (requires [VC++ 2015 Redistributable](https://www.microsoft.com/en-us/download/details.aspx?id=48145); dashboard not available; v1.1.0 recommended) |
-| Windows 7 and earlier | **Not supported** (application will not launch) |
+| Windows 11, Windows 10 version 2004 or later (64-bit) | **Supported** by AutoClick 2.x |
+| Earlier Windows 10 versions | AutoClick 1.3.x only (no longer updated) |
+| Windows 8.1 | AutoClick 1.1.0 only (no longer updated; requires the [VC++ 2015 Redistributable](https://www.microsoft.com/en-us/download/details.aspx?id=48145); no dashboard) |
+| Windows 7 and earlier | **Not supported** |
 
 The developer makes no guarantees of compatibility with OS versions, builds, or configurations not listed in [System Requirements](SYSTEM_REQUIREMENTS.md).
 

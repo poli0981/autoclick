@@ -1,18 +1,27 @@
 # Heatmap Overlay Compatibility
 
-The click heatmap overlay (added in v1.3.0, foreground-aware in v1.3.1) renders a transparent, click-through layer above the game's client area, plotting each clicked coordinate as a colored circle on a blue→red gradient sized by relative click frequency.
+The click heatmap draws a transparent layer over the game's window area, with one circle per clicked point: blue for rarely clicked, red for the most clicked. The layer cannot be clicked (input passes through to the game), never takes focus and does not appear in Alt+Tab.
 
-Compatibility depends on how the game presents its window to the desktop compositor:
+How the overlay behaves (AutoClick 2.0):
 
-- **Windowed** — works reliably. Standard top-level window, overlay sits above via normal z-order.
-- **Borderless windowed** (a.k.a. *fullscreen window*) — works reliably. Same compositor path as windowed.
-- **Exclusive fullscreen** — depends on the game's rendering pipeline. Games using DWM-friendly DirectX 11/12 swap chains often work; legacy DirectX 9 or older OpenGL exclusive-fullscreen bypass the desktop compositor and the overlay cannot render above them.
+- It sits exactly over the game's client area, on any monitor and at any display scaling, and follows the game when it moves or is resized.
+- It is visible only while the game, or one of the game's own dialogs, is the active window. With several heatmaps open, only the one for the game in front shows.
+- It hides while the game is minimized and closes by itself when the game exits or is removed from the queue.
+- It redraws only when there are new clicks or the window moved, so it adds almost no load.
 
-**This is a Windows OS-level limitation, not an AutoClick bug.** No overlay technology built on top-level WPF windows can render above an application that has taken exclusive ownership of the screen surface.
+## Game display modes
+
+Whether an overlay can appear above a game depends on how the game presents its window:
+
+- **Windowed**: works.
+- **Borderless window** (also called *fullscreen windowed*): works.
+- **Exclusive fullscreen**: depends on the game. Games whose DirectX 11/12 swap chain goes through the desktop compositor usually work; older DirectX 9 or OpenGL exclusive fullscreen bypasses the compositor and nothing can be drawn above it.
+
+This is a Windows limitation, not an AutoClick bug: no overlay window can draw above a program that owns the screen exclusively. If the heatmap does not show, switch the game to **borderless window**; performance is about the same on modern GPUs.
 
 ## Tested games
 
-Last updated: 2026-04-25 (v1.3.1)
+Tested with AutoClick 1.3.1 (2026-04-25). 2.0 uses the same kind of overlay window, so the display-mode results still apply.
 
 | Game | Engine | Windowed | Borderless | Fullscreen | Notes |
 |------|--------|---------:|-----------:|-----------:|-------|
@@ -22,32 +31,20 @@ Last updated: 2026-04-25 (v1.3.1)
 | [Deadly Heart Gambit](https://store.steampowered.com/app/3202110/) | Unity | ✅ | ✅ | ❌ | |
 | [STEINS;GATE](https://store.steampowered.com/app/412830/) | (unknown) | ✅ | — | ✅ | |
 
-**Legend:** ✅ tested + renders correctly · ❌ tested + does not render · — not tested
+**Legend:** ✅ tested and shows · ❌ tested and does not show · — not tested
 
-## Patterns observed so far
+Patterns so far: Ren'Py and Unity in exclusive fullscreen hide the overlay; Unreal Engine 4 with DirectX 12 shows it even in fullscreen; older or niche engines vary.
 
-- **Ren'Py** and **Unity** in true exclusive fullscreen → overlay does not render. Switch to Windowed or Borderless.
-- **Unreal Engine 4 (DirectX 12)** → overlay renders even in fullscreen, because UE4's modern swap chain composites through DWM.
-- **Older or niche engines** vary individually — some legacy titles render fine in fullscreen, some don't. Hard to generalize without per-engine fingerprinting.
+## Display scaling and multiple monitors
 
-If your game falls in the "doesn't render in fullscreen" category, the simplest fix is to switch the game to **Borderless windowed** in its display settings. Performance is comparable to true fullscreen on most modern GPUs, and the overlay will work.
+1.x placed the heatmap using the scaling of the monitor the overlay was on rather than the game's, so it could be offset on setups with different scaling per monitor. 2.0 measures the game window in physical pixels and converts with the game's own DPI.
 
-## Reporting / contributing
+Click points are stored in the game's own coordinates. Points picked with 1.x in a game that is **not DPI aware**, on a **scaled** monitor, may land slightly off: pick them again in 2.0.
 
-If you've tested AutoClick's heatmap with a game not listed here, please contribute a row to the table:
+## Reporting
 
-1. **Open a PR** adding the game to the table above with:
-   - Game name + Steam URL (or other storefront link)
-   - Engine, if known (check the game's Steam page or PCGamingWiki)
-   - Mode(s) tested: Windowed / Borderless / Fullscreen
-   - Result per mode: ✅ shows / ❌ doesn't show
-   - Notes (DirectX version, anti-cheat, alt-tab quirks, etc.)
-2. **Or open an issue** with the same information and we'll add it.
-
-We aim to grow this list over releases so users can check expected behavior before relying on the heatmap feature for a particular title.
+Tested a game that is not listed? Open a pull request adding a row (game and store link, engine if known, the modes tried and the result for each, and notes such as the DirectX version or anti-cheat), or open an issue with the same information.
 
 ## Related limitations
 
-- **Anti-cheat games** (kernel-level: EasyAntiCheat, BattlEye, Vanguard) may flag the overlay or AutoClick itself. The heatmap is purely visual (click-through, no input injection) but a topmost transparent window may still trip heuristics. Use at your own risk — see [DISCLAIMER](DISCLAIMER.md).
-- **Multi-monitor**: the overlay correctly tracks the game window across monitors via DPI-aware coordinate translation. No known multi-monitor issues so far.
-- **Multiple games simultaneously**: from v1.3.1 the overlay is foreground-aware — only the currently focused game's heatmap is visible at any time, even if multiple heatmaps are toggled on. Alt-Tab between games to swap which heatmap is shown.
+- **Anti-cheat** (kernel-level: EasyAntiCheat, BattlEye, Vanguard, ACE) may flag the overlay or AutoClick itself. The heatmap only draws (it never sends input), but a top-most transparent window can still trip heuristics. Use at your own risk; see the [Disclaimer](DISCLAIMER.md).
