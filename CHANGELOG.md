@@ -6,6 +6,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [1.3.4] - 2026-10-15
+
+Platform bridge release: no feature or data-format changes, so it is safe to update from 1.3.3 and keeps working after .NET 8 reaches end of support (2026-11-10).
+
+### Changed
+- **Runtime: .NET 8 → .NET 10 (LTS, supported until 2028-11)**. AutoClick ships its own runtime (self-contained), so nothing extra needs to be installed. Requires Windows 10 or Windows 11 (x64).
+- **Updater: Velopack 1.2.0 → 1.2.161.** The release tool `vpk` is now pinned to the same version through `.config/dotnet-tools.json` (it was previously installed unpinned).
+- **Dependencies**: LiveCharts2 2.0.5 (all three packages aligned; the WPF package was stuck at 2.0.0), SkiaSharp 3.119.4 (bundled libpng/libexpat security fixes), Serilog 4.4.0, Microsoft.Extensions.DependencyInjection 10.0.13.
+- Removed unused package references from `AutoClick.Core`, `AutoClick.Win32` and `AutoClick.Services` (LiveCharts and `Microsoft.Windows.SDK.BuildTools`). They dragged .NET Framework-only OpenTK/SkiaSharp assemblies into the libraries and produced 29 NU1701 build warnings; the build is now warning-free.
+
+### Fixed
+- **The status bar always said "AutoClick v1.3.1"** (hard-coded since 1.3.1). It now shows the real version.
+- The About page version no longer carries git commit metadata (`1.3.4` instead of `1.3.4+<hash>`).
+
+### CI / Release
+- New **CI** workflow on every push and pull request to `master`: Release build with warnings as errors, a headless smoke test of the published app (`AutoClick.UI.exe --smoke-test` builds the DI graph and every window, then exits), and a dry run of the Velopack packaging step with the real release notes.
+- **Release workflow hardened**: validates the tag (`vX.Y.Z`) and checks it matches the project version, always builds the tagged commit (also on manual runs), splits a read-only build job from the publishing job, keeps workflow inputs out of inline scripts, and uploads the release as a **draft** so it can be verified before it is published.
+- The 1.3.3 packaging failure was caused by a bare ampersand in the release notes (fixed in `vpk` since 0.0.1440), not by the previous package. This release ships a full package only (about 80 MB) because the runtime changed; small delta updates will be re-enabled in a later release.
+
+---
+
 ## [1.3.3] - 2026-05-12
 
 ### Fixed
