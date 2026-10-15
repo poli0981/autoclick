@@ -38,4 +38,4 @@ dotnet jb inspectcode AutoClick.slnx --no-build --properties:Configuration=Relea
 
 ## Releasing
 
-Tag `vX.Y.Z` → the release workflow uploads a **draft** (full package, SBOM, attestations) → test the update in Windows Sandbox from the previous releases → publish from the maintainer's account (`gh release edit vX.Y.Z --draft=false`). Tags are protected: fix mistakes with a new patch version. Details: [docs/RELEASING.md](docs/RELEASING.md).
+Tag `vX.Y.Z` → the release workflow uploads a **draft** (full package, SBOM, attestations) → test the update from the previous releases in Windows Sandbox (`eng/Invoke-UpgradeTest.ps1`) → publish from the maintainer's account (`gh release edit vX.Y.Z --draft=false`). Tags are protected: fix mistakes with a new patch version. Details: [docs/RELEASING.md](docs/RELEASING.md).
