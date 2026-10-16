@@ -1,4 +1,5 @@
 using System.Windows;
+using System.Windows.Threading;
 using AutoClick.Core.Models;
 using Wpf.Ui.Appearance;
 
@@ -8,8 +9,19 @@ namespace AutoClick.UI.Services;
 public sealed class ThemeService
 {
     private Window? _watchedWindow;
+    private bool _changeQueued;
 
-    /// <summary>Raised after the theme resources changed (charts re-read their colors).</summary>
+    public ThemeService()
+    {
+        // WPF-UI raises this for every theme it applies: ours, and SystemThemeWatcher's when the
+        // theme follows Windows (several times for one switch in Windows).
+        ApplicationThemeManager.Changed += (_, _) => QueueThemeChanged();
+    }
+
+    /// <summary>
+    /// Raised after the theme resources changed, including a change made by Windows (charts re-read
+    /// their colors). A burst of changes raises it once, after the work already queued on the UI thread.
+    /// </summary>
     public event EventHandler? ThemeChanged;
 
     public AppTheme Current { get; private set; } = AppTheme.System;
@@ -44,7 +56,20 @@ public sealed class ThemeService
             };
             ApplicationThemeManager.Apply(wpfTheme);
         }
+    }
 
-        ThemeChanged?.Invoke(this, EventArgs.Empty);
+    private void QueueThemeChanged()
+    {
+        if (_changeQueued)
+        {
+            return;
+        }
+
+        _changeQueued = true;
+        _ = Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            _changeQueued = false;
+            ThemeChanged?.Invoke(this, EventArgs.Empty);
+        }, DispatcherPriority.Background);
     }
 }

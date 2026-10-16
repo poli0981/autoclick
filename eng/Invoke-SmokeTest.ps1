@@ -3,8 +3,9 @@
     Runs the published app with --smoke-test and fails if it does not exit 0 in time.
 .DESCRIPTION
     --smoke-test builds the DI graph, opens every page in every theme and language, the
-    dialogs and a heatmap overlay, and exits 1 on any exception or data-binding error. It uses
-    %TEMP%\AutoClick-smoke as its data folder; on failure the newest log from there is printed.
+    dialogs and a heatmap overlay, checks that page and chart text follow the theme, and exits 1
+    on any exception, data-binding error or wrong text color. It uses %TEMP%\AutoClick-smoke as
+    its data folder; on failure the newest log from there is printed.
 #>
 [CmdletBinding()]
 param(

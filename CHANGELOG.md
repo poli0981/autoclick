@@ -8,6 +8,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [2.0.1] - 2026-10-16
+
+Fixes for the Dark theme. Settings, profiles and sessions are unchanged.
+
+### Fixed
+
+- Dark theme: page titles, labels, values and icons were drawn in black on the dark background and could hardly be read. They only became readable after switching to the Light theme and back.
+- Dashboard: in the Dark theme the charts had a white background that hid their axis labels and legends.
+- With the theme set to *Use Windows setting*, the dashboard charts now also follow Windows when it switches between light and dark.
+
 ## [2.0.0] - 2026-10-15
 
 AutoClick rebuilt: a new Fluent interface, no administrator rights needed for most games, and fixes for every known 1.x bug. Settings, profiles and hotkeys from 1.x carry over automatically.
@@ -348,7 +358,8 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 - `ManualResetEventSlim` for pause/resume, `CancellationToken` for stop
 - `DispatcherTimer` for UI refresh and process monitoring
 
-[Unreleased]: https://github.com/poli0981/autoclick/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/poli0981/autoclick/compare/v2.0.1...HEAD
+[2.0.1]: https://github.com/poli0981/autoclick/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/poli0981/autoclick/compare/v1.3.4...v2.0.0
 [1.3.4]: https://github.com/poli0981/autoclick/compare/v1.3.3...v1.3.4
 [1.3.3]: https://github.com/poli0981/autoclick/compare/v1.3.2...v1.3.3
