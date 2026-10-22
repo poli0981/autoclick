@@ -49,12 +49,20 @@ jobs:
           dotnet tool restore
           dotnet restore AutoClick.slnx
 
+      - name: Build info
+        id: info
+        shell: pwsh
+        run: ./eng/Get-BuildInfo.ps1
+
+      # The product version lets the "previous version" new-code period start at the last version
+      # change; without it, new code would count from the project's first analysis.
       # The scanner provisions its own Java runtime. Build output and restore files are not sources.
       - name: Begin analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          VERSION: ${{ steps.info.outputs.version }}
         run: >-
-          dotnet sonarscanner begin /k:poli0981_autoclick /o:poli0981
+          dotnet sonarscanner begin /k:poli0981_autoclick /o:poli0981 /v:"$env:VERSION"
           /d:sonar.host.url=https://sonarcloud.io /d:sonar.token="$env:SONAR_TOKEN"
           "/d:sonar.cs.cobertura.reportsPaths=artifacts/test-results/**/*.cobertura.xml"
           "/d:sonar.exclusions=**/bin/**,**/obj/**,artifacts/**"
