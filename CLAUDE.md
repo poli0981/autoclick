@@ -38,6 +38,7 @@ dotnet jb inspectcode AutoClick.slnx --no-build --properties:Configuration=Relea
 - LiveCharts' WPF charts always use the light LiveCharts theme and clear their canvas white unless `Background` is a solid brush: keep `Background="Transparent"` and paint the text from the WPF-UI theme (`DashboardViewModel.ApplyThemeAndTexts`).
 - `ThemeService.ThemeChanged` relays WPF-UI's `ApplicationThemeManager.Changed`, so it also fires when Windows switches the theme; it is raised asynchronously, once per burst.
 - The smoke test uses `%TEMP%\AutoClick-smoke`. A normal run uses `%LocalAppData%\AutoClick`, which is also the folder of an installed AutoClick (and a running installed copy takes over through the single-instance pipe): delete it after local manual tests only if it did not exist before.
+- SonarQube Cloud runs in CI (`.github/workflows/sonarcloud.yml`, secret `SONAR_TOKEN`). Its Automatic Analysis must stay off, or the scan fails; it also counted `tests/` as product code and could not see CsWin32's generated code. Suppress a finding only with `[SuppressMessage]` and a `Justification`.
 - Commits in this repository are GPG-signed; never bypass signing.
 
 ## Releasing
