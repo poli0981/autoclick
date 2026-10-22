@@ -29,6 +29,8 @@ The design is described in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md); the tes
 | **dependency-review** | The pull request adds no vulnerable package and no disallowed license (build and test tools that are never shipped are exempt; the list is in the workflow) | GitHub only |
 | **analyze (csharp)** | CodeQL security analysis | GitHub only |
 
+SonarQube Cloud also analyzes every pull request from this repository (the **sonarcloud** check, not required): issues, security hotspots and test coverage of the changed code. Pull requests from forks and Dependabot skip it because they cannot read the `SONAR_TOKEN` secret.
+
 Local equivalents of build-test and dead-code (PowerShell):
 
 ```powershell
@@ -58,6 +60,7 @@ Please also:
 - **File formats are a contract:** profiles keep the 1.x JSON layout (property names, enums as numbers) so 1.x can still read them; settings and sessions are versioned (`schemaVersion`) and older versions must keep loading. Add tests with fixture files under `tests/Fixtures` for any change.
 - **Win32:** add new APIs to `src/AutoClick.Win32/NativeMethods.txt` (CsWin32). Anything that converts game coordinates runs inside a `DpiScope` for the game window.
 - **No unused code:** the dead-code check fails on it. For a deliberate exception, write `// ReSharper disable once <rule>` with a reason.
+- **SonarQube Cloud findings** are fixed, or, when the code is right as it is, suppressed with `[SuppressMessage("Category", "Sxxxx:Title", Justification = "why")]`.
 
 ## Translations
 

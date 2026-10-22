@@ -1,0 +1,74 @@
+name: SonarCloud
+
+# SonarQube Cloud analysis with SonarScanner for .NET: issues, security hotspots and test coverage
+# for the C# code (test projects are recognized as tests), plus the workflows, YAML and PowerShell
+# files. Informational: not a required check. It replaces SonarQube Cloud's Automatic Analysis,
+# which must stay turned off for the project (the scan fails otherwise). Dependabot and fork pull
+# requests cannot read the SONAR_TOKEN secret and skip the job.
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sonarcloud-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  sonarcloud:
+    name: sonarcloud
+    if: >-
+      github.actor != 'dependabot[bot]' &&
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # full history: SonarQube Cloud uses blame to find new code
+          persist-credentials: false
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: |
+          dotnet tool restore
+          dotnet restore AutoClick.slnx
+
+      # The scanner provisions its own Java runtime. Build output and restore files are not sources.
+      - name: Begin analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: >-
+          dotnet sonarscanner begin /k:poli0981_autoclick /o:poli0981
+          /d:sonar.host.url=https://sonarcloud.io /d:sonar.token="$env:SONAR_TOKEN"
+          "/d:sonar.cs.cobertura.reportsPaths=artifacts/test-results/**/*.cobertura.xml"
+          "/d:sonar.exclusions=**/bin/**,**/obj/**,artifacts/**"
+
+      # A plain build: the regular CI job already builds with warnings as errors.
+      - name: Build
+        run: dotnet build AutoClick.slnx -c Release --no-restore --no-incremental --disable-build-servers
+
+      - name: Test with coverage
+        run: >-
+          dotnet test --solution AutoClick.slnx -c Release --no-build
+          --results-directory artifacts/test-results --coverage --coverage-output-format cobertura
+
+      - name: End analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: dotnet sonarscanner end /d:sonar.token="$env:SONAR_TOKEN"
