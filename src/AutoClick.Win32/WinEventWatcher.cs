@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Windows.Win32;
 using Windows.Win32.UI.Accessibility;
 
@@ -7,6 +8,7 @@ namespace AutoClick.Win32;
 /// Out-of-context WinEvent hook. Callbacks arrive on the thread that created the watcher
 /// (it must pump messages, e.g. the WPF UI thread).
 /// </summary>
+[SuppressMessage("Reliability", "S3453:Classes should not have only \"private\" constructors", Justification = "Instances come from the static factories below.")]
 public sealed class WinEventWatcher : IDisposable
 {
     private const uint WinEventOutOfContext = 0x0000;

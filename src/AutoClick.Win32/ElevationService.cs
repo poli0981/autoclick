@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using AutoClick.Core.Abstractions;
 using Microsoft.Win32.SafeHandles;
@@ -91,6 +92,7 @@ public sealed class ElevationService : IElevationService
         }
     }
 
+    [SuppressMessage("Security", "S6640:Unsafe code blocks should not be used", Justification = "Reviewed: CsWin32 has no safe overload; the struct has the size passed to the call.")]
     private static bool GetOwnElevation()
     {
         using var token = OpenOwnToken();
@@ -120,6 +122,7 @@ public sealed class ElevationService : IElevationService
     }
 
     /// <summary>The integrity level RID (e.g. 0x2000 medium, 0x3000 high), or -1.</summary>
+    [SuppressMessage("Security", "S6640:Unsafe code blocks should not be used", Justification = "Reviewed: CsWin32 has no safe overloads; the buffer has the size the first call reports and stays pinned while it is read.")]
     private static unsafe int GetIntegrityLevel(SafeHandle token)
     {
         PInvoke.GetTokenInformation(token, TOKEN_INFORMATION_CLASS.TokenIntegrityLevel, null, 0, out var size);
