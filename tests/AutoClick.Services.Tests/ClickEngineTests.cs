@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using AutoClick.Core.Abstractions;
 using AutoClick.Core.Models;
 using AutoClick.Core.Sessions;
@@ -14,7 +13,6 @@ public class ClickEngineTests
     private readonly FakeWindowInspector _window = new();
     private readonly FakePixelReader _pixels = new();
 
-    [SuppressMessage("Security", "S2245:Pseudorandom number generators (PRNGs) should not be used in security contexts", Justification = "Seeded Random keeps the tests reproducible.")]
     private ClickEngine CreateEngine() =>
         new(_input, _window, _pixels, _time, TestLog.For<ClickEngine>(), () => new Random(7));
 
