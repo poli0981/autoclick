@@ -34,6 +34,7 @@ public sealed class SingleInstance : IDisposable
 
     /// <summary>Same names as v1, so v1 and v2 never run side by side.</summary>
     [SuppressMessage("Security", "CA5350:Do Not Use Weak Cryptographic Algorithms", Justification = "Not security related: the hash only reproduces v1's object names.")]
+    [SuppressMessage("Security", "S4790:Weak hashing algorithms should not be used", Justification = "Not security related: the hash only reproduces v1's object names.")]
     private static string UserKey { get; } =
         Convert.ToHexString(SHA1.HashData(Encoding.UTF8.GetBytes(Environment.UserName ?? "default")))[..16];
 

@@ -7,6 +7,10 @@ namespace AutoClick.Win32;
 /// <summary>Opens URLs, files and folders with their default handler.</summary>
 public sealed class ShellLauncher(IElevationService elevation)
 {
+    // A full path: a bare "explorer.exe" is searched in AutoClick's own folder first, which
+    // the user can write to, and would then run with administrator rights.
+    private static string ExplorerPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "explorer.exe");
+
     /// <summary>
     /// When AutoClick runs elevated, the target is opened through Explorer so the browser or
     /// editor does not inherit administrator rights.
@@ -16,7 +20,7 @@ public sealed class ShellLauncher(IElevationService elevation)
         try
         {
             var startInfo = elevation.IsCurrentProcessElevated
-                ? new ProcessStartInfo("explorer.exe") { ArgumentList = { target }, UseShellExecute = false }
+                ? new ProcessStartInfo(ExplorerPath) { ArgumentList = { target }, UseShellExecute = false }
                 : new ProcessStartInfo(target) { UseShellExecute = true };
             using var process = Process.Start(startInfo);
             return true;

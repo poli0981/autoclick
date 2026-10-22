@@ -7,16 +7,18 @@ internal static class StaThread
 {
     public static void Run(Action action)
     {
-        Exception? failure = null;
+        // The task carries the outcome back; GetResult rethrows a failure with its original stack.
+        var outcome = new TaskCompletionSource();
         var thread = new Thread(() =>
         {
             try
             {
                 action();
+                outcome.SetResult();
             }
             catch (Exception ex)
             {
-                failure = ex;
+                outcome.SetException(ex);
             }
             finally
             {
@@ -26,10 +28,7 @@ internal static class StaThread
         thread.SetApartmentState(ApartmentState.STA);
         thread.Start();
         Assert.True(thread.Join(TimeSpan.FromSeconds(30)), "STA test thread timed out.");
-        if (failure is not null)
-        {
-            System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(failure).Throw();
-        }
+        outcome.Task.GetAwaiter().GetResult();
     }
 
     /// <summary>Pumps messages until <paramref name="task"/> completes (or the timeout elapses).</summary>

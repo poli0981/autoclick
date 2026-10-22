@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using AutoClick.Core.Models;
 
 namespace AutoClick.Core.Tests;
 
+[SuppressMessage("Security", "S2245:Pseudorandom number generators (PRNGs) should not be used in security contexts", Justification = "Seeded Random keeps the tests reproducible.")]
 public class TimingAndColorTests
 {
     [Fact]

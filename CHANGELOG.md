@@ -8,6 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [2.0.2] - 2026-10-22
+
+Security hardening from a static analysis review (SonarQube Cloud). Settings, profiles and sessions are unchanged.
+
+### Security
+
+- When AutoClick runs as administrator, links, files and folders are now opened with the Explorer of the Windows folder. Before, Explorer was looked up by name, so a program called `explorer.exe` placed in the AutoClick folder could have been started with administrator rights.
+
 ## [2.0.1] - 2026-10-16
 
 Fixes for the Dark theme. Settings, profiles and sessions are unchanged.
@@ -358,7 +366,8 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 - `ManualResetEventSlim` for pause/resume, `CancellationToken` for stop
 - `DispatcherTimer` for UI refresh and process monitoring
 
-[Unreleased]: https://github.com/poli0981/autoclick/compare/v2.0.1...HEAD
+[Unreleased]: https://github.com/poli0981/autoclick/compare/v2.0.2...HEAD
+[2.0.2]: https://github.com/poli0981/autoclick/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/poli0981/autoclick/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/poli0981/autoclick/compare/v1.3.4...v2.0.0
 [1.3.4]: https://github.com/poli0981/autoclick/compare/v1.3.3...v1.3.4

@@ -116,7 +116,9 @@ public sealed class ClickSession : IDisposable
     internal void Start()
     {
         _logger.LogInformation("Auto-click started for {Process} ({Points} steps)", _info.ProcessName, _info.Points.Count);
-        Completion = Task.Run(RunAsync);
+        // Not the session token: a stop requested before the loop starts would cancel the task
+        // without running it, and the session would never report that it stopped.
+        Completion = Task.Run(RunAsync, CancellationToken.None);
     }
 
     public void Pause()
