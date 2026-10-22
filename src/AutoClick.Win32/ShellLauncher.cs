@@ -19,10 +19,7 @@ public sealed class ShellLauncher(IElevationService elevation)
     {
         try
         {
-            var startInfo = elevation.IsCurrentProcessElevated
-                ? new ProcessStartInfo(ExplorerPath) { ArgumentList = { target }, UseShellExecute = false }
-                : new ProcessStartInfo(target) { UseShellExecute = true };
-            using var process = Process.Start(startInfo);
+            using var process = Process.Start(StartInfo(target, elevation.IsCurrentProcessElevated));
             return true;
         }
         catch (Exception ex) when (ex is Win32Exception or InvalidOperationException)
@@ -30,4 +27,9 @@ public sealed class ShellLauncher(IElevationService elevation)
             return false;
         }
     }
+
+    internal static ProcessStartInfo StartInfo(string target, bool elevated) =>
+        elevated
+            ? new ProcessStartInfo(ExplorerPath) { ArgumentList = { target }, UseShellExecute = false }
+            : new ProcessStartInfo(target) { UseShellExecute = true };
 }
