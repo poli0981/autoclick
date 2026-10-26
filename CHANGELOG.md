@@ -8,6 +8,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [2.0.3] - 2026-10-26
+
+Security update of the bundled .NET runtime. Settings, profiles and sessions are unchanged.
+
+### Security
+
+- AutoClick now ships with the .NET 10.0.14 runtime, an out-of-band security update from Microsoft. It fixes an out-of-bounds write in the Brotli decoder (CVE-2026-111497) and completes the October fix for a memory corruption in socket operations (CVE-2026-70197).
+
+### Changed
+
+- Dependencies: Microsoft.Extensions.Hosting 10.0.14 and Microsoft.Windows.CsWin32 0.3.367 (the Win32 interop code generator).
+
 ## [2.0.2] - 2026-10-22
 
 Security hardening from a static analysis review (SonarQube Cloud). Settings, profiles and sessions are unchanged.
@@ -366,7 +378,8 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 - `ManualResetEventSlim` for pause/resume, `CancellationToken` for stop
 - `DispatcherTimer` for UI refresh and process monitoring
 
-[Unreleased]: https://github.com/poli0981/autoclick/compare/v2.0.2...HEAD
+[Unreleased]: https://github.com/poli0981/autoclick/compare/v2.0.3...HEAD
+[2.0.3]: https://github.com/poli0981/autoclick/compare/v2.0.2...v2.0.3
 [2.0.2]: https://github.com/poli0981/autoclick/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/poli0981/autoclick/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/poli0981/autoclick/compare/v1.3.4...v2.0.0
