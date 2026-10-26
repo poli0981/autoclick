@@ -135,6 +135,6 @@ body:
     attributes:
       label: IDE / Build Environment
       description: If you built from source, which IDE and .NET SDK version? (optional)
-      placeholder: "JetBrains Rider 2026.2 / .NET SDK 10.0.401"
+      placeholder: "JetBrains Rider 2026.2 / .NET SDK 10.0.403"
     validations:
       required: false
