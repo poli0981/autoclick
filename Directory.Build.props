@@ -2,7 +2,7 @@
 
   <!-- Single source of truth for the product version (release tags must match it). -->
   <PropertyGroup>
-    <Version>2.0.2</Version>
+    <Version>2.0.3</Version>
     <AssemblyVersion>$(Version).0</AssemblyVersion>
     <FileVersion>$(Version).0</FileVersion>
     <InformationalVersion>$(Version)</InformationalVersion>
