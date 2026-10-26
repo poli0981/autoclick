@@ -24,6 +24,13 @@ public class WindowAndSystemTests
     }
 
     [Fact]
+    public void Elevation_CurrentProcess_MatchesTheRuntime()
+    {
+        // Opens the token of the GetCurrentProcess pseudo-handle (-1) through CsWin32's SafeHandle overloads.
+        Assert.Equal(Environment.IsPrivilegedProcess, new ElevationService().IsCurrentProcessElevated);
+    }
+
+    [Fact]
     public void Inspector_InvalidHandle_IsGone()
     {
         var inspector = new Win32WindowInspector(new ElevationService());
@@ -70,6 +77,41 @@ public class WindowAndSystemTests
 
                 Assert.SkipWhen(!sample.IsValid, "No readable desktop surface in this session.");
                 Assert.True(ColorRef.Matches(sample.Color, 0x00996633u, 8), $"Read {ColorRef.ToHex(sample.Color)}.");
+            }
+            finally
+            {
+                window.Close();
+            }
+        });
+    }
+
+    [Fact]
+    public void WinEventWatcher_LocationChange_ReportsMovesUntilDisposed()
+    {
+        StaThread.Run(() =>
+        {
+            var window = CreateWindow(Colors.Black);
+            try
+            {
+                var handle = new WindowInteropHelper(window).Handle;
+                var moved = new TaskCompletionSource();
+                var moves = 0;
+                using (WinEventWatcher.LocationChange(handle, Environment.ProcessId, () =>
+                {
+                    moves++;
+                    moved.TrySetResult();
+                }))
+                {
+                    window.Left += 30;
+                    StaThread.PumpUntil(moved.Task, TimeSpan.FromSeconds(5));
+                    Assert.True(moved.Task.IsCompleted, "No location change event arrived.");
+                }
+
+                // Disposing the watcher unhooks it: later moves are not reported.
+                var reported = moves;
+                window.Left += 30;
+                StaThread.PumpFor(TimeSpan.FromMilliseconds(300));
+                Assert.Equal(reported, moves);
             }
             finally
             {
