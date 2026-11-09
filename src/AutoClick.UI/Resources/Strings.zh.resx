@@ -31,6 +31,7 @@
   <resheader name="version"><value>2.0</value></resheader>
   <resheader name="reader"><value>System.Resources.ResXResourceReader</value></resheader>
   <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
+  <data name="About_Accessibility" xml:space="preserve"><value>无障碍</value></data>
   <data name="About_Acknowledgements" xml:space="preserve"><value>致谢</value></data>
   <data name="About_Ai" xml:space="preserve"><value>AutoClick 在 AI 辅助下开发。应用内的翻译由 AI 生成，可能存在错误。</value></data>
   <data name="About_AiTitle" xml:space="preserve"><value>AI 使用说明</value></data>
@@ -63,6 +64,7 @@
   <data name="ClickType_Right" xml:space="preserve"><value>右键单击</value></data>
   <data name="Common_Cancel" xml:space="preserve"><value>取消</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>清除</value></data>
+  <data name="Common_Close" xml:space="preserve"><value>关闭</value></data>
   <data name="Common_Delete" xml:space="preserve"><value>删除</value></data>
   <data name="Common_FileError" xml:space="preserve"><value>无法读取或保存文件：{0}</value></data>
   <data name="Common_Ok" xml:space="preserve"><value>确定</value></data>
@@ -170,12 +172,13 @@
   <data name="Picker_Empty" xml:space="preserve"><value>未找到窗口。请先启动游戏，然后刷新。</value></data>
   <data name="Picker_GameTitle" xml:space="preserve"><value>添加游戏</value></data>
   <data name="Picker_Hint" xml:space="preserve"><value>选择要点击的游戏窗口。窗口或无边框模式效果最佳。</value></data>
-  <data name="Picker_Instruction" xml:space="preserve"><value>点击要使用的位置。按键：1 左键 · 2 双击 · 3 右键 · 4 按键 · Esc 取消</value></data>
+  <data name="Picker_Instruction" xml:space="preserve"><value>点击要使用的位置，或用方向键移动（Shift：1 像素）后按 Enter。按键：1 左键 · 2 双击 · 3 右键 · 4 按键 · Esc 取消</value></data>
   <data name="Picker_InstructionKeystroke" xml:space="preserve"><value>按下要发送的键。按 1、2 或 3 切换回点击 · Esc 取消</value></data>
   <data name="Picker_RestoreGame" xml:space="preserve"><value>请先还原游戏窗口（已最小化或已关闭）。</value></data>
   <data name="Picker_Search" xml:space="preserve"><value>按名称或标题搜索</value></data>
   <data name="Picker_Select" xml:space="preserve"><value>添加</value></data>
   <data name="Picker_Title" xml:space="preserve"><value>选择位置</value></data>
+  <data name="Picker_WindowList" xml:space="preserve"><value>打开的窗口</value></data>
   <data name="Profile_Delete" xml:space="preserve"><value>删除配置</value></data>
   <data name="Profile_DeleteConfirm" xml:space="preserve"><value>删除配置“{0}”？</value></data>
   <data name="Profile_Export" xml:space="preserve"><value>导出配置</value></data>
@@ -269,9 +272,11 @@
   <data name="Status_Administrator" xml:space="preserve"><value>管理员</value></data>
   <data name="Status_Idle" xml:space="preserve"><value>就绪</value></data>
   <data name="Status_Running" xml:space="preserve"><value>运行中 {0} · 已暂停 {1}</value></data>
+  <data name="Step_Added" xml:space="preserve"><value>已添加：{0}</value></data>
   <data name="Step_Double" xml:space="preserve"><value>双击 ({0}, {1})</value></data>
   <data name="Step_Key" xml:space="preserve"><value>按 {0}</value></data>
   <data name="Step_Left" xml:space="preserve"><value>单击 ({0}, {1})</value></data>
+  <data name="Step_ReferenceColor" xml:space="preserve"><value>{0}，参考颜色 {1}</value></data>
   <data name="Step_Right" xml:space="preserve"><value>右键单击 ({0}, {1})</value></data>
   <data name="Stop_ColorMismatch" xml:space="preserve"><value>已停止：像素颜色不匹配：{0}。</value></data>
   <data name="Stop_ElevationRequired" xml:space="preserve"><value>被阻止：此游戏以管理员身份运行。</value></data>

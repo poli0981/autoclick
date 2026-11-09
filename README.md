@@ -32,6 +32,10 @@ AutoClick sends mouse clicks and key presses to game windows with the Win32 `Pos
 >
 > **AI disclosure:** AutoClick is built with AI assistance (Claude by Anthropic). The in-app translations are AI-generated and may contain mistakes. See [Acknowledgements](docs/ACKNOWLEDGEMENTS.md).
 
+## What's new in 2.1
+
+Accessibility: points can be picked with the keyboard, screen readers now announce status changes and messages and read every control and step, and animations follow Windows. See the [Accessibility statement](docs/ACCESSIBILITY.md) and the [CHANGELOG](CHANGELOG.md#210---2026-11-09).
+
 ## What's new in 2.0
 
 A new Fluent interface, administrator rights only when a game needs them, keystroke steps that survive saving, a picker that works on every monitor and display scaling, sessions that wait while a game is minimized, and fixes for every known 1.x bug. Settings, profiles and hotkeys from 1.x carry over. Full list: [CHANGELOG](CHANGELOG.md#200---2026-10-15).
@@ -41,7 +45,7 @@ A new Fluent interface, administrator rights only when a game needs them, keystr
 - **Game queue**: add up to 50 game windows (10 by default), each with its own steps and statistics; start, pause, resume and stop them one by one or all together.
 - **Step sequences**: left click, double click, right click or a key press per step, run in order with a delay between steps, then repeated after the interval.
 - **Timing**: fixed or random interval (1 s to 1 h). *Global* mode uses one timing for every game; *Custom* mode gives each game its own timing and profiles.
-- **Coordinate picker**: a crosshair over exactly the game's window area, on any monitor and display scaling. Keys `1`-`4` switch between left, double, right click and key press; `Esc` cancels. Or add a random point.
+- **Coordinate picker**: a crosshair over exactly the game's window area, on any monitor and display scaling. Click the spot, or move with the arrow keys and press `Enter`. Keys `1`-`4` switch between left, double, right click and key press; `Esc` cancels. Or add a random point.
 - **Pixel color guard**: remember the color under each point and only click while it still matches; otherwise skip the step, stop, or wait until it matches.
 - **Profiles**: save, load, import and export steps and timing (`.autoclick` files).
 - **Sessions**: export or import everything (settings, profiles and the game queue) in one `.autoclick-session` file.
@@ -52,6 +56,7 @@ A new Fluent interface, administrator rights only when a game needs them, keystr
 - **Administrator only when needed**: AutoClick tells you when a game runs as administrator and offers to restart elevated.
 - **Notifications and tray**: notification-area icon, a notice when a game exits, optional sounds; closing the window can minimize to the tray, stop and exit, or exit.
 - **Themes and languages**: System, Light, Dark or High contrast; English, Tiếng Việt, 日本語, 한국어, 中文, switchable without a restart.
+- **Accessibility**: works with the keyboard alone (the coordinate picker included) and with Narrator, follows Windows contrast themes, display scaling and animation settings. See the [Accessibility statement](docs/ACCESSIBILITY.md).
 - **Updates**: from GitHub Releases through Velopack, checked at startup and every 6 hours, installed when you choose or when you exit.
 
 ## Requirements
@@ -84,7 +89,7 @@ gh attestation verify AutoClick-win-Setup.exe -R poli0981/autoclick
 ## Usage
 
 1. **Add game** and pick the game's window.
-2. **Add step** and click the spot in the game (or press `4`, then the key to send). Repeat for more steps; **Random point** adds one automatically.
+2. **Add step** and click the spot in the game, or move to it with the arrow keys and press `Enter` (or press `4`, then the key to send). Repeat for more steps; **Random point** adds one automatically.
 3. Press **Start** on the game card, or **Start all**.
 4. Watch clicks, skips and clicks per minute on the card and on the **Dashboard**; use **Heatmap** to see where clicks land.
 5. **Settings** holds timing, the pixel color guard, hotkeys, theme, language, exit behavior and administrator mode; changes apply immediately.
@@ -117,7 +122,7 @@ See [CONTRIBUTING](CONTRIBUTING.md) for the checks every pull request must pass 
 
 ## Contributing
 
-Issues and pull requests are welcome; please read [CONTRIBUTING](CONTRIBUTING.md) and the [Code of Conduct](docs/CODE_OF_CONDUCT.md). Issues and pull requests that contain suspicious code or links, are unrelated to the project, or are disrespectful are closed without discussion. Report security problems privately as described in the [Security Policy](docs/SECURITY.md).
+Issues and pull requests are welcome; please read [CONTRIBUTING](CONTRIBUTING.md) and the [Code of Conduct](docs/CODE_OF_CONDUCT.md). Accessibility barriers have their own [issue form](https://github.com/poli0981/autoclick/issues/new?template=accessibility.yml). Issues and pull requests that contain suspicious code or links, are unrelated to the project, or are disrespectful are closed without discussion. Report security problems privately as described in the [Security Policy](docs/SECURITY.md).
 
 ## Connect & Support
 
@@ -145,6 +150,7 @@ The PC used to build and test releases is described in [docs/pc_spec.md](docs/pc
 | [Privacy Policy](docs/PRIVACY_POLICY.md) | What is stored, where, and for how long; nothing is collected |
 | [Disclaimer](docs/DISCLAIMER.md) | Anti-cheat and hardware risks, liability |
 | [Security Policy](docs/SECURITY.md) | Supported versions and private vulnerability reporting |
+| [Accessibility](docs/ACCESSIBILITY.md) | What AutoClick supports, known limitations, and how to report a barrier |
 | [Acknowledgements](docs/ACKNOWLEDGEMENTS.md) | Third-party software and credits |
 | [Code of Conduct](docs/CODE_OF_CONDUCT.md) | Community guidelines |
 

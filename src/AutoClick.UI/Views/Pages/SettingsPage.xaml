@@ -22,11 +22,19 @@
             <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="Margin" Value="0,16,0,8" />
             <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+            <Setter Property="AutomationProperties.HeadingLevel" Value="Level2" />
+        </Style>
+        <!--  WPF-UI's CardControl is a button: without this, every card was an extra Tab stop without a name.  -->
+        <Style BasedOn="{StaticResource {x:Type ui:CardControl}}" TargetType="ui:CardControl">
+            <Setter Property="Focusable" Value="False" />
         </Style>
     </Page.Resources>
 
     <StackPanel Margin="0,8,0,24">
-        <ui:TextBlock FontTypography="Title" Text="{l:Loc Nav_Settings}" />
+        <ui:TextBlock
+            AutomationProperties.HeadingLevel="Level1"
+            FontTypography="Title"
+            Text="{l:Loc Nav_Settings}" />
 
         <!--  Appearance  -->
         <TextBlock Style="{StaticResource GroupTitle}" Text="{l:Loc Settings_Appearance}" />
@@ -223,7 +231,15 @@
                 <ui:Button
                     Command="{Binding RecordHotkeyCommand}"
                     CommandParameter="{x:Static services:HotkeyAction.PauseResume}"
-                    Content="{l:Loc Hotkey_Change}" />
+                    Content="{l:Loc Hotkey_Change}">
+                    <!--  Three "Change" buttons: tell screen readers which hotkey and its keys.  -->
+                    <AutomationProperties.HelpText>
+                        <MultiBinding StringFormat="{}{0}: {1}">
+                            <Binding Path="[Hotkey_PauseResume]" Source="{x:Static l:LocalizationService.Instance}" />
+                            <Binding Path="PauseResumeHotkey" />
+                        </MultiBinding>
+                    </AutomationProperties.HelpText>
+                </ui:Button>
             </StackPanel>
         </ui:CardControl>
         <ui:CardControl Margin="0,0,0,4" Icon="{ui:SymbolIcon Keyboard24}">
@@ -246,7 +262,15 @@
                 <ui:Button
                     Command="{Binding RecordHotkeyCommand}"
                     CommandParameter="{x:Static services:HotkeyAction.StopAll}"
-                    Content="{l:Loc Hotkey_Change}" />
+                    Content="{l:Loc Hotkey_Change}">
+                    <!--  Three "Change" buttons: tell screen readers which hotkey and its keys.  -->
+                    <AutomationProperties.HelpText>
+                        <MultiBinding StringFormat="{}{0}: {1}">
+                            <Binding Path="[Hotkey_StopAll]" Source="{x:Static l:LocalizationService.Instance}" />
+                            <Binding Path="StopAllHotkey" />
+                        </MultiBinding>
+                    </AutomationProperties.HelpText>
+                </ui:Button>
             </StackPanel>
         </ui:CardControl>
         <ui:CardControl Margin="0,0,0,4" Icon="{ui:SymbolIcon Keyboard24}">
@@ -269,7 +293,15 @@
                 <ui:Button
                     Command="{Binding RecordHotkeyCommand}"
                     CommandParameter="{x:Static services:HotkeyAction.StartAll}"
-                    Content="{l:Loc Hotkey_Change}" />
+                    Content="{l:Loc Hotkey_Change}">
+                    <!--  Three "Change" buttons: tell screen readers which hotkey and its keys.  -->
+                    <AutomationProperties.HelpText>
+                        <MultiBinding StringFormat="{}{0}: {1}">
+                            <Binding Path="[Hotkey_StartAll]" Source="{x:Static l:LocalizationService.Instance}" />
+                            <Binding Path="StartAllHotkey" />
+                        </MultiBinding>
+                    </AutomationProperties.HelpText>
+                </ui:Button>
             </StackPanel>
         </ui:CardControl>
         <ui:Button

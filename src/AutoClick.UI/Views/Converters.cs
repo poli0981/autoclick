@@ -21,11 +21,23 @@ public sealed class LocKeyConverter : IMultiValueConverter
         throw new NotSupportedException();
 }
 
-/// <summary>MultiBinding: [0] a <see cref="ClickPoint"/>, [1] the culture (see <see cref="LocKeyConverter"/>).</summary>
+/// <summary>
+/// MultiBinding: [0] a <see cref="ClickPoint"/>, [1] the culture (see <see cref="LocKeyConverter"/>).
+/// With the parameter <c>Name</c> it gives the name screen readers read, which also tells the
+/// reference color that the screen shows only as a swatch.
+/// </summary>
 public sealed class StepTextConverter : IMultiValueConverter
 {
-    public object Convert(object?[] values, Type targetType, object? parameter, CultureInfo culture) =>
-        values.Length > 0 && values[0] is ClickPoint point ? GameSessionViewModel.Describe(point) : string.Empty;
+    public object Convert(object?[] values, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (values.Length == 0 || values[0] is not ClickPoint point)
+        {
+            return string.Empty;
+        }
+
+        var text = GameSessionViewModel.Describe(point);
+        return parameter is "Name" && point.HasReferenceColor ? L.Format("Step_ReferenceColor", text, ColorRef.ToHex(point.ReferenceColor)) : text;
+    }
 
     public object?[] ConvertBack(object? value, Type[] targetTypes, object? parameter, CultureInfo culture) =>
         throw new NotSupportedException();

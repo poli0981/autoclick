@@ -8,6 +8,7 @@ using System.Windows.Shapes;
 using AutoClick.Core.Abstractions;
 using AutoClick.Core.Models;
 using AutoClick.UI.Localization;
+using AutoClick.UI.Views.Controls;
 using AutoClick.Win32;
 
 namespace AutoClick.UI.Overlays;
@@ -15,7 +16,8 @@ namespace AutoClick.UI.Overlays;
 /// <summary>
 /// Crosshair overlay placed exactly over the game's client area (on whichever monitor it is).
 /// The picked point is read with GetCursorPos/ScreenToClient in the game's own DPI context, so
-/// it is correct for DPI-unaware games on scaled monitors too.
+/// it is correct for DPI-unaware games on scaled monitors too. Without a mouse, the arrow keys
+/// move the real pointer (10 pixels, 1 with Shift) and Enter or Space picks, through the same path.
 /// </summary>
 public sealed class CoordinatePickerOverlay : Window
 {
@@ -26,7 +28,7 @@ public sealed class CoordinatePickerOverlay : Window
     private readonly Line _vertical = CrosshairLine();
     private readonly TextBlock _coordinates = new() { Foreground = Brushes.White, FontFamily = new FontFamily("Consolas"), FontSize = 12 };
     private readonly Border _coordinateLabel;
-    private readonly TextBlock _instructions = new() { Foreground = Brushes.White, FontSize = 14, TextWrapping = TextWrapping.Wrap, TextAlignment = TextAlignment.Center };
+    private readonly LiveTextBlock _instructions = new() { Foreground = Brushes.White, FontSize = 14, TextWrapping = TextWrapping.Wrap, TextAlignment = TextAlignment.Center };
     private ClickType _type = ClickType.LeftClick;
 
     private CoordinatePickerOverlay(nint target, IPixelReader? pixels)
@@ -42,7 +44,7 @@ public sealed class CoordinatePickerOverlay : Window
         ShowInTaskbar = false;
         ResizeMode = ResizeMode.NoResize;
         Cursor = Cursors.Cross;
-        Title = "AutoClick coordinate picker";
+        Title = L.Get("Picker_Title");
 
         _coordinateLabel = new Border
         {
@@ -78,7 +80,8 @@ public sealed class CoordinatePickerOverlay : Window
         MouseMove += OnMouseMove;
         MouseLeftButtonDown += OnMouseDown;
         PreviewKeyDown += OnKeyDown;
-        Deactivated += (_, _) => Finish(null);
+        // Switching to another window cancels, and leaves the focus where the user went.
+        Deactivated += (_, _) => Finish(null, returnFocus: false);
         Closed += (_, _) => _result.TrySetResult(null);
     }
 
@@ -120,9 +123,10 @@ public sealed class CoordinatePickerOverlay : Window
         }
     }
 
-    private void OnMouseMove(object sender, MouseEventArgs e)
+    private void OnMouseMove(object sender, MouseEventArgs e) => UpdateCrosshair(e.GetPosition(this));
+
+    private void UpdateCrosshair(Point position)
     {
-        var position = e.GetPosition(this);
         _horizontal.X1 = 0;
         _horizontal.X2 = ActualWidth;
         _horizontal.Y1 = _horizontal.Y2 = position.Y;
@@ -140,10 +144,23 @@ public sealed class CoordinatePickerOverlay : Window
         Canvas.SetTop(_coordinateLabel, Math.Max(0, labelY));
     }
 
-    private void OnMouseDown(object sender, MouseButtonEventArgs e)
+    private void OnMouseDown(object sender, MouseButtonEventArgs e) => Pick(fromKeyboard: false);
+
+    private void Pick(bool fromKeyboard)
     {
-        if (_type == ClickType.Keystroke || !WindowGeometry.TryGetCursorClientPoint(_target, out var point))
+        if (_type == ClickType.Keystroke)
         {
+            return;
+        }
+
+        if (!WindowGeometry.TryGetCursorClientPoint(_target, out var point))
+        {
+            if (fromKeyboard)
+            {
+                // Enter with the pointer outside the game: bring it to the center first.
+                MovePointer(0, 0);
+            }
+
             return;
         }
 
@@ -189,6 +206,11 @@ public sealed class CoordinatePickerOverlay : Window
                 return;
         }
 
+        if (_type != ClickType.Keystroke && HandleClickModeKey(key))
+        {
+            return;
+        }
+
         if (_type != ClickType.Keystroke
             || key is Key.LeftCtrl or Key.RightCtrl or Key.LeftAlt or Key.RightAlt or Key.LeftShift or Key.RightShift or Key.LWin or Key.RWin)
         {
@@ -199,6 +221,42 @@ public sealed class CoordinatePickerOverlay : Window
         if (virtualKey != 0)
         {
             Finish(new ClickPoint { ClickType = ClickType.Keystroke, VirtualKeyCode = virtualKey });
+        }
+    }
+
+    // Arrows move the pointer (Shift: one pixel), Enter or Space picks. In keystroke mode these
+    // keys are recorded like any other.
+    private bool HandleClickModeKey(Key key)
+    {
+        var step = Keyboard.Modifiers.HasFlag(ModifierKeys.Shift) ? 1 : 10;
+        switch (key)
+        {
+            case Key.Left:
+                MovePointer(-step, 0);
+                return true;
+            case Key.Right:
+                MovePointer(step, 0);
+                return true;
+            case Key.Up:
+                MovePointer(0, -step);
+                return true;
+            case Key.Down:
+                MovePointer(0, step);
+                return true;
+            case Key.Enter or Key.Space:
+                Pick(fromKeyboard: true);
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private void MovePointer(int dx, int dy)
+    {
+        // The pointer may be hidden or not move a mouse device: draw the crosshair at once.
+        if (WindowGeometry.MovePointerWithinClient(_target, dx, dy) is { } screen)
+        {
+            UpdateCrosshair(PointFromScreen(new Point(screen.X, screen.Y)));
         }
     }
 
@@ -221,11 +279,19 @@ public sealed class CoordinatePickerOverlay : Window
         _instructions.Text = $"{instruction}\n[{typeName}]";
     }
 
-    private void Finish(ClickPoint? point)
+    private void Finish(ClickPoint? point, bool returnFocus = true)
     {
-        if (_result.TrySetResult(point))
+        if (!_result.TrySetResult(point))
         {
-            Close();
+            return;
+        }
+
+        Close();
+        if (returnFocus)
+        {
+            // The game was brought to the front for picking. Come back to AutoClick, where WPF
+            // gives the focus back to the button that opened the picker (keyboard users rely on it).
+            Application.Current.MainWindow?.Activate();
         }
     }
 

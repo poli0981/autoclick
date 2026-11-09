@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Interop;
@@ -24,8 +25,9 @@ namespace AutoClick.UI.Services;
 /// <summary>
 /// <c>--smoke-test</c> (CI and release builds): opens every page in every theme and language,
 /// the dialogs, the notices and a heatmap overlay, and checks that the text of the pages and the
-/// charts follows the theme. Exits with 0, or 1 on any exception, data-binding error or wrong
-/// text color. Runs with a separate data folder, never the user's.
+/// charts follows the theme, and that screen readers find a name for every control and list item.
+/// Exits with 0, or 1 on any exception, data-binding error, wrong text color or missing name. Runs
+/// with a separate data folder, never the user's.
 /// </summary>
 public sealed class SmokeTest(
     MainWindow window,
@@ -46,6 +48,7 @@ public sealed class SmokeTest(
     private static readonly ApplicationTheme[] WindowsThemes = [ApplicationTheme.Dark, ApplicationTheme.Light];
 
     private int _colorErrors;
+    private int _nameErrors;
 
     public async Task RunAsync()
     {
@@ -91,10 +94,17 @@ public sealed class SmokeTest(
                         await RenderAsync();
                         views++;
 
-                        // Colors do not depend on the language.
+                        // Colors do not depend on the language, names do not depend on the theme.
                         if (language == AppSettings.SupportedLanguages[0])
                         {
                             CheckPageColors((Page)services.GetRequiredService(page), appTheme.ToString());
+                        }
+
+                        if (appTheme == Themes[0])
+                        {
+                            // The first view also covers the window around the page (title bar, navigation).
+                            DependencyObject root = views == 1 ? window : (Page)services.GetRequiredService(page);
+                            CheckAccessibleNames(root, $"{page.Name} ({language})");
                         }
                     }
                 }
@@ -128,9 +138,9 @@ public sealed class SmokeTest(
                 logger.LogError("Binding error: {Error}", error);
             }
 
-            exitCode = bindingErrors.Errors.Count == 0 && _colorErrors == 0 ? 0 : 1;
-            logger.LogInformation("Smoke test finished: {Views} page views, {Errors} binding error(s), {ColorErrors} color error(s)",
-                views, bindingErrors.Errors.Count, _colorErrors);
+            exitCode = bindingErrors.Errors.Count == 0 && _colorErrors == 0 && _nameErrors == 0 ? 0 : 1;
+            logger.LogInformation("Smoke test finished: {Views} page views, {Errors} binding error(s), {ColorErrors} color error(s), {NameErrors} name error(s)",
+                views, bindingErrors.Errors.Count, _colorErrors, _nameErrors);
         }
         catch (Exception ex)
         {
@@ -151,7 +161,7 @@ public sealed class SmokeTest(
         await Dispatcher.Yield(DispatcherPriority.ApplicationIdle);
     }
 
-    private static async Task ShowStandaloneAsync(FrameworkElement content)
+    private async Task ShowStandaloneAsync(FrameworkElement content)
     {
         var host = new Window
         {
@@ -163,8 +173,57 @@ public sealed class SmokeTest(
         };
         host.Show();
         await RenderAsync();
+        CheckAccessibleNames(host, content.GetType().Name);
         host.Close();
     }
+
+    /// <summary>
+    /// Screen readers read a control by its name: its text, or AutomationProperties.Name for an
+    /// icon or an input. Every control reachable with the keyboard needs one, and every list item
+    /// needs a readable one (without a name WPF reads the item's ToString, which for a record is a
+    /// dump of its properties and for other types is the type name).
+    /// </summary>
+    private void CheckAccessibleNames(DependencyObject root, string context)
+    {
+        var missing = new List<string>();
+        foreach (var element in Descendants(root).OfType<UIElement>().Where(e => e.IsVisible))
+        {
+            if (UIElementAutomationPeer.CreatePeerForElement(element) is not { } peer)
+            {
+                continue;
+            }
+
+            // Tab stops, and lists (whose items are the tab stops but which give them their context).
+            var reachable = element is not Control control || control.IsTabStop || element is ItemsControl;
+            if (reachable && peer.IsControlElement() && peer.IsKeyboardFocusable() && string.IsNullOrWhiteSpace(peer.GetName()))
+            {
+                missing.Add($"{element.GetType().Name} {(element as FrameworkElement)?.Name}".TrimEnd());
+            }
+
+            if (element is ItemsControl)
+            {
+                foreach (var item in peer.GetChildren()?.OfType<ItemAutomationPeer>() ?? [])
+                {
+                    if (item.Item is { } data && !IsReadable(item.GetName(), data))
+                    {
+                        missing.Add($"{element.GetType().Name} item \"{item.GetName()}\"");
+                    }
+                }
+            }
+        }
+
+        if (missing.Count > 0)
+        {
+            _nameErrors++;
+            logger.LogError("Controls without an accessible name in {Context}, {Count} element(s): {Examples}",
+                context, missing.Count, string.Join("; ", missing.Distinct().Take(8)));
+        }
+    }
+
+    private static bool IsReadable(string? name, object item) =>
+        !string.IsNullOrWhiteSpace(name)
+        && name != item.GetType().FullName
+        && !name.StartsWith(item.GetType().Name + " {", StringComparison.Ordinal);
 
     /// <summary>
     /// Text and icons without a color of their own take the color of the page. WPF-UI's implicit

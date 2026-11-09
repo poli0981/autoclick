@@ -62,6 +62,7 @@ Everything lives in `%LocalAppData%\AutoClick`, which is also Velopack's install
 - **Localization:** `LocalizationService` reads `Strings*.resx`. XAML binds through `{l:Loc Key}` (an indexer binding), so changing the language updates the whole UI without a restart.
 - **Overlays:** the coordinate picker is placed over the game's client area in physical pixels (`SetWindowPos`), so it works on any monitor. The heatmap is a click-through, no-activate, tool window that follows the game through out-of-process WinEvent hooks (focus and location, filtered by process and window, at most one update per frame) with a one-second fallback, shows only while the game or its dialogs are in front, and draws all markers in one `OnRender` pass with frozen brushes.
 - **Hotkeys:** registered on a message-only window owned by the UI thread; registration results are reported; recording a new hotkey suspends the old ones and re-registers them in a `finally`.
+- **Accessibility** ([ACCESSIBILITY.md](ACCESSIBILITY.md)): names come from `{l:Loc}` like all text (`AccessibleNames` names icon-only parts of WPF-UI templates). `LiveTextBlock` raises the UI Automation `LiveRegionChanged` event that WPF never raises for `LiveSetting` alone, at most once a second with the latest text; `DialogService.Announce` raises a notification for toasts and added steps. `Motion` relays Windows' *Animation effects* setting to page transitions and charts, which ignore it. The smoke test checks the names in every language.
 
 ## Updates
 
@@ -106,3 +107,9 @@ Velopack (`packId` `AutoClick`, channel `win`, main exe `AutoClick.UI.exe`, none
 
 **Decided:** the build drops `Microsoft.Windows.SDK.NET.dll` (24 MB) and SkiaSharp's native debug symbols (about 100 MB) from the output.
 **Why:** the `windows10.0.19041` target framework (needed for the modern assets of SkiaSharp.Views.WPF) and CommunityToolkit.Mvvm pull in the WinRT projection, but no assembly of the app references it; `WinRT.Runtime.dll`, which some libraries reference, stays. The smoke test runs on the published output to catch a mistake here.
+
+### 7. Keyboard picking moves the real pointer (November 2026)
+
+**Considered:** a virtual crosshair moved by the arrow keys, converted to the game's coordinates by the overlay.
+**Decided:** the arrow keys move the real pointer (`SetCursorPos`, physical pixels, kept inside the game's client area) and `Enter` picks through the same `GetCursorPos`/`ScreenToClient` path as a click.
+**Why:** that path already maps correctly for DPI-unaware games on scaled monitors, with no second conversion to keep right. The pointer moves only while the user is picking.

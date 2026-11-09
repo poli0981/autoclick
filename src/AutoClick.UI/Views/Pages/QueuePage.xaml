@@ -21,7 +21,10 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <StackPanel VerticalAlignment="Center">
-                <ui:TextBlock FontTypography="Title" Text="{l:Loc Nav_Queue}" />
+                <ui:TextBlock
+                    AutomationProperties.HeadingLevel="Level1"
+                    FontTypography="Title"
+                    Text="{l:Loc Nav_Queue}" />
                 <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{Binding GamesCountText}" />
             </StackPanel>
             <WrapPanel
@@ -76,12 +79,13 @@
                         Symbol="CalendarClock24" />
                     <ui:TextBlock
                         VerticalAlignment="Center"
+                        AutomationProperties.HeadingLevel="Level2"
                         FontTypography="BodyStrong"
                         Text="{l:Loc Schedule_Title}" />
+                    <!--  A countdown that changes every second: not a live region, it would be read nonstop.  -->
                     <TextBlock
                         Margin="12,0,0,0"
                         VerticalAlignment="Center"
-                        AutomationProperties.LiveSetting="Polite"
                         Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}"
                         Text="{Binding ScheduleStatus}" />
                 </StackPanel>
@@ -121,8 +125,9 @@
                         Icon="{ui:SymbolIcon Dismiss24}"
                         Visibility="{Binding IsScheduleArmed, Converter={StaticResource BoolToVisibility}}" />
                 </WrapPanel>
-                <TextBlock
+                <controls:LiveTextBlock
                     Margin="0,4,0,0"
+                    AutomationProperties.LiveSetting="Assertive"
                     Foreground="{DynamicResource SystemFillColorCriticalBrush}"
                     Text="{Binding ScheduleMessage}"
                     TextWrapping="Wrap"
@@ -157,7 +162,11 @@
         </Border>
 
         <!--  Games  -->
-        <ItemsControl ItemsSource="{Binding Games}">
+        <!--  Only the cards' controls take the focus, not the list itself.  -->
+        <ItemsControl
+            AutomationProperties.Name="{l:Loc Nav_Queue}"
+            Focusable="False"
+            ItemsSource="{Binding Games}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type vm:GameSessionViewModel}">
                     <controls:GameCard />
@@ -175,6 +184,7 @@
                     </Grid.ColumnDefinitions>
                     <ui:TextBlock
                         VerticalAlignment="Center"
+                        AutomationProperties.HeadingLevel="Level2"
                         FontTypography="BodyStrong"
                         Text="{l:Loc Log_Title}" />
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
@@ -200,6 +210,7 @@
                 <ListBox
                     Height="220"
                     views:AutoScroll.IsEnabled="True"
+                    AutomationProperties.Name="{l:Loc Log_Title}"
                     FontFamily="Consolas"
                     FontSize="12"
                     ItemsSource="{Binding LogLines}"

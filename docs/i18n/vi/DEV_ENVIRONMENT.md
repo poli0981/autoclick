@@ -31,7 +31,8 @@ Các bước kiểm tra CI chạy cho mỗi pull request, và cách chạy chún
 | Công cụ | Mục đích |
 |---------|----------|
 | **`tools/AutoClick.ClickTarget`** | Cửa sổ ghi lại mọi message chuột và bàn phím nhận được (toạ độ client, mã phím ảo và scan code). `--dpi unaware\|system\|pmv2` đổi chế độ DPI để kiểm tra quy đổi toạ độ, `--log <file>` ghi log ra file. |
-| **`AutoClick.UI.exe --smoke-test`** | Mở mọi trang ở mọi theme và ngôn ngữ, các hộp thoại và lớp heatmap, báo lỗi nếu có binding hỏng. Dùng `%TEMP%\AutoClick-smoke` thay cho thư mục dữ liệu thật. |
+| **`AutoClick.UI.exe --smoke-test`** | Mở mọi trang ở mọi theme và ngôn ngữ, các hộp thoại và lớp heatmap, báo lỗi nếu có binding hỏng, chữ không theo theme, hoặc control/mục danh sách mà trình đọc màn hình không tìm được tên. Dùng `%TEMP%\AutoClick-smoke` thay cho thư mục dữ liệu thật. |
+| **Narrator và bàn phím** | Kiểm tra accessibility thủ công cho các thay đổi giao diện: rút chuột ra và dùng `Tab`, phím mũi tên, `Enter`, `Esc`; bật Narrator bằng `Ctrl+Win+Enter`. Những điểm cần kiểm tra nằm trong [ACCESSIBILITY.md](../../ACCESSIBILITY.md#how-we-test) (tiếng Anh). |
 | **`eng/Invoke-UpgradeTest.ps1`** | Kiểm thử cập nhật trong Windows Sandbox, không ảnh hưởng máy phát triển: cài một bản cũ (ví dụ 1.3.3), cập nhật lên gói mới bằng trình cập nhật đã cài, rồi kiểm tra việc chuyển dữ liệu, gỡ cài đặt và cài mới. Chạy trước mỗi lần phát hành ([RELEASING.md](../../RELEASING.md)). |
 
 ## Game Đã Kiểm Thử

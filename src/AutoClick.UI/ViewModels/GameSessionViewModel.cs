@@ -264,6 +264,7 @@ public sealed partial class GameSessionViewModel : ObservableObject, IDisposable
         Points.Add(point);
         _deps.Logger.LogInformation("Step {Index} added to {Process}: {Type} ({X}, {Y}) key {Key}", Points.Count, ProcessName, point.ClickType, point.X, point.Y, point.VirtualKeyCode);
         _deps.Sound.Success();
+        DialogService.Announce(L.Format("Step_Added", Describe(point)));
     }
 
     [RelayCommand(CanExecute = nameof(IsIdle))]
@@ -285,6 +286,7 @@ public sealed partial class GameSessionViewModel : ObservableObject, IDisposable
             {
                 Points.Add(point);
                 _deps.Sound.Success();
+                DialogService.Announce(L.Format("Step_Added", Describe(point)));
                 return;
             }
         }
@@ -524,6 +526,9 @@ public sealed partial class GameSessionViewModel : ObservableObject, IDisposable
             _ = session.StopAsync();
         }
     }
+
+    /// <summary>The game as screen readers announce it (the queue lists cards by this text).</summary>
+    public override string ToString() => Window.ToString();
 
     public static string Describe(ClickPoint point) => point.ClickType switch
     {

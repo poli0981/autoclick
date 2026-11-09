@@ -56,6 +56,8 @@ Until it is published, the release is invisible to users and to the updater.
 
    The script installs the old release, adds 1.x settings and a profile, updates with the installed `Update.exe` (as the in-app updater does), starts the new version once (data migration) and runs its smoke test, then uninstalls and checks a fresh install. It prints PASS or FAIL for each check and keeps the logs in `artifacts/upgrade-test/runs`.
 
+4. If the release changes the interface: a keyboard-only pass (mouse unplugged) and a Narrator pass of the changed screens, and a look at the High contrast theme ([ACCESSIBILITY.md](ACCESSIBILITY.md#how-we-test)). Add the result to its *Recorded passes* table.
+
 ## 4. Publish
 
 Publish from **your own account** (events raised by the workflow token would not start other workflows):

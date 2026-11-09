@@ -42,4 +42,26 @@ public static class DpiMath
 
     public static bool IsInsideClient(int x, int y, int clientWidth, int clientHeight) =>
         x >= 0 && y >= 0 && x < clientWidth && y < clientHeight;
+
+    /// <summary>
+    /// Where the coordinate picker's arrow keys move the pointer: <paramref name="dx"/>,
+    /// <paramref name="dy"/> pixels from <paramref name="position"/>, kept inside
+    /// <paramref name="area"/> (all in physical screen pixels). A position outside the area moves to
+    /// its center first.
+    /// </summary>
+    public static PixelPoint MovePointer(PixelPoint position, PixelRect area, int dx, int dy)
+    {
+        if (area.IsEmpty)
+        {
+            return position;
+        }
+
+        if (!IsInsideClient(position.X - area.Left, position.Y - area.Top, area.Width, area.Height))
+        {
+            return new PixelPoint(area.Left + (area.Width / 2), area.Top + (area.Height / 2));
+        }
+
+        var moved = ClampToClient(position.X - area.Left + dx, position.Y - area.Top + dy, area.Width, area.Height);
+        return new PixelPoint(area.Left + moved.X, area.Top + moved.Y);
+    }
 }

@@ -22,7 +22,7 @@ The design is described in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md); the tes
 
 | Check | What it verifies | Run it locally |
 |-------|------------------|----------------|
-| **build-test** | Formatting, a build with warnings as errors, all tests with coverage minimums (Core 90%, Services 70%), the published app's smoke test in every theme and language, and a Velopack packaging dry run | see below |
+| **build-test** | Formatting, a build with warnings as errors, all tests with coverage minimums (Core 90%, Services 70%), the published app's smoke test in every theme and language (text colors, binding errors, accessible names), and a Velopack packaging dry run | see below |
 | **dead-code** | No unused code (ReSharper InspectCode with solution-wide analysis) and no XAML bindings to missing properties | see below |
 | **licenses** | Every shipped package has a GPL-3.0-compatible license ([`eng/licenses`](eng/licenses)) | `./eng/New-ThirdPartyNotices.ps1 -OutFile artifacts/THIRD-PARTY-NOTICES.txt` |
 | **vuln-audit** | No known vulnerability in direct or transitive packages | `./eng/Test-VulnerablePackages.ps1` |
@@ -61,6 +61,17 @@ Please also:
 - **Win32:** add new APIs to `src/AutoClick.Win32/NativeMethods.txt` (CsWin32). Anything that converts game coordinates runs inside a `DpiScope` for the game window.
 - **No unused code:** the dead-code check fails on it. For a deliberate exception, write `// ReSharper disable once <rule>` with a reason.
 - **SonarQube Cloud findings** are fixed, or, when the code is right as it is, suppressed with `[SuppressMessage("Category", "Sxxxx:Title", Justification = "why")]`.
+
+## Accessibility
+
+AutoClick must stay usable with the keyboard alone and with a screen reader; see [docs/ACCESSIBILITY.md](docs/ACCESSIBILITY.md). For every change to the interface:
+
+- **Names:** a control that shows only an icon, an input and a list get `AutomationProperties.Name="{l:Loc Key}"`. List items need a readable name: a `ToString()` that returns the visible text, or an `AutomationProperties.Name` in the `ItemContainerStyle`. The smoke test fails on a control that can be reached with the keyboard and has no name, and on a list item that would be read as a type name or a record dump.
+- **Keyboard:** everything can be done without a mouse, in a sensible Tab order, and `Esc` leaves dialogs and overlays. Drag and drop always has a button alternative. A container that does nothing itself (a card, a list of cards) is not a Tab stop.
+- **Announcements:** text that changes on its own (a state, a status, an error) uses `controls:LiveTextBlock` with `AutomationProperties.LiveSetting`, which raises the event screen readers listen to; a plain `TextBlock` with `LiveSetting` is never read. Do not make a countdown or a value that changes every second a live region. A message that is not on screen goes through `DialogService.Announce`; toasts already do.
+- **Headings:** page titles are `AutomationProperties.HeadingLevel="Level1"`, section titles `Level2` (or `Level3` inside a card).
+- **Color and motion:** color is never the only signal (add text or a name), colors come from theme resources, and animations respect `Motion.IsEnabled` (the Windows *Animation effects* setting).
+- **Check it:** press `Tab` through the changed screen with the mouse unplugged, and listen to it once with Narrator (`Ctrl+Win+Enter`). Mention both in the pull request.
 
 ## Translations
 
