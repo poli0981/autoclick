@@ -31,6 +31,7 @@
   <resheader name="version"><value>2.0</value></resheader>
   <resheader name="reader"><value>System.Resources.ResXResourceReader</value></resheader>
   <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
+  <data name="About_Accessibility" xml:space="preserve"><value>アクセシビリティ</value></data>
   <data name="About_Acknowledgements" xml:space="preserve"><value>謝辞</value></data>
   <data name="About_Ai" xml:space="preserve"><value>AutoClick は AI の支援を受けて開発されています。アプリ内の翻訳は AI によって生成されており、誤りを含む場合があります。</value></data>
   <data name="About_AiTitle" xml:space="preserve"><value>AI の利用について</value></data>
@@ -63,6 +64,7 @@
   <data name="ClickType_Right" xml:space="preserve"><value>右クリック</value></data>
   <data name="Common_Cancel" xml:space="preserve"><value>キャンセル</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>クリア</value></data>
+  <data name="Common_Close" xml:space="preserve"><value>閉じる</value></data>
   <data name="Common_Delete" xml:space="preserve"><value>削除</value></data>
   <data name="Common_FileError" xml:space="preserve"><value>ファイルを読み書きできませんでした: {0}</value></data>
   <data name="Common_Ok" xml:space="preserve"><value>OK</value></data>
@@ -170,12 +172,13 @@
   <data name="Picker_Empty" xml:space="preserve"><value>ウィンドウが見つかりません。ゲームを起動してから更新してください。</value></data>
   <data name="Picker_GameTitle" xml:space="preserve"><value>ゲームを追加</value></data>
   <data name="Picker_Hint" xml:space="preserve"><value>クリックするゲームのウィンドウを選んでください。ウィンドウモードまたはボーダーレスが最適です。</value></data>
-  <data name="Picker_Instruction" xml:space="preserve"><value>使用する位置をクリックします。キー: 1 左 · 2 ダブル · 3 右 · 4 キー入力 · Esc キャンセル</value></data>
+  <data name="Picker_Instruction" xml:space="preserve"><value>使用する位置をクリックするか、矢印キーで移動して (Shift: 1 ピクセル) Enter を押します。キー: 1 左 · 2 ダブル · 3 右 · 4 キー入力 · Esc キャンセル</value></data>
   <data name="Picker_InstructionKeystroke" xml:space="preserve"><value>送信するキーを押してください。1・2・3 でクリックに戻ります · Esc でキャンセル</value></data>
   <data name="Picker_RestoreGame" xml:space="preserve"><value>先にゲームウィンドウを元に戻してください (最小化されているか閉じられています)。</value></data>
   <data name="Picker_Search" xml:space="preserve"><value>名前またはタイトルで検索</value></data>
   <data name="Picker_Select" xml:space="preserve"><value>追加</value></data>
   <data name="Picker_Title" xml:space="preserve"><value>位置を選択</value></data>
+  <data name="Picker_WindowList" xml:space="preserve"><value>開いているウィンドウ</value></data>
   <data name="Profile_Delete" xml:space="preserve"><value>プロファイルを削除</value></data>
   <data name="Profile_DeleteConfirm" xml:space="preserve"><value>プロファイル「{0}」を削除しますか？</value></data>
   <data name="Profile_Export" xml:space="preserve"><value>プロファイルをエクスポート</value></data>
@@ -269,9 +272,11 @@
   <data name="Status_Administrator" xml:space="preserve"><value>管理者</value></data>
   <data name="Status_Idle" xml:space="preserve"><value>準備完了</value></data>
   <data name="Status_Running" xml:space="preserve"><value>実行中 {0} · 一時停止 {1}</value></data>
+  <data name="Step_Added" xml:space="preserve"><value>追加しました: {0}</value></data>
   <data name="Step_Double" xml:space="preserve"><value>({0}, {1}) をダブルクリック</value></data>
   <data name="Step_Key" xml:space="preserve"><value>{0} を押す</value></data>
   <data name="Step_Left" xml:space="preserve"><value>({0}, {1}) をクリック</value></data>
+  <data name="Step_ReferenceColor" xml:space="preserve"><value>{0}、基準色 {1}</value></data>
   <data name="Step_Right" xml:space="preserve"><value>({0}, {1}) を右クリック</value></data>
   <data name="Stop_ColorMismatch" xml:space="preserve"><value>停止: ピクセルの色が一致しませんでした: {0}。</value></data>
   <data name="Stop_ElevationRequired" xml:space="preserve"><value>ブロック: このゲームは管理者として実行されています。</value></data>

@@ -10,6 +10,7 @@ GetClientRect
 ClientToScreen
 ScreenToClient
 GetCursorPos
+SetCursorPos
 EnumWindows
 GetWindow
 GetAncestor

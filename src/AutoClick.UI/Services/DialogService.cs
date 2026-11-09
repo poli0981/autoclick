@@ -1,4 +1,6 @@
 using System.Windows;
+using System.Windows.Automation;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using AutoClick.Core.Abstractions;
 using AutoClick.Core.Hotkeys;
@@ -19,7 +21,7 @@ public enum ToastKind
     Error,
 }
 
-/// <summary>Fluent dialogs, toasts (snackbar) and file pickers for view models.</summary>
+/// <summary>Fluent dialogs, toasts (snackbar), screen reader announcements and file pickers for view models.</summary>
 public sealed class DialogService(IContentDialogService dialogs, ISnackbarService snackbar)
 {
     public async Task<bool> ConfirmAsync(string title, string message, string confirmText)
@@ -50,6 +52,7 @@ public sealed class DialogService(IContentDialogService dialogs, ISnackbarServic
     public async Task<string?> PromptAsync(string title, string label, string initialValue = "")
     {
         var box = new Wpf.Ui.Controls.TextBox { Text = initialValue, MinWidth = 320, PlaceholderText = label };
+        AutomationProperties.SetName(box, label);
         var panel = new StackPanel();
         panel.Children.Add(new System.Windows.Controls.TextBlock { Text = label, Margin = new Thickness(0, 0, 0, 8) });
         panel.Children.Add(box);
@@ -134,7 +137,29 @@ public sealed class DialogService(IContentDialogService dialogs, ISnackbarServic
         if (snackbar.GetSnackbarPresenter() is not null)
         {
             snackbar.Show(title, message, appearance, new SymbolIcon(symbol), TimeSpan.FromSeconds(kind == ToastKind.Error ? 8 : 4));
+            // A toast disappears after a few seconds and never takes the focus: read it out.
+            Announce($"{title}: {message}", kind is ToastKind.Warning or ToastKind.Error);
         }
+    }
+
+    /// <summary>
+    /// Has screen readers (Narrator, NVDA) read <paramref name="message"/> without moving the
+    /// focus. <paramref name="important"/> messages interrupt what is being read.
+    /// </summary>
+    public static void Announce(string message, bool important = false)
+    {
+        if (!AutomationPeer.ListenerExists(AutomationEvents.Notification)
+            || Application.Current?.MainWindow is not { IsVisible: true } window
+            || UIElementAutomationPeer.CreatePeerForElement(window) is not { } peer)
+        {
+            return;
+        }
+
+        peer.RaiseNotificationEvent(
+            AutomationNotificationKind.Other,
+            important ? AutomationNotificationProcessing.ImportantMostRecent : AutomationNotificationProcessing.MostRecent,
+            message,
+            "AutoClick.Announcement");
     }
 
     public static string? PickOpenFile(string filter)

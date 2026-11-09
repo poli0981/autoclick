@@ -63,4 +63,32 @@ public class DpiMathTests
     {
         Assert.Equal(expected, DpiMath.IsInsideClient(x, y, 1280, 720));
     }
+
+    // A game on a second monitor, left of the primary one.
+    private static readonly PixelRect GameArea = new(-1920, 100, 1280, 720);
+
+    [Theory]
+    [InlineData(-1500, 400, 10, 0, -1490, 400)]
+    [InlineData(-1500, 400, 0, -1, -1500, 399)]
+    [InlineData(-1915, 400, -10, 0, -1920, 400)]
+    [InlineData(-645, 815, 10, 10, -641, 819)]
+    public void MovePointer_MovesInsideTheArea(int x, int y, int dx, int dy, int expectedX, int expectedY)
+    {
+        Assert.Equal(new PixelPoint(expectedX, expectedY), DpiMath.MovePointer(new PixelPoint(x, y), GameArea, dx, dy));
+    }
+
+    [Theory]
+    [InlineData(0, 0)]
+    [InlineData(-640, 400)]
+    [InlineData(-1500, 820)]
+    public void MovePointer_StartsFromTheCenterWhenOutside(int x, int y)
+    {
+        Assert.Equal(new PixelPoint(-1280, 460), DpiMath.MovePointer(new PixelPoint(x, y), GameArea, 10, 0));
+    }
+
+    [Fact]
+    public void MovePointer_LeavesThePointerForAnEmptyArea()
+    {
+        Assert.Equal(new PixelPoint(5, 5), DpiMath.MovePointer(new PixelPoint(5, 5), new PixelRect(0, 0, 0, 0), 10, 0));
+    }
 }

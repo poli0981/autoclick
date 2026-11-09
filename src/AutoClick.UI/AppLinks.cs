@@ -15,6 +15,9 @@ public static class AppLinks
     public const string Eula = Repository + "/blob/master/docs/EULA.md";
     public const string SecurityPolicy = Repository + "/blob/master/docs/SECURITY.md";
 
+    // Linked from 2.1 on: keep this path too.
+    public const string Accessibility = Repository + "/blob/master/docs/ACCESSIBILITY.md";
+
     public const string Discord = "https://discord.gg/kDM9GMu5vm";
     public const string X = "https://x.com/SkullMute0011";
     public const string YouTube = "https://www.youtube.com/@SkullMute";

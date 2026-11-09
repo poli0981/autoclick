@@ -31,6 +31,7 @@
   <resheader name="version"><value>2.0</value></resheader>
   <resheader name="reader"><value>System.Resources.ResXResourceReader</value></resheader>
   <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
+  <data name="About_Accessibility" xml:space="preserve"><value>Accessibility</value></data>
   <data name="About_Acknowledgements" xml:space="preserve"><value>Acknowledgements</value></data>
   <data name="About_Ai" xml:space="preserve"><value>AutoClick is built with AI assistance. The in-app translations are AI-generated and may contain mistakes.</value></data>
   <data name="About_AiTitle" xml:space="preserve"><value>AI disclosure</value></data>
@@ -63,6 +64,7 @@
   <data name="ClickType_Right" xml:space="preserve"><value>Right click</value></data>
   <data name="Common_Cancel" xml:space="preserve"><value>Cancel</value></data>
   <data name="Common_Clear" xml:space="preserve"><value>Clear</value></data>
+  <data name="Common_Close" xml:space="preserve"><value>Close</value></data>
   <data name="Common_Delete" xml:space="preserve"><value>Delete</value></data>
   <data name="Common_FileError" xml:space="preserve"><value>The file could not be read or saved: {0}</value></data>
   <data name="Common_Ok" xml:space="preserve"><value>OK</value></data>
@@ -170,12 +172,13 @@
   <data name="Picker_Empty" xml:space="preserve"><value>No windows found. Start the game, then refresh.</value></data>
   <data name="Picker_GameTitle" xml:space="preserve"><value>Add a game</value></data>
   <data name="Picker_Hint" xml:space="preserve"><value>Pick the window of the game to click. Windowed or borderless mode works best.</value></data>
-  <data name="Picker_Instruction" xml:space="preserve"><value>Click the point to use. Keys: 1 left · 2 double · 3 right · 4 keystroke · Esc cancel</value></data>
+  <data name="Picker_Instruction" xml:space="preserve"><value>Click the point to use, or move with the arrow keys (Shift: 1 pixel) and press Enter. Keys: 1 left · 2 double · 3 right · 4 keystroke · Esc cancel</value></data>
   <data name="Picker_InstructionKeystroke" xml:space="preserve"><value>Press the key to send. 1, 2 or 3 switches back to clicks · Esc cancels</value></data>
   <data name="Picker_RestoreGame" xml:space="preserve"><value>Restore the game window first (it is minimized or closed).</value></data>
   <data name="Picker_Search" xml:space="preserve"><value>Search by name or title</value></data>
   <data name="Picker_Select" xml:space="preserve"><value>Add</value></data>
   <data name="Picker_Title" xml:space="preserve"><value>Pick a point</value></data>
+  <data name="Picker_WindowList" xml:space="preserve"><value>Open windows</value></data>
   <data name="Profile_Delete" xml:space="preserve"><value>Delete profile</value></data>
   <data name="Profile_DeleteConfirm" xml:space="preserve"><value>Delete the profile “{0}”?</value></data>
   <data name="Profile_Export" xml:space="preserve"><value>Export profile</value></data>
@@ -269,9 +272,11 @@
   <data name="Status_Administrator" xml:space="preserve"><value>Administrator</value></data>
   <data name="Status_Idle" xml:space="preserve"><value>Ready</value></data>
   <data name="Status_Running" xml:space="preserve"><value>{0} running · {1} paused</value></data>
+  <data name="Step_Added" xml:space="preserve"><value>Added: {0}</value></data>
   <data name="Step_Double" xml:space="preserve"><value>Double-click at ({0}, {1})</value></data>
   <data name="Step_Key" xml:space="preserve"><value>Press {0}</value></data>
   <data name="Step_Left" xml:space="preserve"><value>Click at ({0}, {1})</value></data>
+  <data name="Step_ReferenceColor" xml:space="preserve"><value>{0}, reference color {1}</value></data>
   <data name="Step_Right" xml:space="preserve"><value>Right-click at ({0}, {1})</value></data>
   <data name="Stop_ColorMismatch" xml:space="preserve"><value>Stopped: the pixel color did not match: {0}.</value></data>
   <data name="Stop_ElevationRequired" xml:space="preserve"><value>Blocked: this game runs as administrator.</value></data>

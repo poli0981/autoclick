@@ -49,7 +49,7 @@ public sealed class HeatmapOverlay : Window
         Focusable = false;
         IsHitTestVisible = false;
         ResizeMode = ResizeMode.NoResize;
-        Title = "AutoClick heatmap";
+        Title = L.Get("Heatmap_Show");
 
         var legend = new Border
         {

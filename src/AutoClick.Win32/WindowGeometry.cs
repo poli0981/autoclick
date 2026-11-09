@@ -46,6 +46,23 @@ public static class WindowGeometry
         return false;
     }
 
+    /// <summary>
+    /// Moves the real pointer <paramref name="dx"/>, <paramref name="dy"/> physical pixels, kept
+    /// inside <paramref name="window"/>'s client area (see <see cref="DpiMath.MovePointer"/>), for
+    /// the coordinate picker's arrow keys. Returns the new position in physical screen pixels.
+    /// </summary>
+    public static PixelPoint? MovePointerWithinClient(nint window, int dx, int dy)
+    {
+        using var scope = DpiScope.PerMonitorV2();
+        if (!TryGetPhysicalClientRect(window, out var rect) || !PInvoke.GetCursorPos(out var cursor))
+        {
+            return null;
+        }
+
+        var target = DpiMath.MovePointer(new PixelPoint(cursor.X, cursor.Y), rect, dx, dy);
+        return PInvoke.SetCursorPos(target.X, target.Y) ? target : null;
+    }
+
     public static uint GetDpi(nint window) => PInvoke.GetDpiForWindow((HWND)window);
 
     /// <summary>True when <paramref name="window"/> or one of its owned dialogs is in the foreground.</summary>

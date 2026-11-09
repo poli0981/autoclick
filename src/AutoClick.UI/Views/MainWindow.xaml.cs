@@ -3,6 +3,7 @@ using AutoClick.UI.Services;
 using AutoClick.UI.ViewModels;
 using AutoClick.UI.Views.Pages;
 using Wpf.Ui;
+using Wpf.Ui.Animations;
 
 namespace AutoClick.UI.Views;
 
@@ -18,6 +19,9 @@ public partial class MainWindow
         dialogs.SetDialogHost(RootContentDialog);
         snackbar.SetSnackbarPresenter(SnackbarPresenter);
         RootNavigation.SetServiceProvider(services);
+        ApplyMotion();
+        Motion.Changed += OnMotionChanged;
+        Closed += (_, _) => Motion.Changed -= OnMotionChanged;
         Loaded += (_, _) => Navigate(typeof(QueuePage));
     }
 
@@ -37,4 +41,9 @@ public partial class MainWindow
 
         base.OnClosing(e);
     }
+
+    // Pages slide in unless Windows' "Animation effects" are off.
+    private void ApplyMotion() => RootNavigation.Transition = Motion.IsEnabled ? Transition.FadeInWithSlide : Transition.None;
+
+    private void OnMotionChanged(object? sender, EventArgs e) => Dispatcher.Invoke(ApplyMotion);
 }
