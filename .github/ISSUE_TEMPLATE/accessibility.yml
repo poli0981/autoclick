@@ -1,0 +1,115 @@
+name: Accessibility Barrier
+description: Something in AutoClick or its documentation is hard or impossible to use with a keyboard, a screen reader, a contrast theme, scaling or other assistive technology.
+title: "[Accessibility]: "
+labels: ["accessibility"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for telling us. Accessibility barriers are triaged before other bugs; see the [Accessibility statement](https://github.com/poli0981/autoclick/blob/master/docs/ACCESSIBILITY.md) for what is already known and how we respond.
+
+        You never need to explain a disability or share personal information. Only the first three fields are required; fill in what you can. You may also write in your own words instead of using the fields.
+
+  - type: textarea
+    id: barrier
+    attributes:
+      label: What were you trying to do, and what went wrong?
+      description: The task, and where it failed or became hard.
+      placeholder: |
+        I tried to add a step with the keyboard only.
+        After pressing Add step, ... happened.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open the Queue page
+        2. Press Tab until ...
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect instead?
+      placeholder: "Narrator reads the name of the button / the focus moves to ..."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: How much does it affect you?
+      description: The levels are explained in the Accessibility statement.
+      options:
+        - "Critical: I cannot do the task at all"
+        - "Serious: very hard, but I found a workaround"
+        - "Moderate: annoying or inconsistent"
+        - "Minor: little effect"
+        - "Not sure"
+    validations:
+      required: false
+
+  - type: input
+    id: assistive-technology
+    attributes:
+      label: Assistive technology and version
+      description: For example Narrator, NVDA 2026.2, JAWS 2026, Magnifier, Voice Access, a switch device, or "none".
+      placeholder: "Narrator (Windows 11 24H2)"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: input
+    attributes:
+      label: How do you use the computer?
+      description: Select all that apply.
+      options:
+        - label: Keyboard only
+        - label: Screen reader
+        - label: Screen magnifier or large display scaling
+        - label: Contrast theme or the High contrast theme
+        - label: Speech or voice control
+        - label: Switch or other alternative input
+    validations:
+      required: false
+
+  - type: input
+    id: version
+    attributes:
+      label: AutoClick version
+      description: Shown on the About page.
+      placeholder: "2.1.0"
+    validations:
+      required: false
+
+  - type: input
+    id: os-version
+    attributes:
+      label: Windows version
+      description: Settings > System > About.
+      placeholder: "Windows 11 Pro 24H2 (Build 26100.1234)"
+    validations:
+      required: false
+
+  - type: input
+    id: display
+    attributes:
+      label: Theme and display
+      description: AutoClick theme, Windows contrast theme, display scale, text size, animation effects (whatever seems related).
+      placeholder: "AutoClick theme: Use Windows setting; Windows: Night sky contrast theme, 150% scale"
+    validations:
+      required: false
+
+  - type: textarea
+    id: recording
+    attributes:
+      label: Recording or screenshot
+      description: Optional. A screen recording with the screen reader's speech helps a lot. Window titles in recordings and logs can contain personal text; remove it before posting.
+      placeholder: "Drag and drop files here"
+    validations:
+      required: false

@@ -26,6 +26,7 @@ dotnet jb inspectcode AutoClick.slnx --no-build --properties:Configuration=Relea
 - **No unused code:** InspectCode with solution-wide analysis fails CI on unused members, types, parameters and usings.
 - **Win32:** new APIs go in `src/AutoClick.Win32/NativeMethods.txt` (CsWin32). Coordinate work happens inside `DpiScope.ForWindow(game)`.
 - **Overlays** are positioned with `WindowGeometry.SetBounds` in physical pixels, never with WPF `Left/Top`.
+- **Accessibility** ([docs/ACCESSIBILITY.md](docs/ACCESSIBILITY.md), rules in CONTRIBUTING): icon-only controls, inputs and lists get `AutomationProperties.Name="{l:Loc …}"`, list items a readable name; changing text uses `controls:LiveTextBlock` (a `TextBlock` with `LiveSetting` is never announced), never for per-second values; the smoke test fails on unnamed focusable controls. The path `docs/ACCESSIBILITY.md` is linked from the app: do not move it.
 
 ## Pitfalls seen before
 

@@ -44,6 +44,7 @@
 - [ ] `dotnet build AutoClick.slnx` and `dotnet test --solution AutoClick.slnx` pass (see [CONTRIBUTING](../CONTRIBUTING.md) for the other CI checks)
 - [ ] Tested manually on a game or with `tools/AutoClick.ClickTarget`
 - [ ] New UI text is in `Strings.resx` and in all four translations (`vi`, `ja`, `ko`, `zh`); no hard-coded text in XAML
+- [ ] UI changes work with the keyboard alone and with Narrator: icon-only controls have a name, the focus is visible and in order, and color is not the only signal (see [ACCESSIBILITY](../docs/ACCESSIBILITY.md))
 - [ ] User-visible changes are listed under `[Unreleased]` in `CHANGELOG.md`
 - [ ] No secrets, credentials, or suspicious code
 

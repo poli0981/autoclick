@@ -1,6 +1,6 @@
 # System Requirements
 
-**Applies to:** AutoClick 2.0 and later. **Last updated:** October 2026.
+**Applies to:** AutoClick 2.0 and later. **Last updated:** November 2026.
 
 ## Requirements
 
@@ -37,6 +37,10 @@ See [HEATMAP_COMPATIBILITY.md](HEATMAP_COMPATIBILITY.md) for the overlay details
 ## Display scaling and multiple monitors
 
 AutoClick is per-monitor DPI aware. The coordinate picker and the heatmap work on every monitor and at any scaling, and points are stored in the game's own coordinates. Points picked with AutoClick 1.x in a game that is not DPI aware, on a scaled monitor, may be off and should be picked again.
+
+## Accessibility
+
+AutoClick works with the keyboard alone and with Narrator, follows Windows contrast themes, display scaling and the *Animation effects* setting, and has a High contrast theme of its own. Supported assistive technology, known limitations and how to report a barrier are in the [Accessibility statement](ACCESSIBILITY.md).
 
 ## Tested configurations (2.0)
 

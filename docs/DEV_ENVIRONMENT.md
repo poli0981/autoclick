@@ -31,7 +31,8 @@ The checks CI runs on every pull request, and how to run them locally, are liste
 | Tool | Purpose |
 |------|---------|
 | **`tools/AutoClick.ClickTarget`** | A window that logs every mouse and keyboard message it receives (client coordinates, virtual-key and scan codes). `--dpi unaware\|system\|pmv2` changes its DPI awareness to test coordinate mapping, `--log <file>` writes the log to a file. |
-| **`AutoClick.UI.exe --smoke-test`** | Opens every page in every theme and language, the dialogs and a heatmap overlay, and fails on any binding error. Uses `%TEMP%\AutoClick-smoke` instead of the real data folder. |
+| **`AutoClick.UI.exe --smoke-test`** | Opens every page in every theme and language, the dialogs and a heatmap overlay, and fails on any binding error, on text that does not follow the theme, and on a control or list item that screen readers would find without a name. Uses `%TEMP%\AutoClick-smoke` instead of the real data folder. |
+| **Narrator and the keyboard** | Manual accessibility check of interface changes: unplug the mouse and use `Tab`, the arrow keys, `Enter` and `Esc`; start Narrator with `Ctrl+Win+Enter`. What to check is in [ACCESSIBILITY.md](ACCESSIBILITY.md#how-we-test). |
 | **`eng/Invoke-UpgradeTest.ps1`** | Update test in Windows Sandbox, without touching the development machine: installs an older release (for example 1.3.3), updates it to a new package with the installed updater, and checks the data migration, the uninstall and a fresh install. Used before every release ([RELEASING.md](RELEASING.md)). |
 
 ## Tested Games

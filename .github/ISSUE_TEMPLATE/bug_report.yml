@@ -14,6 +14,8 @@ body:
 
         You may use this template or write your own, as long as required fields (Description, OS Version, Reason, Game) are included.
 
+        Hard or impossible to use with a keyboard, a screen reader, a contrast theme or other assistive technology? Use the [Accessibility Barrier](https://github.com/poli0981/autoclick/issues/new?template=accessibility.yml) form instead: it needs no game link.
+
   - type: textarea
     id: description
     attributes:
