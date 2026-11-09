@@ -8,6 +8,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-11-09
+
+Accessibility: AutoClick can now be used completely with the keyboard and with a screen reader. Settings, profiles and sessions are unchanged.
+
+### Added
+
+- Coordinate picker: the arrow keys move the pointer (10 pixels, 1 with Shift) and Enter or Space picks the point, so click steps can be added without a mouse. In key press mode (4) these keys are recorded as before.
+- Screen readers announce status changes without moving the focus: the state of a game and why it stopped, the status bar, the update status, schedule errors, the keys while recording a hotkey, the picker's instructions, the messages that appear for a few seconds, and each step you add.
+- Page and section titles are headings for screen readers.
+- An [Accessibility statement](https://github.com/poli0981/autoclick/blob/master/docs/ACCESSIBILITY.md), linked from the About page: what works, known limitations, and a new issue form for accessibility barriers.
+
+### Fixed
+
+- Screen readers read a step as "ClickPoint { X = 40, Y = 60, ... }" and a game card as "AutoClick.UI.ViewModels.GameSessionViewModel". They now read the step ("Click at (40, 60)", with its reference color) and the game.
+- Controls without a name for screen readers: the search box and the window list of Add game, the text box of name prompts, the steps and log lists, the hotkey recorder, the release notes and the close buttons of notices. The three Change buttons of the hotkeys now say which hotkey they change.
+- Settings: every settings card was an extra Tab stop without a name before its own control; so was the list of games on the Queue page.
+- Pages slid in and the dashboard charts animated even with Animation effects turned off in Windows.
+- The picker's window title was always in English.
+
+### Changed
+
+- After you pick a point or press Esc, AutoClick comes back to the front with the focus on Add step; before, the game stayed in front. Switching to another window still cancels the picker and leaves the focus there.
+
 ## [2.0.3] - 2026-10-26
 
 Security update of the bundled .NET runtime. Settings, profiles and sessions are unchanged.
@@ -378,7 +401,8 @@ Platform bridge release: no feature or data-format changes, so it is safe to upd
 - `ManualResetEventSlim` for pause/resume, `CancellationToken` for stop
 - `DispatcherTimer` for UI refresh and process monitoring
 
-[Unreleased]: https://github.com/poli0981/autoclick/compare/v2.0.3...HEAD
+[Unreleased]: https://github.com/poli0981/autoclick/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/poli0981/autoclick/compare/v2.0.3...v2.1.0
 [2.0.3]: https://github.com/poli0981/autoclick/compare/v2.0.2...v2.0.3
 [2.0.2]: https://github.com/poli0981/autoclick/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/poli0981/autoclick/compare/v2.0.0...v2.0.1
